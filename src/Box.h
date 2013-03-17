@@ -9,7 +9,7 @@ namespace BoxModel
 {
 
 typedef ofVec2f Point;
-	
+
 class Unit
 {
 public:
@@ -17,55 +17,41 @@ public:
 	    Pixel,
 	    Percent
 	};
-	
-	Unit(){
+
+	Unit() {
 		value = 0;
 		type = Pixel;
-	}	
-	
-	const Unit& operator=(float val){
+	}
+
+	const Unit& operator=(float val) {
 		setValue(val);
 		return *this;
 	}
-	
-	const Unit& operator=(Type t){
+
+	const Unit& operator=(Type t) {
 		setType(t);
 		return *this;
 	}
 
-	void setValue(float val){
+	void setValue(float val) {
 		value = val;
 	}
-	void setType(Type t){
+	void setType(Type t) {
 		type = t;
 	}
-	
+
 private:
 
 	float value;
 	Type type;
 };
 
-class Box
+class BoxDefinition
 {
-		public:
-	
-	typedef ofPtr<Box> Ptr;
-	typedef std::deque<Ptr> List;
-	
-	Box();
-	~Box();
-	
-	void debugDraw();
-	
-	virtual void layout(){};
-	virtual void draw(){};
-	
-	void add(Box* box);
-	
+public:
 	Unit x;
 	Unit y;
-	
+
 	Unit width;
 	Unit height;
 
@@ -76,15 +62,51 @@ class Box
 
 	Unit marginLeft;
 	Unit marginRight;
-	Unit marignTop;
+	Unit marginTop;
 	Unit marginBottom;
 
 	Unit borderLeft;
 	Unit borderRight;
 	Unit borderTop;
 	Unit borderBottom;
+};
 
-private:	
+class Box
+{
+public:
+
+	typedef ofPtr<Box> Ptr;
+	typedef std::deque<Ptr> List;
+
+	Box();
+	~Box();
+
+	void debugDraw();
+
+	virtual void layout() {};
+	virtual void draw() {};
+
+	void add(Box::Ptr box);
+
+	float getInnerWidth();
+	float getInnerHeight();
+
+	float getWidth();
+	float getHeight();
+
+	float getOuterWidth();
+	float getOuterHeight();
+
+	float getX();
+	float getY();
+
+	BoxDefinition definition;
+private:
+	float x;
+	float y;
+	float width;
+	float height;
+	
 	List children;
 };
 
