@@ -10,10 +10,23 @@ namespace BoxModel
 
 typedef ofVec2f Point;
 
+class Unit;
+
+class UnitEvent: public ofEventArgs
+{
+public:
+	UnitEvent(Unit* u) {
+		unit = u;
+	}
+
+	Unit* unit;
+};
+
 class Unit
 {
 public:
 	enum Type {
+	    Auto,
 	    Pixel,
 	    Percent
 	};
@@ -34,11 +47,21 @@ public:
 	}
 
 	void setValue(float val) {
+		if(val == value)
+			return;
 		value = val;
+		UnitEvent e(this);
+		ofNotifyEvent(changed, e);
 	}
 	void setType(Type t) {
+		if(type == t)
+			return;
 		type = t;
+		UnitEvent e(this);
+		ofNotifyEvent(changed, e);
 	}
+
+	ofEvent<UnitEvent> changed;
 
 private:
 
@@ -46,9 +69,28 @@ private:
 	Type type;
 };
 
-class BoxDefinition
+class Definition;
+
+class DefinitionEvent: public ofEventArgs{
+	public:
+	DefinitionEvent(Definition* d){
+		definition = d;
+	}
+	Definition* definition;
+};
+
+class Definition
 {
 public:
+	Definition(){
+		ofAddListener(x.changed, this, &Definition::unitChanged);
+	}
+	
+	void unitChanged(UnitEvent& e){
+		DefinitionEvent de(this);
+		ofNotifyEvent(changed, de);
+	}
+	
 	Unit x;
 	Unit y;
 
@@ -69,6 +111,8 @@ public:
 	Unit borderRight;
 	Unit borderTop;
 	Unit borderBottom;
+	
+	ofEvent<DefinitionEvent> changed;
 };
 
 class Box
@@ -83,10 +127,15 @@ public:
 
 	void debugDraw();
 
-	virtual void layout() {};
+	virtual void layout();
+
+	virtual void calculateContentSize();
 	virtual void draw() {};
 
 	void add(Box::Ptr box);
+
+	float getContentWidth();
+	float getContentHeight();
 
 	float getInnerWidth();
 	float getInnerHeight();
@@ -100,13 +149,16 @@ public:
 	float getX();
 	float getY();
 
-	BoxDefinition definition;
+	Definition definition;
 private:
-	float x;
-	float y;
-	float width;
-	float height;
-	
+	Ptr parent;
+
+	Point position;
+	Point outerSize;
+	Point size;
+	Point innerSize;
+	Point contentSize;
+
 	List children;
 };
 

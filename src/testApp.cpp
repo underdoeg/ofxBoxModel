@@ -2,8 +2,8 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-	layouter.width = ofGetWidth();
-	layouter.height = ofGetHeight();
+	root.definition.width = ofGetWidth();
+	root.definition.height = ofGetHeight();
 }
 
 //--------------------------------------------------------------
@@ -12,7 +12,8 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-
+	ofBackground(255);
+	root.draw();
 }
 
 //--------------------------------------------------------------
