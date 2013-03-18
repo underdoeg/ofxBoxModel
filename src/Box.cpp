@@ -136,7 +136,7 @@ void Box::layout()
 	}
 }
 
-void Box::propertyChanged(PropertyEvent& e)
+void Box::propertyChanged(Properties::Event& e)
 {
 	getRootBox()->layout();
 }

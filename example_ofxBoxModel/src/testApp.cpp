@@ -20,7 +20,7 @@ void testApp::setup()
 	}
 	*/
 
-	/*
+	
 	for(int i=0;i<60;i++){
 		Box* b = root.createChild();
 		b->props.floating = Properties::Left;
@@ -30,11 +30,12 @@ void testApp::setup()
 		b->props.setPadding(ofRandom(0, 30));
 		for(int j=0;j<ofRandom(0, 50); j++){
 			Box* bb = b->createChild();
+			bb->props.floating = Properties::Left;
 			bb->props.width = ofRandom(10, 20);
 			bb->props.height = ofRandom(10, 20);
 		}
 	}
-	*/
+	
 
 	Box* b = root.createChild();
 	b->props.width = 300;

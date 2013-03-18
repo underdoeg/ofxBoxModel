@@ -10,23 +10,21 @@ namespace BoxModel
 
 typedef ofVec2f Point;
 
-class Unit;
-
-class UnitEvent: public ofEventArgs
-{
-public:
-	UnitEvent(Unit* u) {
-		unit = u;
-	}
-
-	Unit* unit;
-};
-
 class Box;
 
 class Unit
 {
 public:
+	class Event: public ofEventArgs
+	{
+	public:
+		Event(Unit* u) {
+			unit = u;
+		}
+
+		Unit* unit;
+	};
+
 	enum Type {
 	    Auto,
 	    Pixel,
@@ -56,15 +54,15 @@ public:
 		if(val == value)
 			return;
 		value = val;
-		UnitEvent e(this);
+		Event e(this);
 		ofNotifyEvent(changed, e);
 	}
-	
+
 	void setType(Type t) {
 		if(type == t)
 			return;
 		type = t;
-		UnitEvent e(this);
+		Event e(this);
 		ofNotifyEvent(changed, e);
 	}
 
@@ -76,7 +74,7 @@ public:
 		return type;
 	}
 
-	ofEvent<UnitEvent> changed;
+	ofEvent<Event> changed;
 
 private:
 	friend class Box;
@@ -90,30 +88,64 @@ private:
 	Type type;
 };
 
-class Properties;
-
-class PropertyEvent: public ofEventArgs
+template <class T>
+class Property
 {
-public:
-	PropertyEvent(Properties* d) {
-		definition = d;
+	class Event: public ofEventArgs
+	{
+	public:
+		Event(Property<T>* p) {
+			property = p;
+		}
+		Property<T>* property;
+	};
+
+	operator const T & () const {
+		return value;
 	}
-	Properties* definition;
+
+	const float& operator=(float val) {
+		setValue(val);
+		return value;
+	}
+
+	void setValue(T v) {
+		if(value == v)
+			return;
+		value = v;
+		Event e(this);
+		ofNotifyEvent(changed, e);
+	}
+
+	ofEvent<Event> changed;
+
+private:
+	T value;
 };
+
 
 class Properties
 {
 public:
-	enum Position{
-		Relative,
-		Absolute,
-		Fixed
+	class Event: public ofEventArgs
+	{
+	public:
+		Event(Properties* d) {
+			definition = d;
+		}
+		Properties* definition;
 	};
-	
-	enum Floating{
-		Left,
-		Right,
-		NoFloat
+
+	enum Position {
+	    Relative,
+	    Absolute,
+	    Fixed
+	};
+
+	enum Floating {
+	    Left,
+	    Right,
+	    NoFloat
 	};
 
 	Properties() {
@@ -133,7 +165,7 @@ public:
 		margins.push_back(&marginTop);
 		margins.push_back(&marginBottom);
 		units.insert( units.end(), margins.begin(), margins.end() );
-		
+
 		borders.push_back(&borderLeft);
 		borders.push_back(&borderRight);
 		borders.push_back(&borderTop);
@@ -148,8 +180,8 @@ public:
 		}
 	}
 
-	void unitChanged(UnitEvent& e) {
-		PropertyEvent de(this);
+	void unitChanged(Unit::Event& e) {
+		Event de(this);
 		ofNotifyEvent(changed, de);
 	}
 
@@ -194,11 +226,11 @@ public:
 	Unit borderRight;
 	Unit borderTop;
 	Unit borderBottom;
-	
+
 	Floating floating;
 	Position position;
 
-	ofEvent<PropertyEvent> changed;
+	ofEvent<Event> changed;
 
 private:
 	std::vector<Unit*> units;
@@ -229,13 +261,13 @@ public:
 	void add(Box* box);
 
 	Properties props;
-	
+
 private:
 	void setParent(Box* parent);
 	void calculateSize();
 	virtual void layout();
 
-	void propertyChanged(PropertyEvent& e);
+	void propertyChanged(Properties::Event& e);
 
 	Point position;
 	Point outerSize;
