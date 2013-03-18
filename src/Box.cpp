@@ -113,7 +113,7 @@ void Box::layout()
 
 			} else if((*it)->props.floating == Properties::Left) {
 				//child float left
-				if(position.x + (*it)->outerSize.x > contentSize.x) {
+				if(position.x + (*it)->outerSize.x > contentSize.x || (*it)->props.clear == true) {
 					position.y += rowMaxHeight;
 					position.x = 0;
 					rowMaxHeight = 0;
@@ -142,7 +142,6 @@ void Box::layout()
 			}else if((*it)->props.right.isSet()){
 				p = p1;
 				p.x = p2.x;
-				cout << p << endl;
 			}else{
 				p = p1;
 			}

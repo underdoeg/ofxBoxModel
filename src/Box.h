@@ -208,6 +208,7 @@ public:
 
 		position = Relative;
 		floating = NoFloat;
+		clear = false;
 
 		properties.push_back(&position);
 		properties.push_back(&floating);
@@ -277,6 +278,7 @@ public:
 
 	Property<Floating> floating;
 	Property<Position> position;
+	Property<bool> clear;
 
 	ofEvent<Event> changed;
 

@@ -7,7 +7,7 @@ void testApp::setup()
 {
 	root.props.width = ofGetWidth();
 	root.props.height = ofGetHeight();
-
+	
 	/*
 	for(int i=0;i<4;i++){
 		Box* b = root.createChild();
@@ -15,14 +15,15 @@ void testApp::setup()
 		b->props.width = Unit::Percent;
 		b->props.height = 50;
 		b->props.height = Unit::Percent;
-		b->props.marginLeft = 25;
-		b->props.marginLeft = Unit::Percent;
+		b->props.floating = Properties::Left;
+		b->props.setPadding(20);
 	}
 	*/
-
 	
-	/*for(int i=0;i<60;i++){
+	for(int i=0;i<60;i++){
 		Box* b = root.createChild();
+		if(ofRandom(0,1) < .05)
+			b->props.clear = true;
 		b->props.floating = Properties::Left;
 		b->props.width = ofRandom(100, 200);
 		b->props.height = ofRandom(100, 200);
@@ -34,11 +35,11 @@ void testApp::setup()
 			bb->props.width = ofRandom(10, 20);
 			bb->props.height = ofRandom(10, 20);
 		}
-	}*/
+	}
 
 	Box* b = root.createChild();
-	b->props.width = 400;
-	b->props.height = 400;
+	b->props.width = 500;
+	b->props.height = 500;
 	b->props.marginLeft = -b->props.width*.5;
 	b->props.marginTop = -b->props.height*.5;
 	b->props.left = 50;
@@ -46,12 +47,13 @@ void testApp::setup()
 	b->props.top = 50;
 	b->props.top = Unit::Percent;
 	b->props.position = Properties::Absolute;
+	
 }
 
 //--------------------------------------------------------------
 void testApp::update()
 {
-
+	
 }
 
 //--------------------------------------------------------------
