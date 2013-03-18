@@ -59,6 +59,7 @@ public:
 		UnitEvent e(this);
 		ofNotifyEvent(changed, e);
 	}
+	
 	void setType(Type t) {
 		if(type == t)
 			return;
@@ -89,23 +90,35 @@ private:
 	Type type;
 };
 
-class Definition;
+class Properties;
 
-class DefinitionEvent: public ofEventArgs
+class PropertyEvent: public ofEventArgs
 {
 public:
-	DefinitionEvent(Definition* d) {
+	PropertyEvent(Properties* d) {
 		definition = d;
 	}
-	Definition* definition;
+	Properties* definition;
 };
 
-class Definition
+class Properties
 {
 public:
-	Definition() {
-		units.push_back(&x);
-		units.push_back(&y);
+	enum Position{
+		Relative,
+		Absolute,
+		Fixed
+	};
+	
+	enum Floating{
+		Left,
+		Right,
+		NoFloat
+	};
+
+	Properties() {
+		units.push_back(&left);
+		units.push_back(&top);
 		units.push_back(&width);
 		units.push_back(&height);
 
@@ -120,15 +133,23 @@ public:
 		margins.push_back(&marginTop);
 		margins.push_back(&marginBottom);
 		units.insert( units.end(), margins.begin(), margins.end() );
+		
+		borders.push_back(&borderLeft);
+		borders.push_back(&borderRight);
+		borders.push_back(&borderTop);
+		borders.push_back(&borderBottom);
+		units.insert( units.end(), borders.begin(), borders.end() );
 
+		position = Relative;
+		floating = NoFloat;
 
 		for(std::vector<Unit*>::iterator it = units.begin(); it!=units.end(); it++) {
-			ofAddListener((*it)->changed, this, &Definition::unitChanged);
+			ofAddListener((*it)->changed, this, &Properties::unitChanged);
 		}
 	}
 
 	void unitChanged(UnitEvent& e) {
-		DefinitionEvent de(this);
+		PropertyEvent de(this);
 		ofNotifyEvent(changed, de);
 	}
 
@@ -146,8 +167,15 @@ public:
 		}
 	}
 
-	Unit x;
-	Unit y;
+	void setBorder(float value, Unit::Type type = Unit::Pixel) {
+		for(std::vector<Unit*>::iterator it = borders.begin(); it!=borders.end(); it++) {
+			(*it)->setValue(value);
+			(*it)->setType(type);
+		}
+	}
+
+	Unit left;
+	Unit top;
 
 	Unit width;
 	Unit height;
@@ -166,8 +194,11 @@ public:
 	Unit borderRight;
 	Unit borderTop;
 	Unit borderBottom;
+	
+	Floating floating;
+	Position position;
 
-	ofEvent<DefinitionEvent> changed;
+	ofEvent<PropertyEvent> changed;
 
 private:
 	std::vector<Unit*> units;
@@ -197,13 +228,14 @@ public:
 	Box* createChild();
 	void add(Box* box);
 
-	Definition definition;
+	Properties props;
+	
 private:
 	void setParent(Box* parent);
 	void calculateSize();
 	virtual void layout();
 
-	void definitionChanged(DefinitionEvent& e);
+	void propertyChanged(PropertyEvent& e);
 
 	Point position;
 	Point outerSize;

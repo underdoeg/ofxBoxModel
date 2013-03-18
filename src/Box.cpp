@@ -8,7 +8,7 @@ namespace BoxModel
 
 Box::Box():bParent(false)
 {
-	ofAddListener(definition.changed, this, &Box::definitionChanged);
+	ofAddListener(props.changed, this, &Box::propertyChanged);
 }
 
 Box::~Box()
@@ -48,7 +48,7 @@ void Box::debugDraw()
 	ofLine(position + contentPosition, position + contentPosition + contentSize);
 	ofLine(position + contentPosition + Point(contentSize.x, 0), position + contentPosition + Point(0, contentSize.y));
 	ofPopStyle();
-	
+
 	for(List::iterator it = children.begin(); it != children.end(); it++) {
 		ofPushMatrix();
 		ofTranslate(position+contentPosition);
@@ -60,29 +60,29 @@ void Box::debugDraw()
 void Box::calculateSize()
 {
 	Point parentSize;
-	if(hasParent()){
+	if(hasParent()) {
 		parentSize = getParent()->contentSize;
 	}
-	
+
 	//get all the values
-	float width = definition.width.getValueCalculated(parentSize.x);
-	float height = definition.height.getValueCalculated(parentSize.y);
-	
-	float marginLeft = definition.marginLeft.getValueCalculated(parentSize.x);
-	float marginRight = definition.marginRight.getValueCalculated(parentSize.x);
-	float marginTop = definition.marginTop.getValueCalculated(parentSize.y);
-	float marginBottom = definition.marginBottom.getValueCalculated(parentSize.y);
-	
-	float paddingLeft = definition.paddingLeft.getValueCalculated(parentSize.x);
-	float paddingRight = definition.paddingRight.getValueCalculated(parentSize.x);
-	float paddingTop = definition.paddingTop.getValueCalculated(parentSize.y);
-	float paddingBottom = definition.paddingBottom.getValueCalculated(parentSize.y);
-	
-	float borderLeft = definition.borderLeft.getValueCalculated(parentSize.x);
-	float borderRight = definition.borderRight.getValueCalculated(parentSize.x);
-	float borderTop = definition.borderTop.getValueCalculated(parentSize.y);
-	float borderBottom = definition.borderBottom.getValueCalculated(parentSize.y);
-	
+	float width = props.width.getValueCalculated(parentSize.x);
+	float height = props.height.getValueCalculated(parentSize.y);
+
+	float marginLeft = props.marginLeft.getValueCalculated(parentSize.x);
+	float marginRight = props.marginRight.getValueCalculated(parentSize.x);
+	float marginTop = props.marginTop.getValueCalculated(parentSize.y);
+	float marginBottom = props.marginBottom.getValueCalculated(parentSize.y);
+
+	float paddingLeft = props.paddingLeft.getValueCalculated(parentSize.x);
+	float paddingRight = props.paddingRight.getValueCalculated(parentSize.x);
+	float paddingTop = props.paddingTop.getValueCalculated(parentSize.y);
+	float paddingBottom = props.paddingBottom.getValueCalculated(parentSize.y);
+
+	float borderLeft = props.borderLeft.getValueCalculated(parentSize.x);
+	float borderRight = props.borderRight.getValueCalculated(parentSize.x);
+	float borderTop = props.borderTop.getValueCalculated(parentSize.y);
+	float borderBottom = props.borderBottom.getValueCalculated(parentSize.y);
+
 	size.x = width;
 	size.y = height;
 	outerSize.x = marginLeft + marginRight + size.x;
@@ -101,23 +101,42 @@ void Box::layout()
 	for(List::iterator it = children.begin(); it != children.end(); it++) {
 		(*it)->layout();
 
-		if(position.x + (*it)->outerSize.x > contentSize.x) {
-			position.y += rowMaxHeight;
-			position.x = 0;
-			rowMaxHeight = 0;
-		}
-		
-		(*it)->position = position + Point((*it)->definition.marginLeft.getValueCalculated(contentSize.x), (*it)->definition.marginTop.getValueCalculated(contentSize.y));
+		//position child relatively
+		if((*it)->props.position == Properties::Relative) {
+			if((*it)->props.floating == Properties::NoFloat) {
+				//child has no floating, comes on the next line
+				position.y += rowMaxHeight;
+				position.x = 0;
+				rowMaxHeight = 0;
 
-		position.x += (*it)->outerSize.x;
-		
+				(*it)->position = position + Point((*it)->props.marginLeft.getValueCalculated(contentSize.x), (*it)->props.marginTop.getValueCalculated(contentSize.y));
+
+			} else if((*it)->props.floating == Properties::Left) {
+				//child float left
+				if(position.x + (*it)->outerSize.x > contentSize.x) {
+					position.y += rowMaxHeight;
+					position.x = 0;
+					rowMaxHeight = 0;
+				}
+
+				(*it)->position = position + Point((*it)->props.marginLeft.getValueCalculated(contentSize.x), (*it)->props.marginTop.getValueCalculated(contentSize.y));
+
+				position.x += (*it)->outerSize.x;
+			}
+		} else if((*it)->props.position == Properties::Absolute) {
+			(*it)->position = Point(
+			                      (*it)->props.left.getValueCalculated(contentSize.x) + (*it)->props.marginLeft.getValueCalculated(contentSize.x),
+			                      (*it)->props.top.getValueCalculated(contentSize.y) + (*it)->props.marginTop.getValueCalculated(contentSize.x)
+			                  );
+		}
+
 		if(rowMaxHeight < (*it)->outerSize.y) {
 			rowMaxHeight = (*it)->outerSize.y;
 		}
 	}
 }
 
-void Box::definitionChanged(DefinitionEvent& e)
+void Box::propertyChanged(PropertyEvent& e)
 {
 	getRootBox()->layout();
 }
