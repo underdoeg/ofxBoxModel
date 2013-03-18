@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CodeLite_Project Name="boxModelTest" InternalType="">
+<CodeLite_Project Name="example_ofxBoxModel" InternalType="">
   <Plugins>
     <Plugin Name="qmake">
       <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
@@ -11,8 +11,6 @@
     <File Name="../src/testApp.cpp"/>
     <File Name="../src/testApp.h"/>
     <File Name="../src/main.cpp"/>
-    <File Name="../src/Box.h"/>
-    <File Name="../src/Box.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="config">
     <File Name="../Makefile"/>
@@ -48,7 +46,7 @@
       <CustomBuild Enabled="yes">
         <RebuildCommand/>
         <CleanCommand>make clean Debug</CleanCommand>
-        <BuildCommand>make -j4 Debug</BuildCommand>
+        <BuildCommand>make Debug</BuildCommand>
         <PreprocessFileCommand/>
         <SingleFileCommand/>
         <MakefileGenerationCommand/>
@@ -104,4 +102,12 @@
       </Completion>
     </Configuration>
   </Settings>
+  <VirtualDirectory Name="addons">
+    <VirtualDirectory Name="ofxBoxModel">
+      <VirtualDirectory Name="src">
+        <File Name="../../../../addons/ofxBoxModel/src/Box.h"/>
+        <File Name="../../../../addons/ofxBoxModel/src/Box.cpp"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
+  </VirtualDirectory>
 </CodeLite_Project>

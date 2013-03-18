@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="boxModelTest" />
+		<Option title="example_ofxBoxModel" />
 		<Option makefile_is_custom="1" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
@@ -44,5 +44,20 @@
 			<envvars />
 			<debugger />
 		</Extensions>
+		<Unit filename="../../../addons/ofxBoxModel/src/main.cpp">
+			<Option virtualFolder="addons/ofxBoxModel/src" />
+		</Unit>
+		<Unit filename="../../../addons/ofxBoxModel/src/testApp.cpp">
+			<Option virtualFolder="addons/ofxBoxModel/src" />
+		</Unit>
+		<Unit filename="../../../addons/ofxBoxModel/src/Box.h">
+			<Option virtualFolder="addons/ofxBoxModel/src" />
+		</Unit>
+		<Unit filename="../../../addons/ofxBoxModel/src/Box.cpp">
+			<Option virtualFolder="addons/ofxBoxModel/src" />
+		</Unit>
+		<Unit filename="../../../addons/ofxBoxModel/src/testApp.h">
+			<Option virtualFolder="addons/ofxBoxModel/src" />
+		</Unit>
 	</Project>
 </CodeBlocks_project_file>

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CodeLite_Workspace Name="boxModelTest" Database="./boxModelTest.tags">
+<CodeLite_Workspace Name="example_ofxBoxModel" Database="./example_ofxBoxModel.tags">
   <Environment>
     <![CDATA[
   
   
   ]]>
   </Environment>
-  <Project Name="boxModelTest" Path="boxModelTest.project" Active="Yes"/>
+  <Project Name="example_ofxBoxModel" Path="example_ofxBoxModel.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Project Name="linux" ConfigName="Debug"/>
-      <Project Name="boxModelTest" ConfigName="Debug"/>
+      <Project Name="example_ofxBoxModel" ConfigName="Debug"/>
     </WorkspaceConfiguration>
     <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="linux" ConfigName="Release"/>
-      <Project Name="boxModelTest" ConfigName="Release"/>
+      <Project Name="example_ofxBoxModel" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
