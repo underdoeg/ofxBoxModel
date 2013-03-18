@@ -7,6 +7,17 @@ void testApp::setup(){
 	root.definition.width = ofGetWidth();
 	root.definition.height = ofGetHeight();
 	
+	for(int i=0;i<4;i++){
+		Box* b = root.createChild();
+		b->definition.width = 50;
+		b->definition.width = Unit::Percent;
+		b->definition.height = 50;
+		b->definition.height = Unit::Percent;
+		b->definition.marginLeft = 25;
+		b->definition.marginLeft = Unit::Percent;
+	}
+	
+	/*
 	for(int i=0;i<60;i++){
 		Box* b = root.createChild();
 		b->definition.width = ofRandom(100, 200);
@@ -19,6 +30,7 @@ void testApp::setup(){
 			bb->definition.height = ofRandom(10, 20);
 		}
 	}
+	*/
 }
 
 //--------------------------------------------------------------

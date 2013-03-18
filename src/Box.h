@@ -22,6 +22,8 @@ public:
 	Unit* unit;
 };
 
+class Box;
+
 class Unit
 {
 public:
@@ -76,6 +78,12 @@ public:
 	ofEvent<UnitEvent> changed;
 
 private:
+	friend class Box;
+	float getValueCalculated(float parentSize) { //helper function, only for internal use
+		if(type == Percent)
+			return value*.01*parentSize;
+		return value;
+	}
 
 	float value;
 	Type type;
@@ -123,15 +131,15 @@ public:
 		DefinitionEvent de(this);
 		ofNotifyEvent(changed, de);
 	}
-	
-	void setMargin(float value, Unit::Type type = Unit::Pixel){
+
+	void setMargin(float value, Unit::Type type = Unit::Pixel) {
 		for(std::vector<Unit*>::iterator it = margins.begin(); it!=margins.end(); it++) {
 			(*it)->setValue(value);
 			(*it)->setType(type);
 		}
 	}
-	
-	void setPadding(float value, Unit::Type type = Unit::Pixel){
+
+	void setPadding(float value, Unit::Type type = Unit::Pixel) {
 		for(std::vector<Unit*>::iterator it = paddings.begin(); it!=paddings.end(); it++) {
 			(*it)->setValue(value);
 			(*it)->setType(type);
@@ -194,7 +202,7 @@ private:
 	void setParent(Box* parent);
 	void calculateSize();
 	virtual void layout();
-	
+
 	void definitionChanged(DefinitionEvent& e);
 
 	Point position;
@@ -203,7 +211,7 @@ private:
 	Point contentSize;
 	Point contentPosition;
 
-	
+
 	bool bParent;
 	Box* parent;
 

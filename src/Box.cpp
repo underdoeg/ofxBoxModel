@@ -59,21 +59,44 @@ void Box::debugDraw()
 
 void Box::calculateSize()
 {
-	size.x = definition.width;
-	size.y = definition.height;
-	outerSize.x = definition.marginLeft + definition.marginRight + size.x;
-	outerSize.y = definition.marginTop + definition.marginBottom + size.y;
-	contentSize.x = size.x - definition.paddingLeft - definition.paddingRight - definition.borderLeft - definition.borderRight;
-	contentSize.y = size.y - definition.paddingBottom - definition.paddingTop - definition.borderTop - definition.borderBottom;
-	contentPosition.x = definition.paddingLeft + definition.borderLeft;
-	contentPosition.y = definition.paddingTop + definition.borderTop;
+	Point parentSize;
+	if(hasParent()){
+		parentSize = getParent()->contentSize;
+	}
+	
+	//get all the values
+	float width = definition.width.getValueCalculated(parentSize.x);
+	float height = definition.height.getValueCalculated(parentSize.y);
+	
+	float marginLeft = definition.marginLeft.getValueCalculated(parentSize.x);
+	float marginRight = definition.marginRight.getValueCalculated(parentSize.x);
+	float marginTop = definition.marginTop.getValueCalculated(parentSize.y);
+	float marginBottom = definition.marginBottom.getValueCalculated(parentSize.y);
+	
+	float paddingLeft = definition.paddingLeft.getValueCalculated(parentSize.x);
+	float paddingRight = definition.paddingRight.getValueCalculated(parentSize.x);
+	float paddingTop = definition.paddingTop.getValueCalculated(parentSize.y);
+	float paddingBottom = definition.paddingBottom.getValueCalculated(parentSize.y);
+	
+	float borderLeft = definition.borderLeft.getValueCalculated(parentSize.x);
+	float borderRight = definition.borderRight.getValueCalculated(parentSize.x);
+	float borderTop = definition.borderTop.getValueCalculated(parentSize.y);
+	float borderBottom = definition.borderBottom.getValueCalculated(parentSize.y);
+	
+	size.x = width;
+	size.y = height;
+	outerSize.x = marginLeft + marginRight + size.x;
+	outerSize.y = marginTop + marginBottom + size.y;
+	contentSize.x = size.x - paddingLeft - paddingRight - borderLeft - borderRight;
+	contentSize.y = size.y - paddingBottom - paddingTop - borderTop - borderBottom;
+	contentPosition.x = paddingLeft + borderLeft;
+	contentPosition.y = paddingTop + borderTop;
 }
 
 void Box::layout()
 {
 	calculateSize();
 	Point position;
-	Box* last = NULL;
 	float rowMaxHeight = 0;
 	for(List::iterator it = children.begin(); it != children.end(); it++) {
 		(*it)->layout();
@@ -84,15 +107,13 @@ void Box::layout()
 			rowMaxHeight = 0;
 		}
 		
-		(*it)->position = position + Point((*it)->definition.marginLeft, (*it)->definition.marginTop);
+		(*it)->position = position + Point((*it)->definition.marginLeft.getValueCalculated(contentSize.x), (*it)->definition.marginTop.getValueCalculated(contentSize.y));
 
 		position.x += (*it)->outerSize.x;
 		
 		if(rowMaxHeight < (*it)->outerSize.y) {
 			rowMaxHeight = (*it)->outerSize.y;
 		}
-
-		last = *it;
 	}
 }
 
