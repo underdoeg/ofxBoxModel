@@ -13,8 +13,6 @@
     <File Name="../src/main.cpp"/>
     <File Name="../src/Box.h"/>
     <File Name="../src/Box.cpp"/>
-    <File Name="../src/Layouter.h"/>
-    <File Name="../src/Layouter.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="config">
     <File Name="../Makefile"/>
@@ -50,7 +48,7 @@
       <CustomBuild Enabled="yes">
         <RebuildCommand/>
         <CleanCommand>make clean Debug</CleanCommand>
-        <BuildCommand>make Debug</BuildCommand>
+        <BuildCommand>make -j4 Debug</BuildCommand>
         <PreprocessFileCommand/>
         <SingleFileCommand/>
         <MakefileGenerationCommand/>

@@ -36,14 +36,18 @@ public:
 		type = Pixel;
 	}
 
-	const Unit& operator=(float val) {
-		setValue(val);
-		return *this;
+	operator const float & () const {
+		return value;
 	}
 
-	const Unit& operator=(Type t) {
+	const float& operator=(float val) {
+		setValue(val);
+		return value;
+	}
+
+	const Type& operator=(Type t) {
 		setType(t);
-		return *this;
+		return type;
 	}
 
 	void setValue(float val) {
@@ -61,6 +65,14 @@ public:
 		ofNotifyEvent(changed, e);
 	}
 
+	float getValue() {
+		return value;
+	}
+
+	Type getType() {
+		return type;
+	}
+
 	ofEvent<UnitEvent> changed;
 
 private:
@@ -71,9 +83,10 @@ private:
 
 class Definition;
 
-class DefinitionEvent: public ofEventArgs{
-	public:
-	DefinitionEvent(Definition* d){
+class DefinitionEvent: public ofEventArgs
+{
+public:
+	DefinitionEvent(Definition* d) {
 		definition = d;
 	}
 	Definition* definition;
@@ -82,15 +95,49 @@ class DefinitionEvent: public ofEventArgs{
 class Definition
 {
 public:
-	Definition(){
-		ofAddListener(x.changed, this, &Definition::unitChanged);
+	Definition() {
+		units.push_back(&x);
+		units.push_back(&y);
+		units.push_back(&width);
+		units.push_back(&height);
+
+		paddings.push_back(&paddingLeft);
+		paddings.push_back(&paddingRight);
+		paddings.push_back(&paddingTop);
+		paddings.push_back(&paddingBottom);
+		units.insert( units.end(), paddings.begin(), paddings.end() );
+
+		margins.push_back(&marginLeft);
+		margins.push_back(&marginRight);
+		margins.push_back(&marginTop);
+		margins.push_back(&marginBottom);
+		units.insert( units.end(), margins.begin(), margins.end() );
+
+
+		for(std::vector<Unit*>::iterator it = units.begin(); it!=units.end(); it++) {
+			ofAddListener((*it)->changed, this, &Definition::unitChanged);
+		}
 	}
-	
-	void unitChanged(UnitEvent& e){
+
+	void unitChanged(UnitEvent& e) {
 		DefinitionEvent de(this);
 		ofNotifyEvent(changed, de);
 	}
 	
+	void setMargin(float value, Unit::Type type = Unit::Pixel){
+		for(std::vector<Unit*>::iterator it = margins.begin(); it!=margins.end(); it++) {
+			(*it)->setValue(value);
+			(*it)->setType(type);
+		}
+	}
+	
+	void setPadding(float value, Unit::Type type = Unit::Pixel){
+		for(std::vector<Unit*>::iterator it = paddings.begin(); it!=paddings.end(); it++) {
+			(*it)->setValue(value);
+			(*it)->setType(type);
+		}
+	}
+
 	Unit x;
 	Unit y;
 
@@ -111,53 +158,54 @@ public:
 	Unit borderRight;
 	Unit borderTop;
 	Unit borderBottom;
-	
+
 	ofEvent<DefinitionEvent> changed;
+
+private:
+	std::vector<Unit*> units;
+	std::vector<Unit*> paddings;
+	std::vector<Unit*> margins;
+	std::vector<Unit*> borders;
+
 };
 
 class Box
 {
 public:
 
-	typedef ofPtr<Box> Ptr;
-	typedef std::deque<Ptr> List;
+	typedef std::deque<Box*> List;
 
 	Box();
 	~Box();
 
 	void debugDraw();
 
-	virtual void layout();
-
-	virtual void calculateContentSize();
 	virtual void draw() {};
 
-	void add(Box::Ptr box);
+	Box* getRootBox();
+	Box* getParent();
+	bool hasParent();
 
-	float getContentWidth();
-	float getContentHeight();
-
-	float getInnerWidth();
-	float getInnerHeight();
-
-	float getWidth();
-	float getHeight();
-
-	float getOuterWidth();
-	float getOuterHeight();
-
-	float getX();
-	float getY();
+	Box* createChild();
+	void add(Box* box);
 
 	Definition definition;
 private:
-	Ptr parent;
+	void setParent(Box* parent);
+	void calculateSize();
+	virtual void layout();
+	
+	void definitionChanged(DefinitionEvent& e);
 
 	Point position;
 	Point outerSize;
 	Point size;
-	Point innerSize;
 	Point contentSize;
+	Point contentPosition;
+
+	
+	bool bParent;
+	Box* parent;
 
 	List children;
 };

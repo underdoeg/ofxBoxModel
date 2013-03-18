@@ -1,19 +1,35 @@
 #include "testApp.h"
 
+using namespace ofx::BoxModel;
+
 //--------------------------------------------------------------
 void testApp::setup(){
 	root.definition.width = ofGetWidth();
 	root.definition.height = ofGetHeight();
+	
+	for(int i=0;i<60;i++){
+		Box* b = root.createChild();
+		b->definition.width = ofRandom(100, 200);
+		b->definition.height = ofRandom(100, 200);
+		b->definition.setMargin(ofRandom(0, 10));
+		b->definition.setPadding(ofRandom(0, 30));
+		for(int j=0;j<ofRandom(0, 50); j++){
+			Box* bb = b->createChild();
+			bb->definition.width = ofRandom(10, 20);
+			bb->definition.height = ofRandom(10, 20);
+		}
+	}
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
+
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
 	ofBackground(255);
-	root.draw();
+	root.debugDraw();
 }
 
 //--------------------------------------------------------------
@@ -48,7 +64,8 @@ void testApp::mouseReleased(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h){
-
+	root.definition.width = w;
+	root.definition.height = h;
 }
 
 //--------------------------------------------------------------
