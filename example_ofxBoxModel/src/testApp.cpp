@@ -35,7 +35,6 @@ void testApp::setup()
 			bb->props.height = ofRandom(10, 20);
 		}
 	}
-	
 
 	Box* b = root.createChild();
 	b->props.width = 300;

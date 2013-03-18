@@ -91,6 +91,7 @@ private:
 template <class T>
 class Property
 {
+	public:
 	class Event: public ofEventArgs
 	{
 	public:
@@ -104,7 +105,7 @@ class Property
 		return value;
 	}
 
-	const float& operator=(float val) {
+	const T& operator=(T val) {
 		setValue(val);
 		return value;
 	}
@@ -227,8 +228,8 @@ public:
 	Unit borderTop;
 	Unit borderBottom;
 
-	Floating floating;
-	Position position;
+	Property<Floating> floating;
+	Property<Position> position;
 
 	ofEvent<Event> changed;
 
