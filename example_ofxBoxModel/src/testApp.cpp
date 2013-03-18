@@ -21,7 +21,7 @@ void testApp::setup()
 	*/
 
 	
-	for(int i=0;i<60;i++){
+	/*for(int i=0;i<60;i++){
 		Box* b = root.createChild();
 		b->props.floating = Properties::Left;
 		b->props.width = ofRandom(100, 200);
@@ -34,18 +34,18 @@ void testApp::setup()
 			bb->props.width = ofRandom(10, 20);
 			bb->props.height = ofRandom(10, 20);
 		}
-	}
+	}*/
 
 	Box* b = root.createChild();
-	b->props.width = 300;
-	b->props.height = 300;
+	b->props.width = 400;
+	b->props.height = 400;
 	b->props.marginLeft = -b->props.width*.5;
 	b->props.marginTop = -b->props.height*.5;
-	b->props.position = Properties::Absolute;
 	b->props.left = 50;
 	b->props.left = Unit::Percent;
 	b->props.top = 50;
 	b->props.top = Unit::Percent;
+	b->props.position = Properties::Absolute;
 }
 
 //--------------------------------------------------------------

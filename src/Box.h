@@ -31,9 +31,7 @@ public:
 	    Percent
 	};
 
-	Unit() {
-		value = 0;
-		type = Pixel;
+	Unit():bSet(false),value(0),type(Pixel) {
 	}
 
 	operator const float & () const {
@@ -51,8 +49,10 @@ public:
 	}
 
 	void setValue(float val) {
-		if(val == value)
+		
+		if(bSet && val == value)
 			return;
+		bSet = true;
 		value = val;
 		Event e(this);
 		ofNotifyEvent(changed, e);
@@ -74,6 +74,10 @@ public:
 		return type;
 	}
 
+	bool isSet() {
+		return bSet;
+	}
+
 	ofEvent<Event> changed;
 
 private:
@@ -84,14 +88,35 @@ private:
 		return value;
 	}
 
+	bool bSet;
 	float value;
 	Type type;
 };
 
-template <class T>
-class Property
+class PropertyBase
 {
+public:
+	class Event: public ofEventArgs
+	{
 	public:
+		Event(PropertyBase* p) {
+			property = p;
+		}
+		PropertyBase* property;
+	};
+
+	ofEvent<Event> changed;
+protected:
+	void triggerChangedEvent() {
+		Event e(this);
+		ofNotifyEvent(changed, e);
+	}
+};
+
+template <class T>
+class Property: public PropertyBase
+{
+public:
 	class Event: public ofEventArgs
 	{
 	public:
@@ -114,6 +139,8 @@ class Property
 		if(value == v)
 			return;
 		value = v;
+		
+		PropertyBase::triggerChangedEvent();
 		Event e(this);
 		ofNotifyEvent(changed, e);
 	}
@@ -173,15 +200,33 @@ public:
 		borders.push_back(&borderBottom);
 		units.insert( units.end(), borders.begin(), borders.end() );
 
+		coords.push_back(&left);
+		coords.push_back(&right);
+		coords.push_back(&top);
+		coords.push_back(&bottom);
+		units.insert( units.end(), coords.begin(), coords.end() );
+
 		position = Relative;
 		floating = NoFloat;
+
+		properties.push_back(&position);
+		properties.push_back(&floating);
 
 		for(std::vector<Unit*>::iterator it = units.begin(); it!=units.end(); it++) {
 			ofAddListener((*it)->changed, this, &Properties::unitChanged);
 		}
+		
+		for(std::vector<PropertyBase*>::iterator it = properties.begin(); it!=properties.end(); it++) {
+			ofAddListener((*it)->changed, this, &Properties::propertyChanged);
+		}
 	}
 
 	void unitChanged(Unit::Event& e) {
+		Event de(this);
+		ofNotifyEvent(changed, de);
+	}
+
+	void propertyChanged(PropertyBase::Event& e) {
 		Event de(this);
 		ofNotifyEvent(changed, de);
 	}
@@ -209,6 +254,8 @@ public:
 
 	Unit left;
 	Unit top;
+	Unit bottom;
+	Unit right;
 
 	Unit width;
 	Unit height;
@@ -238,7 +285,8 @@ private:
 	std::vector<Unit*> paddings;
 	std::vector<Unit*> margins;
 	std::vector<Unit*> borders;
-
+	std::vector<Unit*> coords;
+	std::vector<PropertyBase*> properties;
 };
 
 class Box

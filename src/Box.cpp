@@ -123,11 +123,31 @@ void Box::layout()
 
 				position.x += (*it)->outerSize.x;
 			}
-		} else if((*it)->props.position == Properties::Absolute) {
-			(*it)->position = Point(
-			                      (*it)->props.left.getValueCalculated(contentSize.x) + (*it)->props.marginLeft.getValueCalculated(contentSize.x),
-			                      (*it)->props.top.getValueCalculated(contentSize.y) + (*it)->props.marginTop.getValueCalculated(contentSize.x)
-			                  );
+		} else if((*it)->props.position == Properties::Absolute) { //calculate absolute position
+			Point p;
+			Point p1 =  Point(
+							  (*it)->props.left.getValueCalculated(contentSize.x) + (*it)->props.marginLeft.getValueCalculated(contentSize.x),
+							  (*it)->props.top.getValueCalculated(contentSize.y) + (*it)->props.marginTop.getValueCalculated(contentSize.y)
+						  ); 
+			Point p2 =  Point(
+							  contentSize.x - (*it)->props.right.getValueCalculated(contentSize.x) - (*it)->size.x + (*it)->props.marginLeft.getValueCalculated(contentSize.x),
+							  contentSize.y - (*it)->props.bottom.getValueCalculated(contentSize.y) - (*it)->size.y + (*it)->props.marginBottom.getValueCalculated(contentSize.y)
+						  ); 
+			//check for left, bottom first, then bottom, then left and default is right & top
+			if((*it)->props.bottom.isSet() && (*it)->props.right.isSet()){
+				p = p2;
+			}else if((*it)->props.bottom.isSet()){
+				p = p1;
+				p.y = p2.y;
+			}else if((*it)->props.right.isSet()){
+				p = p1;
+				p.x = p2.x;
+				cout << p << endl;
+			}else{
+				p = p1;
+			}
+			
+			(*it)->position = p;
 		}
 
 		if(rowMaxHeight < (*it)->outerSize.y) {
