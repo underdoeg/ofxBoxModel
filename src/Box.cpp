@@ -6,6 +6,8 @@ namespace ofx
 namespace BoxModel
 {
 
+/*
+
 Box::Box():bParent(false)
 {
 	ofAddListener(props.changed, this, &Box::propertyChanged);
@@ -178,6 +180,8 @@ bool Box::hasParent()
 {
 	return bParent;
 }
+
+ */
 
 }
 }

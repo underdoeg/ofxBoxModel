@@ -107,6 +107,14 @@
       <VirtualDirectory Name="src">
         <File Name="../../../../addons/ofxBoxModel/src/Box.h"/>
         <File Name="../../../../addons/ofxBoxModel/src/Box.cpp"/>
+        <VirtualDirectory Name="core">
+          <File Name="../../src/core/BoxBase.cpp"/>
+          <File Name="../../src/core/BoxBase.h"/>
+          <File Name="../../src/core/Properties.h"/>
+          <File Name="../../src/core/Properties.cpp"/>
+          <File Name="../../src/core/Layouter.h"/>
+          <File Name="../../src/core/Layouter.cpp"/>
+        </VirtualDirectory>
       </VirtualDirectory>
     </VirtualDirectory>
   </VirtualDirectory>
