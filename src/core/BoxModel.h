@@ -17,49 +17,51 @@ namespace core
  * Class to store the box model definitions. This is pretty much the base for anything...
  ****/
 
-class BoxModel
+typedef ofVec2f Point;
+
+enum Position {
+    Relative,
+    Absolute,
+    Fixed
+};
+
+enum Floating {
+    Left,
+    Right,
+    NoFloat
+};
+
+class BoxDefinition
 {
 public:
 	class Event: public ofEventArgs
 	{
 	public:
-		Event(BoxModel* d) {
+		Event(BoxDefinition* d) {
 			boxModel = d;
 		}
-		BoxModel* boxModel;
+		BoxDefinition* boxModel;
 	};
 
-	enum Position {
-	    Relative,
-	    Absolute,
-	    Fixed
-	};
-
-	enum Floating {
-	    Left,
-	    Right,
-	    NoFloat
-	};
-
-	BoxModel() {
+	BoxDefinition() {
 
 		padding.add(&paddingLeft);
 		padding.add(&paddingRight);
 		padding.add(&paddingTop);
 		padding.add(&paddingBottom);
-		ofAddListener(padding.changed, this, &BoxModel::unitChanged);
+		ofAddListener(padding.changed, this, &BoxDefinition::unitChanged);
 
 		margin.add(&marginLeft);
 		margin.add(&marginRight);
 		margin.add(&marginTop);
 		margin.add(&marginBottom);
-		ofAddListener(margin.changed, this, &BoxModel::unitChanged);
+		ofAddListener(margin.changed, this, &BoxDefinition::unitChanged);
 
 		border.add(&borderLeft);
 		border.add(&borderRight);
 		border.add(&borderTop);
 		border.add(&borderBottom);
-		ofAddListener(border.changed, this, &BoxModel::unitChanged);
+		ofAddListener(border.changed, this, &BoxDefinition::unitChanged);
 
 		position = Relative;
 		floating = NoFloat;
@@ -70,7 +72,7 @@ public:
 		properties.push_back(&clear);
 
 		for(std::vector<PropertyBase*>::iterator it = properties.begin(); it!=properties.end(); it++) {
-			ofAddListener((*it)->changed, this, &BoxModel::propertyChanged);
+			ofAddListener((*it)->changed, this, &BoxDefinition::propertyChanged);
 		}
 	}
 
@@ -119,6 +121,30 @@ public:
 
 private:
 	std::vector<PropertyBase*> properties;
+};
+
+class BoxModel
+{
+public:
+	class FloatReadOnly
+	{
+	public:
+	};
+	BoxModel();
+	~BoxModel();
+
+	BoxDefinition def;
+
+private:
+	void calculateSize();
+
+	void definitionChanged(BoxDefinition::Event& e);
+
+	Point position;
+	Point outerSize;
+	Point size;
+	Point contentSize;
+	Point contentPosition;
 };
 
 }

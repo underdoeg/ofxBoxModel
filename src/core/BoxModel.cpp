@@ -1,17 +1,17 @@
 #include "BoxModel.h"
 
-namespace ofx
+ofx::boxModel::core::BoxModel::BoxModel()
 {
-
-namespace boxModel
-{
-
-namespace core
-{
-	
 }
 
+ofx::boxModel::core::BoxModel::~BoxModel()
+{
 }
 
+void ofx::boxModel::core::BoxModel::calculateSize()
+{
 }
 
+void ofx::boxModel::core::BoxModel::definitionChanged(BoxDefinition::Event& e)
+{
+}
