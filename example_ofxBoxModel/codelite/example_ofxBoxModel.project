@@ -108,12 +108,16 @@
         <File Name="../../../../addons/ofxBoxModel/src/Box.h"/>
         <File Name="../../../../addons/ofxBoxModel/src/Box.cpp"/>
         <VirtualDirectory Name="core">
-          <File Name="../../src/core/BoxBase.cpp"/>
-          <File Name="../../src/core/BoxBase.h"/>
-          <File Name="../../src/core/Properties.h"/>
-          <File Name="../../src/core/Properties.cpp"/>
-          <File Name="../../src/core/Layouter.h"/>
-          <File Name="../../src/core/Layouter.cpp"/>
+          <File Name="../../src/core/BoxModel.cpp"/>
+          <File Name="../../src/core/BoxModel.h"/>
+          <File Name="../../src/core/TreeNode.h"/>
+          <File Name="../../src/core/TreeNode.cpp"/>
+          <File Name="../../src/core/Box.h"/>
+          <File Name="../../src/core/Box.cpp"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="debug">
+          <File Name="../../src/debug/DebugDraw.cpp"/>
+          <File Name="../../src/debug/DebugDraw.h"/>
         </VirtualDirectory>
       </VirtualDirectory>
     </VirtualDirectory>

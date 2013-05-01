@@ -1,4 +1,4 @@
-#include "BoxBase.h"
+#include "Box.h"
 
 namespace ofx
 {
@@ -9,11 +9,11 @@ namespace boxModel
 namespace core
 {
 
-BoxBase::BoxBase()
+Box::Box()
 {
 }
 
-BoxBase::~BoxBase()
+Box::~Box()
 {
 }
 
