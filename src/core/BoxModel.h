@@ -129,6 +129,14 @@ public:
 	class FloatReadOnly
 	{
 	public:
+		FloatReadOnly() {};
+		~FloatReadOnly() {};
+		operator const float & () const {
+			return value;
+		}
+	private:
+		float value;
+		friend class BoxModel;
 	};
 	BoxModel();
 	~BoxModel();
