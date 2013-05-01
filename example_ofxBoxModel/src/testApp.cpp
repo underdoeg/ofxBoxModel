@@ -8,8 +8,11 @@ using namespace ofx::boxModel::debug;
 //--------------------------------------------------------------
 void testApp::setup()
 {
-	Box b;
-	DebugDraw::drawTree(&b);
+	Box box1;
+	box1.margin = Unit::Pixel;
+	Box box2;
+	Box box3;
+	DebugDraw::drawTree(&box1);
 }
 
 //--------------------------------------------------------------
@@ -21,10 +24,7 @@ void testApp::update()
 //--------------------------------------------------------------
 void testApp::draw()
 {
-	/*
-	ofBackground(255);
-	root.debugDraw();
-	*/
+
 }
 
 //--------------------------------------------------------------

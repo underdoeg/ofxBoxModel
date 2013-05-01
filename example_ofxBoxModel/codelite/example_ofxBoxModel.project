@@ -114,6 +114,10 @@
           <File Name="../../src/core/TreeNode.cpp"/>
           <File Name="../../src/core/Box.h"/>
           <File Name="../../src/core/Box.cpp"/>
+          <File Name="../../src/core/Property.h"/>
+          <File Name="../../src/core/Property.cpp"/>
+          <File Name="../../src/core/Unit.h"/>
+          <File Name="../../src/core/Unit.cpp"/>
         </VirtualDirectory>
         <VirtualDirectory Name="debug">
           <File Name="../../src/debug/DebugDraw.cpp"/>

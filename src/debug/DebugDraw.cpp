@@ -23,7 +23,6 @@ void DebugDraw::drawBox(core::BoxModel* box)
 
 void DebugDraw::drawTree(core::TreeNodeBase* rootNode)
 {
-	std::cout << "CALLED" << std::endl;
 }
 
 }
