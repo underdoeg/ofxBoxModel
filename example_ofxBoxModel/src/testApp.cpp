@@ -12,6 +12,7 @@ void testApp::setup()
 {
 	Box box1;
 	box1.margin = Unit::Pixel;
+	
 	Box box2;
 	Box box3;
 	DebugDraw::drawTree(&box1);

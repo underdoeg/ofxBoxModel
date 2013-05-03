@@ -17,7 +17,7 @@ namespace core
  * Class to store the box model definitions. This is pretty much the base for anything...
  ****/
 
-typedef ofVec2f Point;
+typedef ofVec3f Point;
 
 enum Position {
     Relative,
@@ -71,6 +71,11 @@ public:
 		operator const Point & () const {
 			return Point(x, y);
 		}
+		
+		Point  operator+( const Point& pnt ) const{
+			return Point(x+pnt.x, x+pnt.y);
+		}
+
 	};
 
 	BoxModel();

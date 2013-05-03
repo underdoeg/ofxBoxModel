@@ -54,7 +54,7 @@ public:
 		set(t);
 		return type;
 	}
-
+	
 	void set(float val) {
 
 		if(bSet && val == value)
@@ -73,7 +73,7 @@ public:
 		ofNotifyEvent(changed, e);
 	}
 
-	float getValue() {
+	const float getValue() {
 		return value;
 	}
 
@@ -84,6 +84,9 @@ public:
 	bool isSet() {
 		return bSet;
 	}
+
+	friend ostream& operator<<(ostream& os, Unit& unit);
+
 
 	ofEvent<Event> changed;
 

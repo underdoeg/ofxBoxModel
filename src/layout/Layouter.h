@@ -24,7 +24,7 @@ class Layouter: public LayouterBase
 {
 public:
 	void layout(core::TreeNodeBase* t) {
-
+		
 	}
 };
 
