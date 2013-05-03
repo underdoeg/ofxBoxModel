@@ -26,6 +26,7 @@ public:
 	std::vector<BoxModel*> getChildrenBase() {
 		return childrenBase;
 	};*/
+	virtual int getNumChildren()=0;
 	virtual BoxModel* getBaseChildAt(int index)=0;
 protected:
 	std::vector<BoxModel*> childrenBase;
@@ -50,6 +51,11 @@ public:
 		children.erase(std::remove(children.begin(), children.end(), child), children.end());
 		childrenChanged();
 	}
+	
+	int getNumChildren(){
+		return children.size();
+	}
+	
 	BoxModel* getBaseChildAt(int index){
 		return children[index];
 	}

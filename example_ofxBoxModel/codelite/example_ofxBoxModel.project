@@ -123,6 +123,10 @@
           <File Name="../../src/debug/DebugDraw.cpp"/>
           <File Name="../../src/debug/DebugDraw.h"/>
         </VirtualDirectory>
+        <VirtualDirectory Name="layout">
+          <File Name="../../src/layout/Layouter.h"/>
+          <File Name="../../src/layout/Layouter.cpp"/>
+        </VirtualDirectory>
       </VirtualDirectory>
     </VirtualDirectory>
   </VirtualDirectory>
