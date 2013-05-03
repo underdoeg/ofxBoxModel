@@ -54,6 +54,13 @@ public:
 		return children[index];
 	}
 private:
+	void calculateSize(){
+		Point p;
+		if(bParent){
+			p = parent->contentSize;
+		}
+		BoxModelType::calculateSize(p);
+	}
 
 	void childrenChanged() {
 		childrenBase.clear();
@@ -62,6 +69,8 @@ private:
 		}
 	}
 	std::vector<BoxModelType*> children;
+	bool bParent;
+	BoxModelType* parent;
 };
 
 }

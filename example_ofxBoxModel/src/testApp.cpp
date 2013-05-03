@@ -9,7 +9,7 @@ using namespace ofx::boxModel::debug;
 void testApp::setup()
 {
 	Box box1;
-	box1.def.margin = Unit::Pixel;
+	box1.margin = Unit::Pixel;
 	Box box2;
 	Box box3;
 	DebugDraw::drawTree(&box1);

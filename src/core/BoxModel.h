@@ -31,50 +31,49 @@ enum Floating {
     NoFloat
 };
 
-class BoxDefinition
+class BoxModel
 {
 public:
 	class Event: public ofEventArgs
 	{
 	public:
-		Event(BoxDefinition* d) {
+		Event(BoxModel* d) {
 			boxModel = d;
 		}
-		BoxDefinition* boxModel;
+		BoxModel* boxModel;
 	};
 
-	BoxDefinition() {
-
-		padding.add(&paddingLeft);
-		padding.add(&paddingRight);
-		padding.add(&paddingTop);
-		padding.add(&paddingBottom);
-		ofAddListener(padding.changed, this, &BoxDefinition::unitChanged);
-
-		margin.add(&marginLeft);
-		margin.add(&marginRight);
-		margin.add(&marginTop);
-		margin.add(&marginBottom);
-		ofAddListener(margin.changed, this, &BoxDefinition::unitChanged);
-
-		border.add(&borderLeft);
-		border.add(&borderRight);
-		border.add(&borderTop);
-		border.add(&borderBottom);
-		ofAddListener(border.changed, this, &BoxDefinition::unitChanged);
-
-		position = Relative;
-		floating = NoFloat;
-		clear = false;
-
-		properties.push_back(&position);
-		properties.push_back(&floating);
-		properties.push_back(&clear);
-
-		for(std::vector<PropertyBase*>::iterator it = properties.begin(); it!=properties.end(); it++) {
-			ofAddListener((*it)->changed, this, &BoxDefinition::propertyChanged);
+	class ReadOnlyFloat
+	{
+	public:
+		ReadOnlyFloat() {
+			value = 0;
+		};
+		~ReadOnlyFloat() {};
+		operator const float & () const {
+			return value;
 		}
-	}
+	private:
+		const float& operator=(float val) {
+			value = val;
+			return value;
+		}
+
+		float value;
+		friend class BoxModel;
+	};
+
+	class ReadOnlyPoint
+	{
+	public:
+		ReadOnlyFloat x;
+		ReadOnlyFloat y;
+		operator const Point & () const {
+			return Point(x, y);
+		}
+	};
+
+	BoxModel();
 
 	void unitChanged(Unit::Event& e) {
 		Event de(this);
@@ -110,8 +109,8 @@ public:
 	Unit borderBottom;
 
 	Property<Floating> floating;
-	Property<Position> position;
-	Property<bool> clear;
+	Property<Position> positioning;
+	Property<bool> clearing;
 
 	ofEvent<Event> changed;
 
@@ -119,40 +118,17 @@ public:
 	UnitGroup margin;
 	UnitGroup border;
 
+	ReadOnlyPoint position;
+	ReadOnlyPoint outerSize;
+	ReadOnlyPoint size;
+	ReadOnlyPoint contentSize;
+	ReadOnlyPoint contentPosition;
+
+protected:
+	void calculateSize(Point containerSize);
+
 private:
 	std::vector<PropertyBase*> properties;
-};
-
-class BoxModel
-{
-public:
-	class FloatReadOnly
-	{
-	public:
-		FloatReadOnly() {};
-		~FloatReadOnly() {};
-		operator const float & () const {
-			return value;
-		}
-	private:
-		float value;
-		friend class BoxModel;
-	};
-	BoxModel();
-	~BoxModel();
-
-	BoxDefinition def;
-
-private:
-	void calculateSize();
-
-	void definitionChanged(BoxDefinition::Event& e);
-
-	Point position;
-	Point outerSize;
-	Point size;
-	Point contentSize;
-	Point contentPosition;
 };
 
 }

@@ -12,6 +12,8 @@ namespace boxModel
 namespace core
 {
 
+class BoxModel;
+	
 class Unit
 {
 public:
@@ -95,6 +97,8 @@ private:
 	bool bSet;
 	float value;
 	Type type;
+	
+	friend class BoxModel;
 };
 
 class UnitGroup
