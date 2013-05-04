@@ -120,8 +120,8 @@
           <File Name="../../src/core/Unit.cpp"/>
         </VirtualDirectory>
         <VirtualDirectory Name="debug">
-          <File Name="../../src/debug/DebugDraw.cpp"/>
-          <File Name="../../src/debug/DebugDraw.h"/>
+          <File Name="../../src/debug/DebugDrawer.h"/>
+          <File Name="../../src/debug/DebugDrawer.cpp"/>
         </VirtualDirectory>
         <VirtualDirectory Name="layout">
           <File Name="../../src/layout/Layouter.h"/>

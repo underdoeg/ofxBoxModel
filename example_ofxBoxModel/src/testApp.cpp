@@ -15,7 +15,8 @@ void testApp::setup()
 	
 	Box box2;
 	Box box3;
-	DebugDraw::drawTree(&box1);
+	DebugDraw<Box> debugDrawer;
+	debugDrawer.drawTree(&box1);
 	
 	Layouter l;
 	l.layout(&box1);

@@ -27,7 +27,7 @@ public:
 		return childrenBase;
 	};*/
 	virtual int getNumChildren()=0;
-	virtual BoxModel* getBaseChildAt(int index)=0;
+	virtual BoxModel* getBaseChild(int index)=0;
 protected:
 	std::vector<BoxModel*> childrenBase;
 };
@@ -56,7 +56,11 @@ public:
 		return children.size();
 	}
 	
-	BoxModel* getBaseChildAt(int index){
+	BoxModelType* getChild(int index){
+		return children[index];
+	}
+	
+	BoxModel* getBaseChild(int index){
 		return children[index];
 	}
 private:
