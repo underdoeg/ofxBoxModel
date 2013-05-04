@@ -20,6 +20,9 @@ ofx::boxModel::core::BoxModel::BoxModel()
 	border.add(&borderBottom);
 	ofAddListener(border.changed, this, &BoxModel::unitChanged);
 
+	ofAddListener(width.changed, this, &BoxModel::unitChanged);
+	ofAddListener(height.changed, this, &BoxModel::unitChanged);
+
 	positioning = Relative;
 	floating = NoFloat;
 	clearing = false;
@@ -62,5 +65,7 @@ void ofx::boxModel::core::BoxModel::calculateSize(Point containerSize)
 	contentSize.y = size.y - _paddingBottom - _paddingTop - _borderTop - _borderBottom;
 	contentPosition.x = _paddingLeft + _borderLeft;
 	contentPosition.y = _paddingTop + _borderTop;
+	
+	cout << "CHANGED" << endl;
 }
 

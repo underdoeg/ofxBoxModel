@@ -116,6 +116,7 @@ public:
 	}
 	
 	void add(Unit* u){
+		ofAddListener(u->changed, this, &UnitGroup::unitChanged);
 		units.push_back(u);
 	}
 	

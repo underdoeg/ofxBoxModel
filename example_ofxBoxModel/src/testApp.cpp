@@ -1,22 +1,14 @@
 #include "testApp.h"
-#include "core/Box.h"
-#include "layout/Layouter.h"
-#include "debug/DebugDraw.h"
 
-using namespace ofx::boxModel::core;
-using namespace ofx::boxModel::debug;
-using namespace ofx::boxModel::layout;
+
+
 
 //--------------------------------------------------------------
 void testApp::setup()
 {
-	Box box1;
+	box1.width = 200;
+	box1.height = 200;
 	box1.margin = Unit::Pixel;
-	
-	Box box2;
-	Box box3;
-	DebugDraw<Box> debugDrawer;
-	debugDrawer.drawTree(&box1);
 	
 	Layouter l;
 	l.layout(&box1);
@@ -31,7 +23,7 @@ void testApp::update()
 //--------------------------------------------------------------
 void testApp::draw()
 {
-
+	debugDrawer.drawBox(&box1);
 }
 
 //--------------------------------------------------------------

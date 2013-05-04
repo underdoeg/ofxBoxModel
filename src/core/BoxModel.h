@@ -81,6 +81,7 @@ public:
 	BoxModel();
 
 	void unitChanged(Unit::Event& e) {
+		calculateSize(Point(100, 100));
 		Event de(this);
 		ofNotifyEvent(changed, de);
 	}

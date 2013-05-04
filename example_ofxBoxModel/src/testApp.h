@@ -2,6 +2,14 @@
 
 #include "ofMain.h"
 
+#include "core/Box.h"
+#include "layout/Layouter.h"
+#include "debug/DebugDrawer.h"
+
+using namespace ofx::boxModel::core;
+using namespace ofx::boxModel::debug;
+using namespace ofx::boxModel::layout;
+
 class testApp : public ofBaseApp{
 
 	public:
@@ -18,4 +26,7 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+		
+		DebugDrawer<Box> debugDrawer;
+		Box box1, box2, box3;
 };
