@@ -24,7 +24,7 @@ ofx::boxModel::core::BoxModel::BoxModel()
 	ofAddListener(height.changed, this, &BoxModel::unitChanged);
 
 	positioning = Relative;
-	floating = NoFloat;
+	floating = FloatNone;
 	clearing = false;
 
 	properties.push_back(&positioning);
@@ -36,7 +36,7 @@ ofx::boxModel::core::BoxModel::BoxModel()
 	}
 }
 
-void ofx::boxModel::core::BoxModel::calculateSize(Point containerSize)
+void ofx::boxModel::core::BoxModel::recalculate()
 {
 	//get all the values
 	float _width = width.getValueCalculated(containerSize.x);
@@ -65,7 +65,5 @@ void ofx::boxModel::core::BoxModel::calculateSize(Point containerSize)
 	contentSize.y = size.y - _paddingBottom - _paddingTop - _borderTop - _borderBottom;
 	contentPosition.x = _paddingLeft + _borderLeft;
 	contentPosition.y = _paddingTop + _borderTop;
-	
-	cout << "CHANGED" << endl;
 }
 

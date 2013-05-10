@@ -1,17 +1,23 @@
 #include "testApp.h"
 
 
-
+using namespace ofx::boxModel::core;
 
 //--------------------------------------------------------------
 void testApp::setup()
 {
-	box1.width = 200;
-	box1.height = 200;
-	box1.margin = Unit::Pixel;
+	rootBox.width = ofGetWidth();
+	rootBox.height = ofGetHeight();
+
+	for(unsigned int i = 0;i<10;i++){
+		Box* b = new Box();
+		b->width = ofRandom(20, 100);
+		b->height = 100;
+		b->floating = FloatLeft;
+		rootBox.addChild(b);
+	}
 	
-	Layouter l;
-	l.layout(&box1);
+	l.layout(&rootBox);
 }
 
 //--------------------------------------------------------------
@@ -23,7 +29,7 @@ void testApp::update()
 //--------------------------------------------------------------
 void testApp::draw()
 {
-	debugDrawer.drawBox(&box1);
+	debugDrawer.drawTree(&rootBox);
 }
 
 //--------------------------------------------------------------

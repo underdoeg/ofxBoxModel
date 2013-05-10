@@ -6,10 +6,6 @@
 #include "layout/Layouter.h"
 #include "debug/DebugDrawer.h"
 
-using namespace ofx::boxModel::core;
-using namespace ofx::boxModel::debug;
-using namespace ofx::boxModel::layout;
-
 class testApp : public ofBaseApp{
 
 	public:
@@ -27,6 +23,7 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-		DebugDrawer<Box> debugDrawer;
-		Box box1, box2, box3;
+		ofx::boxModel::debug::DebugDrawer<ofx::boxModel::core::Box> debugDrawer;
+		ofx::boxModel::layout::Layouter<ofx::boxModel::core::Box> l;
+		ofx::boxModel::core::Box rootBox;
 };

@@ -17,6 +17,34 @@
     <File Name="../config.make"/>
     <File Name="../addons.make"/>
   </VirtualDirectory>
+  <VirtualDirectory Name="addons">
+    <VirtualDirectory Name="ofxBoxModel">
+      <VirtualDirectory Name="src">
+        <File Name="../../../../addons/ofxBoxModel/src/Box.h"/>
+        <File Name="../../../../addons/ofxBoxModel/src/Box.cpp"/>
+        <VirtualDirectory Name="core">
+          <File Name="../../src/core/BoxModel.cpp"/>
+          <File Name="../../src/core/BoxModel.h"/>
+          <File Name="../../src/core/TreeNode.h"/>
+          <File Name="../../src/core/TreeNode.cpp"/>
+          <File Name="../../src/core/Box.h"/>
+          <File Name="../../src/core/Box.cpp"/>
+          <File Name="../../src/core/Property.h"/>
+          <File Name="../../src/core/Property.cpp"/>
+          <File Name="../../src/core/Unit.h"/>
+          <File Name="../../src/core/Unit.cpp"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="debug">
+          <File Name="../../src/debug/DebugDrawer.h"/>
+          <File Name="../../src/debug/DebugDrawer.cpp"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="layout">
+          <File Name="../../src/layout/Layouter.h"/>
+          <File Name="../../src/layout/Layouter.cpp"/>
+        </VirtualDirectory>
+      </VirtualDirectory>
+    </VirtualDirectory>
+  </VirtualDirectory>
   <Settings Type="Dynamic Library">
     <GlobalSettings>
       <Compiler Options="" C_Options="">
@@ -46,7 +74,7 @@
       <CustomBuild Enabled="yes">
         <RebuildCommand/>
         <CleanCommand>make clean Debug</CleanCommand>
-        <BuildCommand>make Debug</BuildCommand>
+        <BuildCommand>make -j4 Debug</BuildCommand>
         <PreprocessFileCommand/>
         <SingleFileCommand/>
         <MakefileGenerationCommand/>
@@ -102,32 +130,4 @@
       </Completion>
     </Configuration>
   </Settings>
-  <VirtualDirectory Name="addons">
-    <VirtualDirectory Name="ofxBoxModel">
-      <VirtualDirectory Name="src">
-        <File Name="../../../../addons/ofxBoxModel/src/Box.h"/>
-        <File Name="../../../../addons/ofxBoxModel/src/Box.cpp"/>
-        <VirtualDirectory Name="core">
-          <File Name="../../src/core/BoxModel.cpp"/>
-          <File Name="../../src/core/BoxModel.h"/>
-          <File Name="../../src/core/TreeNode.h"/>
-          <File Name="../../src/core/TreeNode.cpp"/>
-          <File Name="../../src/core/Box.h"/>
-          <File Name="../../src/core/Box.cpp"/>
-          <File Name="../../src/core/Property.h"/>
-          <File Name="../../src/core/Property.cpp"/>
-          <File Name="../../src/core/Unit.h"/>
-          <File Name="../../src/core/Unit.cpp"/>
-        </VirtualDirectory>
-        <VirtualDirectory Name="debug">
-          <File Name="../../src/debug/DebugDrawer.h"/>
-          <File Name="../../src/debug/DebugDrawer.cpp"/>
-        </VirtualDirectory>
-        <VirtualDirectory Name="layout">
-          <File Name="../../src/layout/Layouter.h"/>
-          <File Name="../../src/layout/Layouter.cpp"/>
-        </VirtualDirectory>
-      </VirtualDirectory>
-    </VirtualDirectory>
-  </VirtualDirectory>
 </CodeLite_Project>

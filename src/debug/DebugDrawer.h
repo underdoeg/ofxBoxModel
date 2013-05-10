@@ -21,8 +21,9 @@ class DebugDrawer
 	~DebugDrawer(){}
 
 	void drawTree(TreeNodeType* rootNode){
-		for(int i=0;i<rootNode->getNumChildren();i++){
-			drawTree(rootNode->getChild(i));
+		drawBox(rootNode);
+		for(typename TreeNodeType::ChildrenIterator it = rootNode->childrenBegin(); it < rootNode->childrenEnd(); it++){
+			drawTree(*it);
 		}
 	}
 	
@@ -38,6 +39,9 @@ class DebugDrawer
 
 		ofLine(box->position + box->contentPosition, box->position + box->contentPosition + box->contentSize);
 		ofLine(box->position + box->contentPosition + core::Point(box->contentSize.x, 0), box->position + box->contentPosition + core::Point(0, box->contentSize.y));
+
+		cout << (box->position + box->contentPosition).y << endl;
+
 		ofPopStyle();
 	}
 

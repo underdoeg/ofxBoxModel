@@ -5,27 +5,20 @@
 #include <algorithm>
 #include <vector>
 #include "core/BoxModel.h"
+#include <cassert>
 
-namespace ofx
-{
+namespace ofx {
 
-namespace boxModel
-{
+namespace boxModel {
 
-namespace core
-{
+namespace core {
 
 /*****
 * Templated container to stack BoxModels
 ****/
 
-class TreeNodeBase
-{
+class TreeNodeBase {
 public:
-	/*
-	std::vector<BoxModel*> getChildrenBase() {
-		return childrenBase;
-	};*/
 	virtual int getNumChildren()=0;
 	virtual BoxModel* getBaseChild(int index)=0;
 protected:
@@ -37,11 +30,30 @@ protected:
 ****/
 
 template <class BoxModelType>
-class TreeNode: public TreeNodeBase
-{
+class TreeNode: public TreeNodeBase {
 public:
+	typedef std::vector<BoxModelType*> ChildrenList;
+	typedef typename ChildrenList::iterator ChildrenIterator;
+
 	TreeNode() {};
 	~TreeNode() {};
+
+	/** ITERATOR HELPERS **/
+	ChildrenIterator childrenBegin() {
+		return children.begin();
+	}
+
+	ChildrenIterator childrenEnd() {
+		return children.end();
+	}
+	/***/
+
+
+	BoxModelType* operator[](unsigned int index) {
+		assert(index < children.size());
+		return children[index];
+	}
+
 	void addChild(BoxModelType* child) {
 		children.push_back(child);
 		childrenChanged();
@@ -51,26 +63,19 @@ public:
 		children.erase(std::remove(children.begin(), children.end(), child), children.end());
 		childrenChanged();
 	}
-	
-	int getNumChildren(){
+
+	int getNumChildren() {
 		return children.size();
 	}
-	
-	BoxModelType* getChild(int index){
+
+	BoxModelType* getChild(int index) {
 		return children[index];
 	}
-	
-	BoxModel* getBaseChild(int index){
+
+	BoxModel* getBaseChild(int index) {
 		return children[index];
 	}
 private:
-	void calculateSize(){
-		Point p;
-		if(bParent){
-			p = parent->contentSize;
-		}
-		BoxModelType::calculateSize(p);
-	}
 
 	void childrenChanged() {
 		childrenBase.clear();
@@ -78,7 +83,7 @@ private:
 			childrenBase.push_back(*it);
 		}
 	}
-	std::vector<BoxModelType*> children;
+	ChildrenList children;
 	bool bParent;
 	BoxModelType* parent;
 };

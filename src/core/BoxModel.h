@@ -10,6 +10,10 @@ namespace ofx
 namespace boxModel
 {
 
+namespace layout{
+	class LayouterBase;
+}
+
 namespace core
 {
 
@@ -26,10 +30,12 @@ enum Position {
 };
 
 enum Floating {
-    Left,
-    Right,
-    NoFloat
+    FloatLeft,
+    FloatRight,
+    FloatNone
 };
+
+
 
 class BoxModel
 {
@@ -61,6 +67,7 @@ public:
 
 		float value;
 		friend class BoxModel;
+		friend class layout::LayouterBase;
 	};
 
 	class ReadOnlyPoint
@@ -73,15 +80,14 @@ public:
 		}
 		
 		Point  operator+( const Point& pnt ) const{
-			return Point(x+pnt.x, x+pnt.y);
+			return Point(x+pnt.x, y+pnt.y);
 		}
-
 	};
 
 	BoxModel();
 
 	void unitChanged(Unit::Event& e) {
-		calculateSize(Point(100, 100));
+		recalculate();
 		Event de(this);
 		ofNotifyEvent(changed, de);
 	}
@@ -129,9 +135,11 @@ public:
 	ReadOnlyPoint size;
 	ReadOnlyPoint contentSize;
 	ReadOnlyPoint contentPosition;
+	Point containerSize;
 
+	void recalculate();
 protected:
-	void calculateSize(Point containerSize);
+
 
 private:
 	std::vector<PropertyBase*> properties;
