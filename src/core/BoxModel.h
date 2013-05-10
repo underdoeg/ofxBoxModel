@@ -75,10 +75,15 @@ public:
 	public:
 		ReadOnlyFloat x;
 		ReadOnlyFloat y;
-		operator const Point & () const {
-			return Point(x, y);
+		operator const Point() const {
+			const Point p(x, y);
+			return p;
 		}
-		
+		/*
+		operator const Point & () {
+			return Point(x, y);
+		}*/
+
 		Point  operator+( const Point& pnt ) const{
 			return Point(x+pnt.x, y+pnt.y);
 		}

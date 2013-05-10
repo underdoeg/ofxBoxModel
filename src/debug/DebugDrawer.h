@@ -40,7 +40,9 @@ class DebugDrawer
 		ofLine(box->position + box->contentPosition, box->position + box->contentPosition + box->contentSize);
 		ofLine(box->position + box->contentPosition + core::Point(box->contentSize.x, 0), box->position + box->contentPosition + core::Point(0, box->contentSize.y));
 
-		cout << (box->position + box->contentPosition).y << endl;
+		cout << core::Point(box->position + box->contentPosition + box->contentSize) << endl;
+
+		//cout << (box->position + box->contentPosition + box->contentSize) << " / " << (box->position + box->contentPosition) << " / "<< box->contentSize << endl;
 
 		ofPopStyle();
 	}
