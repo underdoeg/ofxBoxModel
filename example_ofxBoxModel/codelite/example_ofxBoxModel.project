@@ -33,6 +33,8 @@
           <File Name="../../src/core/Property.cpp"/>
           <File Name="../../src/core/Unit.h"/>
           <File Name="../../src/core/Unit.cpp"/>
+          <File Name="../../src/core/Utils.h"/>
+          <File Name="../../src/core/Utils.cpp"/>
         </VirtualDirectory>
         <VirtualDirectory Name="debug">
           <File Name="../../src/debug/DebugDrawer.h"/>
@@ -41,6 +43,10 @@
         <VirtualDirectory Name="layout">
           <File Name="../../src/layout/Layouter.h"/>
           <File Name="../../src/layout/Layouter.cpp"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="html">
+          <File Name="../../src/html/Addressable.h"/>
+          <File Name="../../src/html/Addressable.cpp"/>
         </VirtualDirectory>
       </VirtualDirectory>
     </VirtualDirectory>

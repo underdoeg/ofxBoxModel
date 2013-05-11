@@ -85,8 +85,11 @@ public:
 		return bSet;
 	}
 
-	friend ostream& operator<<(ostream& os, Unit& unit);
+	float getValueCalculated(){
+		return getValueCalculated(containerSize);
+	}
 
+	friend ostream& operator<<(ostream& os, Unit& unit);
 
 	ofEvent<Event> changed;
 
@@ -100,6 +103,8 @@ private:
 	bool bSet;
 	float value;
 	Type type;
+
+	float containerSize;
 	
 	friend class BoxModel;
 };

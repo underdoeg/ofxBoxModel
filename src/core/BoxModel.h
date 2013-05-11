@@ -130,6 +130,9 @@ public:
 	Property<bool> clearing;
 
 	ofEvent<Event> changed;
+	ofEvent<Event> sizeChanged;
+	ofEvent<Event> widthChanged;
+	ofEvent<Event> heightChanged;
 
 	UnitGroup padding;
 	UnitGroup margin;
@@ -140,7 +143,7 @@ public:
 	ReadOnlyPoint size;
 	ReadOnlyPoint contentSize;
 	ReadOnlyPoint contentPosition;
-	Point containerSize;
+	//Point containerSize;
 
 	void recalculate();
 protected:

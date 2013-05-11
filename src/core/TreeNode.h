@@ -6,6 +6,7 @@
 #include <vector>
 #include "core/BoxModel.h"
 #include <cassert>
+#include "core/Utils.h"
 
 namespace ofx {
 
@@ -30,7 +31,7 @@ protected:
 ****/
 
 template <class BoxModelType>
-class TreeNode: public TreeNodeBase {
+class TreeNode: public TreeNodeBase{
 public:
 	typedef std::vector<BoxModelType*> ChildrenList;
 	typedef typename ChildrenList::iterator ChildrenIterator;
@@ -48,7 +49,6 @@ public:
 	}
 	/***/
 
-
 	BoxModelType* operator[](unsigned int index) {
 		assert(index < children.size());
 		return children[index];
@@ -56,6 +56,7 @@ public:
 
 	void addChild(BoxModelType* child) {
 		children.push_back(child);
+		child->setParent(crtpSelfPtr<TreeNode, BoxModelType>(this));
 		childrenChanged();
 	}
 
@@ -75,7 +76,12 @@ public:
 	BoxModel* getBaseChild(int index) {
 		return children[index];
 	}
+
 private:
+	void setParent(BoxModelType* p){
+		bParent = true;
+		parent = parent;
+	}
 
 	void childrenChanged() {
 		childrenBase.clear();

@@ -39,23 +39,23 @@ ofx::boxModel::core::BoxModel::BoxModel()
 void ofx::boxModel::core::BoxModel::recalculate()
 {
 	//get all the values
-	float _width = width.getValueCalculated(containerSize.x);
-	float _height = height.getValueCalculated(containerSize.y);
+	float _width = width.getValueCalculated();
+	float _height = height.getValueCalculated();
 
-	float _marginLeft = marginLeft.getValueCalculated(containerSize.x);
-	float _marginRight = marginRight.getValueCalculated(containerSize.x);
-	float _marginTop = marginTop.getValueCalculated(containerSize.y);
-	float _marginBottom = marginBottom.getValueCalculated(containerSize.y);
+	float _marginLeft = marginLeft.getValueCalculated();
+	float _marginRight = marginRight.getValueCalculated();
+	float _marginTop = marginTop.getValueCalculated();
+	float _marginBottom = marginBottom.getValueCalculated();
 
-	float _paddingLeft = paddingLeft.getValueCalculated(containerSize.x);
-	float _paddingRight = paddingRight.getValueCalculated(containerSize.x);
-	float _paddingTop = paddingTop.getValueCalculated(containerSize.y);
-	float _paddingBottom = paddingBottom.getValueCalculated(containerSize.y);
+	float _paddingLeft = paddingLeft.getValueCalculated();
+	float _paddingRight = paddingRight.getValueCalculated();
+	float _paddingTop = paddingTop.getValueCalculated();
+	float _paddingBottom = paddingBottom.getValueCalculated();
 
-	float _borderLeft = borderLeft.getValueCalculated(containerSize.x);
-	float _borderRight = borderRight.getValueCalculated(containerSize.x);
-	float _borderTop = borderTop.getValueCalculated(containerSize.y);
-	float _borderBottom = borderBottom.getValueCalculated(containerSize.y);
+	float _borderLeft = borderLeft.getValueCalculated();
+	float _borderRight = borderRight.getValueCalculated();
+	float _borderTop = borderTop.getValueCalculated();
+	float _borderBottom = borderBottom.getValueCalculated();
 
 	size.x = _width;
 	size.y = _height;

@@ -8,12 +8,15 @@ void testApp::setup()
 {
 	rootBox.width = ofGetWidth();
 	rootBox.height = ofGetHeight();
+	rootBox.padding = 30;
 
-	for(unsigned int i = 0;i<10;i++){
+	for(unsigned int i = 0;i<80;i++){
 		Box* b = new Box();
 		b->width = ofRandom(20, 100);
 		b->height = 100;
 		b->floating = FloatLeft;
+		b->marginLeft = 20;
+		b->marginTop = 30;
 		rootBox.addChild(b);
 	}
 	

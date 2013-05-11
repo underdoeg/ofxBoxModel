@@ -4,29 +4,25 @@
 #include "core/BoxModel.h"
 #include "core/TreeNode.h"
 
-namespace ofx
-{
+namespace ofx {
 
-namespace boxModel
-{
+namespace boxModel {
 
-namespace debug
-{
+namespace debug {
 
 template <class TreeNodeType>
-class DebugDrawer
-{
-			public:
-	DebugDrawer(){}
-	~DebugDrawer(){}
+class DebugDrawer {
+public:
+	DebugDrawer() {}
+	~DebugDrawer() {}
 
-	void drawTree(TreeNodeType* rootNode){
+	void drawTree(TreeNodeType* rootNode) {
 		drawBox(rootNode);
-		for(typename TreeNodeType::ChildrenIterator it = rootNode->childrenBegin(); it < rootNode->childrenEnd(); it++){
+		for(typename TreeNodeType::ChildrenIterator it = rootNode->childrenBegin(); it < rootNode->childrenEnd(); it++) {
 			drawTree(*it);
 		}
 	}
-	
+
 	void drawBox(TreeNodeType* box) {
 		ofPushStyle();
 		ofFill();
@@ -39,10 +35,6 @@ class DebugDrawer
 
 		ofLine(box->position + box->contentPosition, box->position + box->contentPosition + box->contentSize);
 		ofLine(box->position + box->contentPosition + core::Point(box->contentSize.x, 0), box->position + box->contentPosition + core::Point(0, box->contentSize.y));
-
-		cout << core::Point(box->position + box->contentPosition + box->contentSize) << endl;
-
-		//cout << (box->position + box->contentPosition + box->contentSize) << " / " << (box->position + box->contentPosition) << " / "<< box->contentSize << endl;
 
 		ofPopStyle();
 	}
