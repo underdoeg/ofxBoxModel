@@ -11,12 +11,12 @@ namespace core
 
 Box::Box()
 {
+	type = "test";
 }
 
 Box::~Box()
 {
 }
-
 
 }
 

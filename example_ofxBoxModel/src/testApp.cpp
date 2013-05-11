@@ -19,6 +19,8 @@ void testApp::setup()
 		b->marginTop = 30;
 		rootBox.addChild(b);
 	}
+
+	rootBox.findByAddress("blah");
 	
 	l.layout(&rootBox);
 }
