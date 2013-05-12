@@ -23,7 +23,9 @@ class Box: public BoxModel, public TreeNode<Box>, public Addressable<Box>
 public:
 	Box();
 	~Box();
-	string type;
+	
+	virtual std::string getType();
+private:
 };
 
 }

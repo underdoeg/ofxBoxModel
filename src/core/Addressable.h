@@ -24,9 +24,14 @@ public:
 	Addressable() {
 		id = "";
 	}
-
-	virtual std::string getType() {
-		return "div";
+	
+	bool isTypeOf(std::string type){
+		return getType() == type;
+	}
+	
+	std::string getType() {
+		BoxModelType* rootNode = core::crtpSelfPtr<Addressable, BoxModelType>(this);
+		return rootNode->getType();
 	}
 
 	std::vector<std::string> getClasses() {
@@ -37,7 +42,7 @@ public:
 		str = trimString(str);
 		if(str == id)
 			return;
-		if(str.size() == 0){
+		if(str.size() == 0) {
 			if(id.size()>0)
 				idsTaken.erase(std::remove(idsTaken.begin(), idsTaken.end(), str), idsTaken.end());
 			return;
@@ -51,6 +56,10 @@ public:
 
 	std::string getId() {
 		return id;
+	}
+
+	bool isId(std::string idName) {
+		return id == idName;
 	}
 
 	bool hasId() {
@@ -103,12 +112,15 @@ public:
 				case '#':
 					item.erase(0,1);
 					for(typename std::vector<BoxModelType*>::iterator it = curRet.begin(); it < curRet.end(); it++) {
-						std::vector<BoxModelType*> t = findByClass(item, *it, (itPath != pathSplitted.begin()));
+						std::vector<BoxModelType*> t = findById(item, *it, (itPath != pathSplitted.begin()));
 						tmp.insert(tmp.end(), t.begin(), t.end());
 					}
 					break;
 				default:
-
+					for(typename std::vector<BoxModelType*>::iterator it = curRet.begin(); it < curRet.end(); it++) {
+						std::vector<BoxModelType*> t = findByType(item, *it, (itPath != pathSplitted.begin()));
+						tmp.insert(tmp.end(), t.begin(), t.end());
+					}
 					break;
 				}
 			}
@@ -119,7 +131,7 @@ public:
 				ret = curRet;
 		}
 
-		//remove duplicates. TODO: is there a way to avoid them? would it actually be faster? Also is the sort order of the vectors relevant? Random now...
+		//remove duplicates
 		sort( ret.begin(), ret.end() );
 		ret.erase( unique( ret.begin(), ret.end() ), ret.end() );
 
@@ -140,6 +152,31 @@ private:
 		}
 		return ret;
 	}
+
+	std::vector<BoxModelType*> findById(string idName, BoxModelType* root, bool skipRoot = false) {
+		std::vector<BoxModelType*> ret;
+		if(!skipRoot && root->isId(idName)) {
+			ret.push_back(root);
+		}
+		for(typename BoxModelType::ChildrenIterator it = root->childrenBegin(); it < root->childrenEnd(); it++) {
+			std::vector<BoxModelType*> v = findById(idName, *it);
+			ret.insert( ret.end(), v.begin(), v.end() );
+		}
+		return ret;
+	}
+	
+	std::vector<BoxModelType*> findByType(string type, BoxModelType* root, bool skipRoot = false) {
+		std::vector<BoxModelType*> ret;
+		if(!skipRoot && root->isTypeOf(type)) {
+			ret.push_back(root);
+		}
+		for(typename BoxModelType::ChildrenIterator it = root->childrenBegin(); it < root->childrenEnd(); it++) {
+			std::vector<BoxModelType*> v = findByType(type, *it);
+			ret.insert( ret.end(), v.begin(), v.end() );
+		}
+		return ret;
+	}
+
 
 	std::vector<std::string> classes;
 	std::string id;

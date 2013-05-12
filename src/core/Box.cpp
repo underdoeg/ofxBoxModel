@@ -11,16 +11,22 @@ namespace core
 
 Box::Box()
 {
-	type = "test";
+	
 }
 
 Box::~Box()
 {
 }
 
+std::string Box::getType()
+{
+	return "box";
 }
 
 }
 
 }
+
+}
+
 

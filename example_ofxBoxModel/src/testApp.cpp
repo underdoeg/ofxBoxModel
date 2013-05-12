@@ -8,43 +8,47 @@ using namespace ofx::boxModel::core;
 void testApp::setup()
 {
 
-	
+
 	rootBox.width = ofGetWidth();
 	rootBox.height = ofGetHeight();
 	rootBox.padding = 30;
-	
-	rootBox.addClass("blah");
 
-	for(unsigned int i = 0;i<80;i++){
+	rootBox.addClass("classTest");
+	rootBox.setId("idTest");
+
+	for(unsigned int i = 0; i<80; i++) {
 		Box* b = new Box();
 		b->width = ofRandom(20, 100);
 		b->height = 100;
 		b->floating = FloatLeft;
 		b->marginLeft = 20;
 		b->marginTop = 30;
-		b->addClass("blah");
-		rootBox.addChild(b);
+		b->addClass("classTest");
+
 		if(i == 0)
-		b->setId("test");
-		if(i<50){
+			b->setId("idTest");
+
+		if(i<50) {
 			Box* b2 = new Box();
-			b2->addClass("blah");
+			b2->addClass("classTest");
 			b->addChild(b2);
 		}
+
+		rootBox.addChild(b);
 	}
-	
-	std::vector<Box*> boxes = rootBox.findByAddress(".blah .blah .blah");
-	
+
+	std::vector<Box*> boxes = rootBox.findByAddress("#idTest .classTest box");
+	//std::vector<Box*> boxes = rootBox.findByAddress("box box box");
+
 	cout << boxes.size() << endl;
-	
-	
+
 	l.layout(&rootBox);
 }
 
 //--------------------------------------------------------------
 void testApp::update()
 {
-	
+
 }
 
 //--------------------------------------------------------------
