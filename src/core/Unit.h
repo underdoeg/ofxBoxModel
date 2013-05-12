@@ -130,12 +130,12 @@ public:
 		set(type);
 	}
 	
-	const float& operator=(float val) {
+	const float operator=(float val) {
 		set(val);
 		return val;
 	}
 
-	const Unit::Type& operator=(Unit::Type t) {
+	const Unit::Type operator=(Unit::Type t) {
 		set(t);
 		return t;
 	}

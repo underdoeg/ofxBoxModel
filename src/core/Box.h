@@ -3,7 +3,7 @@
 
 #include "BoxModel.h"
 #include "TreeNode.h"
-#include "html/Addressable.h"
+#include "core/Addressable.h"
 
 namespace ofx
 {
@@ -18,7 +18,7 @@ namespace core
  * A Basic box
  ******************/
 
-class Box: public BoxModel, public TreeNode<Box>, public html::Addressable<Box>
+class Box: public BoxModel, public TreeNode<Box>, public Addressable<Box>
 {
 public:
 	Box();

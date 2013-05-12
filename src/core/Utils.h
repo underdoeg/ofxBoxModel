@@ -1,6 +1,11 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <vector>
+#include <iostream>
+#include <sstream>
+
+
 namespace ofx {
 
 namespace boxModel {
@@ -28,6 +33,13 @@ Derived& crtpSelf(Type& t) {
 	return static_cast<Derived&>(t);
 };
 
+/****************************************************************************/
+/*      STUFF																*/
+/****************************************************************************/
+
+std::string trimString(std::string &s);
+
+std::vector<std::string> splitString(const std::string &in, char delimiter = ' ');
 
 }
 

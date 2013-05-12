@@ -1,14 +1,19 @@
 #include "testApp.h"
 
 
+
 using namespace ofx::boxModel::core;
 
 //--------------------------------------------------------------
 void testApp::setup()
 {
+
+	
 	rootBox.width = ofGetWidth();
 	rootBox.height = ofGetHeight();
 	rootBox.padding = 30;
+	
+	rootBox.addClass("blah");
 
 	for(unsigned int i = 0;i<80;i++){
 		Box* b = new Box();
@@ -17,10 +22,13 @@ void testApp::setup()
 		b->floating = FloatLeft;
 		b->marginLeft = 20;
 		b->marginTop = 30;
+		b->addClass("blah");
 		rootBox.addChild(b);
 	}
-
-	rootBox.findByAddress("blah");
+	
+	std::vector<Box*> boxes = rootBox.findByAddress(".blah .blah");
+	
+	cout << boxes.size() << endl;
 	
 	l.layout(&rootBox);
 }
