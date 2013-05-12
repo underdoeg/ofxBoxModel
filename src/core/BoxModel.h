@@ -22,6 +22,7 @@ namespace core
  ****/
 
 typedef ofVec3f Point;
+typedef ofColor Color;
 
 enum Position {
     Relative,

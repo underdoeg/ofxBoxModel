@@ -29,9 +29,8 @@ public:
 		return getType() == type;
 	}
 	
-	std::string getType() {
-		BoxModelType* rootNode = core::crtpSelfPtr<Addressable, BoxModelType>(this);
-		return rootNode->getType();
+	virtual std::string getType() {
+		return "div";
 	}
 
 	std::vector<std::string> getClasses() {

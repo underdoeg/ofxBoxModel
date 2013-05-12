@@ -37,6 +37,8 @@
           <File Name="../../src/core/Utils.cpp"/>
           <File Name="../../src/core/Addressable.h"/>
           <File Name="../../src/core/Addressable.cpp"/>
+          <File Name="../../src/core/Styleable.h"/>
+          <File Name="../../src/core/Styleable.cpp"/>
         </VirtualDirectory>
         <VirtualDirectory Name="debug">
           <File Name="../../src/debug/DebugDrawer.h"/>
