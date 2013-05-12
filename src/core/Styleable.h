@@ -16,26 +16,28 @@ template <class BoxModelType>
 class Styleable
 {
 public:
-	Styleable(){};
-	~Styleable(){};
-	
-	void setColor(Color c){
-		
+	Styleable() {};
+	~Styleable() {};
+
+	void setColor(Color c) {
+		color.set(c);
+	}
+
+	void setColor(int r, int g, int b, int alpha=255) {
+		color.set(r, g, b, alpha);
+	}
+
+	void setBackgroundColor(Color c) {
+		bgColor.set(c);
+	}
+
+	void setBackgroundColor(int r, int g, int b, int alpha=255) {
+		bgColor.set(r, g, b, alpha);
 	}
 	
-	void setColor(int r, int g, int b, int alpha=255){
-		
-	}
-	
-	void setBackgroundColor(Color c){
-		
-	}
-	
-	void setBackgroundColor(int r, int g, int b, int alpha=255){
-		
-	}
-	
-	//TODO templated Property to store colors
+private:
+	Color color;
+	Color bgColor;
 };
 
 }
