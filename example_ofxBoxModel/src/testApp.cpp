@@ -24,11 +24,19 @@ void testApp::setup()
 		b->marginTop = 30;
 		b->addClass("blah");
 		rootBox.addChild(b);
+		if(i == 0)
+		b->setId("test");
+		if(i<50){
+			Box* b2 = new Box();
+			b2->addClass("blah");
+			b->addChild(b2);
+		}
 	}
 	
-	std::vector<Box*> boxes = rootBox.findByAddress(".blah .blah");
+	std::vector<Box*> boxes = rootBox.findByAddress(".blah .blah .blah");
 	
 	cout << boxes.size() << endl;
+	
 	
 	l.layout(&rootBox);
 }

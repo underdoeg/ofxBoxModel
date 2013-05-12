@@ -6,6 +6,7 @@
 #include <algorithm>
 #include "core/Utils.h"
 #include "core/TreeNode.h"
+#include "debug/Print.h"
 
 namespace ofx
 {
@@ -33,6 +34,18 @@ public:
 	}
 
 	void setId(std::string str) {
+		str = trimString(str);
+		if(str == id)
+			return;
+		if(str.size() == 0){
+			if(id.size()>0)
+				idsTaken.erase(std::remove(idsTaken.begin(), idsTaken.end(), str), idsTaken.end());
+			return;
+		}
+		if(std::find(idsTaken.begin(), idsTaken.end(), str)!=idsTaken.end())
+			debug::warning("duplicate ID: "+str);
+		else
+			idsTaken.push_back(str);
 		id = str;
 	}
 
@@ -70,9 +83,9 @@ public:
 		curRet.push_back(rootNode);
 
 		//go through the path
-		for(std::vector<std::string>::iterator it = pathSplitted.begin(); it < pathSplitted.end(); it++) {
+		for(std::vector<std::string>::iterator itPath = pathSplitted.begin(); itPath < pathSplitted.end(); itPath++) {
 
-			std::string item = trimString(*it);
+			std::string item = trimString(*itPath);
 
 			std::vector<BoxModelType*> tmp;
 
@@ -83,12 +96,16 @@ public:
 				case '.':
 					item.erase(0,1);
 					for(typename std::vector<BoxModelType*>::iterator it = curRet.begin(); it < curRet.end(); it++) {
-						std::vector<BoxModelType*> t = findByClass(item, *it);
+						std::vector<BoxModelType*> t = findByClass(item, *it, (itPath != pathSplitted.begin()));
 						tmp.insert(tmp.end(), t.begin(), t.end());
 					}
 					break;
-				case ',':
-
+				case '#':
+					item.erase(0,1);
+					for(typename std::vector<BoxModelType*>::iterator it = curRet.begin(); it < curRet.end(); it++) {
+						std::vector<BoxModelType*> t = findByClass(item, *it, (itPath != pathSplitted.begin()));
+						tmp.insert(tmp.end(), t.begin(), t.end());
+					}
 					break;
 				default:
 
@@ -98,20 +115,23 @@ public:
 			//push current items into curRet;
 			curRet = tmp;
 
-
-			if(it == pathSplitted.end()-1)
+			if(itPath == pathSplitted.end()-1)
 				ret = curRet;
 		}
+
+		//remove duplicates. TODO: is there a way to avoid them? would it actually be faster? Also is the sort order of the vectors relevant? Random now...
+		sort( ret.begin(), ret.end() );
+		ret.erase( unique( ret.begin(), ret.end() ), ret.end() );
 
 		return ret;
 	}
 
 private:
+	static std::vector<std::string > idsTaken;
 
-
-	std::vector<BoxModelType*> findByClass(string className, BoxModelType* root) {
+	std::vector<BoxModelType*> findByClass(string className, BoxModelType* root, bool skipRoot = false) {
 		std::vector<BoxModelType*> ret;
-		if(root->hasClass(className)) {
+		if(!skipRoot && root->hasClass(className)) {
 			ret.push_back(root);
 		}
 		for(typename BoxModelType::ChildrenIterator it = root->childrenBegin(); it < root->childrenEnd(); it++) {
@@ -124,6 +144,8 @@ private:
 	std::vector<std::string> classes;
 	std::string id;
 };
+
+template<class BoxModelType>  std::vector<std::string > Addressable<BoxModelType>::idsTaken;
 
 }
 

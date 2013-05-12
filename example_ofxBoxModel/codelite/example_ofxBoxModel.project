@@ -41,6 +41,8 @@
         <VirtualDirectory Name="debug">
           <File Name="../../src/debug/DebugDrawer.h"/>
           <File Name="../../src/debug/DebugDrawer.cpp"/>
+          <File Name="../../src/debug/Print.h"/>
+          <File Name="../../src/debug/Print.cpp"/>
         </VirtualDirectory>
         <VirtualDirectory Name="layout">
           <File Name="../../src/layout/Layouter.h"/>
