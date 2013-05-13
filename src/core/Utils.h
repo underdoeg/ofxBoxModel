@@ -57,6 +57,8 @@ struct custom_static_assert<true> {}; // only true is defined
 
 #define STATIC_ASSERT(x) custom_static_assert<(x)>()
 
+
+
 /****************************************************************************/
 /*      STUFF																*/
 /****************************************************************************/

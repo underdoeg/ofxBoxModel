@@ -20,8 +20,6 @@
   <VirtualDirectory Name="addons">
     <VirtualDirectory Name="ofxBoxModel">
       <VirtualDirectory Name="src">
-        <File Name="../../../../addons/ofxBoxModel/src/Box.h"/>
-        <File Name="../../../../addons/ofxBoxModel/src/Box.cpp"/>
         <VirtualDirectory Name="core">
           <File Name="../../src/core/BoxModel.cpp"/>
           <File Name="../../src/core/BoxModel.h"/>
@@ -49,6 +47,8 @@
         <VirtualDirectory Name="layout">
           <File Name="../../src/layout/Layouter.h"/>
           <File Name="../../src/layout/Layouter.cpp"/>
+          <File Name="../../src/layout/layoutable.h"/>
+          <File Name="../../src/layout/layoutable.cpp"/>
         </VirtualDirectory>
         <VirtualDirectory Name="html"/>
       </VirtualDirectory>

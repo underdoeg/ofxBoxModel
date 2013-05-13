@@ -19,7 +19,7 @@ namespace core
  * A Basic box
  ******************/
 
-class Box: public BoxModel, public TreeNode<Box>, public Addressable<Box>//, public Styleable<Box>
+class Box: public BoxModel, public TreeNode<Box>, public Addressable<Box>, public Styleable<Box>
 {
 public:
 	Box();
