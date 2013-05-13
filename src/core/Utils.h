@@ -33,6 +33,30 @@ Derived& crtpSelf(Type& t) {
 	return static_cast<Derived&>(t);
 };
 
+/** is base of implementation **/
+template <typename B, typename D>
+struct is_base_of // check if B is a base of D
+{
+    typedef char yes[1];
+    typedef char no[2];
+
+    static yes& test(B*);
+    static no& test(...);
+
+    static D* get(void);
+
+    static const bool value = sizeof(test(get())) == sizeof(yes);
+};
+
+// really basic
+template <bool>
+struct custom_static_assert;
+
+template <>
+struct custom_static_assert<true> {}; // only true is defined
+
+#define STATIC_ASSERT(x) custom_static_assert<(x)>()
+
 /****************************************************************************/
 /*      STUFF																*/
 /****************************************************************************/

@@ -27,6 +27,10 @@ public:
 		color.set(r, g, b, alpha);
 	}
 
+	Color getColor(){
+		return color;
+	}
+
 	void setBackgroundColor(Color c) {
 		bgColor.set(c);
 	}

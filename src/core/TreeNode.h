@@ -31,7 +31,7 @@ protected:
 ****/
 
 template <class BoxModelType>
-class TreeNode: public TreeNodeBase{
+class TreeNode{
 public:
 	typedef std::vector<BoxModelType*> ChildrenList;
 	typedef typename ChildrenList::iterator ChildrenIterator;
@@ -57,12 +57,12 @@ public:
 	void addChild(BoxModelType* child) {
 		children.push_back(child);
 		child->setParent(crtpSelfPtr<TreeNode, BoxModelType>(this));
-		childrenChanged();
+		//childrenChanged();
 	}
 
 	void removeChild(BoxModelType* child) {
 		children.erase(std::remove(children.begin(), children.end(), child), children.end());
-		childrenChanged();
+		//childrenChanged();
 	}
 
 	int getNumChildren() {
@@ -83,12 +83,14 @@ private:
 		parent = parent;
 	}
 
+	/*
 	void childrenChanged() {
 		childrenBase.clear();
 		for(typename std::vector<BoxModelType*>::iterator it = children.begin(); it<children.end(); it++) {
 			childrenBase.push_back(*it);
 		}
 	}
+	 * */
 	ChildrenList children;
 	bool bParent;
 	BoxModelType* parent;
