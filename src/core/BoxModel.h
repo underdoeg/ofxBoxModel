@@ -10,12 +10,13 @@ namespace ofx
 namespace boxModel
 {
 
-namespace layout{
-	class LayouterBase;
-}
+
 
 namespace core
 {
+
+class LayoutableBase;
+
 
 /*****
  * Class to store the box model definitions. This is pretty much the base for anything...
@@ -68,7 +69,7 @@ public:
 
 		float value;
 		friend class BoxModel;
-		friend class layout::LayouterBase;
+		friend class core::LayoutableBase;
 	};
 
 	class ReadOnlyPoint
@@ -80,10 +81,6 @@ public:
 			const Point p(x, y);
 			return p;
 		}
-		/*
-		operator const Point & () {
-			return Point(x, y);
-		}*/
 
 		Point  operator+( const Point& pnt ) const{
 			return Point(x+pnt.x, y+pnt.y);

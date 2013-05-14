@@ -1,15 +1,16 @@
-#ifndef LAYOUTER_H
-#define LAYOUTER_H
+#ifndef LAYOUTABLE_H
+#define LAYOUTABLE_H
 
-#include "core/TreeNode.h"
+#include "core/BoxModel.h"
+#include "core/Utils.h"
 
 namespace ofx {
 
 namespace boxModel {
 
-namespace layout {
+namespace core {
 
-class LayouterBase {
+class LayoutableBase {
 public:
 	void setBoxPosition(core::BoxModel* b, core::Point p) {
 		b->position.x = p.x;
@@ -19,22 +20,29 @@ public:
 };
 
 template <class BoxModelType>
-class Layouter: public LayouterBase {
+class Layoutable: public LayoutableBase {
 public:
-	virtual void layout(BoxModelType* t) {
-		lastBox = NULL;
-		parentBox = t;
+	Layoutable() {}
+	~Layoutable() {}
+
+	virtual void layout() {
+		BoxModelType* t = crtpSelfPtr<Layoutable, BoxModelType>(this);
 		for(typename core::TreeNode<BoxModelType>::ChildrenIterator it = t->childrenBegin(); it < t->childrenEnd(); it++) {
-			//layout(*it);
-			placeBox(*it);
+			(*it)->layout();
+			placeBox(*it, t);
 			lastBox = *it;
+			lastTypedBox = *it;
 		}
 	}
 
-	virtual void placeBox(core::BoxModel* box) {
+	virtual void placeTypedBox(BoxModelType* box, BoxModelType* thisBox){
+		placeBox(box, thisBox);
+	}
+
+	virtual void placeBox(core::BoxModel* box, core::BoxModel* thisBox) {
 		switch(box->floating) {
 		case core::FloatLeft:
-			if(curPosition.x + box->outerSize.x > parentBox->contentSize.x){
+			if(curPosition.x + box->outerSize.x > thisBox->contentSize.x) {
 				curPosition.x = 0;
 				curPosition.y += rowMaxHeight;
 				rowMaxHeight = 0;
@@ -62,8 +70,13 @@ public:
 	}
 
 protected:
+	void onUnitChange(){
+
+	}
+
 	core::BoxModel* lastBox;
-	core::BoxModel* parentBox;
+	BoxModelType* lastTypedBox;
+
 private:
 	core::Point curPosition;
 	float rowMaxHeight;
@@ -75,4 +88,4 @@ private:
 
 }
 
-#endif // LAYOUTER_H
+#endif // LAYOUTABLE_H

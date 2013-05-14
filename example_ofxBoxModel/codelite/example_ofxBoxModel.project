@@ -24,19 +24,16 @@
           <File Name="../../src/core/BoxModel.cpp"/>
           <File Name="../../src/core/BoxModel.h"/>
           <File Name="../../src/core/TreeNode.h"/>
-          <File Name="../../src/core/TreeNode.cpp"/>
           <File Name="../../src/core/Box.h"/>
           <File Name="../../src/core/Box.cpp"/>
           <File Name="../../src/core/Property.h"/>
-          <File Name="../../src/core/Property.cpp"/>
           <File Name="../../src/core/Unit.h"/>
           <File Name="../../src/core/Unit.cpp"/>
           <File Name="../../src/core/Utils.h"/>
           <File Name="../../src/core/Utils.cpp"/>
           <File Name="../../src/core/Addressable.h"/>
-          <File Name="../../src/core/Addressable.cpp"/>
           <File Name="../../src/core/Styleable.h"/>
-          <File Name="../../src/core/Styleable.cpp"/>
+          <File Name="../../src/core/Layoutable.h"/>
         </VirtualDirectory>
         <VirtualDirectory Name="debug">
           <File Name="../../src/debug/DebugDrawer.h"/>
@@ -44,12 +41,7 @@
           <File Name="../../src/debug/Print.h"/>
           <File Name="../../src/debug/Print.cpp"/>
         </VirtualDirectory>
-        <VirtualDirectory Name="layout">
-          <File Name="../../src/layout/Layouter.h"/>
-          <File Name="../../src/layout/Layouter.cpp"/>
-          <File Name="../../src/layout/layoutable.h"/>
-          <File Name="../../src/layout/layoutable.cpp"/>
-        </VirtualDirectory>
+        <VirtualDirectory Name="layout"/>
         <VirtualDirectory Name="html"/>
       </VirtualDirectory>
     </VirtualDirectory>

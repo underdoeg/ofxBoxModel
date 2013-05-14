@@ -3,7 +3,6 @@
 #include "ofMain.h"
 
 #include "core/Box.h"
-#include "layout/Layouter.h"
 #include "debug/DebugDrawer.h"
 
 class testApp : public ofBaseApp{
@@ -24,6 +23,5 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
 		ofx::boxModel::debug::DebugDrawer<ofx::boxModel::core::Box> debugDrawer;
-		ofx::boxModel::layout::Layouter<ofx::boxModel::core::Box> l;
 		ofx::boxModel::core::Box rootBox;
 };

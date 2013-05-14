@@ -49,8 +49,7 @@ void testApp::setup()
 
 	std::vector<Box*> boxes = rootBox.findByAddress("#idTest .classTest box");
 	//std::vector<Box*> boxes = rootBox.findByAddress("box box box");
-
-	l.layout(&rootBox);
+	rootBox.layout();
 }
 
 //--------------------------------------------------------------
