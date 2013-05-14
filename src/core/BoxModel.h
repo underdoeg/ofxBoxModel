@@ -4,16 +4,13 @@
 #include "core/Property.h"
 #include "core/Unit.h"
 
-namespace ofx
-{
+namespace ofx {
 
-namespace boxModel
-{
+namespace boxModel {
 
 
 
-namespace core
-{
+namespace core {
 
 class LayoutableBase;
 
@@ -39,11 +36,9 @@ enum Floating {
 
 
 
-class BoxModel
-{
+class BoxModel {
 public:
-	class Event: public ofEventArgs
-	{
+	class Event: public ofEventArgs {
 	public:
 		Event(BoxModel* d) {
 			boxModel = d;
@@ -51,9 +46,19 @@ public:
 		BoxModel* boxModel;
 	};
 
-	class ReadOnlyFloat
-	{
+	class ReadOnlyFloat {
 	public:
+		class Event: public ofEventArgs {
+		public:
+			Event(float val, ReadOnlyFloat* s) {
+				value = val;
+				sender = s;
+			}
+
+			float value;
+			ReadOnlyFloat* sender;
+		};
+
 		ReadOnlyFloat() {
 			value = 0;
 		};
@@ -61,9 +66,13 @@ public:
 		operator const float & () const {
 			return value;
 		}
+
+		ofEvent<Event> changed;
 	private:
 		const float& operator=(float val) {
 			value = val;
+			Event e(val, this);
+			ofNotifyEvent(changed, e);
 			return value;
 		}
 
@@ -72,18 +81,40 @@ public:
 		friend class core::LayoutableBase;
 	};
 
-	class ReadOnlyPoint
-	{
+	class ReadOnlyPoint {
 	public:
-		ReadOnlyFloat x;
-		ReadOnlyFloat y;
+		class Event: public ofEventArgs {
+		public:
+			Event(Point p, ReadOnlyPoint* s) {
+				value = p;
+				sender = s;
+			}
+
+			Point value;
+			ReadOnlyPoint* sender;
+		};
+
+		ReadOnlyPoint() {
+			ofAddListener(x.changed, this, &ReadOnlyPoint::onChange);
+			ofAddListener(y.changed, this, &ReadOnlyPoint::onChange);
+		}
+
 		operator const Point() const {
 			const Point p(x, y);
 			return p;
 		}
 
-		Point  operator+( const Point& pnt ) const{
+		Point  operator+( const Point& pnt ) const {
 			return Point(x+pnt.x, y+pnt.y);
+		}
+
+		ofEvent<Event> changed;
+		ReadOnlyFloat x;
+		ReadOnlyFloat y;
+	private:
+		void onChange(ReadOnlyFloat::Event& ep) {
+			Event e(Point(x,y), this);
+			ofNotifyEvent(changed, e);
 		}
 	};
 

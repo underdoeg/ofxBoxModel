@@ -27,7 +27,9 @@ public:
 		BoxModelType* box = crtpSelfPtr<Layoutable, BoxModelType>(this);
 
 		//TODO: only listen to events that alter the size of a box
-		ofAddListener(box->changed, this, &Layoutable<BoxModelType>::onChange);
+		//ofAddListener(box->changed, this, &Layoutable<BoxModelType>::onChange);
+		ofAddListener(box->contentSize.changed, this, &Layoutable<BoxModelType>::onSizeChange);
+
 		ofAddListener(box->childAdded, this, &Layoutable<BoxModelType>::onChildrenChange);
 		ofAddListener(box->childRemoved, this, &Layoutable<BoxModelType>::onChildrenChange);
 	}
@@ -83,6 +85,9 @@ protected:
 		layout();
 	}
 
+	void onSizeChange(BoxModel::ReadOnlyPoint::Event& e){
+		layout();
+	}
 
 	void onChildrenChange(typename core::TreeNode< BoxModelType >::Event& e){
 		layout();

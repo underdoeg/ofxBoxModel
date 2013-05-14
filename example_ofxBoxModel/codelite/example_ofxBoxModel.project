@@ -41,8 +41,6 @@
           <File Name="../../src/debug/Print.h"/>
           <File Name="../../src/debug/Print.cpp"/>
         </VirtualDirectory>
-        <VirtualDirectory Name="layout"/>
-        <VirtualDirectory Name="html"/>
       </VirtualDirectory>
     </VirtualDirectory>
   </VirtualDirectory>
