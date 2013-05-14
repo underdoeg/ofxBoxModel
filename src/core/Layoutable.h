@@ -3,6 +3,7 @@
 
 #include "core/BoxModel.h"
 #include "core/Utils.h"
+#include "core/TreeNode.h"
 
 namespace ofx {
 
@@ -22,13 +23,21 @@ public:
 template <class BoxModelType>
 class Layoutable: public LayoutableBase {
 public:
-	Layoutable() {}
+	Layoutable() {
+		BoxModelType* box = crtpSelfPtr<Layoutable, BoxModelType>(this);
+
+		//TODO: only listen to events that alter the size of a box
+		ofAddListener(box->changed, this, &Layoutable<BoxModelType>::onChange);
+		ofAddListener(box->childAdded, this, &Layoutable<BoxModelType>::onChildrenChange);
+		ofAddListener(box->childRemoved, this, &Layoutable<BoxModelType>::onChildrenChange);
+	}
 	~Layoutable() {}
 
 	virtual void layout() {
+		curPosition.set(0,0);
 		BoxModelType* t = crtpSelfPtr<Layoutable, BoxModelType>(this);
 		for(typename core::TreeNode<BoxModelType>::ChildrenIterator it = t->childrenBegin(); it < t->childrenEnd(); it++) {
-			(*it)->layout();
+			//(*it)->layout();
 			placeBox(*it, t);
 			lastBox = *it;
 			lastTypedBox = *it;
@@ -70,8 +79,13 @@ public:
 	}
 
 protected:
-	void onUnitChange(){
+	void onChange(BoxModel::Event& e){
+		layout();
+	}
 
+
+	void onChildrenChange(typename core::TreeNode< BoxModelType >::Event& e){
+		layout();
 	}
 
 	core::BoxModel* lastBox;

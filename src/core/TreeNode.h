@@ -7,6 +7,7 @@
 #include "core/BoxModel.h"
 #include <cassert>
 #include "core/Utils.h"
+#include "ofMain.h"
 
 namespace ofx {
 
@@ -31,10 +32,20 @@ protected:
 ****/
 
 template <class BoxModelType>
-class TreeNode{
+class TreeNode {
 public:
 	typedef std::vector<BoxModelType*> ChildrenList;
 	typedef typename ChildrenList::iterator ChildrenIterator;
+
+	class Event: public ofEventArgs {
+	public:
+		Event(BoxModelType* d, BoxModelType* c) {
+			sender = d;
+			other = c;
+		}
+		BoxModelType* sender;
+		BoxModelType* other;
+	};
 
 	TreeNode() {};
 	~TreeNode() {};
@@ -47,22 +58,26 @@ public:
 	ChildrenIterator childrenEnd() {
 		return children.end();
 	}
-	/***/
 
+	/***/
 	BoxModelType* operator[](unsigned int index) {
 		assert(index < children.size());
 		return children[index];
 	}
 
 	void addChild(BoxModelType* child) {
+		BoxModelType* bm = crtpSelfPtr<TreeNode, BoxModelType>(this);
 		children.push_back(child);
-		child->setParent(crtpSelfPtr<TreeNode, BoxModelType>(this));
-		//childrenChanged();
+		child->setParent(bm);
+		Event e(bm, child);
+		ofNotifyEvent(childAdded, e);
 	}
 
 	void removeChild(BoxModelType* child) {
 		children.erase(std::remove(children.begin(), children.end(), child), children.end());
-		//childrenChanged();
+		BoxModelType* bm = crtpSelfPtr<TreeNode, BoxModelType>(this);
+		Event e(bm, child);
+		ofNotifyEvent(childRemoved, e);
 	}
 
 	int getNumChildren() {
@@ -77,20 +92,15 @@ public:
 		return children[index];
 	}
 
+	ofEvent<Event> childAdded;
+	ofEvent<Event> childRemoved;
+
 private:
-	void setParent(BoxModelType* p){
+	void setParent(BoxModelType* p) {
 		bParent = true;
 		parent = parent;
 	}
 
-	/*
-	void childrenChanged() {
-		childrenBase.clear();
-		for(typename std::vector<BoxModelType*>::iterator it = children.begin(); it<children.end(); it++) {
-			childrenBase.push_back(*it);
-		}
-	}
-	 * */
 	ChildrenList children;
 	bool bParent;
 	BoxModelType* parent;
