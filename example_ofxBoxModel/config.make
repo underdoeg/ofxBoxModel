@@ -82,8 +82,8 @@
 # PROJECT DEFINES
 #   Create a space-delimited list of DEFINES. The list will be converted into 
 #   CFLAGS with the "-D" flag later in the makefile.
-#
 #		(default) PROJECT_DEFINES = (blank)
+#
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
@@ -104,7 +104,7 @@
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-# PROJECT_CFLAGS = 
+# PROJECT_CFLAGS
 
 ################################################################################
 # PROJECT OPTIMIZATION CFLAGS

@@ -44,6 +44,8 @@ void testApp::setup()
 
 	rootBox.setColorChildren(Color(200));
 
+	rootBox.loadCss("style.css");
+
 	std::vector<Box*> boxes = rootBox.findByAddress("#idTest .classTest box");
 	//std::vector<Box*> boxes = rootBox.findByAddress("box box box");
 }

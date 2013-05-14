@@ -6,6 +6,7 @@
 #include "Addressable.h"
 #include "Styleable.h"
 #include "Layoutable.h"
+#include "css/CssLoadable.h"
 
 namespace ofx
 {
@@ -20,7 +21,7 @@ namespace core
  * A Basic box
  ******************/
 
-class Box: public BoxModel, public TreeNode<Box>, public Addressable<Box>, public Styleable<Box>, public Layoutable<Box>
+class Box: public BoxModel, public TreeNode<Box>, public Addressable<Box>, public Styleable<Box>, public Layoutable<Box>, public css::CssLoadable<Box>
 {
 public:
 	Box();

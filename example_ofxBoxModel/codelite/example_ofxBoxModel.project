@@ -5,6 +5,56 @@
       <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
     </Plugin>
   </Plugins>
+  <VirtualDirectory Name="libs">
+    <VirtualDirectory Name="libwpacaplet">
+      <VirtualDirectory Name="include">
+        <VirtualDirectory Name="libwapcaplet">
+          <File Name="../../libs/libwpacaplet/include/libwapcaplet/libwapcaplet.h"/>
+        </VirtualDirectory>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <VirtualDirectory Name="libcss">
+      <VirtualDirectory Name="include">
+        <VirtualDirectory Name="libcss">
+          <File Name="../../libs/libcss/include/libcss/hint.h"/>
+          <File Name="../../libs/libcss/include/libcss/errors.h"/>
+          <File Name="../../libs/libcss/include/libcss/computed.h"/>
+          <File Name="../../libs/libcss/include/libcss/properties.h"/>
+          <File Name="../../libs/libcss/include/libcss/functypes.h"/>
+          <File Name="../../libs/libcss/include/libcss/fpmath.h"/>
+          <File Name="../../libs/libcss/include/libcss/types.h"/>
+          <File Name="../../libs/libcss/include/libcss/select.h"/>
+          <File Name="../../libs/libcss/include/libcss/font_face.h"/>
+          <File Name="../../libs/libcss/include/libcss/stylesheet.h"/>
+          <File Name="../../libs/libcss/include/libcss/libcss.h"/>
+        </VirtualDirectory>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <VirtualDirectory Name="parserutils">
+      <VirtualDirectory Name="include">
+        <VirtualDirectory Name="parserutils">
+          <VirtualDirectory Name="input">
+            <File Name="../../libs/parserutils/include/parserutils/input/inputstream.h"/>
+          </VirtualDirectory>
+          <VirtualDirectory Name="utils">
+            <File Name="../../libs/parserutils/include/parserutils/utils/stack.h"/>
+            <File Name="../../libs/parserutils/include/parserutils/utils/buffer.h"/>
+            <File Name="../../libs/parserutils/include/parserutils/utils/vector.h"/>
+          </VirtualDirectory>
+          <VirtualDirectory Name="charset">
+            <File Name="../../libs/parserutils/include/parserutils/charset/utf8.h"/>
+            <File Name="../../libs/parserutils/include/parserutils/charset/utf16.h"/>
+            <File Name="../../libs/parserutils/include/parserutils/charset/mibenum.h"/>
+            <File Name="../../libs/parserutils/include/parserutils/charset/codec.h"/>
+          </VirtualDirectory>
+          <File Name="../../libs/parserutils/include/parserutils/parserutils.h"/>
+          <File Name="../../libs/parserutils/include/parserutils/errors.h"/>
+          <File Name="../../libs/parserutils/include/parserutils/functypes.h"/>
+          <File Name="../../libs/parserutils/include/parserutils/types.h"/>
+        </VirtualDirectory>
+      </VirtualDirectory>
+    </VirtualDirectory>
+  </VirtualDirectory>
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
@@ -40,6 +90,10 @@
           <File Name="../../src/debug/DebugDrawer.cpp"/>
           <File Name="../../src/debug/Print.h"/>
           <File Name="../../src/debug/Print.cpp"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="css">
+          <File Name="../../src/css/CssLoadable.h"/>
+          <File Name="../../src/css/CssLoadable.cpp"/>
         </VirtualDirectory>
       </VirtualDirectory>
     </VirtualDirectory>
@@ -129,4 +183,7 @@
       </Completion>
     </Configuration>
   </Settings>
+  <VirtualDirectory Name="data">
+    <File Name="../bin/data/style.css"/>
+  </VirtualDirectory>
 </CodeLite_Project>
