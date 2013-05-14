@@ -3,6 +3,7 @@
 
 #include "core/BoxModel.h"
 #include "debug/Print.h"
+#include <regex.h>
 
 namespace ofx {
 
@@ -23,7 +24,8 @@ public:
 	}
 
 	void setCss(std::string cssDefinition) {
-		
+		//std::vector<string>
+		//use slre https://code.google.com/p/slre/source/checkout ?
 	}
 };
 

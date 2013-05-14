@@ -104,7 +104,7 @@
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-# PROJECT_CFLAGS
+# PROJECT_CFLAGS =
 
 ################################################################################
 # PROJECT OPTIMIZATION CFLAGS
