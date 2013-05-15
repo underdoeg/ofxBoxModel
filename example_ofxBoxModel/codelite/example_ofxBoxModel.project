@@ -5,6 +5,16 @@
       <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
     </Plugin>
   </Plugins>
+  <VirtualDirectory Name="libs">
+    <VirtualDirectory Name="slre">
+      <VirtualDirectory Name="include">
+        <File Name="../../libs/slre/include/slre.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="src">
+        <File Name="../../libs/slre/src/slre.c"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
+  </VirtualDirectory>
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
@@ -34,16 +44,13 @@
           <File Name="../../src/core/Addressable.h"/>
           <File Name="../../src/core/Styleable.h"/>
           <File Name="../../src/core/Layoutable.h"/>
+          <File Name="../../src/core/CssLoadable.h"/>
         </VirtualDirectory>
         <VirtualDirectory Name="debug">
           <File Name="../../src/debug/DebugDrawer.h"/>
           <File Name="../../src/debug/DebugDrawer.cpp"/>
           <File Name="../../src/debug/Print.h"/>
           <File Name="../../src/debug/Print.cpp"/>
-        </VirtualDirectory>
-        <VirtualDirectory Name="css">
-          <File Name="../../src/css/CssLoadable.h"/>
-          <File Name="../../src/css/CssLoadable.cpp"/>
         </VirtualDirectory>
       </VirtualDirectory>
     </VirtualDirectory>

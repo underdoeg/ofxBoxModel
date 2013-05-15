@@ -38,7 +38,7 @@ public:
 	}
 
 	void setId(std::string str) {
-		str = trimString(str);
+		str = stringTrim(str);
 		if(str == id)
 			return;
 		if(str.size() == 0) {
@@ -82,7 +82,7 @@ public:
 		BoxModelType* rootNode = core::crtpSelfPtr<Addressable, BoxModelType>(this);
 
 		//split the string into address fragments
-		std::vector<std::string> pathSplitted = splitString(path);
+		std::vector<std::string> pathSplitted = stringSplit(path);
 
 		std::vector<BoxModelType*> ret;
 
@@ -93,7 +93,7 @@ public:
 		//go through the path
 		for(std::vector<std::string>::iterator itPath = pathSplitted.begin(); itPath < pathSplitted.end(); itPath++) {
 
-			std::string item = trimString(*itPath);
+			std::string item = stringTrim(*itPath);
 
 			std::vector<BoxModelType*> tmp;
 
