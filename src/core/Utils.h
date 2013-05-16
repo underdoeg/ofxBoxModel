@@ -35,18 +35,27 @@ Derived& crtpSelf(Type& t) {
 
 /** is base of implementation **/
 template <typename B, typename D>
-struct is_base_of // check if B is a base of D
-{
-    typedef char yes[1];
-    typedef char no[2];
+struct is_base_of { // check if B is a base of D
+	typedef char yes[1];
+	typedef char no[2];
 
-    static yes& test(B*);
-    static no& test(...);
+	static yes& test(B*);
+	static no& test(...);
 
-    static D* get(void);
+	static D* get(void);
 
-    static const bool value = sizeof(test(get())) == sizeof(yes);
+	static const bool value = sizeof(test(get())) == sizeof(yes);
 };
+
+/*
+template <class Base>
+class CrtpUtils{
+protected:
+	Base* getTypedInstance(){
+		return crtpSelfPtr<CrtpUtils, Base>(this);
+	}
+};
+*/
 
 // really basic
 template <bool>
@@ -63,15 +72,13 @@ struct custom_static_assert<true> {}; // only true is defined
 /* STRING STUFF																*/
 /****************************************************************************/
 
-std::string stringTrim(std::string &s);
-
+std::string stringTrim(std::string s);
 std::vector<std::string> stringSplit(const std::string &in, char delimiter = ' ');
 std::vector<std::string> stringSplit(const std::string & source, const std::string & delimiter);
-
 std::string stringReplace(std::string &s, std::string toReplace, std::string replaceWith);
-
 std::string stringRemoveLineBreaks(std::string);
-
+std::string stringToLower(std::string s);
+float stringToFloat(std::string s);
 
 }
 

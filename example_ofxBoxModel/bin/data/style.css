@@ -1,14 +1,12 @@
 .classTest{
-	background-color: red;
-	color: black;
+	margin: 10px;
 }
+
+.classTest .classTest{
+	margin: 5px;
+}
+
 /* this is a comment */
-
 #rootBox{
-	background-color: #fff;
+	padding: 30px;
 }
-
-/* this is
-
-
-a comment */

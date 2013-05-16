@@ -18,17 +18,14 @@ void testApp::setup()
 	for(unsigned int i = 0; i<20; i++) {
 		Box* b = new Box();
 		b->width = ofRandom(100, 150);
-		b->height = 100;
+		b->height = Unit::Auto;
 		b->floating = FloatLeft;
-		b->marginLeft = 20;
-		b->marginTop = 30;
 		b->addClass("classTest");
-		b->padding = 20;
 
 		//b->setBgColor((int)ofRandom(255), (int)ofRandom(255), (int)ofRandom(255));
 		//b->setColor((int)ofRandom(255), (int)ofRandom(255), (int)ofRandom(255));
 
-		if(i<10) {
+		if(i<1) {
 			for(unsigned int j=0; j<10; j++) {
 				Box* b2 = new Box();
 				b2->width = ofRandom(10, 30);
@@ -46,8 +43,10 @@ void testApp::setup()
 
 	rootBox.loadCss("style.css");
 
-	std::vector<Box*> boxes = rootBox.findByAddress("#idTest .classTest box");
-	//std::vector<Box*> boxes = rootBox.findByAddress("box box box");
+	rootBox.layout();
+
+	//std::vector<Box*> boxes = rootBox.findByAddress("#idTest .classTest box");
+	//cout << boxes.size() << endl;
 }
 
 //--------------------------------------------------------------

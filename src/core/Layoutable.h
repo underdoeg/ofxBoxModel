@@ -13,11 +13,7 @@ namespace core {
 
 class LayoutableBase {
 public:
-	void setBoxPosition(core::BoxModel* b, core::Point p) {
-		b->position.x = p.x;
-		b->position.y = p.y;
-		b->recalculate();
-	}
+
 };
 
 template <class BoxModelType>
@@ -32,10 +28,13 @@ public:
 
 		ofAddListener(box->childAdded, this, &Layoutable<BoxModelType>::onChildrenChange);
 		ofAddListener(box->childRemoved, this, &Layoutable<BoxModelType>::onChildrenChange);
+
+		ofAddListener(box->recalculated, this, &Layoutable<BoxModelType>::onRecalculate);
 	}
 	~Layoutable() {}
 
 	virtual void layout() {
+		maxContentSize.set(0, 0);
 		curPosition.set(0,0);
 		BoxModelType* t = crtpSelfPtr<Layoutable, BoxModelType>(this);
 		for(typename core::TreeNode<BoxModelType>::ChildrenIterator it = t->childrenBegin(); it < t->childrenEnd(); it++) {
@@ -46,7 +45,7 @@ public:
 		}
 	}
 
-	virtual void placeTypedBox(BoxModelType* box, BoxModelType* thisBox){
+	virtual void placeTypedBox(BoxModelType* box, BoxModelType* thisBox) {
 		placeBox(box, thisBox);
 	}
 
@@ -59,18 +58,20 @@ public:
 				rowMaxHeight = 0;
 			}
 			curPosition += core::Point(box->marginLeft.getValueCalculated(), 0);
-			setBoxPosition(box, curPosition + core::Point(0, box->marginTop.getValueCalculated()));
+			//setBoxPosition(box, curPosition + core::Point(0, box->marginTop.getValueCalculated()));
+			box->forcePosition(curPosition + core::Point(0, box->marginTop.getValueCalculated()));
 			curPosition.x += box->outerSize.x - box->marginLeft.getValueCalculated();
 			break;
 		case core::FloatRight:
-			cout << "SORRY FLOAT RIGHT IS NOT IMPLEMENTED YET" << endl;
+			debug::warning("SORRY FLOAT RIGHT IS NOT IMPLEMENTED YET");
 			break;
 		default:
 			curPosition.x = 0;
 			curPosition.y += rowMaxHeight;
 			rowMaxHeight = 0;
 
-			setBoxPosition(box, curPosition + core::Point(box->marginLeft.getValueCalculated(), box->marginTop.getValueCalculated()));
+			box->forcePosition(curPosition + core::Point(box->marginLeft.getValueCalculated(), box->marginTop.getValueCalculated()));
+			//setBoxPosition(box, curPosition + core::Point(box->marginLeft.getValueCalculated(), box->marginTop.getValueCalculated()));
 
 			break;
 		}
@@ -81,22 +82,45 @@ public:
 	}
 
 protected:
-	void onChange(BoxModel::Event& e){
+	void onChange(BoxModel::Event& e) {
 		layout();
 	}
 
-	void onSizeChange(BoxModel::ReadOnlyPoint::Event& e){
+	void onSizeChange(BoxModel::ReadOnlyPoint::Event& e) {
 		layout();
 	}
 
-	void onChildrenChange(typename core::TreeNode< BoxModelType >::Event& e){
+	void onChildrenChange(typename core::TreeNode< BoxModelType >::Event& e) {
 		layout();
+	}
+
+	void onRecalculate(BoxModel::Event& e) {
+		BoxModelType* t = crtpSelfPtr<Layoutable, BoxModelType>(this);
+		if(t->width == Unit::Auto) {
+			float maxW = 0;
+			for(typename core::TreeNode<BoxModelType>::ChildrenIterator it = t->childrenBegin(); it < t->childrenEnd(); it++) {
+				float r = (*it)->position.x + (*it)->size.x;
+				if( r > maxW)
+					maxW = r;
+			}
+			t->forceContentSize(maxW, t->contentSize.y);
+		}
+		if(t->height == Unit::Auto) {
+			float maxH = 0;
+			for(typename core::TreeNode<BoxModelType>::ChildrenIterator it = t->childrenBegin(); it < t->childrenEnd(); it++) {
+				float r = (*it)->position.y + (*it)->size.y;
+				if( r >maxH)
+					maxH = r;
+			}
+			t->forceContentSize(t->contentSize.x, maxH);
+		}
 	}
 
 	core::BoxModel* lastBox;
 	BoxModelType* lastTypedBox;
 
 private:
+	core::Point maxContentSize;
 	core::Point curPosition;
 	float rowMaxHeight;
 };

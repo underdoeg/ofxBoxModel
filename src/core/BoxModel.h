@@ -78,7 +78,6 @@ public:
 
 		float value;
 		friend class BoxModel;
-		friend class core::LayoutableBase;
 	};
 
 	class ReadOnlyPoint {
@@ -162,6 +161,7 @@ public:
 	ofEvent<Event> sizeChanged;
 	ofEvent<Event> widthChanged;
 	ofEvent<Event> heightChanged;
+	ofEvent<Event> recalculated;
 
 	UnitGroup padding;
 	UnitGroup margin;
@@ -172,6 +172,12 @@ public:
 	ReadOnlyPoint size;
 	ReadOnlyPoint contentSize;
 	ReadOnlyPoint contentPosition;
+
+	void forcePosition(Point p);
+	void forcePosition(float x, float y);
+	void forceSize(float w, float h);
+	void forceOuterSize(float w, float h);
+	void forceContentSize(float w, float h);
 	//Point containerSize;
 
 	void recalculate();

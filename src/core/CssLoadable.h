@@ -11,6 +11,9 @@ namespace boxModel {
 
 namespace core {
 
+/***********************************************************************************************/
+
+
 struct CssProperty {
 	CssProperty(std::string k, std::string v) {
 		key = k;
@@ -20,10 +23,41 @@ struct CssProperty {
 	std::string value;
 };
 
+class CssPropertyParserPtrBase {
+public:
+	virtual void call(std::string, std::string) = 0;
+};
+
+template <typename T>
+class CssPropertyParserPtr : public CssPropertyParserPtrBase {
+public:
+	CssPropertyParserPtr(T* who, void (T::*memfunc)(std::string, std::string))
+		: pt2Member(memfunc), inst(who) {
+	}
+	void call(std::string s, std::string k) {
+		(inst->*pt2Member)(s, k);
+	}
+private:
+	void (T::*pt2Member)(std::string, std::string);
+	T *inst;
+};
+
+template <typename T>
+CssPropertyParserPtrBase * makeCssPropertyParserPtr(T* who, void (T::*memfunc)(std::string, std::string)) {
+	return new CssPropertyParserPtr<T>(who, memfunc);
+}
+
+/***********************************************************************************************/
+
 template <class BoxModelType>
 class CssLoadable {
 public:
-	CssLoadable() {};
+	typedef std::map<std::string, std::vector<CssProperty> > PropertyList;
+	typedef std::map<std::string, CssPropertyParserPtrBase*> PropertyParserList;
+
+	CssLoadable() {
+		registerParsers();
+	};
 	~CssLoadable() {};
 
 	void loadCss(std::string path) {
@@ -67,8 +101,8 @@ public:
 							*itKV = stringTrim(*itKV);
 						}
 						if(keyAndValue.size() == 2) {
-							std::string key = keyAndValue[0];
-							std::string value = keyAndValue[1];
+							std::string key = stringToLower(keyAndValue[0]);
+							std::string value = stringToLower(keyAndValue[1]);
 
 							//at this point we have address, key and value, so store it for later use
 							CssProperty p(key, value);
@@ -85,7 +119,76 @@ public:
 				}
 			}
 		}
+
+		printProperties();
+
+		applyCss();
 	}
+
+	void registerCssPropertyParser(std::string property, CssPropertyParserPtrBase* func) {
+		propertyParsers[stringToLower(property)] = func;
+	}
+
+	void applyCssProperty(std::string key, std::string value) {
+		applyCssProperty(CssProperty(key, value));
+	}
+
+	void applyCssProperty(CssProperty p) {
+		if (propertyParsers.find(p.key) == propertyParsers.end() ) {
+			debug::warning("CSS unknown key: "+p.key);
+			return;
+		}
+		propertyParsers[p.key]->call(p.key, p.value);
+	}
+
+protected:
+	Unit parseCssNumber(std::string val) {
+		Unit u;
+		std::string num = "";
+		if(val.rfind("%") != std::string::npos){
+			u = Unit::Pixel;
+			num = stringTrim(stringReplace(val, "%", ""));
+		}else if(val.rfind("px") != std::string::npos){
+			u = Unit::Pixel;
+			num = stringTrim(stringReplace(val, "px", ""));
+		}else{
+			u = Unit::Pixel;
+			num = val;
+		}
+		u = stringToFloat(num);
+		return u;
+	}
+
+	void applyCss() {
+		//apply CSS style to self and children found by addresses stored in the property list
+		BoxModelType* instance = crtpSelfPtr<CssLoadable, BoxModelType>(this);
+		for(PropertyList::iterator it = properties.begin(); it != properties.end(); it++) {
+			std::vector<BoxModelType*> boxes = instance->findByAddress(it->first);
+			for(typename std::vector<BoxModelType*>::iterator itBoxes = boxes.begin(); itBoxes < boxes.end(); itBoxes++) {
+				for(std::vector<CssProperty>::iterator itProps = it->second.begin(); itProps < it->second.end(); itProps++) {
+					(*itBoxes)->applyCssProperty(*itProps);
+				}
+			}
+		}
+	}
+
+	void registerParsers() {
+#define REGISTER_PARSER(NAME, FUNCTION) registerCssPropertyParser(NAME, makeCssPropertyParserPtr<CssLoadable<BoxModelType> >(this, &CssLoadable<BoxModelType>::FUNCTION));
+		REGISTER_PARSER("margin", pMargin)
+		REGISTER_PARSER("padding", pPadding)
+#undef REGISTER_PARSER
+	}
+
+	void pMargin(std::string key, std::string value) {
+		BoxModelType* instance = crtpSelfPtr<CssLoadable, BoxModelType>(this);
+		instance->margin = parseCssNumber(value);
+	}
+
+	void pPadding(std::string key, std::string value) {
+		BoxModelType* instance = crtpSelfPtr<CssLoadable, BoxModelType>(this);
+		instance->margin = parseCssNumber(value);
+	}
+
 private:
 	//just for internal debugging usage
 	void printStringVector(std::vector<std::string> r) {
@@ -95,10 +198,20 @@ private:
 	}
 
 	void printProperties() {
-
+		std::string logString;
+		for(PropertyList::iterator it = properties.begin(); it != properties.end(); it++) {
+			logString += "\n\n"+it->first + "\n==============\n";
+			for(std::vector<CssProperty>::iterator it2 = it->second.begin(); it2 != it->second.end(); it2++) {
+				logString += (*it2).key+": "+(*it2).value;
+				if(it2 != it->second.end()-1)
+					logString += "\n";
+			}
+		}
+		debug::notice(logString);
 	}
 
-	std::map<std::string, std::vector<CssProperty> > properties;
+	PropertyList properties;
+	PropertyParserList propertyParsers;
 };
 
 }

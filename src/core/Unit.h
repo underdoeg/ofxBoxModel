@@ -13,7 +13,7 @@ namespace core
 {
 
 class BoxModel;
-	
+
 class Unit
 {
 public:
@@ -54,6 +54,11 @@ public:
 		set(t);
 		return type;
 	}
+
+	const Unit operator=(Unit t) {
+		set(t);
+		return t;
+	}
 	
 	void set(float val) {
 
@@ -69,6 +74,15 @@ public:
 		if(type == t)
 			return;
 		type = t;
+		Event e(this);
+		ofNotifyEvent(changed, e);
+	}
+
+	void set(Unit u) {
+		if(value == u.value && type == u.type)
+			return;
+		type = u.type;
+		value = u.value;
 		Event e(this);
 		ofNotifyEvent(changed, e);
 	}
@@ -89,7 +103,9 @@ public:
 		return getValueCalculated(containerSize);
 	}
 
-	friend ostream& operator<<(ostream& os, Unit& unit);
+	std::ostream& operator<<(std::ostream& os){
+
+	}
 
 	ofEvent<Event> changed;
 
@@ -140,7 +156,18 @@ public:
 		return t;
 	}
 
+	const Unit operator=(Unit u) {
+		set(u);
+		return u;
+	}
+
 	void set(float value) {
+		for(typename std::vector<Unit*>::iterator it = units.begin(); it < units.end(); it++){
+			(*it)->set(value);
+		}
+	}
+
+	void set(Unit value) {
 		for(typename std::vector<Unit*>::iterator it = units.begin(); it < units.end(); it++){
 			(*it)->set(value);
 		}
