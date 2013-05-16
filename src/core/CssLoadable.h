@@ -186,7 +186,7 @@ protected:
 
 	void pPadding(std::string key, std::string value) {
 		BoxModelType* instance = crtpSelfPtr<CssLoadable, BoxModelType>(this);
-		instance->margin = parseCssNumber(value);
+		instance->padding = parseCssNumber(value);
 	}
 
 private:

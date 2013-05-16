@@ -37,6 +37,7 @@ ofx::boxModel::core::BoxModel::BoxModel() {
 
 void ofx::boxModel::core::BoxModel::recalculate() {
 	//get all the values
+
 	float _width = width.getValueCalculated();
 	float _height = height.getValueCalculated();
 

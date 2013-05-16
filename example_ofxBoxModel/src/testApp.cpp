@@ -12,7 +12,6 @@ void testApp::setup()
 	rootBox.padding = 30;
 	rootBox.setBgColor(20);
 
-	rootBox.addClass("classTest");
 	rootBox.setId("idTest");
 
 	for(unsigned int i = 0; i<20; i++) {
@@ -28,7 +27,7 @@ void testApp::setup()
 		if(i<1) {
 			for(unsigned int j=0; j<10; j++) {
 				Box* b2 = new Box();
-				b2->width = ofRandom(10, 30);
+				b2->width = 10;
 				b2->height = 10;
 				b2->addClass("classTest");
 				b->addChild(b2);
@@ -42,8 +41,6 @@ void testApp::setup()
 	rootBox.setColorChildren(Color(200));
 
 	rootBox.loadCss("style.css");
-
-	rootBox.layout();
 
 	//std::vector<Box*> boxes = rootBox.findByAddress("#idTest .classTest box");
 	//cout << boxes.size() << endl;

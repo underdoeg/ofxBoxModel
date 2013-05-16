@@ -1,9 +1,10 @@
 .classTest{
-	margin: 10px;
+	padding: 20px;
 }
 
 .classTest .classTest{
 	margin: 5px;
+	padding: 2px;
 }
 
 /* this is a comment */

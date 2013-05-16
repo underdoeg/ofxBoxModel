@@ -41,10 +41,10 @@ public:
 	public:
 		Event(BoxModelType* d, BoxModelType* c) {
 			sender = d;
-			other = c;
+			box = c;
 		}
 		BoxModelType* sender;
-		BoxModelType* other;
+		BoxModelType* box;
 	};
 
 	TreeNode() {};
