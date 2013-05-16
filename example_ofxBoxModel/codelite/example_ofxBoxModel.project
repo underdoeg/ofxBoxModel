@@ -11,7 +11,7 @@
         <File Name="../../libs/slre/include/slre.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="src">
-        <File Name="../../libs/slre/src/slre.c"/>
+        <File Name="../../libs/slre/src/slre.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
   </VirtualDirectory>

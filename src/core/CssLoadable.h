@@ -3,7 +3,7 @@
 
 #include "core/BoxModel.h"
 #include "debug/Print.h"
-#include <regex.h>
+#include <slre.h>
 
 namespace ofx {
 
@@ -34,6 +34,16 @@ public:
 	void setCss(std::string cssDefinition) {
 		//first remove lin breaks & split for blocks
 		cssDefinition = stringRemoveLineBreaks(cssDefinition);
+
+		//remove comments
+		std::vector<std::string> commentBlocks = stringSplit(cssDefinition, "*/");
+		cssDefinition = "";
+		for(std::vector<std::string>::iterator itBlock = commentBlocks.begin(); itBlock<commentBlocks.end(); itBlock++) {
+			std::vector<std::string> commentBlocks2 = stringSplit(*itBlock, "/*");
+			cssDefinition += commentBlocks2[0];
+		}
+
+		//split by blocks
 		std::vector<std::string> blocks = stringSplit(cssDefinition, '}');
 
 		//loop all blocks
@@ -53,10 +63,10 @@ public:
 						std::vector<std::string> keyAndValue= stringSplit(*itProp, ':');
 
 						//trim the result
-						for(std::vector<std::string>::iterator itKV = keyAndValue.begin(); itKV<keyAndValue.end(); itKV++){
+						for(std::vector<std::string>::iterator itKV = keyAndValue.begin(); itKV<keyAndValue.end(); itKV++) {
 							*itKV = stringTrim(*itKV);
 						}
-						if(keyAndValue.size() == 2){
+						if(keyAndValue.size() == 2) {
 							std::string key = keyAndValue[0];
 							std::string value = keyAndValue[1];
 
@@ -66,7 +76,7 @@ public:
 								properties[address] = std::vector<CssProperty>();
 							}*/
 							properties[address].push_back(p);
-						}else{
+						} else {
 							debug::warning("CSS ERROR near "+address+" -> "+keyAndValue[0]);
 						}
 					}
@@ -84,7 +94,7 @@ private:
 		}
 	}
 
-	void printProperties(){
+	void printProperties() {
 
 	}
 

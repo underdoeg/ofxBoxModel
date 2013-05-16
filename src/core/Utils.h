@@ -66,10 +66,12 @@ struct custom_static_assert<true> {}; // only true is defined
 std::string stringTrim(std::string &s);
 
 std::vector<std::string> stringSplit(const std::string &in, char delimiter = ' ');
+std::vector<std::string> stringSplit(const std::string & source, const std::string & delimiter);
 
 std::string stringReplace(std::string &s, std::string toReplace, std::string replaceWith);
 
 std::string stringRemoveLineBreaks(std::string);
+
 
 }
 

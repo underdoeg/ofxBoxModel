@@ -45,6 +45,28 @@ std::vector<std::string> stringSplit(const std::string &s, char delim)
 	return elems;
 }
 
+vector <string> stringSplit(const string & source, const string & delimiter) {
+	vector<string> result;
+	if (delimiter.empty()) {
+		result.push_back(source);
+		return result;
+	}
+	std::string::const_iterator substart = source.begin(), subend;
+	while (true) {
+		subend = search(substart, source.end(), delimiter.begin(), delimiter.end());
+		string sub(substart, subend);
+		
+		if (!sub.empty()) {
+			result.push_back(sub);
+		}
+		if (subend == source.end()) {
+			break;
+		}
+		substart = subend + delimiter.size();
+	}
+	return result;
+}
+
 std::string stringReplace(std::string &s, std::string toReplace, std::string replaceWith)
 {
     return(s.replace(s.find(toReplace), toReplace.length(), replaceWith));

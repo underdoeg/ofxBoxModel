@@ -412,7 +412,7 @@ static int lowercase(const char *s) {
 }
 
 static int casecmp(const void *p1, const void *p2, size_t len) {
-  const char *s1 = p1, *s2 = p2;
+  const char *s1 = (char*)p1, *s2 = (char*)p2;
   int diff = 0;
 
   if (len > 0)
