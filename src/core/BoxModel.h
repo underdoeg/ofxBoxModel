@@ -70,6 +70,8 @@ public:
 		ofEvent<Event> changed;
 	private:
 		const float& operator=(float val) {
+			if(value == val)
+				return value;
 			value = val;
 			Event e(val, this);
 			ofNotifyEvent(changed, e);

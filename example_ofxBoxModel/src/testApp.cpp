@@ -18,12 +18,14 @@ void testApp::setup()
 		Box* b = new Box();
 		b->width = ofRandom(100, 150);
 		b->height = Unit::Auto;
+		b->width = Unit::Auto;
 		b->floating = FloatLeft;
 		b->addClass("classTest");
 
 		//b->setBgColor((int)ofRandom(255), (int)ofRandom(255), (int)ofRandom(255));
 		//b->setColor((int)ofRandom(255), (int)ofRandom(255), (int)ofRandom(255));
 
+		/*
 		if(i<1) {
 			for(unsigned int j=0; j<10; j++) {
 				Box* b2 = new Box();
@@ -34,6 +36,7 @@ void testApp::setup()
 				b2->floating = FloatLeft;
 			}
 		}
+		*/
 
 		rootBox.addChild(b);
 	}

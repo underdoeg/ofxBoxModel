@@ -56,31 +56,35 @@ void ofx::boxModel::core::BoxModel::recalculate() {
 	float _borderTop = borderTop.getValueCalculated();
 	float _borderBottom = borderBottom.getValueCalculated();
 
+	//if(width != Unit::Auto) {
 	size.x = _width;
-	size.y = _height;
 	outerSize.x = _marginLeft + _marginRight + size.x;
-	outerSize.y = _marginTop + _marginBottom + size.y;
 	contentSize.x = size.x - _paddingLeft - _paddingRight - _borderLeft - _borderRight;
-	contentSize.y = size.y - _paddingBottom - _paddingTop - _borderTop - _borderBottom;
+	//}
 	contentPosition.x = _paddingLeft + _borderLeft;
+
+	//if(height != Unit::Auto) {
+	size.y = _height;
+	outerSize.y = _marginTop + _marginBottom + size.y;
+	contentSize.y = size.y - _paddingBottom - _paddingTop - _borderTop - _borderBottom;
+	//}
 	contentPosition.y = _paddingTop + _borderTop;
 
 	Event e(this);
 	ofNotifyEvent(recalculated, e);
 }
 
-void ofx::boxModel::core::BoxModel::forcePosition(Point p)
-{
+void ofx::boxModel::core::BoxModel::forcePosition(Point p) {
 	forcePosition(p.x, p.y);
 }
 
-void ofx::boxModel::core::BoxModel::forcePosition(float x, float y)
-{
+void ofx::boxModel::core::BoxModel::forcePosition(float x, float y) {
 	position.x = x;
 	position.y = y;
 }
 
 void ofx::boxModel::core::BoxModel::forceContentSize(float w, float h) {
+
 	float _marginLeft = marginLeft.getValueCalculated();
 	float _marginRight = marginRight.getValueCalculated();
 	float _marginTop = marginTop.getValueCalculated();
@@ -104,6 +108,8 @@ void ofx::boxModel::core::BoxModel::forceContentSize(float w, float h) {
 	contentSize.y = h;
 	contentPosition.x = _paddingLeft + _borderLeft;
 	contentPosition.y = _paddingTop + _borderTop;
+
+
 }
 
 void ofx::boxModel::core::BoxModel::forceOuterSize(float w, float h) {

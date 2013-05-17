@@ -113,6 +113,8 @@ private:
 	float getValueCalculated(float parentSize) { //helper function, only for internal use
 		if(type == Percent)
 			return value*.01*parentSize;
+		else if(type == Auto)
+			return 0;
 		return value;
 	}
 

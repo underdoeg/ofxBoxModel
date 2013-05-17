@@ -102,7 +102,9 @@ protected:
 	}
 
 	void checkForAutoSize(){
+
 		BoxModelType* t = crtpSelfPtr<Layoutable, BoxModelType>(this);
+
 		if(t->width == Unit::Auto) {
 			float maxW = 0;
 			for(typename core::TreeNode<BoxModelType>::ChildrenIterator it = t->childrenBegin(); it < t->childrenEnd(); it++) {
