@@ -104,11 +104,13 @@ public:
 							std::string key = stringToLower(keyAndValue[0]);
 							std::string value = stringToLower(keyAndValue[1]);
 
+							//remove eventual space between number and pixel / %
+							cout << value << endl;
+							value = stringReplace(value, " px", "px");
+							value = stringReplace(value, " %", "%");
+
 							//at this point we have address, key and value, so store it for later use
 							CssProperty p(key, value);
-							/*if(properties.find(address) == properties.end()){
-								properties[address] = std::vector<CssProperty>();
-							}*/
 							properties[address].push_back(p);
 						} else {
 							debug::warning("CSS ERROR near "+address+" -> "+keyAndValue[0]);
@@ -145,18 +147,29 @@ protected:
 	Unit parseCssNumber(std::string val) {
 		Unit u;
 		std::string num = "";
-		if(val.rfind("%") != std::string::npos){
+		if(val.rfind("%") != std::string::npos) {
 			u = Unit::Pixel;
 			num = stringTrim(stringReplace(val, "%", ""));
-		}else if(val.rfind("px") != std::string::npos){
+		} else if(val.rfind("px") != std::string::npos) {
 			u = Unit::Pixel;
 			num = stringTrim(stringReplace(val, "px", ""));
-		}else{
+		} else {
 			u = Unit::Pixel;
 			num = val;
 		}
 		u = stringToFloat(num);
 		return u;
+	}
+
+	std::vector<Unit> parseCssNumberBlock(std::string val) {
+		std::vector<Unit> ret;
+		std::vector<std::string> splitted = stringSplit(val, ' ');
+		for(std::vector<std::string>::iterator it = splitted.begin(); it < splitted.end(); it++) {
+			ret.push_back(parseCssNumber(*it));
+		}
+		if(ret.size()>4)
+			debug::warning("CSS number block with more than 4 elements "+val);
+		return ret;
 	}
 
 	void applyCss() {
@@ -176,17 +189,88 @@ protected:
 #define REGISTER_PARSER(NAME, FUNCTION) registerCssPropertyParser(NAME, makeCssPropertyParserPtr<CssLoadable<BoxModelType> >(this, &CssLoadable<BoxModelType>::FUNCTION));
 		REGISTER_PARSER("margin", pMargin)
 		REGISTER_PARSER("padding", pPadding)
+		REGISTER_PARSER("border", pBorder)
+		REGISTER_PARSER("width", pWidth)
+		REGISTER_PARSER("height", pHeight)
 #undef REGISTER_PARSER
 	}
 
+	BoxModelType* getInstance() {
+		return crtpSelfPtr<CssLoadable, BoxModelType>(this);
+	}
+
+	void pWidth(std::string key, std::string value){
+		getInstance()->width = parseCssNumber(value);
+	}
+
+	void pHeight(std::string key, std::string value){
+		getInstance()->height = parseCssNumber(value);
+	}
+
 	void pMargin(std::string key, std::string value) {
-		BoxModelType* instance = crtpSelfPtr<CssLoadable, BoxModelType>(this);
-		instance->margin = parseCssNumber(value);
+		BoxModelType* inst = getInstance();
+		std::vector<Unit> units = parseCssNumberBlock(value);
+		if(units.size() == 1)
+			inst->margin = units[0];
+		else if(units.size() == 2) {
+			inst->marginTop = units[0];
+			inst->marginBottom = units[0];
+			inst->marginLeft = units[1];
+			inst->marginRight = units[1];
+		} else if(units.size() == 3) {
+			inst->marginTop = units[0];
+			inst->marginRight = units[1];
+			inst->marginBottom = units[2];
+		} else if(units.size() >= 4) {
+			inst->marginTop = units[0];
+			inst->marginRight = units[1];
+			inst->marginBottom = units[2];
+			inst->marginLeft = units[3];
+		}
 	}
 
 	void pPadding(std::string key, std::string value) {
-		BoxModelType* instance = crtpSelfPtr<CssLoadable, BoxModelType>(this);
-		instance->padding = parseCssNumber(value);
+		BoxModelType* inst = getInstance();
+		std::vector<Unit> units = parseCssNumberBlock(value);
+		if(units.size() == 1){
+			inst->padding = units[0];
+		}else if(units.size() == 2) {
+			inst->paddingTop = units[0];
+			inst->paddingBottom = units[0];
+			inst->paddingLeft = units[1];
+			inst->paddingRight = units[1];
+		} else if(units.size() == 3) {
+			inst->paddingTop = units[0];
+			inst->paddingRight = units[1];
+			inst->paddingBottom = units[2];
+		} else if(units.size() >= 4) {
+			inst->paddingTop = units[0];
+			inst->paddingRight = units[1];
+			inst->paddingBottom = units[2];
+			inst->paddingLeft = units[3];
+		}
+	}
+
+	void pBorder(std::string key, std::string value) {
+		BoxModelType* inst = getInstance();
+		std::vector<Unit> units = parseCssNumberBlock(value);
+		if(units.size() == 1)
+			inst->border = units[0];
+		else if(units.size() == 2) {
+			inst->borderTop = units[0];
+			inst->borderBottom = units[0];
+			inst->borderLeft = units[1];
+			inst->borderRight = units[1];
+		} else if(units.size() == 3) {
+			inst->borderTop = units[0];
+			inst->borderRight = units[1];
+			inst->borderBottom = units[2];
+		} else if(units.size() >= 4) {
+			inst->borderTop = units[0];
+			inst->borderRight = units[1];
+			inst->borderBottom = units[2];
+			inst->borderLeft = units[3];
+		}
 	}
 
 private:

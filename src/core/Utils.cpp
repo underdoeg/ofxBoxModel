@@ -32,7 +32,8 @@ std::vector<std::string> stringSplit(const std::string &s, char delim) {
 	std::stringstream ss(s);
 	std::string item;
 	while (std::getline(ss, item, delim)) {
-		if(item != "")
+		std::string e = stringTrim(item);
+		if(!e.empty())
 			elems.push_back(item);
 	}
 	return elems;
@@ -60,8 +61,14 @@ vector <string> stringSplit(const string & source, const string & delimiter) {
 	return result;
 }
 
-std::string stringReplace(std::string &s, std::string toReplace, std::string replaceWith) {
-	return(s.replace(s.find(toReplace), toReplace.length(), replaceWith));
+std::string stringReplace(std::string s, std::string toReplace, std::string replaceWith) {
+	string str = s;
+	std::size_t index = str.find(toReplace);
+	while(index != str.npos) {
+		str = str.replace(index, toReplace.length(), replaceWith);
+		index = str.find(toReplace);
+	}
+	return str;
 }
 
 std::string stringRemoveLineBreaks(std::string s) {

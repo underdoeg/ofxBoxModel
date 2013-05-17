@@ -1,14 +1,14 @@
-.classTest{
+.outerBox{
 	padding: 20px;
 }
 
-.classTest .classTest{
-	margin: 5px;
-	padding: 2px;
-	margin: 0px;
+.innerBox{
+	margin: 10px 0px 0px 0px;
+	width: 10px;
+	height: 10px;
 }
 
 /* this is a comment */
-#rootBox{
-	padding: 30px;
+#root{
+	padding: 20px;
 }

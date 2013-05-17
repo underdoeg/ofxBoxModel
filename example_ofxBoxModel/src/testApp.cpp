@@ -8,17 +8,16 @@ using namespace ofx::boxModel::core;
 void testApp::setup() {
 	rootBox.width = ofGetWidth();
 	rootBox.height = ofGetHeight();
-	rootBox.padding = 30;
 	rootBox.setBgColor(20);
 
-	rootBox.setId("idTest");
+	rootBox.setId("root");
 
 	for(unsigned int i = 0; i<20; i++) {
 		Box* b = new Box();
 		b->width = ofRandom(100, 150);
 		b->height = 100;
 		b->floating = FloatLeft;
-		b->addClass("classTest");
+		b->addClass("outerBox");
 
 		//b->setBgColor((int)ofRandom(255), (int)ofRandom(255), (int)ofRandom(255));
 		//b->setColor((int)ofRandom(255), (int)ofRandom(255), (int)ofRandom(255));
@@ -27,9 +26,7 @@ void testApp::setup() {
 
 		for(unsigned int j=0; j<amount; j++) {
 			Box* b2 = new Box();
-			b2->width = 10;
-			b2->height = 10;
-			b2->addClass("classTest");
+			b2->addClass("innerBox");
 			b->addChild(b2);
 			b2->floating = FloatLeft;
 		}
