@@ -174,11 +174,26 @@ protected:
 	}
 
 	Color parseColor(std::string val){
+		int r,g,b,a;
+		r = g = b = 0;
+		a = 255;
 		//convert hex color with #
 		if(stringContains(val, "#")){
 			val = stringTrim(stringReplace(val, "#", ""));
-			int number = (int)strtol(val.c_str(), NULL, 16);
-			int r,g,b,a;
+			if(val.size() == 2){
+				std::string valNew;
+				valNew += val[0];valNew+=val[1];valNew+=val[0];valNew+=val[1];valNew+=val[0];valNew+=val[1];
+				val = valNew;
+			}else if(val.size() == 3){ //check for color short codes
+				std::string valNew;
+				valNew += val[0];valNew+=val[0];valNew+=val[1];valNew+=val[1];valNew+=val[2];valNew+=val[2];
+				val = valNew;
+			}else if(val.size() == 4){ //check for color short codes
+				std::string valNew;
+				valNew += val[0];valNew+=val[0];valNew+=val[1];valNew+=val[1];valNew+=val[2];valNew+=val[2];valNew+=val[3];valNew+=val[3];
+				val = valNew;
+			}
+			long int number = (int)strtol(val.c_str(), NULL, 16);
 			if(val.size() == 6){
 				r = ((number >> 16) & 0xFF);
 				g = ((number >> 8) & 0xFF);
@@ -191,7 +206,23 @@ protected:
 				a = ((number) & 0xFF);;
 			}
 			return Color(r, g, b, a);
+		}else if(stringContains(val, "rgb")){ //for rgb & rgba
+			std::vector<std::string> rgbAndNums = stringSplit(val, '(');
+			if(rgbAndNums.size()>1){
+				std::vector<std::string> cols = stringSplit(stringReplace(rgbAndNums[1], ")", ""), ',');
+				if(cols.size()>0)
+					r = stringToInt(cols[0]);
+				if(cols.size()>1)
+					g = stringToInt(cols[1]);
+				if(cols.size()>2)
+					b = stringToInt(cols[2]);
+				if(cols.size()>3)
+					a = stringToInt(cols[3]);
+			}else{
+				debug::warning("css could not parse color "+val);
+			}
 		}
+		return Color(r, g, b, a);
 	}
 
 	void applyCss() {
@@ -233,7 +264,6 @@ protected:
 
 		//does the box implement styleable? if so add the parsers
 		if(is_base_of<Styleable<BoxModelType>, BoxModelType>::value){
-			cout << "ADDING A PARSER" << endl;
 			REGISTER_PARSER("color", pColor)
 			REGISTER_PARSER("background-color", pBgColor)
 		}
@@ -255,7 +285,7 @@ protected:
 	}
 
 	void pBgColor(std::string key, std::string value){
-		cout << "bg color " << value << endl;
+		getInstanceType<Styleable<BoxModelType> >()->setBgColor(parseColor(value));
 	}
 
 	void pWidth(std::string key, std::string value) {

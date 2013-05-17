@@ -90,6 +90,11 @@ bool stringContains(std::string s, std::string find)
 	return s.find(find) != std::string::npos;
 }
 
+int stringToInt(std::string s)
+{
+	return atoi(s.c_str());
+}
+
 //end namespace
 }
 

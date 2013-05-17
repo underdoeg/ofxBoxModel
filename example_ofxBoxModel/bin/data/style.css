@@ -1,15 +1,17 @@
 .outerBox{
 	padding: 20px;
+	
 }
 
 .innerBox{
 	width: 10px;
 	height: 10px;
 	margin: 2px;
-	color: #FF0000FF;
+	color: rgb(255, 0, 0);
 }
 
 /* this is a comment */
 #root{
 	padding: 20px;
+	background-color: #333;
 }
