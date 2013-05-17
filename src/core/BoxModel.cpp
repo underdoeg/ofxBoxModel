@@ -56,13 +56,10 @@ void ofx::boxModel::core::BoxModel::recalculate() {
 	float _borderTop = borderTop.getValueCalculated();
 	float _borderBottom = borderBottom.getValueCalculated();
 
-	if(width.getType() == Unit::Auto){
-		cout << "HOHO " << _width << endl;
+	if(width.getType() == Unit::Auto)
 		_width = _paddingLeft + _paddingRight + _borderLeft + _borderRight;
-	}
 	if(height == Unit::Auto)
 		_height = _paddingTop + _paddingBottom + _borderTop + _borderBottom;
-
 
 	size.x = _width;
 	outerSize.x = _marginLeft + _marginRight + size.x;

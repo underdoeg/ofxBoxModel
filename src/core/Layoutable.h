@@ -36,6 +36,7 @@ public:
 	virtual void layout() {
 		maxContentSize.set(0, 0);
 		curPosition.set(0,0);
+		rowMaxHeight = 0;
 		BoxModelType* t = crtpSelfPtr<Layoutable, BoxModelType>(this);
 		for(typename core::TreeNode<BoxModelType>::ChildrenIterator it = t->childrenBegin(); it < t->childrenEnd(); it++) {
 			//(*it)->layout();
