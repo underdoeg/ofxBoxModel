@@ -2,6 +2,7 @@
 #define CSSLOADABLE_H
 
 #include "core/BoxModel.h"
+#include "core/Styleable.h"
 #include "debug/Print.h"
 #include <slre.h>
 
@@ -172,6 +173,27 @@ protected:
 		return ret;
 	}
 
+	Color parseColor(std::string val){
+		//convert hex color with #
+		if(stringContains(val, "#")){
+			val = stringTrim(stringReplace(val, "#", ""));
+			int number = (int)strtol(val.c_str(), NULL, 16);
+			int r,g,b,a;
+			if(val.size() == 6){
+				r = ((number >> 16) & 0xFF);
+				g = ((number >> 8) & 0xFF);
+				b = ((number) & 0xFF);
+				a = 255;
+			}else if(val.size() == 8){
+				r = ((number >> 32) & 0xFF);
+				g = ((number >> 16) & 0xFF);
+				b = ((number >> 8) & 0xFF);
+				a = ((number) & 0xFF);;
+			}
+			return Color(r, g, b, a);
+		}
+	}
+
 	void applyCss() {
 		//apply CSS style to self and children found by addresses stored in the property list
 		BoxModelType* instance = crtpSelfPtr<CssLoadable, BoxModelType>(this);
@@ -187,6 +209,7 @@ protected:
 
 	void registerParsers() {
 #define REGISTER_PARSER(NAME, FUNCTION) registerCssPropertyParser(NAME, makeCssPropertyParserPtr<CssLoadable<BoxModelType> >(this, &CssLoadable<BoxModelType>::FUNCTION));
+
 		REGISTER_PARSER("margin", pMargin)
 		REGISTER_PARSER("margin-left", pMarginLeft)
 		REGISTER_PARSER("margin-right", pMarginRight)
@@ -207,11 +230,32 @@ protected:
 
 		REGISTER_PARSER("width", pWidth)
 		REGISTER_PARSER("height", pHeight)
+
+		//does the box implement styleable? if so add the parsers
+		if(is_base_of<Styleable<BoxModelType>, BoxModelType>::value){
+			cout << "ADDING A PARSER" << endl;
+			REGISTER_PARSER("color", pColor)
+			REGISTER_PARSER("background-color", pBgColor)
+		}
+
 #undef REGISTER_PARSER
 	}
 
 	BoxModelType* getInstance() {
 		return crtpSelfPtr<CssLoadable, BoxModelType>(this);
+	}
+
+	template <class TypeClass>
+	TypeClass* getInstanceType() {
+		return (TypeClass*)crtpSelfPtr<CssLoadable, BoxModelType>(this);
+	}
+
+	void pColor(std::string key, std::string value){
+		getInstanceType<Styleable<BoxModelType> >()->setColor(parseColor(value));
+	}
+
+	void pBgColor(std::string key, std::string value){
+		cout << "bg color " << value << endl;
 	}
 
 	void pWidth(std::string key, std::string value) {

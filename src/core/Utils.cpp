@@ -85,6 +85,12 @@ float stringToFloat(std::string s) {
 	return ::atof(s.c_str());
 }
 
+bool stringContains(std::string s, std::string find)
+{
+	return s.find(find) != std::string::npos;
+}
+
+//end namespace
 }
 
 }

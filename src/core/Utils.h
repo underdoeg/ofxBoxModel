@@ -79,6 +79,7 @@ std::string stringReplace(std::string s, std::string toReplace, std::string repl
 std::string stringRemoveLineBreaks(std::string);
 std::string stringToLower(std::string s);
 float stringToFloat(std::string s);
+bool stringContains(std::string s, std::string find);
 
 }
 

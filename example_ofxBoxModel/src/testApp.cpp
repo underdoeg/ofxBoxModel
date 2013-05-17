@@ -8,7 +8,7 @@ using namespace ofx::boxModel::core;
 void testApp::setup() {
 	rootBox.width = ofGetWidth();
 	rootBox.height = ofGetHeight();
-	rootBox.setBgColor(20);
+	//rootBox.setBgColor(20);
 
 	rootBox.setId("root");
 
@@ -33,7 +33,7 @@ void testApp::setup() {
 		rootBox.addChild(b);
 	}
 
-	rootBox.setColorChildren(Color(200));
+	//rootBox.setColorChildren(Color(200));
 
 	rootBox.loadCss("style.css");
 
