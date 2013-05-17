@@ -102,10 +102,11 @@ public:
 	float getValueCalculated(){
 		return getValueCalculated(containerSize);
 	}
-
+	/*
 	std::ostream& operator<<(std::ostream& os){
 
 	}
+	 */
 
 	ofEvent<Event> changed;
 

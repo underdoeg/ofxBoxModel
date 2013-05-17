@@ -105,7 +105,7 @@ protected:
 
 		BoxModelType* t = crtpSelfPtr<Layoutable, BoxModelType>(this);
 
-		if(t->width == Unit::Auto) {
+		if(t->width.getType() == Unit::Auto) {
 			float maxW = 0;
 			for(typename core::TreeNode<BoxModelType>::ChildrenIterator it = t->childrenBegin(); it < t->childrenEnd(); it++) {
 				float r = (*it)->position.x + (*it)->size.x;
@@ -114,7 +114,7 @@ protected:
 			}
 			t->forceContentSize(maxW, t->contentSize.y);
 		}
-		if(t->height == Unit::Auto) {
+		if(t->height.getType() == Unit::Auto) {
 			float maxH = 0;
 			for(typename core::TreeNode<BoxModelType>::ChildrenIterator it = t->childrenBegin(); it < t->childrenEnd(); it++) {
 				float r = (*it)->position.y + (*it)->size.y;
