@@ -188,8 +188,23 @@ protected:
 	void registerParsers() {
 #define REGISTER_PARSER(NAME, FUNCTION) registerCssPropertyParser(NAME, makeCssPropertyParserPtr<CssLoadable<BoxModelType> >(this, &CssLoadable<BoxModelType>::FUNCTION));
 		REGISTER_PARSER("margin", pMargin)
+		REGISTER_PARSER("margin-left", pMarginLeft)
+		REGISTER_PARSER("margin-right", pMarginRight)
+		REGISTER_PARSER("margin-top", pMarginTop)
+		REGISTER_PARSER("margin-bottom", pMarginBottom)
+
 		REGISTER_PARSER("padding", pPadding)
+		REGISTER_PARSER("padding-left", pPaddingLeft)
+		REGISTER_PARSER("padding-right", pPaddingRight)
+		REGISTER_PARSER("padding-top", pPaddingTop)
+		REGISTER_PARSER("padding-bottom", pPaddingBottom)
+
 		REGISTER_PARSER("border", pBorder)
+		REGISTER_PARSER("border-left", pBorderLeft)
+		REGISTER_PARSER("border-right", pBorderRight)
+		REGISTER_PARSER("border-top", pBorderTop)
+		REGISTER_PARSER("border-bottom", pBorderBottom)
+
 		REGISTER_PARSER("width", pWidth)
 		REGISTER_PARSER("height", pHeight)
 #undef REGISTER_PARSER
@@ -199,79 +214,57 @@ protected:
 		return crtpSelfPtr<CssLoadable, BoxModelType>(this);
 	}
 
-	void pWidth(std::string key, std::string value){
+	void pWidth(std::string key, std::string value) {
 		getInstance()->width = parseCssNumber(value);
 	}
 
-	void pHeight(std::string key, std::string value){
+	void pHeight(std::string key, std::string value) {
 		getInstance()->height = parseCssNumber(value);
 	}
 
-	void pMargin(std::string key, std::string value) {
-		BoxModelType* inst = getInstance();
-		std::vector<Unit> units = parseCssNumberBlock(value);
-		if(units.size() == 1)
-			inst->margin = units[0];
-		else if(units.size() == 2) {
-			inst->marginTop = units[0];
-			inst->marginBottom = units[0];
-			inst->marginLeft = units[1];
-			inst->marginRight = units[1];
-		} else if(units.size() == 3) {
-			inst->marginTop = units[0];
-			inst->marginRight = units[1];
-			inst->marginBottom = units[2];
-		} else if(units.size() >= 4) {
-			inst->marginTop = units[0];
-			inst->marginRight = units[1];
-			inst->marginBottom = units[2];
-			inst->marginLeft = units[3];
-		}
+/* the following is really repetative for margin, padding and border, so use a macro (## concats elements) */
+
+#define FOUR_SIDE_HELPER(TYPE_CAPITAL,TYPE) 						\
+	void p##TYPE_CAPITAL(std::string key, std::string value) {		\
+		BoxModelType* inst = getInstance();							\
+		std::vector<Unit> units = parseCssNumberBlock(value);		\
+		if(units.size() == 1)										\
+			inst->TYPE = units[0];									\
+		else if(units.size() == 2) {								\
+			inst->TYPE##Top = units[0];								\
+			inst->TYPE##Bottom = units[0];							\
+			inst->TYPE##Left = units[1];							\
+			inst->TYPE##Right = units[1];							\
+		} else if(units.size() == 3) {								\
+			inst->TYPE##Top = units[0];								\
+			inst->TYPE##Right = units[1];							\
+			inst->TYPE##Bottom = units[2];							\
+		} else if(units.size() >= 4) {								\
+			inst->TYPE##Top = units[0];								\
+			inst->TYPE##Right = units[1];							\
+			inst->TYPE##Bottom = units[2];							\
+			inst->TYPE##Left = units[3];							\
+		}															\
+	}																\
+																	\
+	void p##TYPE_CAPITAL##Left(std::string, std::string value){		\
+		getInstance()->TYPE##Left = parseCssNumber(value);			\
+	}																\
+	void p##TYPE_CAPITAL##Right(std::string, std::string value){	\
+		getInstance()->TYPE##Right = parseCssNumber(value);			\
+	}																\
+	void p##TYPE_CAPITAL##Top(std::string, std::string value){		\
+		getInstance()->TYPE##Top = parseCssNumber(value);			\
+	}																\
+	void p##TYPE_CAPITAL##Bottom(std::string, std::string value){	\
+		getInstance()->TYPE##Bottom = parseCssNumber(value);		\
 	}
 
-	void pPadding(std::string key, std::string value) {
-		BoxModelType* inst = getInstance();
-		std::vector<Unit> units = parseCssNumberBlock(value);
-		if(units.size() == 1){
-			inst->padding = units[0];
-		}else if(units.size() == 2) {
-			inst->paddingTop = units[0];
-			inst->paddingBottom = units[0];
-			inst->paddingLeft = units[1];
-			inst->paddingRight = units[1];
-		} else if(units.size() == 3) {
-			inst->paddingTop = units[0];
-			inst->paddingRight = units[1];
-			inst->paddingBottom = units[2];
-		} else if(units.size() >= 4) {
-			inst->paddingTop = units[0];
-			inst->paddingRight = units[1];
-			inst->paddingBottom = units[2];
-			inst->paddingLeft = units[3];
-		}
-	}
+	FOUR_SIDE_HELPER(Margin, margin)
+	FOUR_SIDE_HELPER(Padding, padding)
+	FOUR_SIDE_HELPER(Border, border)
 
-	void pBorder(std::string key, std::string value) {
-		BoxModelType* inst = getInstance();
-		std::vector<Unit> units = parseCssNumberBlock(value);
-		if(units.size() == 1)
-			inst->border = units[0];
-		else if(units.size() == 2) {
-			inst->borderTop = units[0];
-			inst->borderBottom = units[0];
-			inst->borderLeft = units[1];
-			inst->borderRight = units[1];
-		} else if(units.size() == 3) {
-			inst->borderTop = units[0];
-			inst->borderRight = units[1];
-			inst->borderBottom = units[2];
-		} else if(units.size() >= 4) {
-			inst->borderTop = units[0];
-			inst->borderRight = units[1];
-			inst->borderBottom = units[2];
-			inst->borderLeft = units[3];
-		}
-	}
+#undef FOUR_SIDE_HELPER
 
 private:
 	//just for internal debugging usage

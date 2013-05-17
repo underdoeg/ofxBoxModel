@@ -62,17 +62,16 @@ vector <string> stringSplit(const string & source, const string & delimiter) {
 }
 
 std::string stringReplace(std::string s, std::string toReplace, std::string replaceWith) {
-	string str = s;
-	std::size_t index = str.find(toReplace);
-	while(index != str.npos) {
-		str = str.replace(index, toReplace.length(), replaceWith);
-		index = str.find(toReplace);
-	}
-	return str;
+    size_t pos = 0;
+    while ((pos = s.find(toReplace, pos)) != std::string::npos) {
+         s.replace(pos, toReplace.length(), replaceWith);
+         pos += replaceWith.length();
+    }
+    return s;
 }
 
 std::string stringRemoveLineBreaks(std::string s) {
-	string str = s;
+	std::string str = s;
 	str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
 	return str;
 }

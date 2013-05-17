@@ -3,9 +3,9 @@
 }
 
 .innerBox{
-	margin: 10px 0px 0px 0px;
 	width: 10px;
 	height: 10px;
+	margin-top: 10px;
 }
 
 /* this is a comment */
