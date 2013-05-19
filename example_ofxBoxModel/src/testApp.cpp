@@ -9,9 +9,17 @@ void testApp::setup() {
 	rootBox.width = ofGetWidth();
 	rootBox.height = ofGetHeight();
 	//rootBox.setBgColor(20);
-
+	
 	rootBox.setId("root");
-
+	
+	/*
+	for(int i=0;i<4;i++){
+		Box* b = new Box();
+		b->addClass("quarter");
+		rootBox.addChild(b);
+	}
+	*/
+	
 	for(unsigned int i = 0; i<20; i++) {
 		Box* b = new Box();
 		b->width = ofRandom(100, 150);
@@ -24,7 +32,7 @@ void testApp::setup() {
 
 		int amount = ofRandom(2, 20);
 
-		for(unsigned int j=0; j<amount; j++) {
+		for(int j=0; j<amount; j++) {
 			Box* b2 = new Box();
 			b2->addClass("innerBox");
 			b->addChild(b2);
@@ -32,7 +40,8 @@ void testApp::setup() {
 		}
 		rootBox.addChild(b);
 	}
-
+	
+	
 	//rootBox.setColorChildren(Color(200));
 
 	rootBox.loadCss("style.css");

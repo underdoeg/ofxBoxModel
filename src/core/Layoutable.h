@@ -5,19 +5,24 @@
 #include "core/Utils.h"
 #include "core/TreeNode.h"
 
-namespace ofx {
+namespace ofx
+{
 
-namespace boxModel {
+namespace boxModel
+{
 
-namespace core {
+namespace core
+{
 
-class LayoutableBase {
+class LayoutableBase
+{
 public:
 
 };
 
 template <class BoxModelType>
-class Layoutable: public LayoutableBase {
+class Layoutable: public LayoutableBase
+{
 public:
 	Layoutable() {
 		BoxModelType* box = crtpSelfPtr<Layoutable, BoxModelType>(this);
@@ -90,19 +95,25 @@ protected:
 
 	void onChildAdded(typename core::TreeNode< BoxModelType >::Event& e) {
 		ofAddListener(e.box->outerSize.changed, this, &Layoutable<BoxModelType>::onChildSizeChanged);
+		ofAddListener(e.box->floating.changed, this, &Layoutable<BoxModelType>::onChildFloatingChanged);
 		layout();
 	}
 
 	void onChildRemoved(typename core::TreeNode< BoxModelType >::Event& e) {
 		ofRemoveListener(e.box->outerSize.changed, this, &Layoutable<BoxModelType>::onChildSizeChanged);
+		ofRemoveListener(e.box->floating.changed, this, &Layoutable<BoxModelType>::onChildFloatingChanged);
 		layout();
 	}
 
-	void onChildSizeChanged(BoxModel::ReadOnlyPoint::Event& e){
+	void onChildFloatingChanged(Property<Floating>::Event& e) {
 		layout();
 	}
 
-	void checkForAutoSize(){
+	void onChildSizeChanged(BoxModel::ReadOnlyPoint::Event& e) {
+		layout();
+	}
+
+	void checkForAutoSize() {
 
 		BoxModelType* t = crtpSelfPtr<Layoutable, BoxModelType>(this);
 

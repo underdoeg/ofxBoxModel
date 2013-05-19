@@ -180,7 +180,6 @@ public:
 	void forceSize(float w, float h);
 	void forceOuterSize(float w, float h);
 	void forceContentSize(float w, float h);
-	//Point containerSize;
 
 	void recalculate();
 protected:

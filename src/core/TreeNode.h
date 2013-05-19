@@ -9,17 +9,21 @@
 #include "core/Utils.h"
 #include "ofMain.h"
 
-namespace ofx {
+namespace ofx
+{
 
-namespace boxModel {
+namespace boxModel
+{
 
-namespace core {
+namespace core
+{
 
 /*****
 * Templated container to stack BoxModels
 ****/
 
-class TreeNodeBase {
+class TreeNodeBase
+{
 public:
 	virtual int getNumChildren()=0;
 	virtual BoxModel* getBaseChild(int index)=0;
@@ -32,12 +36,14 @@ protected:
 ****/
 
 template <class BoxModelType>
-class TreeNode {
+class TreeNode
+{
 public:
 	typedef std::vector<BoxModelType*> ChildrenList;
 	typedef typename ChildrenList::iterator ChildrenIterator;
 
-	class Event: public ofEventArgs {
+	class Event: public ofEventArgs
+	{
 	public:
 		Event(BoxModelType* d, BoxModelType* c) {
 			sender = d;
@@ -47,7 +53,14 @@ public:
 		BoxModelType* box;
 	};
 
-	TreeNode() {};
+	TreeNode() {
+		BoxModelType* box = crtpSelfPtr<TreeNode, BoxModelType>(this);
+		ofAddListener(box->recalculated, this, &TreeNode<BoxModelType>::onRecalculate);
+		ofAddListener(box->contentSize.changed, this, &TreeNode<BoxModelType>::onSizeChange);
+
+		ofAddListener(box->childAdded, this, &TreeNode<BoxModelType>::onChildAdded);
+		ofAddListener(box->childRemoved, this, &TreeNode<BoxModelType>::onChildRemoved);
+	};
 	~TreeNode() {};
 
 	/** ITERATOR HELPERS **/
@@ -96,6 +109,51 @@ public:
 	ofEvent<Event> childRemoved;
 
 private:
+	void updateContainerSizes() {
+		BoxModelType* t = crtpSelfPtr<TreeNode, BoxModelType>(this);
+		float w = t->contentSize.x;
+		float h = t->contentSize.y;
+
+		BoxModel* b;
+		for(typename core::TreeNode<BoxModelType>::ChildrenIterator it = t->childrenBegin(); it < t->childrenEnd(); it++) {
+			b = *it;
+			b->width.setContainerSize(w);
+			b->height.setContainerSize(h);
+
+			b->marginLeft.setContainerSize(w);
+			b->marginRight.setContainerSize(w);
+			b->marginTop.setContainerSize(h);
+			b->marginBottom.setContainerSize(h);
+
+			b->paddingLeft.setContainerSize(w);
+			b->paddingRight.setContainerSize(w);
+			b->paddingTop.setContainerSize(h);
+			b->paddingBottom.setContainerSize(h);
+
+			b->borderLeft.setContainerSize(w);
+			b->borderRight.setContainerSize(w);
+			b->borderTop.setContainerSize(h);
+			b->borderBottom.setContainerSize(h);
+			
+			b->recalculate();
+		}
+	}
+
+	void onChildAdded(typename core::TreeNode< BoxModelType >::Event& e) {
+		updateContainerSizes();
+	}
+
+	void onChildRemoved(typename core::TreeNode< BoxModelType >::Event& e) {
+
+	}
+
+	void onRecalculate(BoxModel::Event& e) {
+	}
+
+	void onSizeChange(BoxModel::ReadOnlyPoint::Event& e) {
+		updateContainerSizes();
+	}
+
 	void setParent(BoxModelType* p) {
 		bParent = true;
 		parent = parent;

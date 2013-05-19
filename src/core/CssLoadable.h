@@ -6,11 +6,14 @@
 #include "debug/Print.h"
 #include <slre.h>
 
-namespace ofx {
+namespace ofx
+{
 
-namespace boxModel {
+namespace boxModel
+{
 
-namespace core {
+namespace core
+{
 
 /***********************************************************************************************/
 
@@ -24,13 +27,15 @@ struct CssProperty {
 	std::string value;
 };
 
-class CssPropertyParserPtrBase {
+class CssPropertyParserPtrBase
+{
 public:
 	virtual void call(std::string, std::string) = 0;
 };
 
 template <typename T>
-class CssPropertyParserPtr : public CssPropertyParserPtrBase {
+class CssPropertyParserPtr : public CssPropertyParserPtrBase
+{
 public:
 	CssPropertyParserPtr(T* who, void (T::*memfunc)(std::string, std::string))
 		: pt2Member(memfunc), inst(who) {
@@ -44,14 +49,16 @@ private:
 };
 
 template <typename T>
-CssPropertyParserPtrBase * makeCssPropertyParserPtr(T* who, void (T::*memfunc)(std::string, std::string)) {
+CssPropertyParserPtrBase * makeCssPropertyParserPtr(T* who, void (T::*memfunc)(std::string, std::string))
+{
 	return new CssPropertyParserPtr<T>(who, memfunc);
 }
 
 /***********************************************************************************************/
 
 template <class BoxModelType>
-class CssLoadable {
+class CssLoadable
+{
 public:
 	typedef std::map<std::string, std::vector<CssProperty> > PropertyList;
 	typedef std::map<std::string, CssPropertyParserPtrBase*> PropertyParserList;
@@ -149,7 +156,7 @@ protected:
 		Unit u;
 		std::string num = "";
 		if(val.rfind("%") != std::string::npos) {
-			u = Unit::Pixel;
+			u = Unit::Percent;
 			num = stringTrim(stringReplace(val, "%", ""));
 		} else if(val.rfind("px") != std::string::npos) {
 			u = Unit::Pixel;
@@ -173,42 +180,67 @@ protected:
 		return ret;
 	}
 
-	Color parseColor(std::string val){
+	Floating parseCssFloating(std::string val) {
+		if(val == "left")
+			return FloatLeft;
+		if(val == "right")
+			return FloatLeft;
+		return FloatNone;
+	}
+
+	Color parseColor(std::string val) {
 		int r,g,b,a;
 		r = g = b = 0;
 		a = 255;
 		//convert hex color with #
-		if(stringContains(val, "#")){
+		if(stringContains(val, "#")) {
 			val = stringTrim(stringReplace(val, "#", ""));
-			if(val.size() == 2){
+			if(val.size() == 2) {
 				std::string valNew;
-				valNew += val[0];valNew+=val[1];valNew+=val[0];valNew+=val[1];valNew+=val[0];valNew+=val[1];
+				valNew += val[0];
+				valNew+=val[1];
+				valNew+=val[0];
+				valNew+=val[1];
+				valNew+=val[0];
+				valNew+=val[1];
 				val = valNew;
-			}else if(val.size() == 3){ //check for color short codes
+			} else if(val.size() == 3) { //check for color short codes
 				std::string valNew;
-				valNew += val[0];valNew+=val[0];valNew+=val[1];valNew+=val[1];valNew+=val[2];valNew+=val[2];
+				valNew += val[0];
+				valNew+=val[0];
+				valNew+=val[1];
+				valNew+=val[1];
+				valNew+=val[2];
+				valNew+=val[2];
 				val = valNew;
-			}else if(val.size() == 4){ //check for color short codes
+			} else if(val.size() == 4) { //check for color short codes
 				std::string valNew;
-				valNew += val[0];valNew+=val[0];valNew+=val[1];valNew+=val[1];valNew+=val[2];valNew+=val[2];valNew+=val[3];valNew+=val[3];
+				valNew += val[0];
+				valNew+=val[0];
+				valNew+=val[1];
+				valNew+=val[1];
+				valNew+=val[2];
+				valNew+=val[2];
+				valNew+=val[3];
+				valNew+=val[3];
 				val = valNew;
 			}
 			long int number = (int)strtol(val.c_str(), NULL, 16);
-			if(val.size() == 6){
+			if(val.size() == 6) {
 				r = ((number >> 16) & 0xFF);
 				g = ((number >> 8) & 0xFF);
 				b = ((number) & 0xFF);
 				a = 255;
-			}else if(val.size() == 8){
+			} else if(val.size() == 8) {
 				r = ((number >> 32) & 0xFF);
 				g = ((number >> 16) & 0xFF);
 				b = ((number >> 8) & 0xFF);
 				a = ((number) & 0xFF);;
 			}
 			return Color(r, g, b, a);
-		}else if(stringContains(val, "rgb")){ //for rgb & rgba
+		} else if(stringContains(val, "rgb")) { //for rgb & rgba
 			std::vector<std::string> rgbAndNums = stringSplit(val, '(');
-			if(rgbAndNums.size()>1){
+			if(rgbAndNums.size()>1) {
 				std::vector<std::string> cols = stringSplit(stringReplace(rgbAndNums[1], ")", ""), ',');
 				if(cols.size()>0)
 					r = stringToInt(cols[0]);
@@ -218,7 +250,7 @@ protected:
 					b = stringToInt(cols[2]);
 				if(cols.size()>3)
 					a = stringToInt(cols[3]);
-			}else{
+			} else {
 				debug::warning("css could not parse color "+val);
 			}
 		}
@@ -261,9 +293,11 @@ protected:
 
 		REGISTER_PARSER("width", pWidth)
 		REGISTER_PARSER("height", pHeight)
+		
+		REGISTER_PARSER("float", pFloat)
 
 		//does the box implement styleable? if so add the parsers
-		if(is_base_of<Styleable<BoxModelType>, BoxModelType>::value){
+		if(is_base_of<Styleable<BoxModelType>, BoxModelType>::value) {
 			REGISTER_PARSER("color", pColor)
 			REGISTER_PARSER("background-color", pBgColor)
 		}
@@ -279,12 +313,16 @@ protected:
 	TypeClass* getInstanceType() {
 		return (TypeClass*)crtpSelfPtr<CssLoadable, BoxModelType>(this);
 	}
-
-	void pColor(std::string key, std::string value){
+	
+	void pFloat(std::string key, std::string value){
+		getInstance()->floating = parseCssFloating(value);
+	}
+	
+	void pColor(std::string key, std::string value) {
 		getInstanceType<Styleable<BoxModelType> >()->setColor(parseColor(value));
 	}
 
-	void pBgColor(std::string key, std::string value){
+	void pBgColor(std::string key, std::string value) {
 		getInstanceType<Styleable<BoxModelType> >()->setBgColor(parseColor(value));
 	}
 
@@ -296,7 +334,7 @@ protected:
 		getInstance()->height = parseCssNumber(value);
 	}
 
-/* the following is really repetative for margin, padding and border, so use a macro (## concats elements) */
+	/* the following is really repetative for margin, padding and border, so use a macro (## concats elements) */
 
 #define FOUR_SIDE_HELPER(TYPE_CAPITAL,TYPE) 						\
 	void p##TYPE_CAPITAL(std::string key, std::string value) {		\
@@ -320,7 +358,7 @@ protected:
 			inst->TYPE##Left = units[3];							\
 		}															\
 	}																\
-																	\
+	\
 	void p##TYPE_CAPITAL##Left(std::string, std::string value){		\
 		getInstance()->TYPE##Left = parseCssNumber(value);			\
 	}																\

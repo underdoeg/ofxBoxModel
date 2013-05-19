@@ -1,6 +1,5 @@
 .outerBox{
 	padding: 20px;
-	
 }
 
 .innerBox{
@@ -10,8 +9,13 @@
 	color: rgb(255, 0, 0);
 }
 
+.quarter{
+	width: 50%;
+	height: 50%;
+	float: left;
+}
+
 /* this is a comment */
 #root{
-	padding: 20px;
 	background-color: #333;
 }

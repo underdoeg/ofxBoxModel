@@ -107,14 +107,18 @@ public:
 
 	}
 	 */
+	 
+	 void setContainerSize(float s){
+		 containerSize = s;
+	 }
 
 	ofEvent<Event> changed;
 
 private:
 	float getValueCalculated(float parentSize) { //helper function, only for internal use
-		if(type == Percent)
+		if(type == Percent){
 			return value*.01*parentSize;
-		else if(type == Auto)
+		}else if(type == Auto)
 			return 0;
 		return value;
 	}
