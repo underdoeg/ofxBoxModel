@@ -3,8 +3,6 @@
 #include <functional>
 #include <algorithm>
 
-namespace ofx {
-
 namespace boxModel {
 
 namespace core {
@@ -100,4 +98,3 @@ int stringToInt(std::string s)
 
 }
 
-}

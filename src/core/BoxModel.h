@@ -4,11 +4,7 @@
 #include "core/Property.h"
 #include "core/Unit.h"
 
-namespace ofx {
-
 namespace boxModel {
-
-
 
 namespace core {
 
@@ -188,8 +184,6 @@ protected:
 private:
 	std::vector<PropertyBase*> properties;
 };
-
-}
 
 }
 

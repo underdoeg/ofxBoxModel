@@ -34,17 +34,15 @@
           <File Name="../../src/core/BoxModel.cpp"/>
           <File Name="../../src/core/BoxModel.h"/>
           <File Name="../../src/core/TreeNode.h"/>
-          <File Name="../../src/core/Box.h"/>
-          <File Name="../../src/core/Box.cpp"/>
           <File Name="../../src/core/Property.h"/>
           <File Name="../../src/core/Unit.h"/>
-          <File Name="../../src/core/Unit.cpp"/>
           <File Name="../../src/core/Utils.h"/>
           <File Name="../../src/core/Utils.cpp"/>
           <File Name="../../src/core/Addressable.h"/>
           <File Name="../../src/core/Styleable.h"/>
           <File Name="../../src/core/Layoutable.h"/>
           <File Name="../../src/core/CssLoadable.h"/>
+          <File Name="../../src/core/Drawable.h"/>
         </VirtualDirectory>
         <VirtualDirectory Name="debug">
           <File Name="../../src/debug/DebugDrawer.h"/>
@@ -52,6 +50,8 @@
           <File Name="../../src/debug/Print.h"/>
           <File Name="../../src/debug/Print.cpp"/>
         </VirtualDirectory>
+        <File Name="../../src/ofxBox.cpp"/>
+        <File Name="../../src/ofxBox.h"/>
       </VirtualDirectory>
     </VirtualDirectory>
   </VirtualDirectory>

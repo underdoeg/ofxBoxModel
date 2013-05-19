@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 
-#include "core/Box.h"
+#include "ofxBox.h"
 #include "debug/DebugDrawer.h"
 
 class testApp : public ofBaseApp{
@@ -22,6 +22,6 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-		ofx::boxModel::debug::DebugDrawer<ofx::boxModel::core::Box> debugDrawer;
-		ofx::boxModel::core::Box rootBox;
+		ofxBox::DebugDrawer debugDrawer;
+		ofxBox rootBox;
 };

@@ -2,9 +2,6 @@
 
 #include "ofMain.h"
 
-namespace ofx
-{
-
 namespace boxModel
 {
 
@@ -26,8 +23,6 @@ void warning(std::string msg)
 	ofLogWarning("ofxBoxModel") << msg;
 }
 
-
-}
 
 }
 

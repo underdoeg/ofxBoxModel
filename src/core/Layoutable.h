@@ -5,9 +5,6 @@
 #include "core/Utils.h"
 #include "core/TreeNode.h"
 
-namespace ofx
-{
-
 namespace boxModel
 {
 
@@ -150,8 +147,6 @@ private:
 	core::Point curPosition;
 	float rowMaxHeight;
 };
-
-}
 
 }
 

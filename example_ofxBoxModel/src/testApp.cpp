@@ -2,8 +2,6 @@
 
 
 
-using namespace ofx::boxModel::core;
-
 //--------------------------------------------------------------
 void testApp::setup() {
 	rootBox.width = ofGetWidth();
@@ -14,33 +12,29 @@ void testApp::setup() {
 	
 	/*
 	for(int i=0;i<4;i++){
-		Box* b = new Box();
+		ofxBox* b = new ofxBox();
 		b->addClass("quarter");
 		rootBox.addChild(b);
 	}
 	*/
 	
 	for(unsigned int i = 0; i<20; i++) {
-		Box* b = new Box();
+		ofxBox* b = new ofxBox();
 		b->width = ofRandom(100, 150);
 		b->height = 100;
 		b->floating = FloatLeft;
 		b->addClass("outerBox");
 
-		//b->setBgColor((int)ofRandom(255), (int)ofRandom(255), (int)ofRandom(255));
-		//b->setColor((int)ofRandom(255), (int)ofRandom(255), (int)ofRandom(255));
-
 		int amount = ofRandom(2, 20);
 
 		for(int j=0; j<amount; j++) {
-			Box* b2 = new Box();
+			ofxBox* b2 = new ofxBox();
 			b2->addClass("innerBox");
 			b->addChild(b2);
 			b2->floating = FloatLeft;
 		}
 		rootBox.addChild(b);
 	}
-	
 	
 	//rootBox.setColorChildren(Color(200));
 

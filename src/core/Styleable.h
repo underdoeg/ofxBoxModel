@@ -4,9 +4,6 @@
 #include "BoxModel.h"
 #include "core/TreeNode.h"
 
-namespace ofx
-{
-
 namespace boxModel
 {
 
@@ -80,8 +77,6 @@ private:
 	Color color;
 	Color bgColor;
 };
-
-}
 
 }
 

@@ -7,7 +7,6 @@
 #include "core/Styleable.h"
 #include "core/Addressable.h"
 
-namespace ofx {
 
 namespace boxModel {
 
@@ -99,8 +98,6 @@ public:
 private:
 	std::vector<DrawableBase*> drawable;
 };
-
-}
 
 }
 

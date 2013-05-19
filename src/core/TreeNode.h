@@ -9,9 +9,6 @@
 #include "core/Utils.h"
 #include "ofMain.h"
 
-namespace ofx
-{
-
 namespace boxModel
 {
 
@@ -163,8 +160,6 @@ private:
 	bool bParent;
 	BoxModelType* parent;
 };
-
-}
 
 }
 

@@ -6,9 +6,6 @@
 #include "debug/Print.h"
 #include <slre.h>
 
-namespace ofx
-{
-
 namespace boxModel
 {
 
@@ -402,8 +399,6 @@ private:
 	PropertyList properties;
 	PropertyParserList propertyParsers;
 };
-
-}
 
 }
 

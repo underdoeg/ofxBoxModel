@@ -8,9 +8,6 @@
 #include "core/TreeNode.h"
 #include "debug/Print.h"
 
-namespace ofx
-{
-
 namespace boxModel
 {
 
@@ -182,8 +179,6 @@ private:
 };
 
 template<class BoxModelType>  std::vector<std::string > Addressable<BoxModelType>::idsTaken;
-
-}
 
 }
 

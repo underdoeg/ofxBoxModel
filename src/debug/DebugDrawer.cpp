@@ -1,8 +1,5 @@
 #include "DebugDrawer.h"
 
-namespace ofx
-{
-
 namespace boxModel
 {
 
@@ -38,8 +35,6 @@ void drawBoxOuter(BoxModel* box, Color fg, Color bg)
 	ofPopStyle();
 }
 
-
-}
 
 }
 

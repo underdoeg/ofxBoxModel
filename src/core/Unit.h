@@ -3,8 +3,6 @@
 
 #include "ofMain.h"
 
-namespace ofx
-{
 
 namespace boxModel
 {
@@ -194,8 +192,6 @@ private:
 	}
 	std::vector<Unit*> units;
 };
-
-}
 
 }
 

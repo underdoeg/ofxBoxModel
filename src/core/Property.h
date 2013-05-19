@@ -3,9 +3,6 @@
 
 #include "ofEvents.h"
 
-namespace ofx
-{
-
 namespace boxModel
 {
 
@@ -76,8 +73,6 @@ public:
 private:
 	T value;
 };
-
-}
 
 }
 

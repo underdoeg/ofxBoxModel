@@ -1,6 +1,6 @@
 #include "BoxModel.h"
 
-ofx::boxModel::core::BoxModel::BoxModel() {
+boxModel::core::BoxModel::BoxModel() {
 	padding.add(&paddingLeft);
 	padding.add(&paddingRight);
 	padding.add(&paddingTop);
@@ -35,7 +35,7 @@ ofx::boxModel::core::BoxModel::BoxModel() {
 	}
 }
 
-void ofx::boxModel::core::BoxModel::recalculate() {
+void boxModel::core::BoxModel::recalculate() {
 	//get all the values
 
 	float _width = width.getValueCalculated();
@@ -75,16 +75,16 @@ void ofx::boxModel::core::BoxModel::recalculate() {
 	ofNotifyEvent(recalculated, e);
 }
 
-void ofx::boxModel::core::BoxModel::forcePosition(Point p) {
+void boxModel::core::BoxModel::forcePosition(Point p) {
 	forcePosition(p.x, p.y);
 }
 
-void ofx::boxModel::core::BoxModel::forcePosition(float x, float y) {
+void boxModel::core::BoxModel::forcePosition(float x, float y) {
 	position.x = x;
 	position.y = y;
 }
 
-void ofx::boxModel::core::BoxModel::forceContentSize(float w, float h) {
+void boxModel::core::BoxModel::forceContentSize(float w, float h) {
 
 	float _marginLeft = marginLeft.getValueCalculated();
 	float _marginRight = marginRight.getValueCalculated();
@@ -113,7 +113,7 @@ void ofx::boxModel::core::BoxModel::forceContentSize(float w, float h) {
 
 }
 
-void ofx::boxModel::core::BoxModel::forceOuterSize(float w, float h) {
+void boxModel::core::BoxModel::forceOuterSize(float w, float h) {
 	float _marginLeft = marginLeft.getValueCalculated();
 	float _marginRight = marginRight.getValueCalculated();
 	float _marginTop = marginTop.getValueCalculated();
@@ -139,7 +139,7 @@ void ofx::boxModel::core::BoxModel::forceOuterSize(float w, float h) {
 	contentPosition.y = _paddingTop + _borderTop;
 }
 
-void ofx::boxModel::core::BoxModel::forceSize(float w, float h) {
+void boxModel::core::BoxModel::forceSize(float w, float h) {
 	float _marginLeft = marginLeft.getValueCalculated();
 	float _marginRight = marginRight.getValueCalculated();
 	float _marginTop = marginTop.getValueCalculated();
