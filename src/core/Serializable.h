@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include "BoxModel.h"
+#include "Utils.h"
 
 namespace boxModel
 {
@@ -17,15 +18,27 @@ class Serializable
 public:
 	class Value{
 		Value(std::string v){
+			setValue(v);
+		}
+		
+		Value(float v){
+			setValue(floatToString(v));
+		}
+		
+		Value(Point p){
+			setValue(floatToString(p.x)+" "+floatToString(p.y));
+		}
+		
+		void setValue(std::string v){
 			value = v;
 		}
 		
 		int asInt(){
-			return stringToInt(value.c_str());
+			return stringToInt(value);
 		}
 		
 		float asFloat(){
-			return stringToFloat(value.c_str());
+			return stringToFloat(value);
 		}
 		
 		Point asPoint(){

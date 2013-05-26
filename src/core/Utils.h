@@ -69,7 +69,7 @@ struct custom_static_assert<true> {}; // only true is defined
 /****************************************************************************/
 /* STRING STUFF																*/
 /****************************************************************************/
-
+std::string floatToString(float number);
 std::string stringTrim(std::string s);
 std::vector<std::string> stringSplit(const std::string &in, char delimiter = ' ');
 std::vector<std::string> stringSplit(const std::string & source, const std::string & delimiter);
