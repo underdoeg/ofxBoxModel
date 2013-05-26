@@ -14,7 +14,6 @@ namespace core
 
 /***********************************************************************************************/
 
-
 struct CssProperty {
 	CssProperty(std::string k, std::string v) {
 		key = k;
@@ -298,7 +297,7 @@ protected:
 			REGISTER_PARSER("color", pColor)
 			REGISTER_PARSER("background-color", pBgColor)
 		}
-
+		
 #undef REGISTER_PARSER
 	}
 
