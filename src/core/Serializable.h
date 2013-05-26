@@ -2,7 +2,7 @@
 #define SERIALIZABLE_H
 
 #include <string>
-#include <vector>
+#include <map>
 
 namespace boxModel
 {
@@ -14,16 +14,14 @@ template<class BoxModelType>
 class Serializable
 {
 public:
-	class KeyValue{
-		KeyValue(std::string k, std::string v){
-			key = k;
+	class Value{
+		Value(std::string v){
 			value = v;
 		}
-		std::string key;
 		std::string value;
 	};
 	
-	typedef std::vector<KeyValue> KeyValueList;
+	typedef std::map<std::string, Value> KeyValueList;
 
 	Serializable(){};
 	~Serializable(){};
