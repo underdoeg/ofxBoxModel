@@ -8,6 +8,7 @@
 #include "core/Layoutable.h"
 #include "core/CssLoadable.h"
 #include "core/Drawable.h"
+#include "core/XmlLoadable.h"
 #include "debug/DebugDrawer.h"
 
 
@@ -16,7 +17,7 @@ using namespace boxModel::core;
 class ofxBox: 
 	public BoxModel, public TreeNode<ofxBox>, public Addressable<ofxBox>, 
 	public Styleable<ofxBox>, public Layoutable<ofxBox>, public CssLoadable<ofxBox>, 
-	public boxModel::core::Drawable<ofxBox>
+	public boxModel::core::Drawable<ofxBox>, public boxModel::core::XmlLoadable<ofxBox>
 {
 public:
 	typedef boxModel::debug::DebugDrawer<ofxBox> DebugDrawer;

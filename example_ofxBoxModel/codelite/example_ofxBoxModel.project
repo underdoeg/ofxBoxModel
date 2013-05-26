@@ -6,6 +6,15 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="libs">
+    <VirtualDirectory Name="pugixml">
+      <VirtualDirectory Name="include">
+        <File Name="../../libs/pugixml/include/pugixml.hpp"/>
+        <File Name="../../libs/pugixml/include/pugiconfig.hpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="src">
+        <File Name="../../libs/pugixml/src/pugixml.cpp"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
     <VirtualDirectory Name="slre">
       <VirtualDirectory Name="include">
         <File Name="../../libs/slre/include/slre.h"/>
@@ -43,6 +52,7 @@
           <File Name="../../src/core/Layoutable.h"/>
           <File Name="../../src/core/CssLoadable.h"/>
           <File Name="../../src/core/Drawable.h"/>
+          <File Name="../../src/core/XmlLoadable.h"/>
         </VirtualDirectory>
         <VirtualDirectory Name="debug">
           <File Name="../../src/debug/DebugDrawer.h"/>
