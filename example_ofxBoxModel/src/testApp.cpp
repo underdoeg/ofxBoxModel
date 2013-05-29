@@ -19,7 +19,7 @@ void testApp::setup() {
 	*/
 	
 	for(unsigned int i = 0; i<20; i++) {
-		ofxBox* b = new ofxBox();
+		ofxBox* b = new CustomBox();
 		b->width = ofRandom(100, 150);
 		b->height = 100;
 		b->floating = FloatLeft;
@@ -28,7 +28,7 @@ void testApp::setup() {
 		int amount = ofRandom(2, 20);
 
 		for(int j=0; j<amount; j++) {
-			ofxBox* b2 = new ofxBox();
+			ofxBox* b2 = new CustomBox();
 			b2->addClass("innerBox");
 			b->addChild(b2);
 			b2->floating = FloatLeft;

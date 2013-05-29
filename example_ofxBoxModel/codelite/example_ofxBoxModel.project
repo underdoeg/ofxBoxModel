@@ -54,6 +54,7 @@
           <File Name="../../src/core/Drawable.h"/>
           <File Name="../../src/core/XmlLoadable.h"/>
           <File Name="../../src/core/Serializable.h"/>
+          <File Name="../../src/core/Instanceable.h"/>
         </VirtualDirectory>
         <VirtualDirectory Name="debug">
           <File Name="../../src/debug/DebugDrawer.h"/>

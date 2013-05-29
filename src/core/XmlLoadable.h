@@ -4,36 +4,32 @@
 #include "pugixml.hpp"
 #include "Addressable.h"
 #include "Utils.h"
+#include "Instanceable.h"
 
-namespace boxModel
-{
+namespace boxModel {
 
-namespace core
-{
+namespace core {
 
 template <class BoxModelType>
-class XmlLoadable
-{
+class XmlLoadable: public Instanceable<BoxModelType> {
 public:
-	XmlLoadable(){
-		if(!is_base_of<Addressable<BoxModelType>, BoxModelType>::value){
+	XmlLoadable() {
+		if(!is_base_of<Addressable<BoxModelType>, BoxModelType>::value) {
 			debug::error("to use the xml loader, you also need an Addressable");
-			Addressable<BoxModelType>* box = (Addressable<BoxModelType>*)crtpSelfPtr<XmlLoadable, BoxModelType>(this);
-			cout << box->getType() << endl;
 			return;
 		}
 	};
-	~XmlLoadable(){};
-	void loadXml(std::string path){
-		
+	~XmlLoadable() {};
+	void loadXml(std::string path) {
+
 	}
-	
-	void registerXmlElement(std::string type){
-		
+
+	void registerXmlElement(std::string type) {
+
 	}
-	
-	void saveAsXml(std::string path){
-		if(!is_base_of<Addressable<BoxModelType>, BoxModelType>::value || !is_base_of<Serializable, BoxModelType>::value){
+
+	void saveAsXml(std::string path) {
+		if(!is_base_of<Addressable<BoxModelType>, BoxModelType>::value || !is_base_of<Serializable, BoxModelType>::value) {
 			debug::error("can only save addressable and serializable box types as XML");
 			return;
 		}
@@ -42,25 +38,25 @@ public:
 		doc.save_file(path.c_str());
 	}
 protected:
-	void addToXmlNode(pugi::xml_node* parent){
+	void addToXmlNode(pugi::xml_node* parent) {
 		BoxModelType* box = crtpSelfPtr<XmlLoadable, BoxModelType>(this);
 		pugi::xml_node node = parent->append_child(((Addressable<BoxModelType>*)box)->getType().c_str());
-		
+
 		Serializable::ValueList values = ((Serializable*)box)->getSerialized();
-		for(Serializable::ValueMap::iterator it = values.map.begin(); it != values.map.end(); it++){
+		for(Serializable::ValueMap::iterator it = values.map.begin(); it != values.map.end(); it++) {
 			pugi::xml_attribute attr = node.append_attribute((*it).first.c_str());
 			attr.set_value((*it).second.value.c_str());
 		}
-		
-		for(typename TreeNode<BoxModelType>::ChildrenIterator it = box->childrenBegin();it<box->childrenEnd();it++){
+
+		for(typename TreeNode<BoxModelType>::ChildrenIterator it = box->childrenBegin(); it<box->childrenEnd(); it++) {
 			(*it)->addToXmlNode(&node);
 		}
 	}
 private:
-	
-	
+
+
 };
- 
+
 }
 
 }

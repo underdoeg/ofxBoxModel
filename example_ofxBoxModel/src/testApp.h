@@ -5,6 +5,12 @@
 #include "ofxBox.h"
 #include "debug/DebugDrawer.h"
 
+class CustomBox: public ofxBox{
+	string getType(){
+		return "customBox";
+	}
+};
+
 class testApp : public ofBaseApp{
 
 	public:
