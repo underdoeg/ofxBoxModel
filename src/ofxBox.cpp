@@ -9,7 +9,7 @@ ofxBox::~ofxBox()
 }
 
 std::string ofxBox::getType(){
-	return "ofxBox";
+	return "box";
 }
 
 void ofxBox::popMatrix()

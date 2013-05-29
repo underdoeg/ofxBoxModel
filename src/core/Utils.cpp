@@ -99,6 +99,16 @@ int stringToInt(std::string s)
 	return atoi(s.c_str());
 }
 
+std::string intToHexString(int i)
+{
+	if(i == 0)
+		return "00";
+	std::stringstream str;
+	str << std::hex << i;
+	return str.str();
+}
+
+
 //end namespace
 }
 

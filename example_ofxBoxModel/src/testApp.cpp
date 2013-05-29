@@ -36,12 +36,9 @@ void testApp::setup() {
 		rootBox.addChild(b);
 	}
 	
-	//rootBox.setColorChildren(Color(200));
-
 	rootBox.loadCss("style.css");
-
-	//std::vector<Box*> boxes = rootBox.findByAddress("#idTest .classTest box");
-	//cout << boxes.size() << endl;
+	
+	rootBox.saveAsXml(ofToDataPath("output.xml"));
 }
 
 //--------------------------------------------------------------

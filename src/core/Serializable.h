@@ -6,42 +6,44 @@
 #include "BoxModel.h"
 #include "Utils.h"
 
-namespace boxModel
-{
+namespace boxModel {
 
-namespace core
-{
+namespace core {
 
-template<class BoxModelType>
-class Serializable
-{
+class Serializable {
 public:
-	class Value{
-		Value(std::string v){
+
+	class Value {
+	public:
+		Value(){
+			setValue("");
+		}
+		
+		Value(std::string v) {
 			setValue(v);
 		}
-		
-		Value(float v){
+
+		Value(float v) {
 			setValue(floatToString(v));
 		}
-		
-		Value(Point p){
+
+		Value(Point p) {
 			setValue(floatToString(p.x)+" "+floatToString(p.y));
 		}
-		
-		void setValue(std::string v){
+
+		void setValue(std::string v) {
 			value = v;
 		}
-		
-		int asInt(){
+
+		int asInt() {
 			return stringToInt(value);
 		}
-		
-		float asFloat(){
+
+		float asFloat() {
 			return stringToFloat(value);
 		}
-		
-		Point asPoint(){
+
+		Point asPoint() {
 			Point ret;
 			std::vector<std::string> parts = stringSplit(value, " ");
 			if(parts.size()>0)
@@ -50,17 +52,51 @@ public:
 				ret.y = stringToFloat(parts[1]);
 			return ret;
 		}
-		
+
 		std::string value;
 	};
 	
-	typedef std::map<std::string, Value> ValuleMap;
+	typedef std::map<std::string, Value> ValueMap;
 
-	Serializable(){};
-	~Serializable(){};
-	
-	ValuleMap getSerialized(){
+	class ValueList{
+		public:
+		void set(std::string key, std::string value){
+			map[key].setValue(value);
+		}
+
+		void set(std::string key, Value value){
+			map[key] = value;
+		}	
 		
+		Value get(std::string key){
+			return map[key];
+		}
+		
+		ValueMap map;
+	};
+	
+
+	class Event {
+	public:
+		Event(Serializable* s, ValueList* vals) {
+			sender = s;
+			values = vals;
+		}
+
+		Serializable* sender;
+		ValueList* values;
+	};
+
+	Serializable() {};
+	~Serializable() {};
+
+	ofEvent<Event> serialized;
+	
+	ValueList getSerialized() {
+		ValueList v;
+		Event e(this, &v);
+		ofNotifyEvent(serialized, e);
+		return v;
 	}
 };
 

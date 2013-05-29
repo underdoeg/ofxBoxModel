@@ -3,23 +3,19 @@
 
 #include "ofEvents.h"
 
-namespace boxModel
-{
+namespace boxModel {
 
-namespace core
-{
+namespace core {
 
 
 
 /**********************************
- * 
+ *
  ****************************************/
 
-class PropertyBase
-{
+class PropertyBase {
 public:
-	class Event: public ofEventArgs
-	{
+	class Event: public ofEventArgs {
 	public:
 		Event(PropertyBase* p) {
 			property = p;
@@ -37,17 +33,19 @@ protected:
 
 
 template <class T>
-class Property: public PropertyBase
-{
+class Property: public PropertyBase {
 public:
-	class Event: public ofEventArgs
-	{
+	class Event: public ofEventArgs {
 	public:
 		Event(Property<T>* p) {
 			property = p;
 		}
 		Property<T>* property;
 	};
+	
+	Property():bSet(false){
+		
+	}
 
 	operator const T & () const {
 		return value;
@@ -59,18 +57,23 @@ public:
 	}
 
 	void set(T v) {
-		if(value == v)
+		if(bSet && value == v)
 			return;
 		value = v;
-
+		bSet = true;
 		PropertyBase::triggerChangedEvent();
 		Event e(this);
 		ofNotifyEvent(changed, e);
+	}
+	
+	bool isSet(){
+		return bSet;
 	}
 
 	ofEvent<Event> changed;
 
 private:
+	bool bSet;
 	T value;
 };
 

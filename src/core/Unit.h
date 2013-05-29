@@ -69,16 +69,18 @@ public:
 	}
 
 	void set(Type t) {
-		if(type == t)
+		if(bSet && type == t)
 			return;
+		bSet = true;
 		type = t;
 		Event e(this);
 		ofNotifyEvent(changed, e);
 	}
 
 	void set(Unit u) {
-		if(value == u.value && type == u.type)
+		if(bSet && value == u.value && type == u.type)
 			return;
+		bSet = true;
 		type = u.type;
 		value = u.value;
 		Event e(this);

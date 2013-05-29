@@ -79,6 +79,7 @@ std::string stringToLower(std::string s);
 float stringToFloat(std::string s);
 int stringToInt(std::string s);
 bool stringContains(std::string s, std::string find);
+std::string intToHexString(int i);
 
 }
 

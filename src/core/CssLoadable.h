@@ -3,14 +3,15 @@
 
 #include "core/BoxModel.h"
 #include "core/Styleable.h"
+#include "core/Serializable.h"
 #include "debug/Print.h"
-#include <slre.h>
+//#include <slre.h>
+#include <stdlib.h>
 
-namespace boxModel
-{
 
-namespace core
-{
+namespace boxModel {
+
+namespace core {
 
 /***********************************************************************************************/
 
@@ -23,15 +24,13 @@ struct CssProperty {
 	std::string value;
 };
 
-class CssPropertyParserPtrBase
-{
+class CssPropertyParserPtrBase {
 public:
 	virtual void call(std::string, std::string) = 0;
 };
 
 template <typename T>
-class CssPropertyParserPtr : public CssPropertyParserPtrBase
-{
+class CssPropertyParserPtr : public CssPropertyParserPtrBase {
 public:
 	CssPropertyParserPtr(T* who, void (T::*memfunc)(std::string, std::string))
 		: pt2Member(memfunc), inst(who) {
@@ -45,21 +44,24 @@ private:
 };
 
 template <typename T>
-CssPropertyParserPtrBase * makeCssPropertyParserPtr(T* who, void (T::*memfunc)(std::string, std::string))
-{
+CssPropertyParserPtrBase * makeCssPropertyParserPtr(T* who, void (T::*memfunc)(std::string, std::string)) {
 	return new CssPropertyParserPtr<T>(who, memfunc);
 }
 
 /***********************************************************************************************/
 
 template <class BoxModelType>
-class CssLoadable
-{
+class CssLoadable {
 public:
 	typedef std::map<std::string, std::vector<CssProperty> > PropertyList;
 	typedef std::map<std::string, CssPropertyParserPtrBase*> PropertyParserList;
 
 	CssLoadable() {
+		//register the serialize event if the box is of type serializable
+		if(is_base_of<Serializable, BoxModelType>::value) {
+			Serializable* serial = (Serializable*)crtpSelfPtr<CssLoadable, BoxModelType>(this);
+			ofAddListener(serial->serialized, this, &CssLoadable<BoxModelType>::onSerialize);
+		}
 		registerParsers();
 	};
 	~CssLoadable() {};
@@ -109,7 +111,6 @@ public:
 							std::string value = stringToLower(keyAndValue[1]);
 
 							//remove eventual space between number and pixel / %
-							cout << value << endl;
 							value = stringReplace(value, " px", "px");
 							value = stringReplace(value, " %", "%");
 
@@ -126,7 +127,7 @@ public:
 			}
 		}
 
-		printProperties();
+		//printProperties();
 
 		applyCss();
 	}
@@ -266,6 +267,85 @@ protected:
 		}
 	}
 
+	std::string getColorAsString(Color c) {
+		string ret = "#";
+		ret += intToHexString(c.r);
+		ret += intToHexString(c.g);
+		ret += intToHexString(c.b);
+		ret += intToHexString(c.a);
+		return ret;
+	}
+
+	std::string getUnitAsString(Unit u) {
+		switch(u.getType()) {
+		case Unit::Percent:
+			return floatToString(u)+"%";
+		case Unit::Pixel:
+			return floatToString(u)+"px";
+		case Unit::Auto:
+			return "auto";
+		}
+		return floatToString(u)+"px";
+	};
+
+	//saves all loadable properties as css code
+	std::string getCss() {
+		std::string ret;
+		BoxModelType* instance = crtpSelfPtr<CssLoadable, BoxModelType>(this);
+		BoxModel* box = instance;
+		if(box->width.isSet())
+			ret += "width: "+getUnitAsString(box->width)+";";
+		if(box->height.isSet())
+			ret += "height: "+getUnitAsString(box->height)+";";
+		if(box->floating != FloatNone) {
+			ret += "float: ";
+			if(box->floating == FloatLeft)
+				ret += "left;";
+			else if(box->floating == FloatRight)
+				ret += "right;";
+			else
+				ret += "none;";
+		}
+		//margin, padding & border
+		if(box->marginTop.isSet() || box->marginRight.isSet() || box->marginBottom.isSet() || box->marginLeft.isSet()) {
+			ret += "margin:"+getUnitAsString(box->marginTop)+" ";
+			ret += getUnitAsString(box->marginRight)+" ";
+			ret += getUnitAsString(box->marginBottom)+" ";
+			ret += getUnitAsString(box->marginRight)+";";
+		}
+		if(box->paddingTop.isSet() || box->paddingRight.isSet() || box->paddingBottom.isSet() || box->paddingLeft.isSet()) {
+			ret += "padding:"+getUnitAsString(box->paddingTop)+" ";
+			ret += getUnitAsString(box->paddingRight)+" ";
+			ret += getUnitAsString(box->paddingBottom)+" ";
+			ret += getUnitAsString(box->paddingRight)+";";
+		}
+		if(box->borderTop.isSet() || box->borderRight.isSet() || box->borderBottom.isSet() || box->borderLeft.isSet()) {
+			ret += "border:"+getUnitAsString(box->borderTop)+" ";
+			ret += getUnitAsString(box->borderRight)+" ";
+			ret += getUnitAsString(box->borderBottom)+" ";
+			ret += getUnitAsString(box->borderRight)+";";
+		}
+		//only do this for styleable elements
+		if(is_base_of<Styleable<BoxModelType>, BoxModelType>::value) {
+			Styleable<BoxModelType>* style = (Styleable<BoxModelType>*)instance;
+			Color c = style->getColor();
+			if(c.r != 0 || c.g != 0 || c.b != 0 || c.a != 255)
+				ret += "color: "+getColorAsString(c)+";";
+			if(style->hasBgColor()){
+				c = style->getBgColor();
+				if(c.r != 255 || c.g != 255 || c.b != 255 || c.a != 255)
+					ret += "background-color: "+getColorAsString(c)+";";
+			}else{
+				ret += "background-color: none;";
+			}
+			c = style->getBorderColor();
+			if(c.r != 0 || c.g != 0 || c.b != 0 || c.a != 255)
+				ret += "border-color: "+getColorAsString(c)+";";
+		}
+		return ret;
+	}
+
+	//register all css tags
 	void registerParsers() {
 #define REGISTER_PARSER(NAME, FUNCTION) registerCssPropertyParser(NAME, makeCssPropertyParserPtr<CssLoadable<BoxModelType> >(this, &CssLoadable<BoxModelType>::FUNCTION));
 
@@ -289,7 +369,7 @@ protected:
 
 		REGISTER_PARSER("width", pWidth)
 		REGISTER_PARSER("height", pHeight)
-		
+
 		REGISTER_PARSER("float", pFloat)
 
 		//does the box implement styleable? if so add the parsers
@@ -297,7 +377,7 @@ protected:
 			REGISTER_PARSER("color", pColor)
 			REGISTER_PARSER("background-color", pBgColor)
 		}
-		
+
 #undef REGISTER_PARSER
 	}
 
@@ -309,17 +389,24 @@ protected:
 	TypeClass* getInstanceType() {
 		return (TypeClass*)crtpSelfPtr<CssLoadable, BoxModelType>(this);
 	}
-	
-	void pFloat(std::string key, std::string value){
+
+	void pFloat(std::string key, std::string value) {
 		getInstance()->floating = parseCssFloating(value);
 	}
-	
+
 	void pColor(std::string key, std::string value) {
 		getInstanceType<Styleable<BoxModelType> >()->setColor(parseColor(value));
 	}
 
 	void pBgColor(std::string key, std::string value) {
-		getInstanceType<Styleable<BoxModelType> >()->setBgColor(parseColor(value));
+		if(value == "none")
+			getInstanceType<Styleable<BoxModelType> >()->setBgColorNone();
+		else
+			getInstanceType<Styleable<BoxModelType> >()->setBgColor(parseColor(value));
+	}
+
+	void pBorderColor(std::string key, std::string value) {
+		getInstanceType<Styleable<BoxModelType> >()->setBorderColor(parseColor(value));
 	}
 
 	void pWidth(std::string key, std::string value) {
@@ -374,7 +461,15 @@ protected:
 
 #undef FOUR_SIDE_HELPER
 
+
+
+	//on serialize
+	void onSerialize(Serializable::Event& e) {
+		e.values->set("style", getCss());
+	}
+
 private:
+
 	//just for internal debugging usage
 	void printStringVector(std::vector<std::string> r) {
 		for(std::vector<std::string>::iterator it = r.begin(); it<r.end(); it++) {
