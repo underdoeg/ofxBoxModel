@@ -23,14 +23,21 @@ public:
 	
 	static BoxModelType* loadXml(std::string path){
 		pugi::xml_document doc;
-		doc.load_file(path.c_str());
-		BoxModelType* ret = new BoxModelType();
+		pugi::xml_parse_result result = doc.load_file(path.c_str());
+		if(result.status != pugi::status_ok){
+			debug::error("could not load "+path);
+			return NULL;
+		}
+		BoxModelType* root = NULL;
+		root = parseXmlNode(doc.first_child());
 		
-		return ret;
+		return root;
 	}
 	
 	void loadXmlInto(std::string path) {
-		crtpSelfPtr<XmlLoadable, BoxModelType>(this)->addChild(loadXml(path));
+		BoxModelType* box = loadXml(path);
+		if(box != NULL)
+			crtpSelfPtr<XmlLoadable, BoxModelType>(this)->addChild();
 	}
 
 	void registerXmlElement(std::string type) {
@@ -46,7 +53,12 @@ public:
 		addToXmlNode(&doc);
 		doc.save_file(path.c_str());
 	}
-protected:
+private:
+	static BoxModelType* parseXmlNode(pugi::xml_node node){
+		BoxModelType* ret = Instanceable<BoxModelType>::createInstance(node.name());
+		return ret;
+	}
+
 	void addToXmlNode(pugi::xml_node* parent) {
 		BoxModelType* box = crtpSelfPtr<XmlLoadable, BoxModelType>(this);
 		pugi::xml_node node = parent->append_child(((Addressable<BoxModelType>*)box)->getType().c_str());
@@ -61,7 +73,6 @@ protected:
 			(*it)->addToXmlNode(&node);
 		}
 	}
-private:
 
 
 };

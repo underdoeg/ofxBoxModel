@@ -28,6 +28,11 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
+		
 		ofxBox::DebugDrawer debugDrawer;
-		ofxBox rootBox;
-};
+		
+		//ofxBox rootBox;
+		
+		
+		ofxBox* rootBox;
+ };

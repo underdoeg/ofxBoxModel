@@ -11,6 +11,7 @@ namespace core {
 
 template <class BoxModelType>
 class InstancerBase {
+	public:
 	virtual BoxModelType* create() = 0;
 };
 
@@ -28,18 +29,26 @@ public:
 	~Instanceable() {};
 
 	template <class InstanceType>
-	void addInstancer(std::string name) {
+	static void addInstancer(std::string name) {
 		instancers["name"] = new Instancer<InstanceType>;
 	}
 
 	template <class InstanceType>
-	void addInstancer(BoxModelType* box) {
+	static void addInstancer(BoxModelType* box) {
 		if(is_base_of<Addressable<BoxModelType>, BoxModelType>::value) {
 			Addressable<BoxModelType>* b = (Addressable<BoxModelType>*)box;
 			instancers[b->getType()] = new Instancer<InstanceType>;
 		} else {
 			debug::error("automatic instancer registration only works with Addressable types");
 		}
+	}
+	
+	static BoxModelType* createInstance(std::string name){
+		if(instancers.count(name) == 1)
+			return instancers[name]->create();
+		else
+			debug::warning("key "+name+" not found in instancers");
+		return NULL;
 	}
 
 private:

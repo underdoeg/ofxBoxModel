@@ -5,12 +5,13 @@
 //--------------------------------------------------------------
 void testApp::setup() {
 	
+	/*
 	rootBox.width = ofGetWidth();
 	rootBox.height = ofGetHeight();
 	//rootBox.setBgColor(20);
 	
 	rootBox.setId("root");
-	
+	*/
 	
 	/*
 	for(int i=0;i<4;i++){
@@ -41,9 +42,11 @@ void testApp::setup() {
 	*/
 	//rootBox.loadCss("style.css");
 	
-	rootBox.loadXmlInto(ofToDataPath("output.xml"));
+	//rootBox.loadXmlInto(ofToDataPath("output.xml"));
 	
 	//rootBox.saveAsXml(ofToDataPath("output.xml"));
+
+	rootBox = ofxBox::loadXml(ofToDataPath("output.xml"));
 }
 
 //--------------------------------------------------------------
@@ -53,7 +56,7 @@ void testApp::update() {
 
 //--------------------------------------------------------------
 void testApp::draw() {
-	debugDrawer.drawTree(&rootBox);
+	debugDrawer.drawTree(rootBox);
 }
 
 //--------------------------------------------------------------
@@ -88,8 +91,8 @@ void testApp::mouseReleased(int x, int y, int button) {
 
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h) {
-	rootBox.width = w;
-	rootBox.height = h;
+	rootBox->width = w;
+	rootBox->height = h;
 }
 
 //--------------------------------------------------------------
