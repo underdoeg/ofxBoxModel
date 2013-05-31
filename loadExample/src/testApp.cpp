@@ -5,48 +5,10 @@
 //--------------------------------------------------------------
 void testApp::setup() {
 	
-	/*
-	rootBox.width = ofGetWidth();
-	rootBox.height = ofGetHeight();
-	//rootBox.setBgColor(20);
+	//add the customBox to the instancer system
+	ofxBox::addInstancer<CustomBox>();
 	
-	rootBox.setId("root");
-	*/
-	
-	/*
-	for(int i=0;i<4;i++){
-		ofxBox* b = new ofxBox();
-		b->addClass("quarter");
-		rootBox.addChild(b);
-	}
-	*/
-	
-	/*
-	for(unsigned int i = 0; i<20; i++) {
-		ofxBox* b = new CustomBox();
-		b->width = ofRandom(100, 150);
-		b->height = 100;
-		b->floating = FloatLeft;
-		b->addClass("outerBox");
-
-		int amount = ofRandom(2, 20);
-
-		for(int j=0; j<amount; j++) {
-			ofxBox* b2 = new CustomBox();
-			b2->addClass("innerBox");
-			b->addChild(b2);
-			b2->floating = FloatLeft;
-		}
-		rootBox.addChild(b);
-	}
-	*/
-	//rootBox.loadCss("style.css");
-	
-	//rootBox.loadXmlInto(ofToDataPath("output.xml"));
-	
-	//rootBox.saveAsXml(ofToDataPath("output.xml"));
-
-	rootBox = ofxBox::loadXml(ofToDataPath("output.xml"));
+	rootBox = ofxBox::loadXml(ofToDataPath("scene.xml"));
 }
 
 //--------------------------------------------------------------

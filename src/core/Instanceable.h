@@ -5,21 +5,26 @@
 #include <string>
 #include "Addressable.h"
 
-namespace boxModel {
+namespace boxModel
+{
 
-namespace core {
+namespace core
+{
 
 template <class BoxModelType>
-class InstancerBase {
-	public:
+class InstancerBase
+{
+public:
 	virtual BoxModelType* create() = 0;
 };
 
 template <class	BoxModelType>
-class Instanceable {
+class Instanceable
+{
 public:
 	template <class InstanceType>
-	class Instancer: public InstancerBase<BoxModelType> {
+	class Instancer: public InstancerBase<BoxModelType>
+	{
 		BoxModelType* create() {
 			return new InstanceType();
 		}
@@ -42,21 +47,39 @@ public:
 			debug::error("automatic instancer registration only works with Addressable types");
 		}
 	}
-	
-	static BoxModelType* createInstance(std::string name){
+
+	template <class InstanceType>
+	static void addInstancer() {
+		if(is_base_of<Addressable<BoxModelType>, InstanceType>::value) {
+			InstanceType b;
+			addInstancer<InstanceType>(&b);
+		} else {
+			debug::warning("addType: InstanceType does not include the addressable type");
+		}
+	}
+
+	static BoxModelType* createInstance(std::string name) {
+		if(!hasBoxModelTypeInstancer) {
+			addInstancer<BoxModelType>();
+			hasBoxModelTypeInstancer = true;
+		}
 		if(instancers.count(name) == 1)
 			return instancers[name]->create();
 		else
-			debug::warning("key "+name+" not found in instancers");
+			debug::warning("key '"+name+"' not found in instancers");
 		return NULL;
 	}
 
 private:
 	static std::map<std::string, InstancerBase<BoxModelType>*> instancers;
+	static bool hasBoxModelTypeInstancer;
 };
 
 template<class BoxModelType>
 std::map<std::string, InstancerBase<BoxModelType>*> Instanceable<BoxModelType>::instancers;
+
+template<class BoxModelType>
+bool Instanceable<BoxModelType>::hasBoxModelTypeInstancer = false;
 
 }
 

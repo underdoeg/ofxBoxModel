@@ -9,9 +9,11 @@
 #include <stdlib.h>
 
 
-namespace boxModel {
+namespace boxModel
+{
 
-namespace core {
+namespace core
+{
 
 /***********************************************************************************************/
 
@@ -24,13 +26,15 @@ struct CssProperty {
 	std::string value;
 };
 
-class CssPropertyParserPtrBase {
+class CssPropertyParserPtrBase
+{
 public:
 	virtual void call(std::string, std::string) = 0;
 };
 
 template <typename T>
-class CssPropertyParserPtr : public CssPropertyParserPtrBase {
+class CssPropertyParserPtr : public CssPropertyParserPtrBase
+{
 public:
 	CssPropertyParserPtr(T* who, void (T::*memfunc)(std::string, std::string))
 		: pt2Member(memfunc), inst(who) {
@@ -44,14 +48,16 @@ private:
 };
 
 template <typename T>
-CssPropertyParserPtrBase * makeCssPropertyParserPtr(T* who, void (T::*memfunc)(std::string, std::string)) {
+CssPropertyParserPtrBase * makeCssPropertyParserPtr(T* who, void (T::*memfunc)(std::string, std::string))
+{
 	return new CssPropertyParserPtr<T>(who, memfunc);
 }
 
 /***********************************************************************************************/
 
 template <class BoxModelType>
-class CssLoadable {
+class CssLoadable
+{
 public:
 	typedef std::map<std::string, std::vector<CssProperty> > PropertyList;
 	typedef std::map<std::string, CssPropertyParserPtrBase*> PropertyParserList;
@@ -61,6 +67,7 @@ public:
 		if(is_base_of<Serializable, BoxModelType>::value) {
 			Serializable* serial = (Serializable*)crtpSelfPtr<CssLoadable, BoxModelType>(this);
 			ofAddListener(serial->serialized, this, &CssLoadable<BoxModelType>::onSerialize);
+			ofAddListener(serial->deserialized, this, &CssLoadable<BoxModelType>::onDeserialize);
 		}
 		registerParsers();
 	};
@@ -96,31 +103,10 @@ public:
 					//now we have the address
 					string address = stringTrim(addressAndProperties[0]);
 					string propertiesString = addressAndProperties[1];
-					std::vector<std::string> propertyList = stringSplit(propertiesString, ';');
+					
+					std::vector<CssProperty> props = parseCssBlock(propertiesString);
+					properties[address].insert(properties[address].end(), props.begin(), props.end());
 
-					//now parse all properties
-					for(std::vector<std::string>::iterator itProp = propertyList.begin(); itProp<propertyList.end(); itProp++) {
-						std::vector<std::string> keyAndValue= stringSplit(*itProp, ':');
-
-						//trim the result
-						for(std::vector<std::string>::iterator itKV = keyAndValue.begin(); itKV<keyAndValue.end(); itKV++) {
-							*itKV = stringTrim(*itKV);
-						}
-						if(keyAndValue.size() == 2) {
-							std::string key = stringToLower(keyAndValue[0]);
-							std::string value = stringToLower(keyAndValue[1]);
-
-							//remove eventual space between number and pixel / %
-							value = stringReplace(value, " px", "px");
-							value = stringReplace(value, " %", "%");
-
-							//at this point we have address, key and value, so store it for later use
-							CssProperty p(key, value);
-							properties[address].push_back(p);
-						} else {
-							debug::warning("CSS ERROR near "+address+" -> "+keyAndValue[0]);
-						}
-					}
 				} else {
 					debug::warning("CSS ERROR near "+addressAndProperties[0]);
 				}
@@ -130,6 +116,13 @@ public:
 		//printProperties();
 
 		applyCss();
+	}
+
+	void setCssBlock(std::string block){
+		std::vector<CssProperty> props = parseCssBlock(block);
+		for(std::vector<CssProperty>::iterator it = props.begin(); it < props.end(); it++){
+			applyCssProperty(*it);
+		}
 	}
 
 	void registerCssPropertyParser(std::string property, CssPropertyParserPtrBase* func) {
@@ -149,6 +142,36 @@ public:
 	}
 
 protected:
+	std::vector<CssProperty> parseCssBlock(std::string propertiesString) {
+		std::vector<CssProperty> ret;
+		
+		std::vector<std::string> propertyList = stringSplit(propertiesString, ';');
+
+		//now parse all properties
+		for(std::vector<std::string>::iterator itProp = propertyList.begin(); itProp<propertyList.end(); itProp++) {
+			std::vector<std::string> keyAndValue= stringSplit(*itProp, ':');
+
+			//trim the result
+			for(std::vector<std::string>::iterator itKV = keyAndValue.begin(); itKV<keyAndValue.end(); itKV++) {
+				*itKV = stringTrim(*itKV);
+			}
+			if(keyAndValue.size() == 2) {
+				std::string key = stringToLower(keyAndValue[0]);
+				std::string value = stringToLower(keyAndValue[1]);
+
+				//remove eventual space between number and pixel / %
+				value = stringReplace(value, " px", "px");
+				value = stringReplace(value, " %", "%");
+
+				//at this point we have address, key and value, so store it for later use
+				ret.push_back(CssProperty(key, value));
+			} else {
+				debug::warning("CSS ERROR near "+keyAndValue[0]);
+			}
+		}
+		return ret;
+	}
+
 	Unit parseCssNumber(std::string val) {
 		Unit u;
 		std::string num = "";
@@ -229,10 +252,10 @@ protected:
 				b = ((number) & 0xFF);
 				a = 255;
 			} else if(val.size() == 8) {
-				r = ((number >> 32) & 0xFF);
+				r = ((number >> 24) & 0xFF);
 				g = ((number >> 16) & 0xFF);
 				b = ((number >> 8) & 0xFF);
-				a = ((number) & 0xFF);;
+				a = ((number) & 0xFF);
 			}
 			return Color(r, g, b, a);
 		} else if(stringContains(val, "rgb")) { //for rgb & rgba
@@ -272,7 +295,8 @@ protected:
 		ret += intToHexString(c.r);
 		ret += intToHexString(c.g);
 		ret += intToHexString(c.b);
-		ret += intToHexString(c.a);
+		if(c.a != 255)
+			ret += intToHexString(c.a);
 		return ret;
 	}
 
@@ -331,11 +355,11 @@ protected:
 			Color c = style->getColor();
 			if(c.r != 0 || c.g != 0 || c.b != 0 || c.a != 255)
 				ret += "color: "+getColorAsString(c)+";";
-			if(style->hasBgColor()){
+			if(style->hasBgColor()) {
 				c = style->getBgColor();
 				if(c.r != 255 || c.g != 255 || c.b != 255 || c.a != 255)
 					ret += "background-color: "+getColorAsString(c)+";";
-			}else{
+			} else {
 				ret += "background-color: none;";
 			}
 			c = style->getBorderColor();
@@ -466,6 +490,11 @@ protected:
 	//on serialize
 	void onSerialize(Serializable::Event& e) {
 		e.values->set("style", getCss());
+	}
+
+	void onDeserialize(Serializable::Event& e) {
+		if(e.values->hasKey("style"))
+			setCssBlock(e.values->get("style"));
 	}
 
 private:

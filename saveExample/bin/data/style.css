@@ -1,0 +1,22 @@
+.outerBox{
+	padding: 20px;
+}
+
+.innerBox{
+	width: 10px;
+	height: 10px;
+	margin: 2px;
+	padding: 2px;
+	color: rgb(255, 0, 0);
+}
+
+.quarter{
+	width: 50%;
+	height: 50%;
+	float: left;
+}
+
+/* this is a comment */
+#root{
+	background-color: #333;
+}

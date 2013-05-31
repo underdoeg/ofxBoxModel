@@ -2,7 +2,6 @@
 
 ofxBox::ofxBox()
 {
-	addInstancer<ofxBox>(this);
 }
 
 ofxBox::~ofxBox()
