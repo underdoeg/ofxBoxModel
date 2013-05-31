@@ -4,11 +4,13 @@
 
 //--------------------------------------------------------------
 void testApp::setup() {
+	
 	rootBox.width = ofGetWidth();
 	rootBox.height = ofGetHeight();
 	//rootBox.setBgColor(20);
 	
 	rootBox.setId("root");
+	
 	
 	/*
 	for(int i=0;i<4;i++){
@@ -18,6 +20,7 @@ void testApp::setup() {
 	}
 	*/
 	
+	/*
 	for(unsigned int i = 0; i<20; i++) {
 		ofxBox* b = new CustomBox();
 		b->width = ofRandom(100, 150);
@@ -35,10 +38,12 @@ void testApp::setup() {
 		}
 		rootBox.addChild(b);
 	}
+	*/
+	//rootBox.loadCss("style.css");
 	
-	rootBox.loadCss("style.css");
+	rootBox.loadXmlInto(ofToDataPath("output.xml"));
 	
-	rootBox.saveAsXml(ofToDataPath("output.xml"));
+	//rootBox.saveAsXml(ofToDataPath("output.xml"));
 }
 
 //--------------------------------------------------------------

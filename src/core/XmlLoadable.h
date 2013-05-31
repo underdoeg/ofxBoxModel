@@ -20,8 +20,17 @@ public:
 		}
 	};
 	~XmlLoadable() {};
-	void loadXml(std::string path) {
-
+	
+	static BoxModelType* loadXml(std::string path){
+		pugi::xml_document doc;
+		doc.load_file(path.c_str());
+		BoxModelType* ret = new BoxModelType();
+		
+		return ret;
+	}
+	
+	void loadXmlInto(std::string path) {
+		crtpSelfPtr<XmlLoadable, BoxModelType>(this)->addChild(loadXml(path));
 	}
 
 	void registerXmlElement(std::string type) {
