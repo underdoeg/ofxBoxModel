@@ -104,7 +104,7 @@
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-# PROJECT_CFLAGS =
+PROJECT_CFLAGS = -std=c++11
 
 ################################################################################
 # PROJECT OPTIMIZATION CFLAGS

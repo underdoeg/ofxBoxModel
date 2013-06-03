@@ -6,6 +6,11 @@
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="libs">
+    <VirtualDirectory Name="nano-signal-slot">
+      <VirtualDirectory Name="include">
+        <File Name="../../libs/nano-signal-slot/include/nano_signal_slot.hpp"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
     <VirtualDirectory Name="pugixml">
       <VirtualDirectory Name="include">
         <File Name="../../libs/pugixml/include/pugixml.hpp"/>
@@ -13,14 +18,6 @@
       </VirtualDirectory>
       <VirtualDirectory Name="src">
         <File Name="../../libs/pugixml/src/pugixml.cpp"/>
-      </VirtualDirectory>
-    </VirtualDirectory>
-    <VirtualDirectory Name="slre">
-      <VirtualDirectory Name="include">
-        <File Name="../../libs/slre/include/slre.h"/>
-      </VirtualDirectory>
-      <VirtualDirectory Name="src">
-        <File Name="../../libs/slre/src/slre.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
   </VirtualDirectory>
@@ -35,37 +32,6 @@
     <File Name="../Makefile"/>
     <File Name="../config.make"/>
     <File Name="../addons.make"/>
-  </VirtualDirectory>
-  <VirtualDirectory Name="addons">
-    <VirtualDirectory Name="ofxBoxModel">
-      <VirtualDirectory Name="src">
-        <VirtualDirectory Name="core">
-          <File Name="../../src/core/BoxModel.cpp"/>
-          <File Name="../../src/core/BoxModel.h"/>
-          <File Name="../../src/core/TreeNode.h"/>
-          <File Name="../../src/core/Property.h"/>
-          <File Name="../../src/core/Unit.h"/>
-          <File Name="../../src/core/Utils.h"/>
-          <File Name="../../src/core/Utils.cpp"/>
-          <File Name="../../src/core/Addressable.h"/>
-          <File Name="../../src/core/Styleable.h"/>
-          <File Name="../../src/core/Layoutable.h"/>
-          <File Name="../../src/core/CssLoadable.h"/>
-          <File Name="../../src/core/Drawable.h"/>
-          <File Name="../../src/core/XmlLoadable.h"/>
-          <File Name="../../src/core/Serializable.h"/>
-          <File Name="../../src/core/Instanceable.h"/>
-        </VirtualDirectory>
-        <VirtualDirectory Name="debug">
-          <File Name="../../src/debug/DebugDrawer.h"/>
-          <File Name="../../src/debug/DebugDrawer.cpp"/>
-          <File Name="../../src/debug/Print.h"/>
-          <File Name="../../src/debug/Print.cpp"/>
-        </VirtualDirectory>
-        <File Name="../../src/ofxBox.cpp"/>
-        <File Name="../../src/ofxBox.h"/>
-      </VirtualDirectory>
-    </VirtualDirectory>
   </VirtualDirectory>
   <VirtualDirectory Name="data">
     <File Name="../bin/data/style.css"/>
@@ -155,4 +121,12 @@
       </Completion>
     </Configuration>
   </Settings>
+  <VirtualDirectory Name="ofxBoxModel">
+    <VirtualDirectory Name="core">
+      <File Name="../../src/core/BaseTypes.h"/>
+      <File Name="../../src/core/BaseTypes.cpp"/>
+      <File Name="../../src/core/Box.h"/>
+      <File Name="../../src/core/Box.cpp"/>
+    </VirtualDirectory>
+  </VirtualDirectory>
 </CodeLite_Project>

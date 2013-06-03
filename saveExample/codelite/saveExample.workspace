@@ -8,11 +8,11 @@
   </Environment>
   <Project Name="saveExample" Path="saveExample.project" Active="Yes"/>
   <BuildMatrix>
-    <WorkspaceConfiguration Name="Debug" Selected="yes">
+    <WorkspaceConfiguration Name="Debug" Selected="no">
       <Project Name="linux" ConfigName="Debug"/>
       <Project Name="saveExample" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release" Selected="no">
+    <WorkspaceConfiguration Name="Release" Selected="yes">
       <Project Name="linux" ConfigName="Release"/>
       <Project Name="saveExample" ConfigName="Release"/>
     </WorkspaceConfiguration>

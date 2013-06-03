@@ -1,37 +1,16 @@
 #include "testApp.h"
 
 
+class Test{
+	
+};
 
 //--------------------------------------------------------------
 void testApp::setup() {
+	ofPtr<Test> blah(new Test());
+		ofPtr<Test> blah2(new Test());
 
-	rootBox.width = ofGetWidth();
-	rootBox.height = ofGetHeight();
-	//rootBox.setBgColor(20);
-	
-	rootBox.setId("root");
-	
-	for(unsigned int i = 0; i<20; i++) {
-		ofxBox* b = new CustomBox();
-		b->width = ofRandom(100, 150);
-		b->height = 100;
-		b->floating = FloatLeft;
-		b->addClass("outerBox");
-
-		int amount = ofRandom(2, 20);
-
-		for(int j=0; j<amount; j++) {
-			ofxBox* b2 = new CustomBox();
-			b2->addClass("innerBox");
-			b->addChild(b2);
-			b2->floating = FloatLeft;
-		}
-		rootBox.addChild(b);
-	}
-	
-	rootBox.loadCss("style.css");
-		
-	rootBox.saveAsXml(ofToDataPath("output.xml"));
+	cout << (blah == blah2) << endl;
 }
 
 //--------------------------------------------------------------
@@ -41,7 +20,6 @@ void testApp::update() {
 
 //--------------------------------------------------------------
 void testApp::draw() {
-	debugDrawer.drawTree(&rootBox);
 }
 
 //--------------------------------------------------------------
@@ -76,8 +54,7 @@ void testApp::mouseReleased(int x, int y, int button) {
 
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h) {
-	rootBox.width = w;
-	rootBox.height = h;
+	
 }
 
 //--------------------------------------------------------------

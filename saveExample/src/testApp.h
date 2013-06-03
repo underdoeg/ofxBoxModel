@@ -2,15 +2,6 @@
 
 #include "ofMain.h"
 
-#include "ofxBox.h"
-#include "debug/DebugDrawer.h"
-
-class CustomBox: public ofxBox{
-	string getType(){
-		return "customBox";
-	}
-};
-
 class testApp : public ofBaseApp{
 
 	public:
@@ -27,8 +18,4 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-		
-		ofxBox::DebugDrawer debugDrawer;
-	
-		ofxBox rootBox;
  };
