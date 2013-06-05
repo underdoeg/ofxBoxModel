@@ -2,6 +2,7 @@
 #define BOX_H
 
 #include "core/BaseTypes.h"
+#include "ofTypes.h"
 
 namespace boxModel {
 
@@ -12,9 +13,9 @@ public:
 	Box();
 	~Box();
 
-	Rectangle outerRect;
-	Rectangle innerRect;
-	Rectangle contentRect;
+	Value<Rectangle> outerRect;
+	Value<Rectangle> innerRect;
+	Value<Rectangle> contentRect;
 };
 
 }

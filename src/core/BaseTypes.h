@@ -9,10 +9,12 @@ namespace boxModel {
 namespace core {
 
 typedef ofPoint Point;
+typedef ofRectangle Rectangle;
 
 template <class Type>
-class EventValue {
+class Value{
 	Nano::signal<void(Type)> changed;
+	Nano::signal<void(Type, Type)> changed2;
 
 	operator const Type() const {
 		return value;
@@ -26,32 +28,14 @@ class EventValue {
 	void set(Type val) {
 		if(value == val)
 			return;
+		Type oldValue = value;
 		value = val;
 		changed(value);
+		changed2(value, oldValue);
 	}
 private:
 	Type value;
 };
-
-typedef EventValue<float> EventFloat;
-
-class EventPoint {
-public:
-	Nano::signal<void(float, float)> changed;
-
-	void set(float x, float y);
-
-	EventFloat x;
-	EventFloat y;
-};
-
-class Rectangle {
-public:
-	EventPoint position;
-	EventPoint size;
-};
-
-
 
 }
 

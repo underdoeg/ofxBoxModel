@@ -36,6 +36,28 @@
   <VirtualDirectory Name="data">
     <File Name="../bin/data/style.css"/>
   </VirtualDirectory>
+  <VirtualDirectory Name="ofxBoxModel">
+    <VirtualDirectory Name="core">
+      <File Name="../../src/core/BaseTypes.h"/>
+      <File Name="../../src/core/BaseTypes.cpp"/>
+      <File Name="../../src/core/Component.h"/>
+      <File Name="../../src/core/Component.cpp"/>
+      <File Name="../../src/core/Composite.h"/>
+      <File Name="../../src/core/Composite.cpp"/>
+      <File Name="../../src/core/Utils.h"/>
+      <File Name="../../src/core/Utils.cpp"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="components">
+      <File Name="../../src/components/BoxModel.h"/>
+      <File Name="../../src/components/Addressable.h"/>
+      <File Name="../../src/components/Stackable.h"/>
+    </VirtualDirectory>
+    <File Name="../../src/ofxBox.h"/>
+    <VirtualDirectory Name="debug">
+      <File Name="../../src/debug/Print.h"/>
+      <File Name="../../src/debug/Print.cpp"/>
+    </VirtualDirectory>
+  </VirtualDirectory>
   <Settings Type="Dynamic Library">
     <GlobalSettings>
       <Compiler Options="" C_Options="">
@@ -52,7 +74,7 @@
       </Compiler>
       <Linker Options="" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="" IntermediateDirectory="./Debug" Command="./$(ProjectName)_debug" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/../bin" PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="" IntermediateDirectory="./Debug" Command="./bin/$(ProjectName)_debug" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/.." PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
       </Environment>
@@ -89,7 +111,7 @@
       </Compiler>
       <Linker Options="-O2" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
-      <General OutputFile="" IntermediateDirectory="./Release" Command="make RunRelease" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/.." PauseExecWhenProcTerminates="yes"/>
+      <General OutputFile="" IntermediateDirectory="./Release" Command="./bin/$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(WorkspacePath)/.." PauseExecWhenProcTerminates="yes"/>
       <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;">
         <![CDATA[]]>
       </Environment>
@@ -102,7 +124,7 @@
       <CustomBuild Enabled="yes">
         <RebuildCommand/>
         <CleanCommand>make clean Release</CleanCommand>
-        <BuildCommand>make Release</BuildCommand>
+        <BuildCommand>make -j8 Release</BuildCommand>
         <PreprocessFileCommand/>
         <SingleFileCommand/>
         <MakefileGenerationCommand/>
@@ -121,12 +143,4 @@
       </Completion>
     </Configuration>
   </Settings>
-  <VirtualDirectory Name="ofxBoxModel">
-    <VirtualDirectory Name="core">
-      <File Name="../../src/core/BaseTypes.h"/>
-      <File Name="../../src/core/BaseTypes.cpp"/>
-      <File Name="../../src/core/Box.h"/>
-      <File Name="../../src/core/Box.cpp"/>
-    </VirtualDirectory>
-  </VirtualDirectory>
 </CodeLite_Project>
