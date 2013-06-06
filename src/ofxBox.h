@@ -10,12 +10,17 @@ using namespace boxModel;
 using namespace core;
 using namespace components;
 
-class ofxBox: public Composite<ofxBox>, public BoxModel<ofxBox>, public Addressable<ofxBox>
+
+class ofxBox: private Composite, public Stackable<ofxBox>, public BoxModel, public Addressable<ofxBox>
 {
 public:
 	ofxBox()
 	{
-		registerComponents<BoxModel<ofxBox>, Addressable<ofxBox> >(*this, *this);
+		addComponent<BoxModel>(this);
+		addComponent<Stackable<ofxBox>>(this);
+		addComponent<Addressable<ofxBox>>(this);
+		
+		setupComponents();
 	}
 	~ofxBox()
 	{

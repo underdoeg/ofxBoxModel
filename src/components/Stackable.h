@@ -2,21 +2,28 @@
 #define STACKABLE_H
 
 #include "core/Component.h"
+#include "assert.h"
+#include "Utils.h"
+#include "assert.h"
 
 namespace boxModel {
 
 namespace components {
 
 template <class Type>
-class Stackable {
+class Stackable: public core::Component, private core::TypedComponent<Stackable<Type>, Type> {
 public:
-	COMPONENT()
 	
 	typedef typename std::vector<Type*>::iterator ChildrenIterator;
 
 	Stackable():parent(NULL) {
+		
 	}
 	~Stackable() {
+	}
+	
+	void setup(){
+		
 	}
 	
 	/**** BEGIN HIERARCHY FUNCTIONS ****/

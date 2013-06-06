@@ -3,61 +3,74 @@
 
 #include <functional>
 #include <iostream>
+#include <unordered_map>
+#include <typeinfo>
+#include <typeindex>
 #include "debug/Print.h"
+#include "Utils.h"
+#include "assert.h"
 
 namespace boxModel {
 
 namespace core {
 
-class Test{
-		
-};
+class ComponentContainer;
 
-class ComponentBase {
+class Component {
 public:
-	~ComponentBase() {};
-	virtual void registerComponent(ComponentBase& c) = 0;
-};
 
-template <class Type>
-class HierarchyAccessor{
-	
-};
-
-template <class Type>
-class Component: public ComponentBase {
-public:
-	Component() {};
+protected:
+	Component():componentContainer(NULL) {};
 	~Component() {};
+	virtual void setup() = 0;
+	ComponentContainer* componentContainer;
 
-/*
-	Type* getParentComponent() {
-		return getParentFunction();
-	}
-	
-	bool hasParentComponent() {
-		return hasParentFunction();
-	}
-	
-	int getNumChildrenComponent() {
-		return getNumChildrenFunction();
-	}
-	
-	Type* getChildComponent(int index){
-		return getChildFunction(index);
-	}
-	
-	std::function<bool(void)> hasParentFunction;
-	std::function<Type*(void)> getParentFunction;
-	std::function<int(void)> getNumChildrenFunction;
-	std::function<Type*(int)> getChildFunction;
-*/
-	
 private:
+	friend class ComponentContainer;
+	void setup(ComponentContainer* c) {componentContainer = c;};
 };
 
-#define COMPONENT() void registerComponent(core::ComponentBase&){}; \
-					Type* type;												\
+template<class ComponentType, class Type>
+class TypedComponent{
+protected:
+	TypedComponent() {
+		const bool valid = core::isBaseOf<ComponentType, Type>::value;
+		assert(valid && "Typed Component: the type provided must be a child of the component");
+	}
+
+	Type* getAsType() {
+		return static_cast<Type*>(this);
+	};
+};
+
+class ComponentContainer {
+public:
+	typedef std::unordered_map<std::type_index, Component*> ComponentMap;
+
+	template <class ComponentType>
+	void addComponent(ComponentType* component) {
+		components[typeid(ComponentType)] = component;
+	}
+
+	template <class ComponentType>
+	ComponentType* getComponent() {
+		return static_cast<ComponentType*>(components[typeid(ComponentType)]);
+	}
+
+	template <class ComponentType>
+	bool hasComponent() {
+		return true;
+	}
+
+	void setupComponents() {
+		for(auto& comp: components) {
+			comp.second->setup(this);
+		}
+	}
+
+private:
+	std::unordered_map<std::type_index, Component*> components;
+};
 
 //end namespace
 }

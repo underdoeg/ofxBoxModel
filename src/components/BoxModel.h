@@ -9,14 +9,15 @@ namespace boxModel
 namespace components
 {
 
-template <class Type>
-class BoxModel : public core::Component<Type>
+class BoxModel : public core::Component
 {
 public:
-	COMPONENT()
+	//COMPONENT()
 	
 	BoxModel(){};
 	~BoxModel(){};
+	
+	void setup();
 };
 
 }

@@ -51,6 +51,7 @@
       <File Name="../../src/components/BoxModel.h"/>
       <File Name="../../src/components/Addressable.h"/>
       <File Name="../../src/components/Stackable.h"/>
+      <File Name="../../src/components/BoxModel.cpp"/>
     </VirtualDirectory>
     <File Name="../../src/ofxBox.h"/>
     <VirtualDirectory Name="debug">

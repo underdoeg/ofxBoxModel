@@ -3,6 +3,7 @@
 
 #include "core/Utils.h"
 #include "core/Component.h"
+#include "Stackable.h"
 #include <vector>
 
 namespace boxModel {
@@ -10,9 +11,13 @@ namespace boxModel {
 namespace components {
 
 template<class Type>
-class Addressable: public core::Component<Type> {
+class Addressable: public core::Component, private core::TypedComponent<Addressable<Type>, Type>{
 public:
-	COMPONENT()
+	//COMPONENT()
+	
+	void setup(){
+		assert(componentContainer->hasComponent<Stackable<Type>>());
+	}
 	
 	Addressable() {
 		id = "";
@@ -71,17 +76,15 @@ public:
 	}
 
 	std::vector<Type*> findByAddress(std::string path) {
-		//TODO split by , first or should this be in css? yes! css
-		//Type* rootNode = core::crtpSelfPtr<Addressable, Type>(this);
 
 		//split the string into address fragments
 		std::vector<std::string> pathSplitted = core::stringSplit(path);
 
-		std::vector<Type*> ret;
+		std::vector<Addressable<Type>*> ret;
 
 		//store temporary candidates for return
-		std::vector<Type*> curRet;
-		curRet.push_back(type);
+		std::vector<Stackable<Type>*> curRet;
+		curRet.push_back(this->getAsType());
 
 		//go through the path
 		for(std::vector<std::string>::iterator itPath = pathSplitted.begin(); itPath < pathSplitted.end(); itPath++) {
@@ -101,6 +104,7 @@ public:
 						tmp.insert(tmp.end(), t.begin(), t.end());
 					}
 					break;
+				/*
 				case '#':
 					item.erase(0,1);
 					for(typename std::vector<Type*>::iterator it = curRet.begin(); it < curRet.end(); it++) {
@@ -114,6 +118,7 @@ public:
 						tmp.insert(tmp.end(), t.begin(), t.end());
 					}
 					break;
+				*/
 				}
 			}
 			//push current items into curRet;
@@ -144,7 +149,7 @@ private:
 		}
 		return ret;
 	}
-
+	
 	std::vector<Type*> findById(string idName, Type* root, bool skipRoot = false) {
 		std::vector<Type*> ret;
 		if(!skipRoot && root->isId(idName)) {
@@ -156,6 +161,7 @@ private:
 		}
 		return ret;
 	}
+	
 	
 	std::vector<Type*> findByType(string type, Type* root, bool skipRoot = false) {
 		std::vector<Type*> ret;
