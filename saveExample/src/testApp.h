@@ -2,6 +2,12 @@
 
 #include "ofMain.h"
 #include "ofxBox.h"
+#include "debug/DebugDrawer.h"
+
+class CustomBox: public ofxBox{
+public:
+	string test2;
+};
 
 class testApp : public ofBaseApp{
 
@@ -21,5 +27,6 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
 		ofxBox root;
-		ofxBox child;
+		
+		boxModel::debug::DebugDrawer debugDrawer;
  };

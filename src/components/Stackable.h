@@ -10,11 +10,11 @@ namespace boxModel {
 
 namespace components {
 
-template <class Type>
-class Stackable: public core::Component, private core::TypedComponent<Stackable<Type>, Type> {
-public:
+class Stackable: public core::Component{
+		public:
 	
-	typedef typename std::vector<Type*>::iterator ChildrenIterator;
+	typedef std::vector<Stackable*> 	ChildrenList;
+	typedef ChildrenList::iterator 		ChildrenIterator;
 
 	Stackable():parent(NULL) {
 		
@@ -26,26 +26,35 @@ public:
 		
 	}
 	
+	void onComponentAdded(Component& component){
+		
+	}
+	
 	/**** BEGIN HIERARCHY FUNCTIONS ****/
-	void addChild(Type* child) {
+	void addChild(Stackable* child) {
 		children.push_back(child);
 	}
 
-	void removeChild(Type* child) {
+	void removeChild(Stackable* child) {
 		children.erase(std::remove(children.begin(), children.end(), child), children.end());
 	}
 
-	Type* operator[](unsigned int index) {
-		getChild(index);
+	Stackable* operator[](unsigned int index) {
+		return getChild(index);
 	}
 
 	int getNumChildren() {
 		return children.size();
 	}
-
-	Type* getChild(unsigned int index) {
+	
+	Stackable* getChild(unsigned int index) {
 		assert(index < children.size());
 		return children[index];
+	}
+	
+	template <class Type>
+	Type* getChild(unsigned int index){
+		return core::castTo<Stackable, Type>(getChild(index));
 	}
 
 	ChildrenIterator childrenBegin() {
@@ -60,16 +69,20 @@ public:
 		return parent != NULL;
 	}
 	
-	Type* getParent(){
+	Stackable* getParent(){
 		return parent;
 	}
 	
-	void setParent(Type* p){
+	void setParent(Stackable* p){
 		parent = p;
 	}
-	
-	std::vector<Type*> children;
-	Type* parent;
+		
+	ChildrenList getChildren(){
+		return children;
+	};
+private:
+	ChildrenList children;
+	Stackable* parent;
 };
 
 }

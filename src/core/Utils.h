@@ -4,7 +4,9 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
-
+#include "assert.h"
+#include <typeinfo>
+#include "debug/Print.h"
 
 namespace boxModel {
 
@@ -24,6 +26,25 @@ struct isBaseOf { // check if B is a base of D
 
 	static const bool value = sizeof(test(get())) == sizeof(yes);
 };
+
+template <typename Type, typename Base>
+bool instanceIsBaseOf(Type* type){
+	return dynamic_cast<Base*>(type) != NULL;
+}
+
+template <typename From, typename To>
+To* castTo(From* from, bool typecheck = true){
+	if(!typecheck)
+		return static_cast<To*>(from);
+	
+	To* to = NULL;
+	if(isBaseOf<To, From>::value){
+		to = static_cast<To*>(from);
+	}else{
+		assert(false && "Invalid casting");
+	}
+	return to;
+}
 
 
 /****************************************************************************/

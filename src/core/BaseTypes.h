@@ -10,9 +10,11 @@ namespace core {
 
 typedef ofPoint Point;
 typedef ofRectangle Rectangle;
+typedef ofColor Color;
 
 template <class Type>
-class Value{
+class Value {
+public:
 	Nano::signal<void(Type)> changed;
 	Nano::signal<void(Type, Type)> changed2;
 
@@ -25,16 +27,62 @@ class Value{
 		return value;
 	}
 
+	Type operator+( const Type& in ) const {
+		return value + in;
+	}
+
+	Type get() {
+		return value;
+	}
+
 	void set(Type val) {
 		if(value == val)
 			return;
-		Type oldValue = value;
+		oldValue = value;
 		value = val;
 		changed(value);
 		changed2(value, oldValue);
 	}
 private:
 	Type value;
+	Type oldValue;
+};
+
+class ValuePoint {
+public:
+	ValuePoint() {
+		x.changed.connect<ValuePoint, &ValuePoint::onXChanged>(this);
+		y.changed.connect<ValuePoint, &ValuePoint::onYChanged>(this);
+	}
+
+	Nano::signal<void(Point)> changed;
+	//Nano::signal<void(Point, Point)> changed2;
+
+	operator const Point() const {
+		const Point p(x, y);
+		return p;
+	}
+
+	Point operator+( const Point& pnt ) const {
+		return Point(x+pnt.x, y+pnt.y);
+	}
+
+	Value<float> x;
+	Value<float> y;
+private:
+	void onXChanged(float v) {
+		dispatchEvent();
+	}
+
+	void onYChanged(float v) {
+		dispatchEvent();
+	}
+
+	void dispatchEvent() {
+		changed(*this);
+	}
+
+	//Point oldVal;
 };
 
 }

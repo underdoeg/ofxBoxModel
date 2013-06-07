@@ -46,17 +46,20 @@
       <File Name="../../src/core/Composite.cpp"/>
       <File Name="../../src/core/Utils.h"/>
       <File Name="../../src/core/Utils.cpp"/>
+      <File Name="../../src/core/Unit.h"/>
     </VirtualDirectory>
     <VirtualDirectory Name="components">
-      <File Name="../../src/components/BoxModel.h"/>
       <File Name="../../src/components/Addressable.h"/>
       <File Name="../../src/components/Stackable.h"/>
-      <File Name="../../src/components/BoxModel.cpp"/>
+      <File Name="../../src/components/Box.h"/>
+      <File Name="../../src/components/BoxDefinition.h"/>
     </VirtualDirectory>
     <File Name="../../src/ofxBox.h"/>
     <VirtualDirectory Name="debug">
       <File Name="../../src/debug/Print.h"/>
       <File Name="../../src/debug/Print.cpp"/>
+      <File Name="../../src/debug/DebugDrawer.h"/>
+      <File Name="../../src/debug/DebugDrawer.cpp"/>
     </VirtualDirectory>
   </VirtualDirectory>
   <Settings Type="Dynamic Library">
