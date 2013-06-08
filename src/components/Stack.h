@@ -10,51 +10,53 @@ namespace boxModel {
 
 namespace components {
 
-class Stackable: public core::Component{
-		public:
-	
-	typedef std::vector<Stackable*> 	ChildrenList;
+class Stack: public core::Component {
+public:
+
+	typedef std::vector<Stack*> 	ChildrenList;
 	typedef ChildrenList::iterator 		ChildrenIterator;
 
-	Stackable():parent(NULL) {
-		
+	Stack():parent(NULL) {
+
 	}
-	~Stackable() {
+	~Stack() {
 	}
-	
-	void setup(){
-		
+
+	void setup() {
+
 	}
-	
-	void onComponentAdded(Component& component){
-		
+
+	void onComponentAdded(Component& component) {
+
 	}
-	
+
 	/**** BEGIN HIERARCHY FUNCTIONS ****/
-	void addChild(Stackable* child) {
+	void addChild(Stack* child) {
 		children.push_back(child);
+		childAdded(child);
 	}
 
-	void removeChild(Stackable* child) {
+	void removeChild(Stack* child) {
 		children.erase(std::remove(children.begin(), children.end(), child), children.end());
+		childRemoved(child);
 	}
 
-	Stackable* operator[](unsigned int index) {
+	Stack* operator[](unsigned int index) {
 		return getChild(index);
 	}
 
 	int getNumChildren() {
 		return children.size();
 	}
-	
-	Stackable* getChild(unsigned int index) {
+
+	Stack* getChild(unsigned int index) {
 		assert(index < children.size());
 		return children[index];
 	}
-	
+
 	template <class Type>
-	Type* getChild(unsigned int index){
-		return core::castTo<Stackable, Type>(getChild(index));
+	Type* getChild(unsigned int index) {
+		return core::castTo<Stack, Type>(getChild(index));
 	}
 
 	ChildrenIterator childrenBegin() {
@@ -64,25 +66,29 @@ class Stackable: public core::Component{
 	ChildrenIterator childrenEnd() {
 		return children.end();
 	}
-	
-	bool hasParent(){
+
+	bool hasParent() {
 		return parent != NULL;
 	}
-	
-	Stackable* getParent(){
+
+	Stack* getParent() {
 		return parent;
 	}
-	
-	void setParent(Stackable* p){
+
+	void setParent(Stack* p) {
 		parent = p;
 	}
-		
-	ChildrenList getChildren(){
+
+	ChildrenList getChildren() {
 		return children;
 	};
+	
+	Nano::signal<void(Stack*)> childAdded;
+	Nano::signal<void(Stack*)> childRemoved;
+	
 private:
 	ChildrenList children;
-	Stackable* parent;
+	Stack* parent;
 };
 
 }

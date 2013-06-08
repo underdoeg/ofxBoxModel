@@ -1,6 +1,6 @@
 #include "DebugDrawer.h"
 
-#include "components/Stackable.h"
+#include "components/Stack.h"
 
 namespace boxModel
 {
@@ -23,17 +23,20 @@ DebugDrawer::~DebugDrawer()
 }
 
 void DebugDrawer::draw(core::ComponentContainer* container){
+	ofPushMatrix();
 	if(container->hasComponent<Box>()){
 		Box* box = container->getComponent<Box>();
 		drawBoxOuter(box, color, bgColor);
 		drawBoxInner(box, color, bgColor);
+		ofTranslate(box->contentPosition + box->position);
 	}
-	if(container->hasComponent<Stackable>()){
-		Stackable* stack = container->getComponent<Stackable>();
-		for(Stackable* stackChild: stack->getChildren()){
+	if(container->hasComponent<Stack>()){
+		Stack* stack = container->getComponent<Stack>();
+		for(Stack* stackChild: stack->getChildren()){
 			draw(stackChild->components);
 		}
 	}
+	ofPopMatrix();
 }
 
 void DebugDrawer::drawBoxInner(Box* box, core::Color fg, core::Color bg)

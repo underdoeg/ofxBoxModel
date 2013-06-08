@@ -66,6 +66,16 @@ public:
 	Point operator+( const Point& pnt ) const {
 		return Point(x+pnt.x, y+pnt.y);
 	}
+	
+	void set(float nx, float ny){
+		x = nx;
+		y = ny;
+	}
+	
+	void set(Point p){
+		x = p.x;
+		y = p.y;
+	}
 
 	Value<float> x;
 	Value<float> y;

@@ -3,7 +3,7 @@
 
 #include "core/Utils.h"
 #include "core/Component.h"
-#include "Stackable.h"
+#include "Stack.h"
 #include <vector>
 
 namespace boxModel {
@@ -93,7 +93,7 @@ public:
 		std::vector<Addressable*> ret;
 		
 		//check for Stackable
-		if(!components->hasComponent<Stackable>()) {
+		if(!components->hasComponent<Stack>()) {
 			core::componentDependencyWarning("Addressable::findByAddress", "Stackable");
 			return ret;
 		}
@@ -162,9 +162,9 @@ private:
 			ret.push_back(root);
 		}
 	
-		Stackable* stack = root->components->getComponent<Stackable>();
+		Stack* stack = root->components->getComponent<Stack>();
 	
-		for(Stackable* stackChild: stack->getChildren()){
+		for(Stack* stackChild: stack->getChildren()){
 			std::vector<Addressable*> v = findByClass(className, stackChild->components->getComponent<Addressable>());
 			ret.insert( ret.end(), v.begin(), v.end() );
 		}
@@ -178,9 +178,9 @@ private:
 			ret.push_back(root);
 		}
 	
-		Stackable* stack = root->components->getComponent<Stackable>();
+		Stack* stack = root->components->getComponent<Stack>();
 	
-		for(Stackable* stackChild: stack->getChildren()){
+		for(Stack* stackChild: stack->getChildren()){
 			std::vector<Addressable*> v = findById(idName, stackChild->components->getComponent<Addressable>());
 			ret.insert( ret.end(), v.begin(), v.end() );
 		}
@@ -194,9 +194,9 @@ private:
 			ret.push_back(root);
 		}
 	
-		Stackable* stack = root->components->getComponent<Stackable>();
+		Stack* stack = root->components->getComponent<Stack>();
 	
-		for(Stackable* stackChild: stack->getChildren()){
+		for(Stack* stackChild: stack->getChildren()){
 			std::vector<Addressable*> v = findByType(typeName, stackChild->components->getComponent<Addressable>());
 			ret.insert( ret.end(), v.begin(), v.end() );
 		}

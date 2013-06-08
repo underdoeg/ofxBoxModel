@@ -8,21 +8,48 @@ namespace boxModel {
 
 namespace components {
 
+enum Position {
+    Relative,
+    Absolute,
+    Fixed
+};
+
+enum Floating {
+    FloatLeft,
+    FloatRight,
+    FloatNone
+};
+
 class BoxDefinition : public core::Component {
 public:
 	BoxDefinition() {
+
 	}
 	~BoxDefinition() {
 	}
 
 	void setup() {
+		box = NULL;
+		LISTEN_FOR_COMPONENT(Box, BoxDefinition, onBox)
+
 		margin.unitChanged.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
 		padding.unitChanged.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
 		border.unitChanged.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
-		
+
 		width.changed.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
 		height.changed.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
+
+		floating = FloatNone;
+		positioning = Relative;
 	}
+
+	core::Unit left;
+	core::Unit top;
+	core::Unit bottom;
+	core::Unit right;
+
+	core::Value<Floating> floating;
+	core::Value<Position> positioning;
 
 	core::UnitGroup margin;
 	core::UnitGroup padding;
@@ -31,17 +58,13 @@ public:
 	core::Unit width;
 	core::Unit height;
 
-private:
-	void onUnitChanged(core::Unit* u){
-		recalculate();
-	}
+	Nano::signal<void(float&)> onWidthAuto;
+	Nano::signal<void(float&)> onHeightAuto;
 
-	void recalculate(){
-		if(!components->hasComponent<Box>())
+	void recalculateBoxSize() {
+		if(box == NULL)
 			return;
-		
-		Box* box = components->getComponent<Box>();
-		
+
 		float _width = width.getValueCalculated();
 		float _height = height.getValueCalculated();
 
@@ -60,10 +83,14 @@ private:
 		float _borderTop = border.top.getValueCalculated();
 		float _borderBottom = border.bottom.getValueCalculated();
 
-		if(width.getType() == core::Unit::Auto)
-			_width = _paddingLeft + _paddingRight + _borderLeft + _borderRight;
-		if(height == core::Unit::Auto)
-			_height = _paddingTop + _paddingBottom + _borderTop + _borderBottom;
+		if(width.getType() == core::Unit::Auto) {
+			onWidthAuto(_width);
+			_width += _paddingLeft + _paddingRight + _borderLeft + _borderRight;
+		}
+		if(height.getType() == core::Unit::Auto) {
+			onHeightAuto(_height);
+			_height += _paddingTop + _paddingBottom + _borderTop + _borderBottom;
+		}
 
 		box->size.x = _width;
 		box->outerSize.x = _marginLeft + _marginRight + box->size.x;
@@ -75,6 +102,18 @@ private:
 		box->contentSize.y = box->size.y - _paddingBottom - _paddingTop - _borderTop - _borderBottom;
 		box->contentPosition.y = _paddingTop + _borderTop;
 	}
+
+private:
+
+	void onBox(Box* b) {
+		box = b;
+	}
+
+	void onUnitChanged(core::Unit* u) {
+		recalculateBoxSize();
+	}
+
+	Box* box;
 };
 
 }

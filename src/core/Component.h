@@ -86,14 +86,6 @@ public:
 		}
 		return static_cast<ComponentSignalHelper<ComponentType>*>(componentAddedSignals[index])->signal;
 	}
-	
-	/*
-	void setupComponents() {
-		for(auto& comp: components) {
-			comp.second->setup(this);
-		}
-	}
-	*/
 
 private:
 	std::unordered_map<std::type_index, Component*> components;

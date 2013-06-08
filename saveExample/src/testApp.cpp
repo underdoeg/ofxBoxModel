@@ -6,42 +6,48 @@ void testApp::setup(){
 	
 	root.width = ofGetWidth();
 	root.height = ofGetHeight();
+	for(unsigned int i = 0; i<220; i++) {
 
-	for(unsigned int i = 0; i<20; i++) {
 		ofxBox* b = new CustomBox();
 		
 		b->width = ofRandom(100, 150);
 		b->height = 100;
-		//b->floating = FloatLeft;
-		
+		b->height = Unit::Auto;
+		b->floating = FloatLeft;
+		b->padding = 5;
+			
 		b->addClass("outerBox");
-
-		int amount = ofRandom(2, 20);
+		
+		int amount = ofRandom(2, 200);
 
 		for(int j=0; j<amount; j++) {
 			ofxBox* b2 = new CustomBox();
 			b2->addClass("innerBox");
+			b2->width = 4;
+			b2->height = 4;
+			b2->floating = FloatLeft;
 			b->addChild(b2);
-			//b2->floating = FloatLeft;
 		}
-		root.addChild(b);
+		
+		root.addChild(b);		
 	}
-
+	
 	//rootBox.loadCss("style.css");
-
 	
 	//child.addClass("test");
-	cout << root.findByAddress(".innerBox").size() << endl;
-	
+	//cout << root.findByAddress(".innerBox").size() << endl;
 }
 
 //--------------------------------------------------------------
 void testApp::update() {
-	
+	root.width = ofGetWidth();
+	root.height = ofGetHeight();
 }
 
 //--------------------------------------------------------------
 void testApp::draw() {
+	
+	
 	debugDrawer.draw(&root);
 }
 
@@ -77,8 +83,7 @@ void testApp::mouseReleased(int x, int y, int button) {
 
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h) {
-	root.width = ofGetWidth();
-	root.height = ofGetHeight();
+	
 }
 
 //--------------------------------------------------------------

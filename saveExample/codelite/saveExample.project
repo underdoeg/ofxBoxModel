@@ -39,7 +39,6 @@
   <VirtualDirectory Name="ofxBoxModel">
     <VirtualDirectory Name="core">
       <File Name="../../src/core/BaseTypes.h"/>
-      <File Name="../../src/core/BaseTypes.cpp"/>
       <File Name="../../src/core/Component.h"/>
       <File Name="../../src/core/Component.cpp"/>
       <File Name="../../src/core/Composite.h"/>
@@ -50,9 +49,10 @@
     </VirtualDirectory>
     <VirtualDirectory Name="components">
       <File Name="../../src/components/Addressable.h"/>
-      <File Name="../../src/components/Stackable.h"/>
       <File Name="../../src/components/Box.h"/>
       <File Name="../../src/components/BoxDefinition.h"/>
+      <File Name="../../src/components/Stack.h"/>
+      <File Name="../../src/components/Layouter.h"/>
     </VirtualDirectory>
     <File Name="../../src/ofxBox.h"/>
     <VirtualDirectory Name="debug">
