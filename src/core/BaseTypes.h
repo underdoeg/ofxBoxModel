@@ -16,7 +16,7 @@ template <class Type>
 class Value {
 public:
 	Nano::signal<void(Type)> changed;
-	Nano::signal<void(Type, Type)> changed2;
+	//Nano::signal<void(Type, Type)> changed2;
 
 	operator const Type() const {
 		return value;
@@ -41,7 +41,7 @@ public:
 		oldValue = value;
 		value = val;
 		changed(value);
-		changed2(value, oldValue);
+		//changed2(value, oldValue);
 	}
 private:
 	Type value;

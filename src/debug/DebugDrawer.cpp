@@ -1,6 +1,7 @@
 #include "DebugDrawer.h"
 
 #include "components/Stack.h"
+#include "components/Style.h"
 
 namespace boxModel
 {
@@ -26,8 +27,14 @@ void DebugDrawer::draw(core::ComponentContainer* container){
 	ofPushMatrix();
 	if(container->hasComponent<Box>()){
 		Box* box = container->getComponent<Box>();
-		drawBoxOuter(box, color, bgColor);
-		drawBoxInner(box, color, bgColor);
+		if(container->hasComponent<Style>()){
+			Style* style = container->getComponent<Style>();
+			drawBoxOuter(box, style->getColor(), style->getBgColor());
+			drawBoxInner(box, style->getBorderColor(), style->getBgColor());
+		}else{
+			drawBoxOuter(box, color, bgColor);
+			drawBoxInner(box, color, bgColor);
+		}
 		ofTranslate(box->contentPosition + box->position);
 	}
 	if(container->hasComponent<Stack>()){

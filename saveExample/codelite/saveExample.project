@@ -53,6 +53,8 @@
       <File Name="../../src/components/BoxDefinition.h"/>
       <File Name="../../src/components/Stack.h"/>
       <File Name="../../src/components/Layouter.h"/>
+      <File Name="../../src/components/Style.h"/>
+      <File Name="../../src/components/Css.h"/>
     </VirtualDirectory>
     <File Name="../../src/ofxBox.h"/>
     <VirtualDirectory Name="debug">

@@ -46,7 +46,7 @@ public:
 		
 		if(stack->getNumChildren() == 0)
 			return;
-		
+				
 		maxContentSize.set(0, 0);
 		curPosition.set(0,0);
 		rowMaxHeight = 0;
@@ -59,7 +59,6 @@ public:
 		
 		if(boxDefinition != NULL)
 			boxDefinition->recalculateBoxSize();
-		
 	}
 protected:
 	virtual void placeBox(Box* childBox) {
@@ -113,9 +112,12 @@ private:
 			child->components->getComponent<BoxDefinition>()->floating.changed.connect<Layouter, &Layouter::onChildFloatingChanged>(this);
 		}
 		if(child->components->hasComponent<Box>()){
-			child->components->getComponent<Box>()->outerSize.changed.connect<Layouter, &Layouter::onChildSizeChanged>(this);
+			Box* childBox = child->components->getComponent<Box>();
+			childBox->outerSize.changed.connect<Layouter, &Layouter::onChildSizeChanged>(this);
+			placeBox(childBox);
+			if(boxDefinition != NULL)
+				boxDefinition->recalculateBoxSize();
 		}
-		layout();
 	}
 	
 	void onChildFloatingChanged(Floating floating){
@@ -162,9 +164,7 @@ private:
 
 	core::Point maxContentSize;
 	core::Point curPosition;
-	float rowMaxHeight;
-	//Box* lastBox;
-
+	float rowMaxHeight;	
 
 	Stack* stack;
 	Box* box;

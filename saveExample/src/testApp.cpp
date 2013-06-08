@@ -6,7 +6,7 @@ void testApp::setup(){
 	
 	root.width = ofGetWidth();
 	root.height = ofGetHeight();
-	for(unsigned int i = 0; i<220; i++) {
+	for(unsigned int i = 0; i<20; i++) {
 
 		ofxBox* b = new CustomBox();
 		
@@ -15,16 +15,20 @@ void testApp::setup(){
 		b->height = Unit::Auto;
 		b->floating = FloatLeft;
 		b->padding = 5;
+		b->margin =  5;
 			
 		b->addClass("outerBox");
 		
-		int amount = ofRandom(2, 200);
+		b->setBgColor(255, 0,0 );
+		
+		int amount = ofRandom(2, 50);
 
 		for(int j=0; j<amount; j++) {
+			
 			ofxBox* b2 = new CustomBox();
 			b2->addClass("innerBox");
-			b2->width = 4;
-			b2->height = 4;
+			b2->width = 10;
+			b2->height = 10;
 			b2->floating = FloatLeft;
 			b->addChild(b2);
 		}
@@ -49,6 +53,8 @@ void testApp::draw() {
 	
 	
 	debugDrawer.draw(&root);
+	
+	ofDrawBitmapStringHighlight(ofToString(ofGetFrameRate()), 30, 30);
 }
 
 //--------------------------------------------------------------
