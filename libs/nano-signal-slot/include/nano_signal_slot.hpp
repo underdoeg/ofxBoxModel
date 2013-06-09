@@ -30,6 +30,7 @@ IN THE SOFTWARE.
 #define NANO_SIGNAL_SLOT_HPP
 
 #include <unordered_map>
+#include <cstdint>
 
 namespace Nano
 {
