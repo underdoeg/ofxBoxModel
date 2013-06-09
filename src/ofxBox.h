@@ -10,13 +10,14 @@
 #include "components/BoxDefinition.h"
 #include "components/Layouter.h"
 #include "components/Style.h"
+#include "components/Css.h"
 
 using namespace boxModel;
 using namespace core;
 using namespace components;
 
 
-class ofxBox: public Composite, public Addressable, public Stack, public Box, public BoxDefinition, public Style
+class ofxBox: public Composite, public Addressable, public Stack, public Box, public BoxDefinition, public Style, public Css
 {
 public:
 	ofxBox()
@@ -27,6 +28,7 @@ public:
 		addComponent<Addressable>(this);
 		addComponent<Layouter>(&layouter);
 		addComponent<Style>(this);
+		addComponent<Css>(this);
 	}
 	~ofxBox()
 	{

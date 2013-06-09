@@ -6,7 +6,7 @@ void testApp::setup(){
 	
 	root.width = ofGetWidth();
 	root.height = ofGetHeight();
-	for(unsigned int i = 0; i<20; i++) {
+	for(unsigned int i = 0; i<10; i++) {
 
 		ofxBox* b = new CustomBox();
 		
@@ -22,21 +22,17 @@ void testApp::setup(){
 		b->setBgColor(255, 0,0 );
 		
 		int amount = ofRandom(2, 50);
-
+		
 		for(int j=0; j<amount; j++) {
-			
 			ofxBox* b2 = new CustomBox();
 			b2->addClass("innerBox");
-			b2->width = 10;
-			b2->height = 10;
-			b2->floating = FloatLeft;
 			b->addChild(b2);
 		}
 		
 		root.addChild(b);		
 	}
 	
-	//rootBox.loadCss("style.css");
+	root.loadCss(ofToDataPath("style.css", true));
 	
 	//child.addClass("test");
 	//cout << root.findByAddress(".innerBox").size() << endl;

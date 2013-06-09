@@ -6,13 +6,8 @@
 	width: 10px;
 	height: 10px;
 	margin: 2px;
-	padding: 2px;
+	padding: 10px;
 	color: rgb(255, 0, 0);
-}
-
-.quarter{
-	width: 50%;
-	height: 50%;
 	float: left;
 }
 

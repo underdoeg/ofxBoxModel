@@ -68,11 +68,8 @@ public:
 	}
 
 	void set(Unit u) {
-		if(bSet && value == u.value && type == u.type)
-			return;
-		bSet = true;
-		type = u.type;
-		value = u.value;
+		set(u.getType());
+		set(u.getValue());
 	}
 
 	const float getValue() {

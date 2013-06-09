@@ -2,6 +2,7 @@
 #define MARGINBORDERPADDING_H
 
 #include "Component.h" // Base class: boxModel::core::Component
+#include "Box.h"
 #include "Unit.h"
 
 namespace boxModel {
@@ -91,7 +92,7 @@ public:
 			onHeightAuto(_height);
 			_height += _paddingTop + _paddingBottom + _borderTop + _borderBottom;
 		}
-
+				
 		box->size.x = _width;
 		box->outerSize.x = _marginLeft + _marginRight + box->size.x;
 		box->contentSize.x = box->size.x - _paddingLeft - _paddingRight - _borderLeft - _borderRight;

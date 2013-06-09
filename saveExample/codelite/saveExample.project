@@ -55,6 +55,7 @@
       <File Name="../../src/components/Layouter.h"/>
       <File Name="../../src/components/Style.h"/>
       <File Name="../../src/components/Css.h"/>
+      <File Name="../../src/components/Css.cpp"/>
     </VirtualDirectory>
     <File Name="../../src/ofxBox.h"/>
     <VirtualDirectory Name="debug">
