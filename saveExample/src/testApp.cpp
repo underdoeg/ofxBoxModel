@@ -10,7 +10,7 @@ void testApp::setup(){
 
 		ofxBox* b = new CustomBox();
 		
-		b->width = ofRandom(100, 150);
+		b->width = 112;
 		b->height = 100;
 		b->height = Unit::Auto;
 		b->floating = FloatLeft;
@@ -21,7 +21,7 @@ void testApp::setup(){
 		
 		b->setBgColor(20);
 		
-		int amount = ofRandom(2, 50);
+		int amount = ofRandom(2, 90);
 		
 		for(int j=0; j<amount; j++) {
 			ofxBox* b2 = new CustomBox();

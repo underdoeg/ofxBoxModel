@@ -3,12 +3,12 @@
 }
 
 .innerBox{
-	width: 10px;
-	height: 10px;
+	width: 20px;
+	height: 20px;
 	margin: 2px;
-	padding: 10px;
+	padding: 3px;
 	background-color: #533;
-	color: #0;
+	/*color: #00;*/
 	float: left;
 }
 
