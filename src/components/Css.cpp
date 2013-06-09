@@ -7,33 +7,6 @@ using namespace boxModel::core;
 using namespace std;
 
 void Css::setup() {
-	LISTEN_FOR_COMPONENT(BoxDefinition, Css, onBoxDefinition)
-}
-
-void Css::onBoxDefinition(BoxDefinition* boxDef) {
-	using namespace std::placeholders;
-	boxDefinition = boxDef;
-	addCssParserFunction<Css, &Css::pFloat>("float", this);
-	addCssParserFunction<Css, &Css::pWidth>("width", this);
-	addCssParserFunction<Css, &Css::pHeight>("height", this);
-
-	addCssParserFunction<Css, &Css::pMargin>("margin", this);
-	addCssParserFunction<Css, &Css::pMarginLeft>("margin-left", this);
-	addCssParserFunction<Css, &Css::pMarginRight>("margin-right", this);
-	addCssParserFunction<Css, &Css::pMarginBottom>("margin-bottom", this);
-	addCssParserFunction<Css, &Css::pMarginTop>("margin-top", this);
-
-	addCssParserFunction<Css, &Css::pPadding>("padding", this);
-	addCssParserFunction<Css, &Css::pPaddingLeft>("padding-left", this);
-	addCssParserFunction<Css, &Css::pPaddingRight>("padding-right", this);
-	addCssParserFunction<Css, &Css::pPaddingBottom>("padding-bottom", this);
-	addCssParserFunction<Css, &Css::pPaddingTop>("padding-top", this);
-	
-	addCssParserFunction<Css, &Css::pBorder>("border", this);
-	addCssParserFunction<Css, &Css::pBorderLeft>("border-left", this);
-	addCssParserFunction<Css, &Css::pBorderRight>("border-right", this);
-	addCssParserFunction<Css, &Css::pBorderBottom>("border-bottom", this);
-	addCssParserFunction<Css, &Css::pBorderTop>("border-top", this);
 }
 
 void Css::loadCss(std::string path) {
@@ -164,143 +137,7 @@ void Css::addCssParserFunction(std::string key, std::function<void(std::string, 
 	parserFunctions[key] = func;
 }
 
-/************************ PARSER FUNCTIONS *******************************/
-void Css::pHeight(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		boxDefinition->height = parseCssNumber(value);
-}
-
-void Css::pWidth(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		boxDefinition->width = parseCssNumber(value);
-}
-
-void Css::pFloat(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		boxDefinition->floating = parseCssFloating(value);
-}
-
-void parseUnitGroup(UnitGroup* u, std::string value) {
-	std::vector<Unit> units = Css::parseCssNumberBlock(value);
-	if(units.size() == 1)
-		u->set(units[0]);
-	else if(units.size() == 2) {
-		u->top = units[0];
-		u->bottom = units[0];
-		u->left = units[1];
-		u->right = units[1];
-	} else if(units.size() == 3) {
-		u->top = units[0];
-		u->right = units[1];
-		u->bottom = units[2];
-	} else if(units.size() >= 4) {
-		u->top = units[0];
-		u->right = units[1];
-		u->bottom = units[2];
-		u->left = units[3];
-	}
-}
-
-void Css::pMargin(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		parseUnitGroup(&boxDefinition->margin, value);
-}
-void Css::pMarginLeft(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		boxDefinition->margin.left = parseCssNumber(value);
-}
-void Css::pMarginRight(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		boxDefinition->margin.right = parseCssNumber(value);
-}
-void Css::pMarginTop(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		boxDefinition->margin.top = parseCssNumber(value);
-}
-void Css::pMarginBottom(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		boxDefinition->margin.bottom = parseCssNumber(value);
-}
-//////////////////////////////////////////////////////////////////
-void Css::pPadding(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		parseUnitGroup(&boxDefinition->padding, value);
-}
-void Css::pPaddingLeft(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		boxDefinition->padding.left = parseCssNumber(value);
-}
-void Css::pPaddingRight(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		boxDefinition->padding.right = parseCssNumber(value);
-}
-void Css::pPaddingTop(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		boxDefinition->padding.top = parseCssNumber(value);
-}
-void Css::pPaddingBottom(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		boxDefinition->padding.bottom = parseCssNumber(value);
-}
-//////////////////////////////////////////////////////////////////
-void Css::pBorder(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		parseUnitGroup(&boxDefinition->border, value);
-}
-void Css::pBorderLeft(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		boxDefinition->border.left = parseCssNumber(value);
-}
-void Css::pBorderRight(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		boxDefinition->border.right = parseCssNumber(value);
-}
-void Css::pBorderTop(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		boxDefinition->border.top = parseCssNumber(value);
-}
-void Css::pBorderBottom(std::string key, std::string value) {
-	if(boxDefinition != NULL)
-		boxDefinition->border.bottom = parseCssNumber(value);
-}
-
-/************************ PARSER HELPERS *******************************/
-Unit Css::parseCssNumber(std::string val) {
-	Unit u;
-	std::string num = "";
-	if(val.rfind("%") != std::string::npos) {
-		u = Unit::Percent;
-		num = stringTrim(stringReplace(val, "%", ""));
-	} else if(val.rfind("px") != std::string::npos) {
-		u = Unit::Pixel;
-		num = stringTrim(stringReplace(val, "px", ""));
-	} else {
-		u = Unit::Pixel;
-		num = val;
-	}
-	u = stringToFloat(num);
-	return u;
-}
-
-std::vector<Unit> Css::parseCssNumberBlock(std::string val) {
-	std::vector<Unit> ret;
-	std::vector<std::string> splitted = stringSplit(val, ' ');
-	for(std::vector<std::string>::iterator it = splitted.begin(); it < splitted.end(); it++) {
-		ret.push_back(parseCssNumber(*it));
-	}
-	if(ret.size()>4)
-		debug::warning("CSS number block with more than 4 elements "+val);
-	return ret;
-}
-
-Floating Css::parseCssFloating(std::string val) {
-	if(val == "left")
-		return FloatLeft;
-	if(val == "right")
-		return FloatLeft;
-	return FloatNone;
-}
-
+/*
 Color Css::parseColor(std::string val) {
 	int r,g,b,a;
 	r = g = b = 0;
@@ -369,3 +206,4 @@ Color Css::parseColor(std::string val) {
 	}
 	return Color(r, g, b, a);
 }
+*/

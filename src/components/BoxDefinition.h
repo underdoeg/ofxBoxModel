@@ -1,9 +1,11 @@
 #ifndef MARGINBORDERPADDING_H
 #define MARGINBORDERPADDING_H
 
-#include "Component.h" // Base class: boxModel::core::Component
+#include "core/Component.h" // Base class: boxModel::core::Component
 #include "Box.h"
-#include "Unit.h"
+#include "core/Unit.h"
+#include "core/BaseTypes.h"
+#include "Css.h"
 
 namespace boxModel {
 
@@ -32,6 +34,7 @@ public:
 	void setup() {
 		box = NULL;
 		LISTEN_FOR_COMPONENT(Box, BoxDefinition, onBox)
+		LISTEN_FOR_COMPONENT(Css, BoxDefinition, onCss)
 
 		margin.unitChanged.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
 		padding.unitChanged.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
@@ -61,7 +64,11 @@ public:
 
 	Nano::signal<void(float&)> onWidthAuto;
 	Nano::signal<void(float&)> onHeightAuto;
-
+	
+	static core::Unit parseCssNumber(std::string val);
+	static std::vector<core::Unit> parseCssNumberBlock(std::string val);
+	static Floating parseCssFloating(std::string val);
+	
 	void recalculateBoxSize() {
 		if(box == NULL)
 			return;
@@ -105,10 +112,36 @@ public:
 	}
 
 private:
+	void pFloat(std::string key, std::string value);
+	void pColor(std::string key, std::string value);
+	void pBgColor(std::string key, std::string value);
+	void pWidth(std::string key, std::string value);
+	void pHeight(std::string key, std::string value);
+	
+	/* MARGIN, PADDING, BORDER */
+	void pMargin(std::string key, std::string value);
+	void pMarginLeft(std::string key, std::string value);
+	void pMarginRight(std::string key, std::string value);
+	void pMarginTop(std::string key, std::string value);
+	void pMarginBottom(std::string key, std::string value);
+	
+	void pPadding(std::string key, std::string value);
+	void pPaddingLeft(std::string key, std::string value);
+	void pPaddingRight(std::string key, std::string value);
+	void pPaddingTop(std::string key, std::string value);
+	void pPaddingBottom(std::string key, std::string value);
+	
+	void pBorder(std::string key, std::string value);
+	void pBorderLeft(std::string key, std::string value);
+	void pBorderRight(std::string key, std::string value);
+	void pBorderTop(std::string key, std::string value);
+	void pBorderBottom(std::string key, std::string value);
 
 	void onBox(Box* b) {
 		box = b;
 	}
+	
+	void onCss(Css* css);
 
 	void onUnitChanged(core::Unit* u) {
 		recalculateBoxSize();

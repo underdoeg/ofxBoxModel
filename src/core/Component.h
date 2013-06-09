@@ -59,7 +59,6 @@ public:
 		((Component*)component)->setup(this);
 		//dispatch the component added event if we have listeners
 		if(componentAddedSignals.find(index) != componentAddedSignals.end()){
-			std::cout << "SENDING SIGNAL" << std::endl;
 			static_cast<ComponentSignalHelper<ComponentType>*>(componentAddedSignals[index])->signal(component);
 		}
 	}

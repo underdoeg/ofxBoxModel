@@ -87,12 +87,38 @@ public:
 	float getValueCalculated() {
 		return getValueCalculated(containerSize);
 	}
-	
+
 	void setContainerSize(float s) {
 		containerSize = s;
 	}
 
+	static Unit parseCssNumber(std::string val) {
+		Unit u;
+		std::string num = "";
+		if(val.rfind("%") != std::string::npos) {
+			u = Unit::Percent;
+			num = stringTrim(stringReplace(val, "%", ""));
+		} else if(val.rfind("px") != std::string::npos) {
+			u = Unit::Pixel;
+			num = stringTrim(stringReplace(val, "px", ""));
+		} else {
+			u = Unit::Pixel;
+			num = val;
+		}
+		u = stringToFloat(num);
+		return u;
+	}
 
+	static std::vector<Unit> parseCssNumberBlock(std::string val) {
+		std::vector<Unit> ret;
+		std::vector<std::string> splitted = stringSplit(val, ' ');
+		for(std::vector<std::string>::iterator it = splitted.begin(); it < splitted.end(); it++) {
+			ret.push_back(Unit::parseCssNumber(*it));
+		}
+		if(ret.size()>4)
+			debug::warning("CSS number block with more than 4 elements "+val);
+		return ret;
+	}
 private:
 	void dispatchChanged() {
 		changed(this);
@@ -170,10 +196,10 @@ public:
 			(*it)->set(type);
 		}
 	}
-	
+
 	Nano::signal<void(UnitGroup*)> changed;
 	Nano::signal<void(Unit*)> unitChanged;
-	
+
 	core::Unit top;
 	core::Unit right;
 	core::Unit bottom;

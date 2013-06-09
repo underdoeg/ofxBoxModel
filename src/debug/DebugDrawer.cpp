@@ -29,8 +29,8 @@ void DebugDrawer::draw(core::ComponentContainer* container){
 		Box* box = container->getComponent<Box>();
 		if(container->hasComponent<Style>()){
 			Style* style = container->getComponent<Style>();
-			drawBoxOuter(box, style->getColor(), style->getBgColor());
-			drawBoxInner(box, style->getBorderColor(), style->getBgColor());
+			drawBoxOuter(box, style->getBorderColor(), style->getBgColor());
+			drawBoxInner(box, style->getColor(), style->getBgColor());
 		}else{
 			drawBoxOuter(box, color, bgColor);
 			drawBoxInner(box, color, bgColor);

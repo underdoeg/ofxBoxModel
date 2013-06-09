@@ -19,7 +19,7 @@ void testApp::setup(){
 			
 		b->addClass("outerBox");
 		
-		b->setBgColor(255, 0,0 );
+		b->setBgColor(20);
 		
 		int amount = ofRandom(2, 50);
 		

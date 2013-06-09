@@ -56,6 +56,8 @@
       <File Name="../../src/components/Style.h"/>
       <File Name="../../src/components/Css.h"/>
       <File Name="../../src/components/Css.cpp"/>
+      <File Name="../../src/components/BoxDefinition.cpp"/>
+      <File Name="../../src/components/Style.cpp"/>
     </VirtualDirectory>
     <File Name="../../src/ofxBox.h"/>
     <VirtualDirectory Name="debug">
