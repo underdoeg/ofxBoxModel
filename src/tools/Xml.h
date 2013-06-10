@@ -5,6 +5,7 @@
 #include "core/Composite.h"
 #include "tools/Instancer.h"
 #include "components/Stack.h"
+#include "components/Serialize.h"
 
 namespace boxModel {
 
@@ -37,6 +38,16 @@ private:
 		core::Composite* ret = tools::Instancer::createInstance(node.name());
 		if(ret == NULL)
 			return NULL;
+			
+		if(ret->hasComponent<components::Serialize>()) {
+			components::Serialize* serial = ret->getComponent<components::Serialize>();
+			core::VariantList values;
+			for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute()) {
+				values.set(attr.name(), attr.value());
+			}
+			serial->deserialize(values);
+		}
+			
 		//loop children
 		if(ret->hasComponent<components::Stack>()) {
 			components::Stack* stack = ret->getComponent<components::Stack>();
@@ -47,16 +58,9 @@ private:
 			}
 		}
 		//parse properties
-		/*
-		if(is_base_of<Serializable, BoxModelType>::value) {
-			Serializable* serial = (Serializable*)ret;
-			Serializable::ValueList values;
-			for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute()) {
-				values.set(attr.name(), attr.value());
-			}
-			serial->deserialize(values);
-		}
-		*/
+		
+		
+		
 
 
 		return ret;

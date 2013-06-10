@@ -21,11 +21,11 @@
 box{
 	margin: 200px;
 	width: 200px;
-	height: 200px;
+	height: auto;
 }
 
 customBox{
 	width: 100px;
 	height: 100px;
-	background-color: #ff00ff;
+	background-color: none;
 }

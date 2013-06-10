@@ -8,8 +8,8 @@ namespace boxModel {
 
 namespace debug {
 
-using namespace core;
-using namespace components;
+using namespace boxModel::core;
+using namespace boxModel::components;
 
 Color DebugDrawer::bgColor = Color(180);
 Color DebugDrawer::color = Color(0);
@@ -26,7 +26,16 @@ void DebugDrawer::draw(core::ComponentContainer* container) {
 		Box* box = container->getComponent<Box>();
 		if(container->hasComponent<Style>()) {
 			Style* style = container->getComponent<Style>();
-			drawBoxOuter(box, style->getBorderColor(), style->getBgColor());
+			if(style->hasBgColor())
+				drawBoxOuter(box, style->getBorderColor(), style->getBgColor());
+			else {
+				ofPushStyle();
+				//draw border
+				ofNoFill();
+				ofSetColor(style->getBorderColor());
+				ofRect(box->getGlobalPosition(), box->size.x, box->size.y);
+				ofPopStyle();
+			}
 			drawBoxInner(box, style->getColor(), style->getBgColor());
 		} else {
 			drawBoxOuter(box, color, bgColor);

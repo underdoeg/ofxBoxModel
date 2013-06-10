@@ -15,6 +15,10 @@ void Style::pCssColor(std::string key, std::string value){
 
 
 void Style::pCssBgColor(std::string key, std::string value){
+	if(value == "none"){
+		setBgColorNone();
+		return;
+	}
 	setBgColor(parseCssColor(value));
 }
 

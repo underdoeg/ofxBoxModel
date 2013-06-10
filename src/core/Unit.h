@@ -103,7 +103,6 @@ public:
 			num = stringTrim(stringReplace(val, "px", ""));
 		} else if(val == "auto"){
 			u = Unit::Auto;
-			cout << "UNIT IS AUTO" << endl;
 		}else {
 			u = Unit::Pixel;
 			num = val;
