@@ -78,8 +78,9 @@ std::vector<CssProperty> Css::parseCssBlock(std::string propertiesString) {
 		}
 		if(keyAndValue.size() == 2) {
 			std::string key = stringToLower(keyAndValue[0]);
-			std::string value = stringToLower(keyAndValue[1]);
-
+			//std::string value = stringToLower(keyAndValue[1]);
+			std::string value = keyAndValue[1];
+			
 			//remove eventual space between number and pixel / %
 			value = stringReplace(value, "  ", " ");
 			value = stringReplace(value, " px", "px");
