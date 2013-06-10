@@ -101,7 +101,10 @@ public:
 		} else if(val.rfind("px") != std::string::npos) {
 			u = Unit::Pixel;
 			num = stringTrim(stringReplace(val, "px", ""));
-		} else {
+		} else if(val == "auto"){
+			u = Unit::Auto;
+			cout << "UNIT IS AUTO" << endl;
+		}else {
 			u = Unit::Pixel;
 			num = val;
 		}
