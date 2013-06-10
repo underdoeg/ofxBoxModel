@@ -11,7 +11,9 @@ void testApp::setup(){
 	root.height = ofGetHeight();
 	for(unsigned int i = 0; i<10; i++) {
 
-		ofxBox* b = new CustomBox();
+		TextBox* b = new TextBox();
+		
+		b->text = "HELLO HELLO";
 		
 		b->width = 112;
 		b->height = 100;
@@ -25,10 +27,8 @@ void testApp::setup(){
 		b->setBgColor(20);
 		
 		root.addChild(b);		
-
 		
 		int amount = ofRandom(2, 90);
-		
 
 		for(int j=0; j<amount; j++) {
 			ofxBox* b2 = new CustomBox();
@@ -42,7 +42,6 @@ void testApp::setup(){
 	
 	//child.addClass("test");
 	//cout << root.findByAddress(".innerBox").size() << endl;
-	
 
 }
 

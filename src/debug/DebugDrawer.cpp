@@ -2,52 +2,53 @@
 
 #include "components/Stack.h"
 #include "components/Style.h"
+#include "components/Text.h"
 
-namespace boxModel
-{
+namespace boxModel {
 
-namespace debug
-{
+namespace debug {
 
 using namespace core;
 using namespace components;
-	
+
 Color DebugDrawer::bgColor = Color(180);
 Color DebugDrawer::color = Color(0);
-	
-DebugDrawer::DebugDrawer()
-{
+
+DebugDrawer::DebugDrawer() {
 }
 
-DebugDrawer::~DebugDrawer()
-{
+DebugDrawer::~DebugDrawer() {
 }
 
-void DebugDrawer::draw(core::ComponentContainer* container){
+void DebugDrawer::draw(core::ComponentContainer* container) {
 	//ofPushMatrix();
-	if(container->hasComponent<Box>()){
+	if(container->hasComponent<Box>()) {
 		Box* box = container->getComponent<Box>();
-		if(container->hasComponent<Style>()){
+		if(container->hasComponent<Style>()) {
 			Style* style = container->getComponent<Style>();
 			drawBoxOuter(box, style->getBorderColor(), style->getBgColor());
 			drawBoxInner(box, style->getColor(), style->getBgColor());
-		}else{
+		} else {
 			drawBoxOuter(box, color, bgColor);
 			drawBoxInner(box, color, bgColor);
 		}
 		//ofTranslate(box->contentPosition + box->position);
+		if(container->hasComponent<Text>()) {
+			Text* text = container->getComponent<Text>();
+			ofDrawBitmapString(text->text, box->getGlobalPosition()+Point(0, 20));
+		}
 	}
-	if(container->hasComponent<Stack>()){
+
+	if(container->hasComponent<Stack>()) {
 		Stack* stack = container->getComponent<Stack>();
-		for(Stack* stackChild: stack->getChildren()){
+		for(Stack* stackChild: stack->getChildren()) {
 			draw(stackChild->components);
 		}
 	}
 	//ofPopMatrix();
 }
 
-void DebugDrawer::drawBoxInner(Box* box, core::Color fg, core::Color bg)
-{
+void DebugDrawer::drawBoxInner(Box* box, core::Color fg, core::Color bg) {
 	ofPushStyle();
 
 	ofSetColor(fg);
@@ -57,8 +58,7 @@ void DebugDrawer::drawBoxInner(Box* box, core::Color fg, core::Color bg)
 	ofPopStyle();
 }
 
-void DebugDrawer::drawBoxOuter(Box* box, core::Color fg, core::Color bg)
-{
+void DebugDrawer::drawBoxOuter(Box* box, core::Color fg, core::Color bg) {
 	ofPushStyle();
 	//draw BG
 	ofFill();
@@ -75,4 +75,3 @@ void DebugDrawer::drawBoxOuter(Box* box, core::Color fg, core::Color bg)
 }
 
 }
-
