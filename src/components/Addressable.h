@@ -5,6 +5,8 @@
 #include "core/Component.h"
 #include "Stack.h"
 #include <vector>
+#include <string>
+#include <algorithm>
 
 namespace boxModel {
 
@@ -27,7 +29,7 @@ public:
 	}
 
 	virtual std::string getType() {
-		return "div";
+		return "undefined";
 	}
 
 	std::vector<std::string> getClasses() {
@@ -156,7 +158,7 @@ public:
 private:
 	static std::vector<std::string > idsTaken;
 
-	std::vector<Addressable*> findByClass(string className, Addressable* root, bool skipRoot = false) {
+	std::vector<Addressable*> findByClass(std::string className, Addressable* root, bool skipRoot = false) {
 		std::vector<Addressable*> ret;
 		if(!skipRoot && root->hasClass(className)) {
 			ret.push_back(root);
@@ -172,7 +174,7 @@ private:
 		return ret;
 	}
 	
-	std::vector<Addressable*> findById(string idName, Addressable* root, bool skipRoot = false) {
+	std::vector<Addressable*> findById(std::string idName, Addressable* root, bool skipRoot = false) {
 		std::vector<Addressable*> ret;
 		if(!skipRoot && root->isId(idName)) {
 			ret.push_back(root);
@@ -188,7 +190,7 @@ private:
 		return ret;
 	}
 	
-	std::vector<Addressable*> findByType(string typeName, Addressable* root, bool skipRoot = false) {
+	std::vector<Addressable*> findByType(std::string typeName, Addressable* root, bool skipRoot = false) {
 		std::vector<Addressable*> ret;
 		if(!skipRoot && root->isType(typeName)) {
 			ret.push_back(root);

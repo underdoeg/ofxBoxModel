@@ -30,6 +30,10 @@ public:
 	Type operator+( const Type& in ) const {
 		return value + in;
 	}
+	
+	Type operator-( const Type& in ) const {
+		return value - in;
+	}
 
 	Type get() {
 		return value;
@@ -65,6 +69,10 @@ public:
 
 	Point operator+( const Point& pnt ) const {
 		return Point(x+pnt.x, y+pnt.y);
+	}
+	
+	Point operator-( const Point& pnt ) const {
+		return Point(x-pnt.x, y-pnt.y);
 	}
 	
 	void set(float nx, float ny){

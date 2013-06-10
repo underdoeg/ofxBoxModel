@@ -7,30 +7,16 @@
 #include <assert.h>
 #include "debug/Print.h"
 #include "Component.h"
+#include "components/Addressable.h"
 
 namespace boxModel {
 
 namespace core {
 
 class Composite: public ComponentContainer {
-public:
+	public:
 	
-	/**** END HIERARCHY FUNCTIONS ****/
-
-	template <class... Components>
-	void registerComponents(Components... components) {
-		registerComponent(components...);
-		
-		std::tuple<Components...> tuple(components...);
-	}
-
 private:
-	template <class ComponentType, class... Rest>
-	void registerComponent(ComponentType& t, Rest... rest){
-		registerComponent<ComponentType>(t);
-		registerComponent(rest...);
-	}
-
 
 };
 

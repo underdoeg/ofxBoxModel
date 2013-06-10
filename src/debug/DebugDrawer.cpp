@@ -24,7 +24,7 @@ DebugDrawer::~DebugDrawer()
 }
 
 void DebugDrawer::draw(core::ComponentContainer* container){
-	ofPushMatrix();
+	//ofPushMatrix();
 	if(container->hasComponent<Box>()){
 		Box* box = container->getComponent<Box>();
 		if(container->hasComponent<Style>()){
@@ -35,7 +35,7 @@ void DebugDrawer::draw(core::ComponentContainer* container){
 			drawBoxOuter(box, color, bgColor);
 			drawBoxInner(box, color, bgColor);
 		}
-		ofTranslate(box->contentPosition + box->position);
+		//ofTranslate(box->contentPosition + box->position);
 	}
 	if(container->hasComponent<Stack>()){
 		Stack* stack = container->getComponent<Stack>();
@@ -43,7 +43,7 @@ void DebugDrawer::draw(core::ComponentContainer* container){
 			draw(stackChild->components);
 		}
 	}
-	ofPopMatrix();
+	//ofPopMatrix();
 }
 
 void DebugDrawer::drawBoxInner(Box* box, core::Color fg, core::Color bg)
@@ -51,8 +51,8 @@ void DebugDrawer::drawBoxInner(Box* box, core::Color fg, core::Color bg)
 	ofPushStyle();
 
 	ofSetColor(fg);
-	ofLine(box->position + box->contentPosition, box->position + box->contentPosition + box->contentSize);
-	ofLine(box->position + box->contentPosition + core::Point(box->contentSize.x, 0), box->position + box->contentPosition + core::Point(0, box->contentSize.y));
+	ofLine(box->getGlobalPosition() + box->contentPosition, box->getGlobalPosition() + box->contentPosition + box->contentSize);
+	ofLine(box->getGlobalPosition() + box->contentPosition + core::Point(box->contentSize.x, 0), box->getGlobalPosition() + box->contentPosition + core::Point(0, box->contentSize.y));
 
 	ofPopStyle();
 }
@@ -63,12 +63,12 @@ void DebugDrawer::drawBoxOuter(Box* box, core::Color fg, core::Color bg)
 	//draw BG
 	ofFill();
 	ofSetColor(bg);
-	ofRect(box->position, box->size.x, box->size.y);
+	ofRect(box->getGlobalPosition(), box->size.x, box->size.y);
 
 	//draw border
 	ofNoFill();
 	ofSetColor(fg);
-	ofRect(box->position, box->size.x, box->size.y);
+	ofRect(box->getGlobalPosition(), box->size.x, box->size.y);
 	ofPopStyle();
 }
 

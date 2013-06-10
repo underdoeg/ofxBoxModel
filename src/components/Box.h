@@ -22,6 +22,8 @@ public:
 		
 	}
 	
+	core::Point getGlobalPosition();
+	
 	core::ValuePoint position;
 	core::ValuePoint outerSize;
 	core::ValuePoint size;
@@ -34,3 +36,4 @@ public:
 }
 
 #endif // BOXMODEL_H
+

@@ -5,6 +5,7 @@
 #include "assert.h"
 #include "Utils.h"
 #include "assert.h"
+#include <algorithm>
 
 namespace boxModel {
 
@@ -32,11 +33,13 @@ public:
 
 	/**** BEGIN HIERARCHY FUNCTIONS ****/
 	void addChild(Stack* child) {
+		child->setParent(this);
 		children.push_back(child);
 		childAdded(child);
 	}
 
 	void removeChild(Stack* child) {
+		child->setParent(NULL);
 		children.erase(std::remove(children.begin(), children.end(), child), children.end());
 		childRemoved(child);
 	}

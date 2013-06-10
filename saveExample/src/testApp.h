@@ -3,10 +3,18 @@
 #include "ofMain.h"
 #include "ofxBox.h"
 #include "debug/DebugDrawer.h"
+#include "tools/Instancer.h"
+
+using namespace boxModel::core;
+using namespace boxModel::tools;
+using namespace boxModel::debug;
+using namespace boxModel::components;
 
 class CustomBox: public ofxBox{
 public:
-	string test2;
+	string getType(){
+		return "blah";
+	}
 };
 
 class testApp : public ofBaseApp{
@@ -28,5 +36,5 @@ class testApp : public ofBaseApp{
 		
 		ofxBox root;
 		
-		boxModel::debug::DebugDrawer debugDrawer;
+		DebugDrawer debugDrawer;
  };

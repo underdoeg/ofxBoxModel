@@ -2,6 +2,9 @@
 
 void testApp::setup(){
 	
+	Instancer::addInstancer<ofxBox>();
+	Instancer::addInstancer<CustomBox>();
+	
 	root.setId("root");
 	
 	root.width = ofGetWidth();
@@ -21,21 +24,26 @@ void testApp::setup(){
 		
 		b->setBgColor(20);
 		
+		root.addChild(b);		
+
+		
 		int amount = ofRandom(2, 90);
 		
+
 		for(int j=0; j<amount; j++) {
 			ofxBox* b2 = new CustomBox();
 			b2->addClass("innerBox");
 			b->addChild(b2);
 		}
 		
-		root.addChild(b);		
 	}
 	
 	root.loadCss(ofToDataPath("style.css", true));
 	
 	//child.addClass("test");
 	//cout << root.findByAddress(".innerBox").size() << endl;
+	
+
 }
 
 //--------------------------------------------------------------
@@ -47,8 +55,8 @@ void testApp::update() {
 //--------------------------------------------------------------
 void testApp::draw() {
 	
-	
-	debugDrawer.draw(&root);
+			debugDrawer.draw(&root);
+
 	
 	ofDrawBitmapStringHighlight(ofToString(ofGetFrameRate()), 30, 30);
 }
