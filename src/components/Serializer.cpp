@@ -1,4 +1,4 @@
-#include "Serialize.h"
+#include "Serializer.h"
 
 namespace boxModel
 {
@@ -6,24 +6,24 @@ namespace boxModel
 namespace components
 {
 
-Serialize::Serialize()
+Serializer::Serializer()
 {
 }
 
-Serialize::~Serialize()
+Serializer::~Serializer()
 {
 }
 
-void Serialize::setup()
+void Serializer::setup()
 {
 }
 
-void Serialize::deserialize(core::VariantList values)
+void Serializer::deserialize(core::VariantList values)
 {
 	deserialized(values);
 }
 
-core::VariantList Serialize::serialize()
+core::VariantList Serializer::serialize()
 {
 	core::VariantList values;
 	serialized(values);

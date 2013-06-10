@@ -62,8 +62,8 @@
       <File Name="../../src/components/Box.cpp"/>
       <File Name="../../src/components/Text.h"/>
       <File Name="../../src/components/Text.cpp"/>
-      <File Name="../../src/components/Serialize.h"/>
-      <File Name="../../src/components/Serialize.cpp"/>
+      <File Name="../../src/components/Serializer.h"/>
+      <File Name="../../src/components/Serializer.cpp"/>
     </VirtualDirectory>
     <File Name="../../src/ofxBox.h"/>
     <VirtualDirectory Name="debug">

@@ -51,7 +51,8 @@ protected:
 
 private:
 
-	std::unordered_map<std::string, std::vector<CssProperty> > properties;
+	std::map<std::string, std::vector<CssProperty> > properties;
+	std::vector<std::string> propertiesOrder;
 	std::unordered_map<std::string, std::function<void(std::string, std::string)> > parserFunctions;
 };
 

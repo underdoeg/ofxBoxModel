@@ -1,15 +1,11 @@
 <?xml version="1.0"?>
 <box>
-	<customBox>
-	
+	<customBox class="test">
 	</customBox>
-	<customBox>
 	
+	<customBox>
 	</customBox>
-	<customBox>
 	
-	</customBox>
 	<customBox>
-	
 	</customBox>
 </box>

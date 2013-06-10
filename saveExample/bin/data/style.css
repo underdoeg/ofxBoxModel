@@ -29,3 +29,8 @@ customBox{
 	height: 100px;
 	background-color: none;
 }
+
+.test{
+	background-color: #ff00ff;
+	color: #ff0ff;
+}

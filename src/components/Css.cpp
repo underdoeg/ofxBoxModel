@@ -51,7 +51,7 @@ void Css::setCss(std::string cssDefinition) {
 
 				std::vector<CssProperty> props = parseCssBlock(propertiesString);
 				properties[address].insert(properties[address].end(), props.begin(), props.end());
-
+				propertiesOrder.push_back(address);
 			} else {
 				debug::warning("CSS ERROR near "+addressAndProperties[0]);
 			}
@@ -121,12 +121,12 @@ void Css::applyCss() {
 		return;
 	}
 	//apply CSS style to self and children found by addresses stored in the property list
-	for(auto props: properties) {
-		std::vector<Addressable*> addressables = components->getComponent<Addressable>()->findByAddress(props.first);
+	for(auto propId: propertiesOrder) {
+		std::vector<Addressable*> addressables = components->getComponent<Addressable>()->findByAddress(propId);
 		for(Addressable* addressable: addressables) {
 			if(addressable->components->hasComponent<Css>()) {
 				Css* cssChild = addressable->components->getComponent<Css>();
-				for(CssProperty& prop: props.second) {
+				for(CssProperty& prop: properties[propId]) {
 					cssChild->applyCssProperty(prop);
 				}
 			}

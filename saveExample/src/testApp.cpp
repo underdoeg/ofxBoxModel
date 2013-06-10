@@ -43,6 +43,7 @@ void testApp::setup(){
 	//cout << root.findByAddress(".innerBox").size() << endl;
 	*/
 	xmlRoot = Xml::load<ofxBox>(ofToDataPath("tree.xml"));
+	
 	xmlRoot->loadCss(ofToDataPath("style.css"));
 	
 }

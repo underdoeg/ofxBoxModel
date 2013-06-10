@@ -30,6 +30,10 @@ public:
 	Variant(core::Point p) {
 		setValue(core::floatToString(p.x)+" "+core::floatToString(p.y));
 	}
+	
+	Variant(std::vector<std::string> stringArray) {
+		setValue(std::accumulate( stringArray.begin(), stringArray.end(), std::string(" ") ));
+	}
 
 	operator const string & () {
 		return value;
@@ -55,6 +59,10 @@ public:
 		if(parts.size()>1)
 			ret.y = core::stringToFloat(parts[1]);
 		return ret;
+	}
+	
+	std::vector<std::string> asStringList(){
+		return stringSplit(value, ' ');
 	}
 
 	std::string value;

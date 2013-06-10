@@ -10,10 +10,10 @@ namespace boxModel {
 
 namespace components {
 
-class Serialize : public boxModel::core::Component {
+class Serializer : public boxModel::core::Component {
 public:
-	Serialize();
-	~Serialize();
+	Serializer();
+	~Serializer();
 	
 	Nano::signal<void(core::VariantList&)> serialized;
 	Nano::signal<void(core::VariantList&)> deserialized;

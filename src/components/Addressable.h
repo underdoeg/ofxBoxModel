@@ -3,6 +3,7 @@
 
 #include "core/Utils.h"
 #include "core/Component.h"
+#include "Serializer.h"
 #include "Stack.h"
 #include <vector>
 #include <string>
@@ -18,8 +19,9 @@ public:
 
 	void setup() {
 		//assert(componentContainer->hasComponent<Stackable<Addressable>>());
+		LISTEN_FOR_COMPONENT(Serializer, Addressable, onSerializer)
 	}
-
+	
 	Addressable() {
 		id = "";
 	}
@@ -72,6 +74,10 @@ public:
 
 	void addClass(std::string className) {
 		classes.push_back(className);
+	}
+	
+	void addClasses(std::vector<std::string> classNames){
+		classes.insert(classes.end(), classNames.begin(), classNames.end());
 	}
 
 	void removeClass(std::string className) {
@@ -204,6 +210,29 @@ private:
 		}
 		
 		return ret;
+	}
+	
+	/************************** SERIALIZING ***********************************************/
+		
+	void onSerializer(Serializer* ser){
+		ser->deserialized.connect<Addressable, &Addressable::onDeserialize>(this);
+		ser->serialized.connect<Addressable, &Addressable::onDeserialize>(this);
+	}
+	
+	void onSerialize(core::VariantList& variants){
+		if(hasId())
+			variants.set("id", getId());
+		if(classes.size()>0)
+			variants.set("class", core::Variant(classes));
+	}
+	
+	void onDeserialize(core::VariantList& variants){
+		if(variants.hasKey("class")){
+			addClasses(variants.get("class").asStringList());
+		}
+		if(variants.hasKey("id")){
+			setId(variants.get("id"));
+		}
 	}
 
 	std::vector<std::string> classes;
