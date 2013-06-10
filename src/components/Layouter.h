@@ -13,6 +13,7 @@ class Layouter: public core::Component {
 public:
 
 	void setup() {
+		autoLayout = true;
 
 		stack = NULL;
 		box = NULL;
@@ -43,10 +44,10 @@ public:
 	virtual void layout() {
 		if(stack == NULL || box == NULL)
 			return;
-		
+
 		if(stack->getNumChildren() == 0)
 			return;
-				
+
 		maxContentSize.set(0, 0);
 		curPosition.set(0,0);
 		rowMaxHeight = 0;
@@ -56,17 +57,19 @@ public:
 				placeBox(child);
 			}
 		}
-		
+
 		if(boxDefinition != NULL)
 			boxDefinition->recalculateBoxSize();
 	}
+
+	bool autoLayout;
 protected:
 	virtual void placeBox(Box* childBox) {
 		if(!childBox->components->hasComponent<BoxDefinition>())
 			return;
 
 		BoxDefinition* childBoxDef = childBox->components->getComponent<BoxDefinition>();
-		
+
 		switch(childBoxDef->floating) {
 		case Floating::FloatLeft:
 			if(curPosition.x + childBox->outerSize.x > box->contentSize.x) {
@@ -93,48 +96,59 @@ protected:
 
 private:
 	void onContentSizeChanged(core::Point p) {
+		if(!autoLayout)
+			return;
 		layout();
 	}
 
 	void onChildRemoved(Stack* child) {
-		
-		if(child->components->hasComponent<BoxDefinition>()){
+
+		if(child->components->hasComponent<BoxDefinition>()) {
 			child->components->getComponent<BoxDefinition>()->floating.changed.disconnect<Layouter, &Layouter::onChildFloatingChanged>(this);
 		}
-		if(child->components->hasComponent<Box>()){
+		if(child->components->hasComponent<Box>()) {
 			child->components->getComponent<Box>()->outerSize.changed.disconnect<Layouter, &Layouter::onChildSizeChanged>(this);
 		}
+		if(!autoLayout)
+			return;
 		layout();
 	}
 
 	void onChildAdded(Stack* child) {
-		if(child->components->hasComponent<BoxDefinition>()){
+		if(child->components->hasComponent<BoxDefinition>()) {
 			child->components->getComponent<BoxDefinition>()->floating.changed.connect<Layouter, &Layouter::onChildFloatingChanged>(this);
 		}
-		if(child->components->hasComponent<Box>()){
+		if(child->components->hasComponent<Box>()) {
 			Box* childBox = child->components->getComponent<Box>();
 			childBox->outerSize.changed.connect<Layouter, &Layouter::onChildSizeChanged>(this);
 			placeBox(childBox);
 			if(boxDefinition != NULL)
 				boxDefinition->recalculateBoxSize();
 		}
-	}
-	
-	void onChildFloatingChanged(Floating floating){
-		layout();
-	}	
-	
-	void onChildSizeChanged(core::Point p){
+		if(!autoLayout)
+			return;
 		layout();
 	}
-	
-	void onAutoWidth(float& width){
+
+	void onChildFloatingChanged(Floating floating) {
+		if(!autoLayout)
+			return;
+		layout();
+	}
+
+	void onChildSizeChanged(core::Point p) {
+		if(!autoLayout)
+			return;
+		layout();
+	}
+
+	void onAutoWidth(float& width) {
 		if(stack == NULL)
 			return;
-			
+
 		float maxW = 0;
-		for(Stack* child: stack->getChildren()){
-			if(child->components->hasComponent<Box>()){
+		for(Stack* child: stack->getChildren()) {
+			if(child->components->hasComponent<Box>()) {
 				Box* childBox = child->components->getComponent<Box>();
 				float r = childBox->position.x + childBox->size.x;
 				if( r > maxW)
@@ -144,14 +158,14 @@ private:
 		if(maxW>width)
 			width = maxW;
 	}
-	
-	void onAutoHeight(float& height){
+
+	void onAutoHeight(float& height) {
 		if(stack == NULL)
 			return;
-			
+
 		float maxH = 0;
-		for(Stack* child: stack->getChildren()){
-			if(child->components->hasComponent<Box>()){
+		for(Stack* child: stack->getChildren()) {
+			if(child->components->hasComponent<Box>()) {
 				Box* childBox = child->components->getComponent<Box>();
 				float r = childBox->position.y + childBox->size.y;
 				if( r > maxH)
@@ -164,7 +178,7 @@ private:
 
 	core::Point maxContentSize;
 	core::Point curPosition;
-	float rowMaxHeight;	
+	float rowMaxHeight;
 
 	Stack* stack;
 	Box* box;
