@@ -51,7 +51,7 @@ public:
 	core::Unit letterSpacing;
 	TEXT_ALIGNMENT textAlignment;
 	
-	static Nano::signal<void(float&, TextInfo)> onGetTextBoxHeight;
+	static Nano::signal<void(float&, Text*)> onGetTextBoxHeight;
 	
 private:
 	void pCssFontName(std::string key, std::string value);

@@ -6,7 +6,7 @@ namespace boxModel
 namespace components
 {
 	
-Nano::signal<void(float&, TextInfo)> Text::onGetTextBoxHeight;
+Nano::signal<void(float&, Text*)> Text::onGetTextBoxHeight;
 
 
 Text::Text()
@@ -88,15 +88,7 @@ void Text::onAutoWidth(float& width){
 void Text::onAutoHeight(float& height){
 	if(box == NULL)
 		return;
-	TextInfo info;
-	info.letterSpacing = letterSpacing.getValueCalculated();
-	info.fontName = fontName;
-	info.fontSize = fontSize.getValueCalculated();
-	info.width = box->contentSize.x;
-	info.leading = leading.getValueCalculated();
-	info.text = text;
-	info.wordSpacing = wordSpacing.getValueCalculated();
-	onGetTextBoxHeight(height, info);
+	onGetTextBoxHeight(height, this);
 }
 
 }
