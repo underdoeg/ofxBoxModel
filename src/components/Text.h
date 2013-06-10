@@ -11,14 +11,14 @@ namespace boxModel
 namespace components
 {
 	
-struct FontInfo{
+struct TextInfo{
 	std::string text;
 	float width;
 	float height;
 	string fontName;
 	float fontSize;
 	float leading;
-	float charSpacing;
+	float letterSpacing;
 	float wordSpacing;
 };
 
@@ -32,6 +32,7 @@ public:
 	
 	void onBoxDefinition(BoxDefinition* boxDef);
 	void onCss(Css* css);
+	void onBox(Box* box);
 	
 	core::Value<std::string> text;
 
@@ -50,8 +51,8 @@ public:
 	core::Unit letterSpacing;
 	TEXT_ALIGNMENT textAlignment;
 	
-	static Nano::signal<void(float&, FontInfo)> onGetTextBoxHeight;
-
+	static Nano::signal<void(float&, TextInfo)> onGetTextBoxHeight;
+	
 private:
 	void pCssFontName(std::string key, std::string value);
 	void pCssFontSize(std::string key, std::string value);
@@ -62,6 +63,7 @@ private:
 	
 	void onAutoWidth(float& width);
 	void onAutoHeight(float& height);
+	Box* box;
 };
 
 }

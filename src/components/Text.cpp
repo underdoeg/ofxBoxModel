@@ -5,6 +5,9 @@ namespace boxModel
 
 namespace components
 {
+	
+Nano::signal<void(float&, TextInfo)> Text::onGetTextBoxHeight;
+
 
 Text::Text()
 {
@@ -26,10 +29,14 @@ void Text::setup()
 	
 	LISTEN_FOR_COMPONENT(BoxDefinition, Text, onBoxDefinition)
 	LISTEN_FOR_COMPONENT(Css, Text, onCss)
+	LISTEN_FOR_COMPONENT(Box, Text, onBox)
+}
+
+void Text::onBox(Box* b){
+	box = b;
 }
 
 void Text::onCss(Css* css){
-	
 	css->addCssParserFunction<Text, &Text::pCssFontName>("font-name", this);
 	css->addCssParserFunction<Text, &Text::pCssFontSize>("font-size", this);
 	css->addCssParserFunction<Text, &Text::pCssLeading>("line-height", this);
@@ -70,7 +77,7 @@ void Text::pCssTextAlignment(std::string key, std::string value){
 	if(value=="right") textAlignment = ALIGN_RIGHT;
 	if(value=="center") textAlignment = ALIGN_CENTER;
 	if(value=="justify") textAlignment = ALIGN_JUSTIFY;
-	if(value=="justify_all") textAlignment = ALIGN_JUSTIFY_ALL;
+	if(value=="justify_all" || value=="justify-all") textAlignment = ALIGN_JUSTIFY_ALL;
 
 }
 
@@ -79,7 +86,17 @@ void Text::onAutoWidth(float& width){
 }
 
 void Text::onAutoHeight(float& height){
-	
+	if(box == NULL)
+		return;
+	TextInfo info;
+	info.letterSpacing = letterSpacing.getValueCalculated();
+	info.fontName = fontName;
+	info.fontSize = fontSize.getValueCalculated();
+	info.width = box->contentSize.x;
+	info.leading = leading.getValueCalculated();
+	info.text = text;
+	info.wordSpacing = wordSpacing.getValueCalculated();
+	onGetTextBoxHeight(height, info);
 }
 
 }
