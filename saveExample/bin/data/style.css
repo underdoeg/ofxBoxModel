@@ -17,3 +17,15 @@
 	background-color: #333;
 	color: #444;
 }
+
+box{
+	margin: 200px;
+	width: 200px;
+	height: 200px;
+}
+
+customBox{
+	width: 100px;
+	height: 100px;
+	background-color: #ff00ff;
+}

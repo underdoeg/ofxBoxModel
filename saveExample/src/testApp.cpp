@@ -5,16 +5,15 @@ void testApp::setup(){
 	Instancer::addInstancer<ofxBox>();
 	Instancer::addInstancer<CustomBox>();
 	
+	/*
 	root.setId("root");
 	
 	root.width = ofGetWidth();
 	root.height = ofGetHeight();
 	for(unsigned int i = 0; i<10; i++) {
 
-		TextBox* b = new TextBox();
-		
-		b->text = "HELLO HELLO";
-		
+		CustomBox* b = new CustomBox();
+				
 		b->width = 112;
 		b->height = 100;
 		b->height = Unit::Auto;
@@ -42,20 +41,22 @@ void testApp::setup(){
 	
 	//child.addClass("test");
 	//cout << root.findByAddress(".innerBox").size() << endl;
-
+	*/
+	xmlRoot = Xml::load<ofxBox>(ofToDataPath("tree.xml"));
+	xmlRoot->loadCss(ofToDataPath("style.css"));
+	
 }
 
 //--------------------------------------------------------------
 void testApp::update() {
-	root.width = ofGetWidth();
-	root.height = ofGetHeight();
+	//root.width = ofGetWidth();
+	//root.height = ofGetHeight();
 }
 
 //--------------------------------------------------------------
 void testApp::draw() {
 	
-			debugDrawer.draw(&root);
-
+	debugDrawer.draw(xmlRoot);
 	
 	ofDrawBitmapStringHighlight(ofToString(ofGetFrameRate()), 30, 30);
 }

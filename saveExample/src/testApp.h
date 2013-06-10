@@ -5,6 +5,7 @@
 #include "debug/DebugDrawer.h"
 #include "tools/Instancer.h"
 #include "components/Text.h"
+#include "tools/Xml.h"
 
 using namespace boxModel::core;
 using namespace boxModel::tools;
@@ -14,7 +15,7 @@ using namespace boxModel::components;
 class CustomBox: public ofxBox{
 public:
 	string getType(){
-		return "blah";
+		return "customBox";
 	}
 };
 
@@ -22,6 +23,10 @@ class TextBox: public ofxBox, public Text{
 public:
 	TextBox(){
 		addComponent<Text>(this);
+	}
+	
+	string getType(){
+		return "text";
 	}
 };
 
@@ -43,6 +48,8 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
 		ofxBox root;
+		
+		ofxBox* xmlRoot;
 		
 		DebugDrawer debugDrawer;
  };

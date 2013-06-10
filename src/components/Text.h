@@ -10,6 +10,17 @@ namespace boxModel
 
 namespace components
 {
+	
+struct FontInfo{
+	std::string text;
+	float width;
+	float height;
+	string fontName;
+	float fontSize;
+	float leading;
+	float charSpacing;
+	float wordSpacing;
+};
 
 class Text : public boxModel::core::Component
 {
@@ -23,8 +34,9 @@ public:
 	void onCss(Css* css);
 	
 	core::Value<std::string> text;
-	
 	core::Unit leading;
+	
+	static Nano::signal<void(float&, FontInfo)> onGetTextBoxHeight;
 
 private:
 	void pCssLeading(std::string key, std::string value);

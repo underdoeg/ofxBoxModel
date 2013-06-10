@@ -4,17 +4,23 @@
 #include "pugixml.hpp"
 #include "core/Composite.h"
 #include "tools/Instancer.h"
+#include "components/Stack.h"
 
 namespace boxModel {
 
-namespace Xml {
+namespace tools {
 
 class Xml {
 public:
 	Xml();
 	~Xml();
-
-	static core::Composite* loadXml(std::string path) {
+	
+	template <class Type>
+	static Type* load(std::string path){
+		return core::castTo<core::Composite, Type>(load(path));
+	}
+	
+	static core::Composite* load(std::string path) {
 		pugi::xml_document doc;
 		pugi::xml_parse_result result = doc.load_file(path.c_str());
 		if(result.status != pugi::status_ok) {
@@ -23,23 +29,23 @@ public:
 		}
 		core::Composite* root = NULL;
 		root = parseXmlNode(doc.first_child());
-
+		
 		return root;
 	}
 private:
 	static core::Composite* parseXmlNode(pugi::xml_node node) {
 		core::Composite* ret = tools::Instancer::createInstance(node.name());
 		if(ret == NULL)
-			return ret;
+			return NULL;
 		//loop children
-		for (pugi::xml_node_iterator it = node.begin(); it != node.end(); ++it) {
-			core::Composite* t = parseXmlNode(*it);
-			/*
-			if(t != NULL)
-				ret->addChild(t);
-			*/
+		if(ret->hasComponent<components::Stack>()) {
+			components::Stack* stack = ret->getComponent<components::Stack>();
+			for (pugi::xml_node_iterator it = node.begin(); it != node.end(); ++it) {
+				core::Composite* t = parseXmlNode(*it);
+				if(t != NULL && t->hasComponent<components::Stack>())
+					stack->addChild(t->getComponent<components::Stack>());
+			}
 		}
-
 		//parse properties
 		/*
 		if(is_base_of<Serializable, BoxModelType>::value) {

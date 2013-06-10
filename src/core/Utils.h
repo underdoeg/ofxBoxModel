@@ -38,7 +38,7 @@ To* castTo(From* from, bool typecheck = true){
 		return static_cast<To*>(from);
 	
 	To* to = NULL;
-	if(isBaseOf<To, From>::value){
+	if(isBaseOf<From, To>::value){
 		to = static_cast<To*>(from);
 	}else{
 		assert(false && "Invalid casting");

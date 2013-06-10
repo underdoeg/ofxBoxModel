@@ -3,7 +3,7 @@
 namespace boxModel
 {
 
-namespace Xml
+namespace tools
 {
 
 Xml::Xml()
