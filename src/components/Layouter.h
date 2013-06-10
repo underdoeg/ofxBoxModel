@@ -47,13 +47,14 @@ public:
 
 		if(stack->getNumChildren() == 0)
 			return;
-			
+
 		//this is the root box
-		if(!stack->hasParent()){
-			if(boxDefinition != NULL){
+		if(!stack->hasParent()) {
+			if(boxDefinition != NULL) {
 				box->contentPosition.set(boxDefinition->margin.left.getValueCalculated(), boxDefinition->margin.top.getValueCalculated());
-			
-			
+
+
+			}
 		}
 
 		maxContentSize.set(0, 0);
@@ -183,7 +184,7 @@ private:
 		if(maxH>height)
 			height = maxH;
 	}
-	
+
 	core::Point maxContentSize;
 	core::Point curPosition;
 	float rowMaxHeight;

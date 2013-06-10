@@ -4,7 +4,6 @@
 #include "ofxBox.h"
 #include "debug/DebugDrawer.h"
 #include "tools/Instancer.h"
-#include "components/Text.h"
 #include "tools/Xml.h"
 
 using namespace boxModel::core;
@@ -18,7 +17,7 @@ public:
 		return "customBox";
 	}
 };
-
+/*
 class TextBox: public ofxBox, public Text{
 public:
 	TextBox(){
@@ -29,6 +28,7 @@ public:
 		return "text";
 	}
 };
+*/
 
 class testApp : public ofBaseApp{
 
