@@ -46,6 +46,9 @@ public:
 	core::Value<std::string> fontName;
 	core::Unit fontSize;
 	core::Unit leading;
+	core::Unit wordSpacing;
+	core::Unit letterSpacing;
+	TEXT_ALIGNMENT textAlignment;
 	
 	static Nano::signal<void(float&, FontInfo)> onGetTextBoxHeight;
 
