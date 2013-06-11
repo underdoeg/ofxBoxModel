@@ -1,11 +1,38 @@
 <?xml version="1.0"?>
 <box>
-	<customBox class="test">
-	</customBox>
-	
-	<customBox>
-	</customBox>
-	
-	<customBox>
-	</customBox>
+	<box linkTo="box2">
+		<customBox>
+		</customBox>
+		<customBox>
+		</customBox>
+		<customBox>
+		</customBox>
+		<customBox>
+		</customBox>
+		<customBox>
+		</customBox>
+		<customBox>
+		</customBox>
+		<customBox>
+		</customBox>
+		<customBox>
+		</customBox>
+		<customBox>
+		</customBox>
+		<customBox>
+		</customBox>
+		<customBox>
+		</customBox>
+		<customBox>
+		</customBox>
+		<customBox>
+		</customBox>
+		<customBox>
+		</customBox>
+		<customBox>
+		</customBox>
+	</box>
+	<box id="box2">
+		
+	</box>
 </box>

@@ -216,7 +216,7 @@ private:
 		
 	void onSerializer(Serializer* ser){
 		ser->deserialized.connect<Addressable, &Addressable::onDeserialize>(this);
-		ser->serialized.connect<Addressable, &Addressable::onDeserialize>(this);
+		ser->serialized.connect<Addressable, &Addressable::onSerialize>(this);
 	}
 	
 	void onSerialize(core::VariantList& variants){

@@ -64,6 +64,8 @@
       <File Name="../../src/components/Text.cpp"/>
       <File Name="../../src/components/Serializer.h"/>
       <File Name="../../src/components/Serializer.cpp"/>
+      <File Name="../../src/components/Linker.h"/>
+      <File Name="../../src/components/Linker.cpp"/>
     </VirtualDirectory>
     <File Name="../../src/ofxBox.h"/>
     <VirtualDirectory Name="debug">

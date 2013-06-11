@@ -4,6 +4,7 @@
 #include "core/Component.h"
 #include "components/Box.h"
 #include "components/Stack.h"
+#include "components/BoxDefinition.h"
 
 namespace boxModel {
 
@@ -58,6 +59,7 @@ public:
 		maxContentSize.set(0, 0);
 		curPosition.set(0,0);
 		rowMaxHeight = 0;
+		
 		for(Stack * stackChild: stack->getChildren()) {
 			if(stackChild->components->hasComponent<Box>()) {
 				Box* child = stackChild->components->getComponent<Box>();
@@ -68,7 +70,9 @@ public:
 		if(boxDefinition != NULL)
 			boxDefinition->recalculateBoxSize();
 	}
-
+	
+	Nano::signal<void(core::ComponentContainer*)> overflowed;
+	
 	bool autoLayout;
 protected:
 	virtual void placeBox(Box* childBox) {
@@ -76,29 +80,62 @@ protected:
 			return;
 
 		BoxDefinition* childBoxDef = childBox->components->getComponent<BoxDefinition>();
+		
+		if(childBoxDef->positioning == Relative) {
 
-		switch(childBoxDef->floating) {
-		case Floating::FloatLeft:
-			if(curPosition.x + childBox->outerSize.x > box->contentSize.x) {
+			switch(childBoxDef->floating) {
+			case Floating::FloatLeft:
+				if(curPosition.x + childBox->outerSize.x > box->contentSize.x) {
+					curPosition.x = 0;
+					curPosition.y += rowMaxHeight;
+					rowMaxHeight = 0;
+				}
+				curPosition += core::Point(childBoxDef->margin.left.getValueCalculated(), 0);
+				childBox->position.set(curPosition + core::Point(0, childBoxDef->margin.top.getValueCalculated()));
+				curPosition.x += childBox->outerSize.x - childBoxDef->margin.left.getValueCalculated();
+				break;
+			default:
 				curPosition.x = 0;
 				curPosition.y += rowMaxHeight;
 				rowMaxHeight = 0;
+				childBox->position.set(curPosition + core::Point(childBoxDef->margin.left.getValueCalculated(), childBoxDef->margin.top.getValueCalculated()));
+				break;
 			}
-			curPosition += core::Point(childBoxDef->margin.left.getValueCalculated(), 0);
-			childBox->position.set(curPosition + core::Point(0, childBoxDef->margin.top.getValueCalculated()));
-			curPosition.x += childBox->outerSize.x - childBoxDef->margin.left.getValueCalculated();
-			break;
-		default:
-			curPosition.x = 0;
-			curPosition.y += rowMaxHeight;
-			rowMaxHeight = 0;
-			childBox->position.set(curPosition + core::Point(childBoxDef->margin.left.getValueCalculated(), childBoxDef->margin.top.getValueCalculated()));
-			break;
+
+			if(boxDefinition->height != core::Unit::Auto && rowMaxHeight < childBox->outerSize.y) {
+				rowMaxHeight = childBox->outerSize.y;
+			}
+			
+			if(childBox->position.y + childBox->size.y > box->contentSize.y){
+				//overflowed(childBox->components);
+				overflowElements.push_back(childBox->components);
+			}
+		} else if(childBoxDef->positioning == Absolute) {
+			//TODO: could be optimized for less calculations
+			core::Point p;
+			core::Point p1 = core::Point(
+			                     childBoxDef->left.getValueCalculated() + childBoxDef->margin.left.getValueCalculated(),
+			                     childBoxDef->top.getValueCalculated() + childBoxDef->margin.top.getValueCalculated()
+			                 );
+			core::Point p2 = core::Point(
+			                     box->contentSize.x - childBoxDef->right.getValueCalculated() - childBox->size.x + childBoxDef->margin.left.getValueCalculated(),
+			                     box->contentSize.y - childBoxDef->bottom.getValueCalculated() - childBox->size.y + childBoxDef->margin.bottom.getValueCalculated()
+			                 );
+			if(childBoxDef->bottom.isSet() && childBoxDef->right.isSet()) {
+				p = p2;
+			} else if(childBoxDef->bottom.isSet()) {
+				p = p1;
+				p.y = p2.y;
+			} else if(childBoxDef->right.isSet()) {
+				p = p1;
+				p.x = p2.x;
+			} else {
+				p = p1;
+			}
+			childBox->position.set(p);
 		}
 
-		if(rowMaxHeight < childBox->outerSize.y) {
-			rowMaxHeight = childBox->outerSize.y;
-		}
+
 	}
 
 private:
@@ -123,7 +160,13 @@ private:
 
 	void onChildAdded(Stack* child) {
 		if(child->components->hasComponent<BoxDefinition>()) {
-			child->components->getComponent<BoxDefinition>()->floating.changed.connect<Layouter, &Layouter::onChildFloatingChanged>(this);
+			BoxDefinition* boxDef = child->components->getComponent<BoxDefinition>();
+			boxDef->floating.changed.connect<Layouter, &Layouter::onChildFloatingChanged>(this);
+			boxDef->positioning.changed.connect<Layouter, &Layouter::onChildPositioningChanged>(this);
+			boxDef->left.changed.connect<Layouter, &Layouter::onChildUnitChanged>(this);
+			boxDef->top.changed.connect<Layouter, &Layouter::onChildUnitChanged>(this);
+			boxDef->right.changed.connect<Layouter, &Layouter::onChildUnitChanged>(this);
+			boxDef->bottom.changed.connect<Layouter, &Layouter::onChildUnitChanged>(this);
 		}
 		if(child->components->hasComponent<Box>()) {
 			Box* childBox = child->components->getComponent<Box>();
@@ -144,6 +187,18 @@ private:
 	}
 
 	void onChildSizeChanged(core::Point p) {
+		if(!autoLayout)
+			return;
+		layout();
+	}
+	
+	void onChildPositioningChanged(Position p) {
+		if(!autoLayout)
+			return;
+		layout();
+	}
+	
+	void onChildUnitChanged(core::Unit* unit) {
 		if(!autoLayout)
 			return;
 		layout();
@@ -186,6 +241,8 @@ private:
 	core::Point maxContentSize;
 	core::Point curPosition;
 	float rowMaxHeight;
+	
+	std::vector<core::ComponentContainer*> overflowElements;
 
 	Stack* stack;
 	Box* box;

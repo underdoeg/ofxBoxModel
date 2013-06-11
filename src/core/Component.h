@@ -92,11 +92,11 @@ private:
 };
 
 //the following is a macro that helps with listening to Component addition, ONLY USE WITHIN SETUP OF A COMPONENT
-#define LISTEN_FOR_COMPONENT(ComponentType, ListenerType, ListenerFunction) 																\
+#define LISTEN_FOR_COMPONENT(ComponentType, ListenerClass, ListenerFunction) 																\
 		if(components->hasComponent<ComponentType>())																					\
 			ListenerFunction(components->getComponent<ComponentType>());																\
 		else																															\
-			components->getComponentAddedSignal<ComponentType>().connect<ListenerType, &ListenerType::ListenerFunction>(this);			\
+			components->getComponentAddedSignal<ComponentType>().connect<ListenerClass, &ListenerClass::ListenerFunction>(this);			\
 
 //end namespace
 }

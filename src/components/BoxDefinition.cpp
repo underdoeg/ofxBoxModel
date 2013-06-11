@@ -10,6 +10,13 @@ void BoxDefinition::onCss(Css* css) {
 	css->addCssParserFunction<BoxDefinition, &BoxDefinition::pWidth>("width", this);
 	css->addCssParserFunction<BoxDefinition, &BoxDefinition::pHeight>("height", this);
 
+	css->addCssParserFunction<BoxDefinition, &BoxDefinition::pPosition>("position", this);
+
+	css->addCssParserFunction<BoxDefinition, &BoxDefinition::pTop>("top", this);
+	css->addCssParserFunction<BoxDefinition, &BoxDefinition::pLeft>("left", this);
+	css->addCssParserFunction<BoxDefinition, &BoxDefinition::pRight>("right", this);
+	css->addCssParserFunction<BoxDefinition, &BoxDefinition::pBottom>("bottom", this);
+
 	css->addCssParserFunction<BoxDefinition, &BoxDefinition::pMargin>("margin", this);
 	css->addCssParserFunction<BoxDefinition, &BoxDefinition::pMarginLeft>("margin-left", this);
 	css->addCssParserFunction<BoxDefinition, &BoxDefinition::pMarginRight>("margin-right", this);
@@ -47,6 +54,32 @@ void BoxDefinition::pHeight(std::string key, std::string value) {
 
 void BoxDefinition::pWidth(std::string key, std::string value) {
 	width = Unit::parseCssNumber(value);
+}
+
+void BoxDefinition::pTop(std::string key, std::string value) {
+	top = Unit::parseCssNumber(value);
+}
+
+void BoxDefinition::pRight(std::string key, std::string value) {
+	right = Unit::parseCssNumber(value);
+}
+
+void BoxDefinition::pLeft(std::string key, std::string value) {
+	left = Unit::parseCssNumber(value);
+	cout << left << endl;
+}
+
+void BoxDefinition::pBottom(std::string key, std::string value) {
+	bottom = Unit::parseCssNumber(value);
+}
+
+void BoxDefinition::pPosition(std::string key, std::string value) {
+	if(value == "absolute")
+		positioning = Absolute;
+	if(value == "relative")
+		positioning = Relative;
+	if(value == "fixed")
+		positioning = Fixed;
 }
 
 void BoxDefinition::pFloat(std::string key, std::string value) {

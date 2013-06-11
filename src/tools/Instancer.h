@@ -50,7 +50,6 @@ public:
 		}
 
 		instancers[comp->getComponent<components::Addressable>()->getType()] = new InstancerHelper<InstanceType>();
-		std::cout << "ADDED COMPONENT " << comp->getComponent<components::Addressable>()->getType() << std::endl;
 	}
 
 	template <class InstanceType>

@@ -19,18 +19,18 @@
 }
 
 box{
-	margin: 200px;
-	width: 200px;
-	height: auto;
+	width: 300px;
+	height: 300px;
 }
 
 customBox{
 	width: 100px;
 	height: 100px;
-	background-color: none;
+	background-color: #555;
+	float: left;
 }
 
-.test{
-	background-color: #ff00ff;
-	color: #ff0ff;
+#box2{
+	position: absolute;
+	left: 400px;
 }

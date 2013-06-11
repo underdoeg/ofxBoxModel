@@ -1,8 +1,6 @@
 #ifndef UNIT_H
 #define UNIT_H
 
-#include "ofMain.h"
-
 
 namespace boxModel {
 
@@ -14,7 +12,8 @@ public:
 	enum Type {
 	    Auto,
 	    Pixel,
-	    Percent
+	    Percent,
+		Type_None
 	};
 
 	Nano::signal<void(Unit*)> changed;
@@ -63,6 +62,8 @@ public:
 			return;
 		bSet = true;
 		type = t;
+		if(type == 0)
+			value = 0;
 		dispatchChanged();
 		typeChanged(type);
 	}
@@ -103,7 +104,9 @@ public:
 			num = stringTrim(stringReplace(val, "px", ""));
 		} else if(val == "auto"){
 			u = Unit::Auto;
-		}else {
+		} else if(val == "none"){
+			u = Unit::Type_None;
+		} else {
 			u = Unit::Pixel;
 			num = val;
 		}

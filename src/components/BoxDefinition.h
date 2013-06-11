@@ -118,6 +118,14 @@ private:
 	void pWidth(std::string key, std::string value);
 	void pHeight(std::string key, std::string value);
 	
+	void pPosition(std::string key, std::string value);
+	
+	void pRight(std::string key, std::string value);
+	void pLeft(std::string key, std::string value);
+	void pTop(std::string key, std::string value);
+	void pBottom(std::string key, std::string value);
+
+	
 	/* MARGIN, PADDING, BORDER */
 	void pMargin(std::string key, std::string value);
 	void pMarginLeft(std::string key, std::string value);

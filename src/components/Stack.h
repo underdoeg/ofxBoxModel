@@ -86,6 +86,10 @@ public:
 		return children;
 	};
 	
+	Stack* getUltimateParent(){
+		
+	}
+	
 	Nano::signal<void(Stack*)> childAdded;
 	Nano::signal<void(Stack*)> childRemoved;
 	
