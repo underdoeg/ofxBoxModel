@@ -43,6 +43,12 @@ public:
 	    ALIGN_JUSTIFY,
 	    ALIGN_JUSTIFY_ALL
 	};
+	
+	enum TEXT_TRANSFORM {
+	    TEXT_UPPERCASE,
+	    TEXT_CAPITALIZE,
+	    TEXT_LOWERCASE
+	};
 
 	core::Value<std::string> fontName;
 	core::Unit fontSize;
@@ -50,6 +56,7 @@ public:
 	core::Unit wordSpacing;
 	core::Unit letterSpacing;
 	TEXT_ALIGNMENT textAlignment;
+	TEXT_TRANSFORM textTransform;
 	
 	static Nano::signal<void(float&, Text*)> onGetTextBoxHeight;
 	
@@ -60,6 +67,7 @@ private:
 	void pCssLetterSpacing(std::string key, std::string value);
 	void pCssWordSpacing(std::string key, std::string value);
 	void pCssTextAlignment(std::string key, std::string value);
+	void pCssTextTransform(std::string key, std::string value);
 	
 	void onAutoWidth(float& width);
 	void onAutoHeight(float& height);

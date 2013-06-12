@@ -44,6 +44,7 @@ void Text::onCss(Css* css){
 	css->addCssParserFunction<Text, &Text::pCssLetterSpacing>("letter-spacing", this);
 	css->addCssParserFunction<Text, &Text::pCssWordSpacing>("word-spacing", this);
 	css->addCssParserFunction<Text, &Text::pCssTextAlignment>("text-align", this);
+	css->addCssParserFunction<Text, &Text::pCssTextTransform>("text-transform", this);
 }
 
 void Text::onBoxDefinition(BoxDefinition* boxDefinition){
@@ -78,7 +79,13 @@ void Text::pCssTextAlignment(std::string key, std::string value){
 	if(value=="center") textAlignment = ALIGN_CENTER;
 	if(value=="justify") textAlignment = ALIGN_JUSTIFY;
 	if(value=="justify_all" || value=="justify-all") textAlignment = ALIGN_JUSTIFY_ALL;
+}
 
+void Text::pCssTextTransform(std::string key, std::string value){
+	
+	if(value=="uppercase") textTransform = TEXT_UPPERCASE;
+	if(value=="capitalize") textTransform = TEXT_CAPITALIZE;
+	if(value=="lowercase") textTransform = TEXT_LOWERCASE;
 }
 
 void Text::onAutoWidth(float& width){
