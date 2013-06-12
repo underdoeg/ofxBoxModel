@@ -26,7 +26,8 @@ enum Floating {
 class BoxDefinition : public core::Component {
 public:
 	BoxDefinition() {
-
+		floating = FloatNone;
+		positioning = Relative;
 	}
 	~BoxDefinition() {
 	}
@@ -43,8 +44,7 @@ public:
 		width.changed.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
 		height.changed.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
 
-		floating = FloatNone;
-		positioning = Relative;
+		
 	}
 
 	core::Unit left;

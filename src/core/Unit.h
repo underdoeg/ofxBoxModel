@@ -46,6 +46,14 @@ public:
 		set(t);
 		return t;
 	}
+	
+	const bool operator==(Type t){
+		return type == t;
+	}
+	
+	const bool operator==(float v){
+		return value == v;
+	}
 
 	void set(float val) {
 

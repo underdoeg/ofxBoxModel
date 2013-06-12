@@ -87,7 +87,13 @@ public:
 	};
 	
 	Stack* getUltimateParent(){
-		
+		if(!hasParent())
+			return NULL;
+		Stack* ret = getParent();
+		while(ret->hasParent()){
+			ret = ret->getParent();
+		}
+		return ret;
 	}
 	
 	Nano::signal<void(Stack*)> childAdded;

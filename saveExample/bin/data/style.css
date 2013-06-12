@@ -1,3 +1,4 @@
+/*
 .outerBox{
 	padding: 20px;
 }
@@ -12,7 +13,6 @@
 	float: left;
 }
 
-/* this is a comment */
 #root{
 	background-color: #333;
 	color: #444;
@@ -24,8 +24,8 @@ box{
 }
 
 customBox{
-	width: 100px;
-	height: 100px;
+	width: 30px;
+	height: 30px;
 	background-color: #555;
 	float: left;
 }
@@ -33,4 +33,10 @@ customBox{
 #box2{
 	position: absolute;
 	left: 400px;
+}
+
+*/
+
+#box2{
+	border: none;
 }
