@@ -28,6 +28,7 @@ public:
 	BoxDefinition() {
 		floating = FloatNone;
 		positioning = Relative;
+		border = core::Unit::Type_None;
 	}
 	~BoxDefinition() {
 	}

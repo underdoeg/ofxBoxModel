@@ -57,6 +57,7 @@ std::vector<std::string> stringSplit(const std::string & source, const std::stri
 std::string stringReplace(std::string s, std::string toReplace, std::string replaceWith);
 std::string stringRemoveLineBreaks(std::string);
 std::string stringToLower(std::string s);
+std::string stringToUpper(std::string s);
 float stringToFloat(std::string s);
 int stringToInt(std::string s);
 bool stringContains(std::string s, std::string find);

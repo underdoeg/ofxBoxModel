@@ -5,6 +5,7 @@
 #include "BaseTypes.h"
 #include "BoxDefinition.h"
 #include "Serializer.h"
+#include "Utils.h"
 
 namespace boxModel
 {
@@ -44,13 +45,20 @@ public:
 	    ALIGN_JUSTIFY,
 	    ALIGN_JUSTIFY_ALL
 	};
+	
+	enum TEXT_TRANSFORM {
+	    TEXT_UPPERCASE,
+	    TEXT_LOWERCASE,
+		TEXT_NONE
+	};
 
 	core::Value<std::string> fontName;
 	core::Unit fontSize;
 	core::Unit leading;
 	core::Unit wordSpacing;
 	core::Unit letterSpacing;
-	TEXT_ALIGNMENT textAlignment;
+	core::Value<TEXT_ALIGNMENT> textAlignment;
+	core::Value<TEXT_TRANSFORM> textTransform;
 	
 	static Nano::signal<void(float&, Text*)> onGetTextBoxHeight;
 	
@@ -61,6 +69,7 @@ private:
 	void pCssLetterSpacing(std::string key, std::string value);
 	void pCssWordSpacing(std::string key, std::string value);
 	void pCssTextAlignment(std::string key, std::string value);
+	void pCssTextTransform(std::string key, std::string value);
 	
 			
 	void onSerializer(Serializer* ser);
@@ -69,6 +78,8 @@ private:
 	
 	void onDeserialize(core::VariantList& variants);
 	
+	void onTextChange(string text);
+
 	void onAutoWidth(float& width);
 	void onAutoHeight(float& height);
 	Box* box;
