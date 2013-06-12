@@ -4,7 +4,11 @@
 #include "Component.h"
 #include "BaseTypes.h"
 #include "components/Box.h"
+#include "components/Text.h"
 
+
+using namespace boxModel::core;
+using namespace boxModel::components;
 
 namespace boxModel
 {
@@ -19,11 +23,10 @@ public:
 	~DebugDrawer();
 	void draw(core::ComponentContainer* container);
 	
-	void drawBoxInner(components::Box* box, core::Color fg, core::Color bg);
-	void drawBoxOuter(components::Box* box, core::Color fg, core::Color bg);
+	void drawBox(Box* box);
+	void drawText(Box* box, Text* text, Color fg);
 	
-	static core::Color bgColor;
-	static core::Color color;
+	Color color;
 };
 
 }
