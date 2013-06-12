@@ -15,7 +15,6 @@ namespace components {
 
 class Addressable: public core::Component {
 public:
-	//COMPONENT()
 
 	void setup() {
 		//assert(componentContainer->hasComponent<Stackable<Addressable>>());

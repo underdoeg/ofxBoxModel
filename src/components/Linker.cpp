@@ -40,7 +40,13 @@ void Linker::onDeserialize(core::VariantList& variants){
 	if(variants.hasKey("linkTo")){
 		if(components->hasComponent<Stack>()){
 			Stack* stack = components->getComponent<Stack>();
-			
+			stack = stack->getUltimateParent();
+			if(stack->components->hasComponent<Addressable>()){
+				std::vector<Addressable*> elements = stack->components->getComponent<Addressable>()->findByAddress(variants.get("linkTo"));
+				if(elements.size()>0)
+					if(elements[0]->components->hasComponent<Linker>())
+						linkTo(elements[0]->components->getComponent<Linker>());
+			}
 		}
 	}
 }

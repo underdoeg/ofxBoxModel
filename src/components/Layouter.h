@@ -14,7 +14,6 @@ class Layouter: public core::Component {
 public:
 
 	void setup() {
-		autoLayout = true;
 
 		stack = NULL;
 		box = NULL;
@@ -42,7 +41,7 @@ public:
 		boxDefinition->onWidthAuto.connect<Layouter, &Layouter::onAutoWidth>(this);
 	}
 
-	virtual void layout() {
+	virtual void layout(bool layoutChildren=false) {
 		if(stack == NULL || box == NULL)
 			return;
 
@@ -59,7 +58,8 @@ public:
 		maxContentSize.set(0, 0);
 		curPosition.set(0,0);
 		rowMaxHeight = 0;
-		
+		overflowElements.clear();
+
 		for(Stack * stackChild: stack->getChildren()) {
 			if(stackChild->components->hasComponent<Box>()) {
 				Box* child = stackChild->components->getComponent<Box>();
@@ -67,22 +67,32 @@ public:
 			}
 		}
 
+		if(overflowElements.size()>0) {
+			overflowed(overflowElements);
+		}
+
 		if(boxDefinition != NULL)
 			boxDefinition->recalculateBoxSize();
+			
+		if(layoutChildren){
+			for(Stack* child: stack->getChildren()){
+				if(child->components->hasComponent<Layouter>())
+					child->components->getComponent<Layouter>()->layout(true);
+			}
+		}
 	}
-	
-	Nano::signal<void(core::ComponentContainer*)> overflowed;
-	
-	bool autoLayout;
+
+	Nano::signal<void(std::vector<core::ComponentContainer*>)> overflowed;
+
+	static bool autoLayout;
 protected:
 	virtual void placeBox(Box* childBox) {
 		if(!childBox->components->hasComponent<BoxDefinition>())
 			return;
 
 		BoxDefinition* childBoxDef = childBox->components->getComponent<BoxDefinition>();
-		
-		if(childBoxDef->positioning == Relative) {
 
+		if(childBoxDef->positioning == Relative) {
 			switch(childBoxDef->floating) {
 			case Floating::FloatLeft:
 				if(curPosition.x + childBox->outerSize.x > box->contentSize.x) {
@@ -94,7 +104,7 @@ protected:
 				childBox->position.set(curPosition + core::Point(0, childBoxDef->margin.top.getValueCalculated()));
 				curPosition.x += childBox->outerSize.x - childBoxDef->margin.left.getValueCalculated();
 				break;
-			default:
+			default:				
 				curPosition.x = 0;
 				curPosition.y += rowMaxHeight;
 				rowMaxHeight = 0;
@@ -102,11 +112,11 @@ protected:
 				break;
 			}
 
-			if(boxDefinition->height != core::Unit::Auto && rowMaxHeight < childBox->outerSize.y) {
+			if(rowMaxHeight < childBox->outerSize.y) { //boxDefinition->height != core::Unit::Auto && 
 				rowMaxHeight = childBox->outerSize.y;
 			}
-			
-			if(childBox->position.y + childBox->size.y > box->contentSize.y){
+
+			if(childBox->position.y + childBox->size.y > box->contentSize.y) {
 				//overflowed(childBox->components);
 				overflowElements.push_back(childBox->components);
 			}
@@ -134,15 +144,18 @@ protected:
 			}
 			childBox->position.set(p);
 		}
-
-
 	}
 
 private:
-	void onContentSizeChanged(core::Point p) {
-		if(!autoLayout)
+	void triggerLayout(){
+		if(!autoLayout){
 			return;
+		}
 		layout();
+	}
+
+	void onContentSizeChanged(core::Point p) {
+		triggerLayout();;
 	}
 
 	void onChildRemoved(Stack* child) {
@@ -153,9 +166,7 @@ private:
 		if(child->components->hasComponent<Box>()) {
 			child->components->getComponent<Box>()->outerSize.changed.disconnect<Layouter, &Layouter::onChildSizeChanged>(this);
 		}
-		if(!autoLayout)
-			return;
-		layout();
+		triggerLayout();
 	}
 
 	void onChildAdded(Stack* child) {
@@ -175,33 +186,23 @@ private:
 			if(boxDefinition != NULL)
 				boxDefinition->recalculateBoxSize();
 		}
-		if(!autoLayout)
-			return;
-		layout();
+		triggerLayout();
 	}
 
 	void onChildFloatingChanged(Floating floating) {
-		if(!autoLayout)
-			return;
-		layout();
+		triggerLayout();
 	}
 
 	void onChildSizeChanged(core::Point p) {
-		if(!autoLayout)
-			return;
-		layout();
+		triggerLayout();
 	}
-	
+
 	void onChildPositioningChanged(Position p) {
-		if(!autoLayout)
-			return;
-		layout();
+		triggerLayout();
 	}
-	
+
 	void onChildUnitChanged(core::Unit* unit) {
-		if(!autoLayout)
-			return;
-		layout();
+		triggerLayout();
 	}
 
 	void onAutoWidth(float& width) {
@@ -241,7 +242,7 @@ private:
 	core::Point maxContentSize;
 	core::Point curPosition;
 	float rowMaxHeight;
-	
+
 	std::vector<core::ComponentContainer*> overflowElements;
 
 	Stack* stack;

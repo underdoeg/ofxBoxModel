@@ -66,7 +66,6 @@ void BoxDefinition::pRight(std::string key, std::string value) {
 
 void BoxDefinition::pLeft(std::string key, std::string value) {
 	left = Unit::parseCssNumber(value);
-	cout << left << endl;
 }
 
 void BoxDefinition::pBottom(std::string key, std::string value) {
