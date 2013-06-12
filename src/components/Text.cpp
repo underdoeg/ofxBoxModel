@@ -1,5 +1,7 @@
 #include "Text.h"
 
+using namespace boxModel::core; 
+
 namespace boxModel {
 
 namespace components {
