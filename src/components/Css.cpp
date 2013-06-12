@@ -30,15 +30,28 @@ void Css::setCss(std::string cssDefinition) {
 	//remove comments
 	std::vector<std::string> commentBlocks = stringSplit(cssDefinition, "*/");
 	cssDefinition = "";
-	for(std::vector<std::string>::iterator itBlock = commentBlocks.begin(); itBlock<commentBlocks.end(); itBlock++) {
-		std::vector<std::string> commentBlocks2 = stringSplit(*itBlock, "/*");
-		cssDefinition += commentBlocks2[0];
+	for(std::string block: commentBlocks) {
+		std::string key("/*");
+
+		block = stringTrim(block);
+
+		bool doIt = true;
+		if(block.size()>1)
+			if(block[0] == '/' && block[1] == '*')
+				doIt = false;
+
+		if(doIt) {
+			std::vector<std::string> commentBlocks2 = stringSplit(block, key);
+			string toAdd = stringTrim(commentBlocks2[0]);
+			cssDefinition += toAdd;
+
+		}
 	}
 
-	//split by blocks
+//split by blocks
 	std::vector<std::string> blocks = stringSplit(cssDefinition, '}');
 
-	//loop all blocks
+//loop all blocks
 	for(std::vector<std::string>::iterator itBlock = blocks.begin(); itBlock<blocks.end(); itBlock++) {
 		std::string block = stringTrim(*itBlock);
 		if(block.size() != 0) {
@@ -58,7 +71,7 @@ void Css::setCss(std::string cssDefinition) {
 		}
 	}
 
-	//printProperties();
+//printProperties();
 
 	applyCss();
 }
@@ -80,7 +93,7 @@ std::vector<CssProperty> Css::parseCssBlock(std::string propertiesString) {
 			std::string key = stringToLower(keyAndValue[0]);
 			//std::string value = stringToLower(keyAndValue[1]);
 			std::string value = keyAndValue[1];
-			
+
 			//remove eventual space between number and pixel / %
 			value = stringReplace(value, "  ", " ");
 			value = stringReplace(value, " px", "px");

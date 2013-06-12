@@ -1,4 +1,4 @@
-/*
+
 .outerBox{
 	padding: 20px;
 }
@@ -9,7 +9,6 @@
 	margin: 2px;
 	padding: 3px;
 	background-color: #533;
-	/*color: #00;*/
 	float: left;
 }
 
@@ -24,8 +23,8 @@ box{
 }
 
 customBox{
-	width: 30px;
-	height: 30px;
+	width: 60px;
+	height: 60px;
 	background-color: #555;
 	float: left;
 }
@@ -33,10 +32,4 @@ customBox{
 #box2{
 	position: absolute;
 	left: 400px;
-}
-
-*/
-
-#box2{
-	border: none;
 }

@@ -37,6 +37,7 @@ void Linker::onSerialize(core::VariantList& variants){
 }
 
 void Linker::onDeserialize(core::VariantList& variants){
+	cout << "HOHOO" << endl;
 	if(variants.hasKey("linkTo")){
 		if(components->hasComponent<Stack>()){
 			Stack* stack = components->getComponent<Stack>();
