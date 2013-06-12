@@ -4,6 +4,7 @@
 #include "Component.h" // Base class: boxModel::core::Component
 #include "BaseTypes.h"
 #include "BoxDefinition.h"
+#include "Utils.h"
 
 namespace boxModel
 {
@@ -46,8 +47,8 @@ public:
 	
 	enum TEXT_TRANSFORM {
 	    TEXT_UPPERCASE,
-	    TEXT_CAPITALIZE,
-	    TEXT_LOWERCASE
+	    TEXT_LOWERCASE,
+		TEXT_NONE
 	};
 
 	core::Value<std::string> fontName;
@@ -55,8 +56,8 @@ public:
 	core::Unit leading;
 	core::Unit wordSpacing;
 	core::Unit letterSpacing;
-	TEXT_ALIGNMENT textAlignment;
-	TEXT_TRANSFORM textTransform;
+	core::Value<TEXT_ALIGNMENT> textAlignment;
+	core::Value<TEXT_TRANSFORM> textTransform;
 	
 	static Nano::signal<void(float&, Text*)> onGetTextBoxHeight;
 	
@@ -69,6 +70,8 @@ private:
 	void pCssTextAlignment(std::string key, std::string value);
 	void pCssTextTransform(std::string key, std::string value);
 	
+	void onTextChange(string text);
+
 	void onAutoWidth(float& width);
 	void onAutoHeight(float& height);
 	Box* box;

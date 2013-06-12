@@ -85,6 +85,11 @@ std::string stringToLower(std::string s) {
 	return s;
 }
 
+std::string stringToUpper(std::string s) {
+	std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+	return s;
+}
+
 float stringToFloat(std::string s) {
 	return ::atof(s.c_str());
 }

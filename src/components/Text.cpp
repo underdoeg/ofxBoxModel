@@ -1,5 +1,7 @@
 #include "Text.h"
 
+using namespace boxModel::core;
+
 namespace boxModel
 {
 
@@ -26,10 +28,13 @@ void Text::setup()
 	letterSpacing = 0;
 	wordSpacing = 0;
 	textAlignment = ALIGN_LEFT;
+	textTransform = TEXT_NONE;
 	
 	LISTEN_FOR_COMPONENT(BoxDefinition, Text, onBoxDefinition)
 	LISTEN_FOR_COMPONENT(Css, Text, onCss)
 	LISTEN_FOR_COMPONENT(Box, Text, onBox)
+	
+	text.changed.connect<Text, &Text::onTextChange>(this);
 }
 
 void Text::onBox(Box* b){
@@ -45,6 +50,12 @@ void Text::onCss(Css* css){
 	css->addCssParserFunction<Text, &Text::pCssWordSpacing>("word-spacing", this);
 	css->addCssParserFunction<Text, &Text::pCssTextAlignment>("text-align", this);
 	css->addCssParserFunction<Text, &Text::pCssTextTransform>("text-transform", this);
+}
+
+void Text::onTextChange(string _text){
+	if(textTransform==TEXT_NONE) text = _text;
+	if(textTransform==TEXT_LOWERCASE) text = stringToLower(_text);
+	if(textTransform==TEXT_UPPERCASE) text = stringToUpper(_text);
 }
 
 void Text::onBoxDefinition(BoxDefinition* boxDefinition){
@@ -84,8 +95,10 @@ void Text::pCssTextAlignment(std::string key, std::string value){
 void Text::pCssTextTransform(std::string key, std::string value){
 	
 	if(value=="uppercase") textTransform = TEXT_UPPERCASE;
-	if(value=="capitalize") textTransform = TEXT_CAPITALIZE;
 	if(value=="lowercase") textTransform = TEXT_LOWERCASE;
+	if(value=="none") textTransform = TEXT_NONE;
+	
+	onTextChange(text);
 }
 
 void Text::onAutoWidth(float& width){
