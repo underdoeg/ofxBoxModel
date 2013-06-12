@@ -17,6 +17,7 @@ public:
 		return "customBox";
 	}
 };
+
 /*
 class TextBox: public ofxBox, public Text{
 public:

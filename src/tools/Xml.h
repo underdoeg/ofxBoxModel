@@ -46,6 +46,7 @@ private:
 			for (pugi::xml_attribute attr = node.first_attribute(); attr; attr = attr.next_attribute()) {
 				values.set(attr.name(), attr.value());
 			}
+			values.set("text", node.value());
 			serial->deserialize(values);
 		}
 			

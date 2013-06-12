@@ -50,6 +50,10 @@ public:
 	float asFloat() {
 		return core::stringToFloat(value);
 	}
+	
+	std::string asString() {
+		return value;
+	}
 
 	core::Point asPoint() {
 		core::Point ret;

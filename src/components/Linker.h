@@ -20,9 +20,12 @@ private:
 	void onSerializer(Serializer* s);
 	void onSerialize(core::VariantList& variants);
 	void onDeserialize(core::VariantList& variants);
-
+	
+	void onOverflow(std::vector<core::ComponentContainer*>);
+	
 	Linker* linker;
 	Layouter* layouter;
+	string linkToAddress;
 };
 
 }

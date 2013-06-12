@@ -4,6 +4,7 @@
 #include "Component.h" // Base class: boxModel::core::Component
 #include "BaseTypes.h"
 #include "BoxDefinition.h"
+#include "Serializer.h"
 
 namespace boxModel
 {
@@ -60,6 +61,13 @@ private:
 	void pCssLetterSpacing(std::string key, std::string value);
 	void pCssWordSpacing(std::string key, std::string value);
 	void pCssTextAlignment(std::string key, std::string value);
+	
+			
+	void onSerializer(Serializer* ser);
+	
+	void onSerialize(core::VariantList& variants);
+	
+	void onDeserialize(core::VariantList& variants);
 	
 	void onAutoWidth(float& width);
 	void onAutoHeight(float& height);

@@ -1,24 +1,19 @@
 #include "Text.h"
 
-namespace boxModel
-{
+namespace boxModel {
 
-namespace components
-{
-	
+namespace components {
+
 Nano::signal<void(float&, Text*)> Text::onGetTextBoxHeight;
 
 
-Text::Text()
-{
+Text::Text() {
 }
 
-Text::~Text()
-{
+Text::~Text() {
 }
 
-void Text::setup()
-{
+void Text::setup() {
 	text = "undefined";
 	fontName = "Times-Roman";
 	fontSize = 5;
@@ -26,17 +21,18 @@ void Text::setup()
 	letterSpacing = 0;
 	wordSpacing = 0;
 	textAlignment = ALIGN_LEFT;
-	
+
 	LISTEN_FOR_COMPONENT(BoxDefinition, Text, onBoxDefinition)
 	LISTEN_FOR_COMPONENT(Css, Text, onCss)
 	LISTEN_FOR_COMPONENT(Box, Text, onBox)
+	LISTEN_FOR_COMPONENT(Serializer, Text, onSerializer)
 }
 
-void Text::onBox(Box* b){
+void Text::onBox(Box* b) {
 	box = b;
 }
 
-void Text::onCss(Css* css){
+void Text::onCss(Css* css) {
 	css->addCssParserFunction<Text, &Text::pCssFontName>("font-name", this);
 	css->addCssParserFunction<Text, &Text::pCssFontSize>("font-size", this);
 	css->addCssParserFunction<Text, &Text::pCssLeading>("line-height", this);
@@ -46,33 +42,33 @@ void Text::onCss(Css* css){
 	css->addCssParserFunction<Text, &Text::pCssTextAlignment>("text-align", this);
 }
 
-void Text::onBoxDefinition(BoxDefinition* boxDefinition){
+void Text::onBoxDefinition(BoxDefinition* boxDefinition) {
 	boxDefinition->onHeightAuto.connect<Text, &Text::onAutoHeight>(this);
 	boxDefinition->onWidthAuto.connect<Text, &Text::onAutoWidth>(this);
 }
 
-void Text::pCssFontName(std::string key, std::string value){
+void Text::pCssFontName(std::string key, std::string value) {
 	fontName = value;
 }
 
-void Text::pCssFontSize(std::string key, std::string value){
+void Text::pCssFontSize(std::string key, std::string value) {
 	fontSize = core::Unit::parseCssNumber(value);
 }
 
-void Text::pCssLeading(std::string key, std::string value){
+void Text::pCssLeading(std::string key, std::string value) {
 	leading = core::Unit::parseCssNumber(value);
 }
 
-void Text::pCssLetterSpacing(std::string key, std::string value){
+void Text::pCssLetterSpacing(std::string key, std::string value) {
 	letterSpacing = core::Unit::parseCssNumber(value);
 }
 
-void Text::pCssWordSpacing(std::string key, std::string value){
+void Text::pCssWordSpacing(std::string key, std::string value) {
 	wordSpacing = core::Unit::parseCssNumber(value);
 }
 
-void Text::pCssTextAlignment(std::string key, std::string value){
-	
+void Text::pCssTextAlignment(std::string key, std::string value) {
+
 	if(value=="left") textAlignment = ALIGN_LEFT;
 	if(value=="right") textAlignment = ALIGN_RIGHT;
 	if(value=="center") textAlignment = ALIGN_CENTER;
@@ -81,17 +77,33 @@ void Text::pCssTextAlignment(std::string key, std::string value){
 
 }
 
-void Text::onAutoWidth(float& width){
-	
+void Text::onAutoWidth(float& width) {
+
 }
 
-void Text::onAutoHeight(float& height){
+void Text::onAutoHeight(float& height) {
 	if(box == NULL)
 		return;
 	onGetTextBoxHeight(height, this);
 }
 
+/******************************************************************************************/
+
+void Text::onSerializer(Serializer* ser) {
+	ser->deserialized.connect<Text, &Text::onDeserialize>(this);
+	ser->serialized.connect<Text, &Text::onSerialize>(this);
+}
+
+void Text::onSerialize(core::VariantList& variants) {
+	variants.set("text", text);
+}
+
+void Text::onDeserialize(core::VariantList& variants) {
+	if(variants.hasKey("text")){
+		text = variants.get("text");
+	}
 }
 
 }
 
+}

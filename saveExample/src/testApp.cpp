@@ -4,7 +4,6 @@ void testApp::setup(){
 	
 	Instancer::addInstancer<ofxBox>();
 	Instancer::addInstancer<CustomBox>();
-	
 	/*
 	root.setId("root");
 	

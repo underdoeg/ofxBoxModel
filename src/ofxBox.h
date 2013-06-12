@@ -12,12 +12,13 @@
 #include "components/Style.h"
 #include "components/Css.h"
 #include "components/Serializer.h"
+#include "components/Linker.h"
 
 using namespace boxModel::core;
 using namespace boxModel::components;
 
 
-class ofxBox: public Composite, public Addressable, public Stack, public Box, public BoxDefinition, public Style, public Css, public Serializer
+class ofxBox: public Composite, public Addressable, public Stack, public Box, public BoxDefinition, public Style, public Css, public Serializer, public Linker
 {
 public:
 	ofxBox()
@@ -30,6 +31,7 @@ public:
 		addComponent<Style>(this);
 		addComponent<Css>(this);
 		addComponent<Serializer>(this);
+		addComponent<Linker>(this);
 		//Instancer::addInstancer<ofxBox>(getType());
 	}
 	

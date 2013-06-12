@@ -17,6 +17,7 @@ public:
 	
 	Nano::signal<void(core::VariantList&)> serialized;
 	Nano::signal<void(core::VariantList&)> deserialized;
+	Nano::signal<void(core::VariantList&)> deserializeCompleted;
 	
 	core::VariantList serialize();
 	void deserialize(core::VariantList values);
