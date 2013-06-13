@@ -19,6 +19,7 @@ public:
 	Nano::signal<void(Unit*)> changed;
 	Nano::signal<void(float)> valueChanged;
 	Nano::signal<void(Type)> typeChanged;
+	Nano::signal<void(float)> containerSizeChanged;
 
 	Unit():bSet(false),value(0),type(Pixel) {
 	}
@@ -98,7 +99,12 @@ public:
 	}
 
 	void setContainerSize(float s) {
+		if(containerSize == s)
+			return;
 		containerSize = s;
+		if(type == Percent){
+			dispatchChanged();
+		}
 	}
 
 	static Unit parseCssNumber(std::string val) {
@@ -139,6 +145,7 @@ private:
 
 	float getValueCalculated(float parentSize) { //helper function, only for internal use
 		if(type == Percent) {
+			std::cout << "MY CONTAINER " << parentSize << " --- " << value*.01*parentSize << std::endl;
 			return value*.01*parentSize;
 		} else if(type == Auto)
 			return 0;
@@ -219,11 +226,12 @@ public:
 	core::Unit left;
 
 private:
+	std::vector<Unit*> units;
+
 	void onUnitChanged(Unit* u) {
 		changed(this);
 		unitChanged(u);
 	}
-	std::vector<Unit*> units;
 };
 
 }

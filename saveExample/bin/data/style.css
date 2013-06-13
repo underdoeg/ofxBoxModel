@@ -33,3 +33,9 @@ customBox{
 	position: absolute;
 	left: 400px;
 }
+
+#box3{
+	position: absolute;
+	left: 300;
+	top: 400;
+}

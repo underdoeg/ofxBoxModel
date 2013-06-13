@@ -79,10 +79,13 @@ private:
 	void onDeserialize(core::VariantList& variants);
 	
 	void onTextChange(string text);
+	
+	void onFontParamChanged(core::Unit* u);
 
 	void onAutoWidth(float& width);
 	void onAutoHeight(float& height);
 	Box* box;
+	BoxDefinition* boxDefinition;
 };
 
 }

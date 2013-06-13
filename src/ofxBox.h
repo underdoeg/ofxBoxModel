@@ -39,7 +39,7 @@ public:
 	{
 	}
 	
-	string getType(){
+	virtual string getType(){
 		return "box";
 	}
 	

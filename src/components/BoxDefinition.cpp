@@ -3,6 +3,112 @@
 using namespace boxModel::components;
 using namespace boxModel::core;
 
+
+BoxDefinition::BoxDefinition() {
+	floating = FloatNone;
+	positioning = Relative;
+	border = core::Unit::Type_None;
+	height = core::Unit::Auto;
+	width = core::Unit::Percent;
+	width = 100;
+	stack = NULL;
+	parentBox = NULL;
+}
+BoxDefinition::~BoxDefinition() {
+}
+
+void BoxDefinition::setup() {
+	box = NULL;
+	LISTEN_FOR_COMPONENT(Box, BoxDefinition, onBox)
+	LISTEN_FOR_COMPONENT(Css, BoxDefinition, onCss)
+	LISTEN_FOR_COMPONENT(Stack, BoxDefinition, onStack)
+
+	margin.unitChanged.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
+	padding.unitChanged.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
+	border.unitChanged.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
+
+	width.changed.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
+	height.changed.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
+
+	components->addUnitX(&width);
+	components->addUnitGroup(&margin);
+	components->addUnitGroup(&padding);
+	components->addUnitGroup(&border);
+	components->addUnitY(&height);
+}
+
+void BoxDefinition::onStack(Stack* s)
+{
+	stack = s;
+	stack->parentChanged.connect<BoxDefinition, &BoxDefinition::onParentChanged>(this);
+}
+
+void BoxDefinition::onParentChanged(Stack* parent)
+{
+	if(parent == NULL)
+		return;
+	if(parentBox != NULL)
+		parentBox->contentSize.changed.disconnect<BoxDefinition, &BoxDefinition::onParentSizeChanged>(this);
+	recalculateBoxSize();
+	if(parent->components->hasComponent<Box>()){
+		parentBox = parent->components->getComponent<Box>();
+		parentBox->contentSize.changed.connect<BoxDefinition, &BoxDefinition::onParentSizeChanged>(this);
+	}
+}
+
+void BoxDefinition::onParentSizeChanged(core::Point p)
+{
+	//recalculateBoxSize();
+}
+
+void BoxDefinition::onUnitChanged(core::Unit* u) {
+	recalculateBoxSize();
+}
+
+void BoxDefinition::recalculateBoxSize() {
+	if(box == NULL)
+		return;
+
+	float _width = width.getValueCalculated();
+	float _height = height.getValueCalculated();
+
+	float _marginLeft = margin.left.getValueCalculated();
+	float _marginRight = margin.right.getValueCalculated();
+	float _marginTop = margin.top.getValueCalculated();
+	float _marginBottom = margin.bottom.getValueCalculated();
+
+	float _paddingLeft = padding.left.getValueCalculated();
+	float _paddingRight = padding.right.getValueCalculated();
+	float _paddingTop = padding.top.getValueCalculated();
+	float _paddingBottom = padding.bottom.getValueCalculated();
+
+	float _borderLeft = border.left.getValueCalculated();
+	float _borderRight = border.right.getValueCalculated();
+	float _borderTop = border.top.getValueCalculated();
+	float _borderBottom = border.bottom.getValueCalculated();
+
+	if(width.getType() == core::Unit::Auto) {
+		onWidthAuto(_width);
+		_width += _paddingLeft + _paddingRight + _borderLeft + _borderRight;
+	}
+
+	box->size.x = _width;
+	box->outerSize.x = _marginLeft + _marginRight + box->size.x;
+	box->contentSize.x = box->size.x - _paddingLeft - _paddingRight - _borderLeft - _borderRight;
+	box->contentPosition.x = _paddingLeft + _borderLeft;
+
+	if(height.getType() == core::Unit::Auto) {
+		onHeightAuto(_height);
+		_height += _paddingTop + _paddingBottom + _borderTop + _borderBottom;
+	}
+
+	box->size.y = _height;
+	box->outerSize.y = _marginTop + _marginBottom + box->size.y;
+	box->contentSize.y = box->size.y - _paddingBottom - _paddingTop - _borderTop - _borderBottom;
+	box->contentPosition.y = _paddingTop + _borderTop;
+}
+
+
 /************************ PARSER FUNCTIONS *******************************/
 
 void BoxDefinition::onCss(Css* css) {
@@ -153,3 +259,4 @@ void BoxDefinition::pBorderTop(std::string key, std::string value) {
 void BoxDefinition::pBorderBottom(std::string key, std::string value) {
 	border.bottom = Unit::parseCssNumber(value);
 }
+

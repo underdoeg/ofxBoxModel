@@ -127,7 +127,8 @@
 		<customBox>
 		</customBox>
 	</box>
-	<box id="box2">
-		
+	<box id="box2" linkTo="#box3">
+	</box>
+	<box  id="box3" >
 	</box>
 </box>

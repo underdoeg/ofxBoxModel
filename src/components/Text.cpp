@@ -1,6 +1,7 @@
 #include "Text.h"
 
 using namespace boxModel::core; 
+using namespace std;
 
 namespace boxModel {
 
@@ -9,7 +10,7 @@ namespace components {
 Nano::signal<void(float&, Text*)> Text::onGetTextBoxHeight;
 
 
-Text::Text() {
+Text::Text():boxDefinition(NULL) {
 }
 
 Text::~Text() {
@@ -31,6 +32,11 @@ void Text::setup() {
 	LISTEN_FOR_COMPONENT(Serializer, Text, onSerializer)
 
 	text.changed.connect<Text, &Text::onTextChange>(this);
+	
+	fontSize.changed.connect<Text, &Text::onFontParamChanged>(this);
+	leading.changed.connect<Text, &Text::onFontParamChanged>(this);
+	letterSpacing.changed.connect<Text, &Text::onFontParamChanged>(this);
+	wordSpacing.changed.connect<Text, &Text::onFontParamChanged>(this);
 }
 
 void Text::onBox(Box* b){
@@ -52,9 +58,21 @@ void Text::onTextChange(string _text){
 	if(textTransform==TEXT_NONE) text = _text;
 	if(textTransform==TEXT_LOWERCASE) text = stringToLower(_text);
 	if(textTransform==TEXT_UPPERCASE) text = stringToUpper(_text);
+	if(boxDefinition != NULL){
+		boxDefinition->recalculateBoxSize();
+	}
 }
 
-void Text::onBoxDefinition(BoxDefinition* boxDefinition){
+void Text::onFontParamChanged(Unit* u)
+{
+	if(boxDefinition == NULL)
+		return;
+	if(boxDefinition->height == Unit::Auto)
+		boxDefinition->recalculateBoxSize();
+}
+
+void Text::onBoxDefinition(BoxDefinition* bd){
+	boxDefinition = bd;
 	boxDefinition->onHeightAuto.connect<Text, &Text::onAutoHeight>(this);
 	boxDefinition->onWidthAuto.connect<Text, &Text::onAutoWidth>(this);
 }
@@ -102,9 +120,11 @@ void Text::onAutoWidth(float& width){
 }
 
 void Text::onAutoHeight(float& height){
+	cout << "LOOKING FOR AUTO HEIGHT" << endl;
 	if(box == NULL)
 		return;
 	onGetTextBoxHeight(height, this);
+	cout << height << endl;
 }
 
 /******************************************************************************************/
@@ -124,6 +144,7 @@ void Text::onDeserialize(core::VariantList& variants) {
 	}
 }
 
-}
+} //end namespace
 
 }
+

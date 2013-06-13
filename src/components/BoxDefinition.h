@@ -6,6 +6,7 @@
 #include "core/Unit.h"
 #include "core/BaseTypes.h"
 #include "Css.h"
+#include "Stack.h"
 
 namespace boxModel {
 
@@ -25,28 +26,11 @@ enum Floating {
 
 class BoxDefinition : public core::Component {
 public:
-	BoxDefinition() {
-		floating = FloatNone;
-		positioning = Relative;
-		border = core::Unit::Type_None;
-	}
-	~BoxDefinition() {
-	}
+	BoxDefinition();
+	~BoxDefinition();
+	void setup();
+	void recalculateBoxSize();
 
-	void setup() {
-		box = NULL;
-		LISTEN_FOR_COMPONENT(Box, BoxDefinition, onBox)
-		LISTEN_FOR_COMPONENT(Css, BoxDefinition, onCss)
-
-		margin.unitChanged.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
-		padding.unitChanged.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
-		border.unitChanged.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
-
-		width.changed.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
-		height.changed.connect<BoxDefinition, &BoxDefinition::onUnitChanged>(this);
-
-		
-	}
 
 	core::Unit left;
 	core::Unit top;
@@ -70,48 +54,6 @@ public:
 	static std::vector<core::Unit> parseCssNumberBlock(std::string val);
 	static Floating parseCssFloating(std::string val);
 	
-	void recalculateBoxSize() {
-		if(box == NULL)
-			return;
-
-		float _width = width.getValueCalculated();
-		float _height = height.getValueCalculated();
-
-		float _marginLeft = margin.left.getValueCalculated();
-		float _marginRight = margin.right.getValueCalculated();
-		float _marginTop = margin.top.getValueCalculated();
-		float _marginBottom = margin.bottom.getValueCalculated();
-
-		float _paddingLeft = padding.left.getValueCalculated();
-		float _paddingRight = padding.right.getValueCalculated();
-		float _paddingTop = padding.top.getValueCalculated();
-		float _paddingBottom = padding.bottom.getValueCalculated();
-
-		float _borderLeft = border.left.getValueCalculated();
-		float _borderRight = border.right.getValueCalculated();
-		float _borderTop = border.top.getValueCalculated();
-		float _borderBottom = border.bottom.getValueCalculated();
-
-		if(width.getType() == core::Unit::Auto) {
-			onWidthAuto(_width);
-			_width += _paddingLeft + _paddingRight + _borderLeft + _borderRight;
-		}
-		if(height.getType() == core::Unit::Auto) {
-			onHeightAuto(_height);
-			_height += _paddingTop + _paddingBottom + _borderTop + _borderBottom;
-		}
-				
-		box->size.x = _width;
-		box->outerSize.x = _marginLeft + _marginRight + box->size.x;
-		box->contentSize.x = box->size.x - _paddingLeft - _paddingRight - _borderLeft - _borderRight;
-		box->contentPosition.x = _paddingLeft + _borderLeft;
-
-		box->size.y = _height;
-		box->outerSize.y = _marginTop + _marginBottom + box->size.y;
-		box->contentSize.y = box->size.y - _paddingBottom - _paddingTop - _borderTop - _borderBottom;
-		box->contentPosition.y = _paddingTop + _borderTop;
-	}
-
 private:
 	void pFloat(std::string key, std::string value);
 	void pColor(std::string key, std::string value);
@@ -150,13 +92,19 @@ private:
 		box = b;
 	}
 	
+	void onStack(Stack* stack);
+	
 	void onCss(Css* css);
 
-	void onUnitChanged(core::Unit* u) {
-		recalculateBoxSize();
-	}
+	void onUnitChanged(core::Unit* u);
+	
+	void onParentChanged(Stack* s);
+	
+	void onParentSizeChanged(core::Point p);
 
 	Box* box;
+	Stack* stack;
+	Box* parentBox;
 };
 
 }

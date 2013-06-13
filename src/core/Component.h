@@ -10,6 +10,7 @@
 #include "Utils.h"
 #include "assert.h"
 #include "nano_signal_slot.hpp"
+#include "Unit.h"
 
 namespace boxModel {
 
@@ -25,7 +26,7 @@ protected:
 	Component():components(NULL) {};
 	~Component() {};
 	virtual void setup() {};
-
+	
 private:
 	friend class ComponentContainer;
 	void setup(ComponentContainer* c) {
@@ -85,8 +86,38 @@ public:
 		}
 		return static_cast<ComponentSignalHelper<ComponentType>*>(componentAddedSignals[index])->signal;
 	}
+	
+	void addUnitX(core::Unit* unit){
+		units.push_back(unit);
+		unitsX.push_back(unit);
+	}
+	
+	void addUnitY(core::Unit* unit){
+		units.push_back(unit);
+		unitsY.push_back(unit);
+	}
+	
+	void addUnitGroup(core::UnitGroup* unit){
+		addUnitX(&unit->left);
+		addUnitX(&unit->right);
+		addUnitY(&unit->top);
+		addUnitY(&unit->bottom);
+	}
+	
+	void setUnitContainerSize(float x, float y){
+		for(Unit* u:unitsX){
+			u->setContainerSize(x);
+		}
+		for(Unit* u:unitsY){
+			u->setContainerSize(y);
+		}
+	}
 
-private:
+	private:
+	std::vector<Unit*> units;
+	std::vector<Unit*> unitsX;
+	std::vector<Unit*> unitsY;
+	
 	std::unordered_map<std::type_index, Component*> components;
 	std::unordered_map<std::type_index, ComponentSignalHelperBase*> componentAddedSignals;
 };

@@ -32,7 +32,24 @@ public:
 	}
 
 	/**** BEGIN HIERARCHY FUNCTIONS ****/
+	void addChildren(std::vector<Stack*> children){
+		for(Stack* s: children){
+			addChild(s);
+		}
+	}
+	
+	void addChildren(std::vector<core::ComponentContainer*> compList){
+		for(core::ComponentContainer* comp: compList){
+			if(comp->hasComponent<Stack>()){
+				addChild(comp->getComponent<Stack>());
+			}
+		}
+	}
+	
 	void addChild(Stack* child) {
+		if(child->hasParent()){
+			child->getParent()->removeChild(child);
+		}
 		child->setParent(this);
 		children.push_back(child);
 		childAdded(child);
@@ -80,6 +97,8 @@ public:
 
 	void setParent(Stack* p) {
 		parent = p;
+		if(p != NULL)
+			parentChanged(p);
 	}
 
 	ChildrenList getChildren() {
@@ -98,6 +117,7 @@ public:
 	
 	Nano::signal<void(Stack*)> childAdded;
 	Nano::signal<void(Stack*)> childRemoved;
+	Nano::signal<void(Stack*)> parentChanged;
 	
 private:
 	ChildrenList children;

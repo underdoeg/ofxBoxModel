@@ -77,6 +77,9 @@ public:
 	
 	void addClasses(std::vector<std::string> classNames){
 		classes.insert(classes.end(), classNames.begin(), classNames.end());
+		for(string cl:classes){
+			std::cout << cl << std::endl;
+		}
 	}
 
 	void removeClass(std::string className) {

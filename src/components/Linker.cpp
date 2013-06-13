@@ -22,6 +22,7 @@ void Linker::setup() {
 
 void Linker::onLayouter(Layouter* l) {
 	layouter = l;
+	layouter->overflowed.connect<Linker, &Linker::onOverflow>(this);
 }
 
 void Linker::onSerializer(Serializer* ser) {
@@ -42,7 +43,7 @@ void Linker::onDeserialize(core::VariantList& variants) {
 
 
 void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
-	if(linkToAddress.size()>0) {
+	if(linker == NULL && linkToAddress.size()>0) {
 		if(components->hasComponent<Stack>()) {
 			Stack* stack = components->getComponent<Stack>();
 			stack = stack->getUltimateParent();
@@ -53,6 +54,14 @@ void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
 						linkTo(elements[0]->components->getComponent<Linker>());
 			}
 		}
+	}
+		
+	if(linker == NULL)
+		return;
+	
+	if(linker->components->hasComponent<Stack>()){
+		Stack* linkerStack = linker->components->getComponent<Stack>();
+		linkerStack->addChildren(compList);
 	}
 }
 

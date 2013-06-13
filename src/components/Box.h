@@ -9,6 +9,8 @@ namespace boxModel
 
 namespace components
 {
+	
+class Stack;
 
 class Box : public core::Component
 {
@@ -18,9 +20,9 @@ public:
 	Box(){};
 	~Box(){};
 	
-	void setup(){
-		
-	}
+	void setup();
+	
+	
 	
 	core::Point getGlobalPosition();
 	
@@ -29,6 +31,12 @@ public:
 	core::ValuePoint size;
 	core::ValuePoint contentSize;
 	core::ValuePoint contentPosition;
+	
+private:
+	void onStack(Stack* stack);
+	void onContenSizeChanged(core::Point p);
+	void onChildAdded(Stack* child);
+	Stack* stack;
 };
 
 }

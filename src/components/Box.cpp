@@ -4,6 +4,20 @@
 using namespace boxModel::core;
 using namespace boxModel::components;
 
+void Box::setup(){
+	stack = NULL;
+	
+	contentSize.changed.connect<Box, &Box::onContenSizeChanged>(this);
+	
+	LISTEN_FOR_COMPONENT(Stack, Box, onStack)
+}
+
+void Box::onStack(Stack* s){
+	stack = s;
+	onContenSizeChanged(contentSize);
+	stack->childAdded.connect<Box, &Box::onChildAdded>(this);
+}
+
 Point Box::getGlobalPosition()
 {
 	if(!components->hasComponent<Stack>())
@@ -23,4 +37,18 @@ Point Box::getGlobalPosition()
 		i++;
 	}
 	return pos;
+}
+
+void Box::onContenSizeChanged(core::Point p)
+{
+	if(stack != NULL){
+		for(Stack* child: stack->getChildren()){
+			child->components->setUnitContainerSize(p.x, p.y);
+		}
+	}
+}
+
+void Box::onChildAdded(Stack* child)
+{
+	child->components->setUnitContainerSize(contentSize.x, contentSize.y);
 }
