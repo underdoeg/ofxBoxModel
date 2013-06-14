@@ -145,7 +145,6 @@ private:
 
 	float getValueCalculated(float parentSize) { //helper function, only for internal use
 		if(type == Percent) {
-			std::cout << "MY CONTAINER " << parentSize << " --- " << value*.01*parentSize << std::endl;
 			return value*.01*parentSize;
 		} else if(type == Auto)
 			return 0;

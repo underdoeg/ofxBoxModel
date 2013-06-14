@@ -31,7 +31,6 @@ public:
 	void setup();
 	void recalculateBoxSize();
 
-
 	core::Unit left;
 	core::Unit top;
 	core::Unit bottom;

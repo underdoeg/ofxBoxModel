@@ -43,8 +43,11 @@ void testApp::setup(){
 	*/
 	xmlRoot = Xml::load<ofxBox>(ofToDataPath("tree.xml"));
 	
+	
 	xmlRoot->loadCss(ofToDataPath("style.css"));
 	
+	xmlRoot->layouter.layout();
+
 }
 
 //--------------------------------------------------------------

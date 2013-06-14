@@ -36,6 +36,10 @@ Point Box::getGlobalPosition()
 		stack = stack->getParent();
 		i++;
 	}
+	if(stack != rootStack && stack->components->hasComponent<Box>()){
+		Box* box = stack->components->getComponent<Box>();
+		pos += box->contentPosition;
+	}
 	return pos;
 }
 

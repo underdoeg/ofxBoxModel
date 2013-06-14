@@ -17,7 +17,7 @@ namespace boxModel {
 namespace core {
 
 class ComponentContainer;
-
+	
 class Component {
 public:
 	ComponentContainer* components;
@@ -25,6 +25,8 @@ public:
 protected:
 	Component():components(NULL) {};
 	~Component() {};
+	
+	
 	virtual void setup() {};
 	
 private:

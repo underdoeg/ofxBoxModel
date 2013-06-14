@@ -55,13 +55,17 @@ void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
 			}
 		}
 	}
-		
+
 	if(linker == NULL)
 		return;
-	
-	if(linker->components->hasComponent<Stack>()){
+
+	if(linker->components->hasComponent<Stack>()) {
 		Stack* linkerStack = linker->components->getComponent<Stack>();
 		linkerStack->addChildren(compList);
+		layouter->layout();
+		if(linkerStack->components->hasComponent<Layouter>()){
+			linkerStack->components->getComponent<Layouter>()->layout();
+		}
 	}
 }
 

@@ -120,11 +120,9 @@ void Text::onAutoWidth(float& width){
 }
 
 void Text::onAutoHeight(float& height){
-	cout << "LOOKING FOR AUTO HEIGHT" << endl;
 	if(box == NULL)
 		return;
 	onGetTextBoxHeight(height, this);
-	cout << height << endl;
 }
 
 /******************************************************************************************/
