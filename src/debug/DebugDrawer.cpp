@@ -4,12 +4,9 @@
 #include "components/Style.h"
 #include "components/Text.h"
 
-namespace boxModel {
-
-namespace debug {
-
 using namespace boxModel::core;
 using namespace boxModel::components;
+using namespace boxModel::debug;
 
 DebugDrawer::DebugDrawer() {
 }
@@ -18,7 +15,7 @@ DebugDrawer::~DebugDrawer() {
 }
 
 void DebugDrawer::draw(core::ComponentContainer* container) {
-	
+
 	if(container->hasComponent<Box>()) {
 		Box* box = container->getComponent<Box>();
 		drawBox(box);
@@ -49,21 +46,14 @@ void DebugDrawer::drawText(Box* box, Text* text, Color fg) {
 	Point pos = box->getGlobalPosition() + box->contentPosition;
 	
 	ofSetColor(fg.r,fg.g,fg.b);
-	//ofDrawBitmapString(text->text, pos.x, pos.y);
-
-	/*string fontName = text->fontName.get();
-	if(ofIsStringInString(fontName,".ttf")) pdf.setFont(ofToDataPath(fontName));
-	else pdf.setFont(fontName);
-
-	pdf.setTextAlignment((ofxLibharu::TEXT_ALIGNMENT)text->textAlignment.get());
-	pdf.setFontSize(text->fontSize.getValueCalculated());
-	pdf.setTextLeading(text->leading.getValueCalculated());
-	pdf.setFillColor(fg.r,fg.g,fg.b);
-	pdf.setCharSpacing(text->letterSpacing.getValueCalculated());
-	pdf.setWordSpacing(text->wordSpacing.getValueCalculated());
-
-	pdf.drawTextBox(text->text, pos.x, pos.y, box->contentSize.x,box->contentSize.y);*/
-
+		
+	ofPushMatrix();
+	
+	ofTranslate(pos);
+	
+	text->getTextBlock().draw(&textDrawer);
+	
+	ofPopMatrix();
 }
 
 void DebugDrawer::drawBox(Box* box) {
@@ -131,7 +121,7 @@ void DebugDrawer::drawBox(Box* box) {
 		ofRect(rect.getBottomLeft().x,rect.getBottomLeft().y-borderBottomWidth,rect.width,borderBottomWidth);
 	}
 	ofPopStyle();
-	
+
 	//draw debug lines
 	ofPushStyle();
 
@@ -142,6 +132,50 @@ void DebugDrawer::drawBox(Box* box) {
 	ofPopStyle();
 }
 
+
+/************************ TEXT BLOCK **********************************/
+
+bool TextBlockDrawer::allocateFont(cppFont::Font* font, int fontSize) {
+	int fontSizeToStore = fontSize*2;
+	if(images[font->id].maxFontSize >= fontSizeToStore)
+		return true;
+	cppFont::GlyphList& glyphs = font->getGlyphList(fontSizeToStore);
+	images[font->id].maxFontSize = fontSizeToStore;
+	images[font->id].images.resize(glyphs.size());
+	for(std::vector<cppFont::Glyph>::iterator it = glyphs.begin(); it < glyphs.end(); it++) {
+		cppFont::Glyph& glyph = *it;
+		if(glyph.bitmapWidth > 0 && glyph.bitmapHeight > 0) {
+			ofImage& img = images[font->id].images[glyph.charIndex];
+			//img.setFromPixels(glyph.bitmap, glyph.bitmapWidth, glyph.bitmapHeight, OF_IMAGE_GRAYSCALE);
+			ofPixels pixels;
+			pixels.setFromPixels(glyph.bitmap, glyph.bitmapWidth, glyph.bitmapHeight, OF_IMAGE_GRAYSCALE);
+			img.allocate(glyph.bitmapWidth, glyph.bitmapHeight, OF_IMAGE_COLOR_ALPHA);
+			img.getPixelsRef().setChannel(0, pixels);
+			img.getPixelsRef().setChannel(1, pixels);
+			img.getPixelsRef().setChannel(2, pixels);
+			img.getPixelsRef().setChannel(3, pixels);
+			img.reloadTexture();
+		}
+	}
+	return true;
 }
 
+void TextBlockDrawer::setFont(cppFont::Font* font, int fontSize) {
+	curImages = &images[font->id].images;
 }
+
+void TextBlockDrawer::drawCharacter(cppFont::Letter& letter) {
+	ofImage& img = curImages->at(letter.glyph->charIndex);
+	if(img.isAllocated())
+		img.draw(letter.x, letter.y - letter.glyph->bitmapHeight + letter.glyph->offsetY, letter.glyph->bitmapWidth, letter.glyph->bitmapHeight);
+}
+
+void TextBlockDrawer::drawRect(float x, float y, float width, float height) {
+	ofNoFill();
+	ofRect(x, y, width, height);
+}
+
+void TextBlockDrawer::drawLine(float x, float y, float x2, float y2) {
+	ofLine(x, y, x2, y2);
+}
+

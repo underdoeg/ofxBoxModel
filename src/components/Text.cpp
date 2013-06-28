@@ -7,20 +7,30 @@ namespace boxModel {
 
 namespace components {
 
-Nano::signal<void(float&, Text*)> Text::onGetTextBoxHeight;
-
-
+cppFont::Font Text::defaultFont("/usr/share/fonts/TTF/arial.ttf");
+	
 Text::Text():boxDefinition(NULL) {
+	
 }
 
 Text::~Text() {
 }
 
 void Text::setup() {
+	fontFamily.setFontNormal(&defaultFont);
+	textBlock.setFontFamily(&fontFamily);
+	
+	fontSize.changed.connect<Text, &Text::onFontSizeChanged>(this);
+	leading.changed.connect<Text, &Text::onLeadingChanged>(this);
+	letterSpacing.changed.connect<Text, &Text::onLetterSpacingChanged>(this);
+	wordSpacing.changed.connect<Text, &Text::onWordSpacingChanged>(this);
+	fontName.changed.connect<Text, &Text::onFontNameChanged>(this);
+
+	
 	text = "undefined";
-	fontName = "Times-Roman";
-	fontSize = 5;
-	leading = 6;
+	//fontName = defaultFont.filePath;
+	fontSize = 10;
+	//leading = 6;
 	letterSpacing = 0;
 	wordSpacing = 0;
 	textAlignment = ALIGN_LEFT;
@@ -32,19 +42,21 @@ void Text::setup() {
 	LISTEN_FOR_COMPONENT(Serializer, Text, onSerializer)
 
 	text.changed.connect<Text, &Text::onTextChange>(this);
-	
-	fontSize.changed.connect<Text, &Text::onFontParamChanged>(this);
-	leading.changed.connect<Text, &Text::onFontParamChanged>(this);
-	letterSpacing.changed.connect<Text, &Text::onFontParamChanged>(this);
-	wordSpacing.changed.connect<Text, &Text::onFontParamChanged>(this);
 }
 
 void Text::onBox(Box* b){
 	box = b;
+	box->contentSize.x.changed.connect<Text, &Text::onWidthChanged>(this);
+	onWidthChanged(box->contentSize.x);
+	box->contentSize.x.changed.connect<Text, &Text::onHeightChanged>(this);
+	onHeightChanged(box->contentSize.y);
 }
 
 void Text::onCss(Css* css){
 	css->addCssParserFunction<Text, &Text::pCssFontName>("font-name", this);
+	css->addCssParserFunction<Text, &Text::pCssFontName>("font-family", this);
+	css->addCssParserFunction<Text, &Text::pCssFontName>("font", this);
+	
 	css->addCssParserFunction<Text, &Text::pCssFontSize>("font-size", this);
 	css->addCssParserFunction<Text, &Text::pCssLeading>("line-height", this);
 	css->addCssParserFunction<Text, &Text::pCssLeading>("leading", this);
@@ -58,6 +70,7 @@ void Text::onTextChange(string _text){
 	if(textTransform==TEXT_NONE) text = _text;
 	if(textTransform==TEXT_LOWERCASE) text = stringToLower(_text);
 	if(textTransform==TEXT_UPPERCASE) text = stringToUpper(_text);
+	textBlock.setText(text);
 	if(boxDefinition != NULL){
 		boxDefinition->recalculateBoxSize();
 	}
@@ -65,10 +78,6 @@ void Text::onTextChange(string _text){
 
 void Text::onFontParamChanged(Unit* u)
 {
-	if(boxDefinition == NULL)
-		return;
-	if(boxDefinition->height == Unit::Auto)
-		boxDefinition->recalculateBoxSize();
 }
 
 void Text::onBoxDefinition(BoxDefinition* bd){
@@ -79,22 +88,28 @@ void Text::onBoxDefinition(BoxDefinition* bd){
 
 void Text::pCssFontName(std::string key, std::string value){
 	fontName = value;
+	//fontFamily.loadNormal(ofToDataPath(fontName));
+	//if(boxDefinition != NULL)boxDefinition->recalculateBoxSize();
 }
 
 void Text::pCssFontSize(std::string key, std::string value){
 	fontSize = core::Unit::parseCssNumber(value);
+	//if(boxDefinition != NULL)boxDefinition->recalculateBoxSize();
 }
 
 void Text::pCssLeading(std::string key, std::string value){
 	leading = core::Unit::parseCssNumber(value);
+	//if(boxDefinition != NULL)boxDefinition->recalculateBoxSize();
 }
 
 void Text::pCssLetterSpacing(std::string key, std::string value){
 	letterSpacing = core::Unit::parseCssNumber(value);
+	//if(boxDefinition != NULL)boxDefinition->recalculateBoxSize();
 }
 
 void Text::pCssWordSpacing(std::string key, std::string value){
 	wordSpacing = core::Unit::parseCssNumber(value);
+	//if(boxDefinition != NULL)boxDefinition->recalculateBoxSize();
 }
 
 void Text::pCssTextAlignment(std::string key, std::string value){
@@ -115,14 +130,78 @@ void Text::pCssTextTransform(std::string key, std::string value){
 	onTextChange(text);
 }
 
+void Text::onHeightChanged(float height)
+{
+	if(boxDefinition != NULL){
+		if(boxDefinition->height == Unit::Auto){
+			textBlock.setHeightAuto(true);
+		}
+		if(boxDefinition->width == Unit::Auto){
+			textBlock.setWidthAuto(true);
+			return;
+		}
+	}
+	textBlock.setHeight(height);
+}
+
+void Text::onWidthChanged(float width)
+{
+	if(boxDefinition != NULL){
+		if(boxDefinition->width == Unit::Auto){
+			textBlock.setWidthAuto(true);
+		}
+		if(boxDefinition->height == Unit::Auto){
+			textBlock.setHeightAuto(true);
+			return;
+		}
+	}
+	textBlock.setWidth(width);
+}
+
+void Text::onFontSizeChanged(core::Unit* u)
+{
+	textBlock.setFontSize(u->getValueCalculated());
+	if(boxDefinition != NULL){
+		boxDefinition->recalculateBoxSize();
+	}
+}
+
+void Text::onLeadingChanged(core::Unit* u)
+{
+	textBlock.setLeading(u->getValueCalculated());
+	if(boxDefinition != NULL){
+		boxDefinition->recalculateBoxSize();
+	}
+}
+
+void Text::onLetterSpacingChanged(core::Unit* u)
+{
+	textBlock.setLetterSpacing(u->getValueCalculated());
+	if(boxDefinition != NULL){
+		boxDefinition->recalculateBoxSize();
+	}
+}
+
+void Text::onWordSpacingChanged(core::Unit* u)
+{
+	textBlock.setWordSpacing(u->getValueCalculated());
+	if(boxDefinition != NULL){
+		boxDefinition->recalculateBoxSize();
+	}
+}
+
+void Text::onFontNameChanged(std::string fontName)
+{
+	fontFamily.loadNormal(ofToDataPath(fontName));
+	textBlock.setDirty();
+}
+
 void Text::onAutoWidth(float& width){
-	
+	width = textBlock.getWidth();
 }
 
 void Text::onAutoHeight(float& height){
-	if(box == NULL)
-		return;
-	onGetTextBoxHeight(height, this);
+	height = textBlock.getHeight();
 }
 
 /******************************************************************************************/
@@ -142,7 +221,14 @@ void Text::onDeserialize(core::VariantList& variants) {
 	}
 }
 
+cppFont::TextBlock& Text::getTextBlock()
+{
+	return textBlock;
+}
+
 } //end namespace
 
 }
+
+
 

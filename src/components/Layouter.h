@@ -30,23 +30,14 @@ protected:
 
 private:
 	void triggerLayout();
-
 	void onContentSizeChanged(core::Point p);
-
 	void onChildRemoved(Stack* child);
-
 	void onChildAdded(Stack* child);
-
 	void onChildFloatingChanged(Floating floating);
-
 	void onChildSizeChanged(core::Point p);
-
 	void onChildPositioningChanged(Position p);
-
 	void onChildUnitChanged(core::Unit* unit);
-
 	void onAutoWidth(float& width);
-
 	void onAutoHeight(float& height);
 
 	core::Point maxContentSize;

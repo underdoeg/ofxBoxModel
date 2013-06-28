@@ -6,6 +6,7 @@
 #include "BoxDefinition.h"
 #include "Serializer.h"
 #include "Utils.h"
+#include "TextBlock.h"
 
 namespace boxModel
 {
@@ -35,6 +36,7 @@ public:
 	void onBoxDefinition(BoxDefinition* boxDef);
 	void onCss(Css* css);
 	void onBox(Box* box);
+	cppFont::TextBlock& getTextBlock();
 	
 	core::Value<std::string> text;
 
@@ -60,7 +62,7 @@ public:
 	core::Value<TEXT_ALIGNMENT> textAlignment;
 	core::Value<TEXT_TRANSFORM> textTransform;
 	
-	static Nano::signal<void(float&, Text*)> onGetTextBoxHeight;
+	//static Nano::signal<void(float&, Text*)> onGetTextBoxHeight;
 	
 private:
 	void pCssFontName(std::string key, std::string value);
@@ -82,10 +84,23 @@ private:
 	
 	void onFontParamChanged(core::Unit* u);
 
+	void onFontSizeChanged(core::Unit* u);
+	void onLeadingChanged(core::Unit* u);
+	void onWordSpacingChanged(core::Unit* u);
+	void onLetterSpacingChanged(core::Unit* u);
+
 	void onAutoWidth(float& width);
 	void onAutoHeight(float& height);
+	void onWidthChanged(float width);
+	void onHeightChanged(float height);
+	void onFontNameChanged(std::string fontName);
+	
 	Box* box;
 	BoxDefinition* boxDefinition;
+	cppFont::TextBlock textBlock;
+	cppFont::FontFamily fontFamily;
+	
+	static cppFont::Font defaultFont;
 };
 
 }

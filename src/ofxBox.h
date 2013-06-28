@@ -14,24 +14,22 @@
 #include "components/Serializer.h"
 #include "components/Linker.h"
 
-using namespace boxModel::core;
-using namespace boxModel::components;
-
-
-class ofxBox: public Composite, public Addressable, public Stack, public Box, public BoxDefinition, public Style, public Css, public Serializer, public Linker
+class ofxBox: public boxModel::core::Composite, public boxModel::components::Addressable, public boxModel::components::Stack,
+	public boxModel::components::Box, public boxModel::components::BoxDefinition, public boxModel::components::Style, 
+	public boxModel::components::Css, public boxModel::components::Serializer, public boxModel::components::Linker
 {
 public:
 	ofxBox()
 	{
-		addComponent<Box>(this);
-		addComponent<BoxDefinition>(this);
-		addComponent<Stack>(this);
-		addComponent<Addressable>(this);
-		addComponent<Layouter>(&layouter);
-		addComponent<Style>(this);
-		addComponent<Css>(this);
-		addComponent<Serializer>(this);
-		addComponent<Linker>(this);
+		addComponent<boxModel::components::Box>(this);
+		addComponent<boxModel::components::BoxDefinition>(this);
+		addComponent<boxModel::components::Stack>(this);
+		addComponent<boxModel::components::Addressable>(this);
+		addComponent<boxModel::components::Layouter>(&layouter);
+		addComponent<boxModel::components::Style>(this);
+		addComponent<boxModel::components::Css>(this);
+		addComponent<boxModel::components::Serializer>(this);
+		addComponent<boxModel::components::Linker>(this);
 		//Instancer::addInstancer<ofxBox>(getType());
 	}
 	
@@ -43,7 +41,7 @@ public:
 		return "box";
 	}
 	
-	Layouter layouter;
+	boxModel::components::Layouter layouter;
 };
 
 #endif // OFXBOX_H

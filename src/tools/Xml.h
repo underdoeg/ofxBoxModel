@@ -33,6 +33,26 @@ public:
 
 		return root;
 	}
+	
+	static void loadInto(core::Composite* root, std::string path){
+		pugi::xml_document doc;
+		pugi::xml_parse_result result = doc.load_file(path.c_str());
+		if(result.status != pugi::status_ok) {
+			debug::error("could not load "+path);
+			return;
+		}
+		
+		if(root->hasComponent<components::Stack>()) {
+			boxModel::components::Stack* rootStack = root->getComponent<boxModel::components::Stack>();
+			for (pugi::xml_node_iterator it = doc.begin(); it != doc.end(); ++it) {
+				core::Composite* child = parseXmlNode(*it);
+				if(child->hasComponent<components::Stack>()){
+					rootStack->addChild(child->getComponent<components::Stack>());
+				}
+			}
+		}
+	}
+	
 private:
 	static core::Composite* parseXmlNode(pugi::xml_node node) {
 		core::Composite* ret = tools::Instancer::createInstance(node.name());
