@@ -1,4 +1,5 @@
 #include "Text.h"
+#include "Globals.h"
 
 using namespace boxModel::core; 
 using namespace std;
@@ -88,28 +89,22 @@ void Text::onBoxDefinition(BoxDefinition* bd){
 
 void Text::pCssFontName(std::string key, std::string value){
 	fontName = value;
-	//fontFamily.loadNormal(ofToDataPath(fontName));
-	//if(boxDefinition != NULL)boxDefinition->recalculateBoxSize();
 }
 
 void Text::pCssFontSize(std::string key, std::string value){
 	fontSize = core::Unit::parseCssNumber(value);
-	//if(boxDefinition != NULL)boxDefinition->recalculateBoxSize();
 }
 
 void Text::pCssLeading(std::string key, std::string value){
 	leading = core::Unit::parseCssNumber(value);
-	//if(boxDefinition != NULL)boxDefinition->recalculateBoxSize();
 }
 
 void Text::pCssLetterSpacing(std::string key, std::string value){
 	letterSpacing = core::Unit::parseCssNumber(value);
-	//if(boxDefinition != NULL)boxDefinition->recalculateBoxSize();
 }
 
 void Text::pCssWordSpacing(std::string key, std::string value){
 	wordSpacing = core::Unit::parseCssNumber(value);
-	//if(boxDefinition != NULL)boxDefinition->recalculateBoxSize();
 }
 
 void Text::pCssTextAlignment(std::string key, std::string value){
@@ -133,11 +128,11 @@ void Text::pCssTextTransform(std::string key, std::string value){
 void Text::onHeightChanged(float height)
 {
 	if(boxDefinition != NULL){
-		if(boxDefinition->height == Unit::Auto){
-			textBlock.setHeightAuto(true);
-		}
 		if(boxDefinition->width == Unit::Auto){
 			textBlock.setWidthAuto(true);
+		}
+		if(boxDefinition->height == Unit::Auto){
+			textBlock.setHeightAuto(true);
 			return;
 		}
 	}
@@ -147,11 +142,12 @@ void Text::onHeightChanged(float height)
 void Text::onWidthChanged(float width)
 {
 	if(boxDefinition != NULL){
-		if(boxDefinition->width == Unit::Auto){
-			textBlock.setWidthAuto(true);
-		}
 		if(boxDefinition->height == Unit::Auto){
 			textBlock.setHeightAuto(true);
+			
+		}
+		if(boxDefinition->width == Unit::Auto){
+			textBlock.setWidthAuto(true);
 			return;
 		}
 	}
@@ -192,7 +188,7 @@ void Text::onWordSpacingChanged(core::Unit* u)
 
 void Text::onFontNameChanged(std::string fontName)
 {
-	fontFamily.loadNormal(ofToDataPath(fontName));
+	fontFamily.loadNormal(Globals::get().dataRoot+fontName);
 	textBlock.setDirty();
 }
 

@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include "Unit.h"
 #include "Addressable.h"
+#include "Stack.h"
 #include <functional>
 
 namespace boxModel {
@@ -53,6 +54,9 @@ private:
 	void onSerializer(Serializer* ser);
 	void onSerialize(core::VariantList& variants);
 	void onDeserialize(core::VariantList& variants);
+
+	void onStack(Stack* stack);
+	void onChildAdded(Stack* stack);
 	
 	std::map<std::string, std::vector<CssProperty> > properties;
 	std::vector<std::string> propertiesOrder;

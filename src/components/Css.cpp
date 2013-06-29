@@ -9,6 +9,7 @@ using namespace std;
 
 void Css::setup() {
 	LISTEN_FOR_COMPONENT(Serializer, Css, onSerializer)
+	LISTEN_FOR_COMPONENT(Stack, Css, onStack)
 }
 
 void Css::loadCss(std::string path) {
@@ -143,6 +144,23 @@ void Css::addCssParserFunction(std::string key, std::function<void(std::string, 
 	parserFunctions[key] = func;
 }
 
+//**************** STACK
+void Css::onStack(Stack* stack) {
+	stack->childAdded.connect<Css, &Css::onChildAdded>(this);
+}
+
+void Css::onChildAdded(Stack* stack){
+	applyCss(); //TODO: this will overwrite manually set styles
+	Stack* parent = stack;
+	while(parent->hasParent()){
+		parent = parent->getParent();
+		if(parent->components->hasComponent<Css>()){
+			parent->components->getComponent<Css>()->applyCss();
+		}
+	}
+}
+
+//**************** SERIALIZER
 void Css::onSerializer(Serializer* ser) {
 	ser->deserialized.connect<Css, &Css::onDeserialize>(this);
 	ser->serialized.connect<Css, &Css::onSerialize>(this);

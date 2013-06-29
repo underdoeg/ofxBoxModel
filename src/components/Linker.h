@@ -14,14 +14,19 @@ public:
 	~Linker();
 	void setup();
 	void linkTo(Linker* linker);
+	Linker* getLinkTo();
 	Nano::signal<void(Linker* linker)> linkedTo;
+	
+	
 private:
+	void updateLinkTo();
+
 	void onLayouter(Layouter* layouter);
 	void onSerializer(Serializer* s);
 	void onSerialize(core::VariantList& variants);
 	void onDeserialize(core::VariantList& variants);
 	
-	void onOverflow(std::vector<core::ComponentContainer*>);
+	void onOverflow(std::vector<core::ComponentContainer*> components);
 	
 	Linker* linker;
 	Layouter* layouter;

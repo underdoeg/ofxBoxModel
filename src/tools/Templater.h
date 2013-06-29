@@ -3,6 +3,7 @@
 
 #include "core/Component.h"
 #include "Composite.h"
+#include "Linker.h"
 
 namespace boxModel
 {
@@ -16,9 +17,17 @@ public:
 	Templater();
 	~Templater();
 	void setTemplate(std::string path);
-	core::Composite* loadContent(std::string path, std::string id);	
+	std::vector<core::Composite*> loadContent(std::string path, std::string id);	
 private:
+	core::Composite* loadContent(std::vector<core::Composite*> elements, std::string id);
+	
+	void onOverflow(std::vector<core::ComponentContainer*> compList);
+	void onLinkTo();
 	std::string templatePath;	
+	core::Composite* curRoot;
+	components::Linker* lastLinker;
+	std::vector<core::Composite*> tempRet;
+	std::string curId;
 };
 
 }

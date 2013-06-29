@@ -28,7 +28,6 @@ public:
 		addComponent<boxModel::components::Css>(this);
 		addComponent<boxModel::components::Serializer>(this);
 		addComponent<boxModel::components::Linker>(this);
-		//Instancer::addInstancer<ofxBox>(getType());
 	}
 	
 	~ofxBox()

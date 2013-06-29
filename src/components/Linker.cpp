@@ -41,8 +41,8 @@ void Linker::onDeserialize(core::VariantList& variants) {
 	}
 }
 
-
-void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
+void Linker::updateLinkTo()
+{
 	if(linker == NULL && linkToAddress.size()>0) {
 		if(components->hasComponent<Stack>()) {
 			Stack* stack = components->getComponent<Stack>();
@@ -55,10 +55,17 @@ void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
 			}
 		}
 	}
+}
+
+
+void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
+	updateLinkTo();
 
 	if(linker == NULL)
 		return;
-
+	
+	linkedTo(linker);
+	
 	if(linker->components->hasComponent<Stack>()) {
 		Stack* linkerStack = linker->components->getComponent<Stack>();
 		linkerStack->addChildren(compList);
@@ -71,9 +78,15 @@ void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
 
 void Linker::linkTo(Linker* l) {
 	linker = l;
-	linkedTo(linker);
 }
+
+Linker* Linker::getLinkTo()
+{
+	updateLinkTo();
+	return linker;
+}
+
+} //end namespace
 
 }
 
-}

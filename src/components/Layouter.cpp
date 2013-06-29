@@ -88,7 +88,6 @@ void Layouter::placeBox(Box* childBox) {
 	if(childBoxDef->positioning == Relative) {
 		switch(childBoxDef->floating) {
 		case Floating::FloatLeft:
-		cout << childBox->outerSize.x << " - " << box->contentSize.x << endl;
 			if(curPosition.x + childBox->outerSize.x > box->contentSize.x) {
 				curPosition.x = box->contentPosition.x;
 				curPosition.y += rowMaxHeight;
@@ -227,4 +226,8 @@ void Layouter::onAutoHeight(float& height) {
 	}
 	if(maxH>height)
 		height = maxH;
+}
+void Layouter::onFlush()
+{
+	layout();
 }

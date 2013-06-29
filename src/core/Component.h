@@ -21,11 +21,12 @@ class ComponentContainer;
 class Component {
 public:
 	ComponentContainer* components;
+	
+	virtual void onFlush() {};
 
 protected:
 	Component():components(NULL) {};
 	~Component() {};
-	
 	
 	virtual void setup() {};
 	
@@ -51,14 +52,25 @@ private:
 	public:
 		Nano::signal<void(ComponentType*)> signal;
 	};
+	
+	virtual void flush(){};
 
 public:
 	typedef std::unordered_map<std::type_index, Component*> ComponentMap;
-
+	
+	unsigned int getNumComponents(){
+		return componentList.size();
+	}
+	
+	Component* getComponent(unsigned int index){
+		return componentList[index];
+	}
+	
 	template <class ComponentType>
 	void addComponent(ComponentType* component) {
 		std::type_index index = typeid(ComponentType);
 		components[index] = component;
+		componentList.push_back(component);
 		((Component*)component)->setup(this);
 		//dispatch the component added event if we have listeners
 		if(componentAddedSignals.find(index) != componentAddedSignals.end()){
@@ -122,6 +134,7 @@ public:
 	
 	std::unordered_map<std::type_index, Component*> components;
 	std::unordered_map<std::type_index, ComponentSignalHelperBase*> componentAddedSignals;
+	std::vector<Component*> componentList;
 };
 
 //the following is a macro that helps with listening to Component addition, ONLY USE WITHIN SETUP OF A COMPONENT

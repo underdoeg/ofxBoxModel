@@ -32,26 +32,34 @@ public:
 		}
 		core::Composite* root = NULL;
 		root = parseXmlNode(doc.first_child());
-
+		
 		return root;
 	}
-
-	static void loadInto(core::Composite* root, std::string path) {
+	
+	static std::vector<core::Composite*> loadAsVector(std::string path){
+		std::vector<core::Composite*> ret;
 		pugi::xml_document doc;
 		path = core::Globals::get().dataRoot+path;
 		pugi::xml_parse_result result = doc.load_file(path.c_str());
 		if(result.status != pugi::status_ok) {
 			debug::error("could not load "+path);
-			return;
+			return ret;
 		}
+		
+		for (pugi::xml_node_iterator it = doc.begin(); it != doc.end(); ++it) {
+			core::Composite* child = parseXmlNode(*it);
+			ret.push_back(child);
+		}
+		return ret;
+	}
 
-		if(root->hasComponent<components::Stack>()) {
-			boxModel::components::Stack* rootStack = root->getComponent<boxModel::components::Stack>();
-			for (pugi::xml_node_iterator it = doc.begin(); it != doc.end(); ++it) {
-				core::Composite* child = parseXmlNode(*it);
-				if(child->hasComponent<components::Stack>()) {
-					rootStack->addChild(child->getComponent<components::Stack>());
-				}
+	static void loadInto(core::Composite* root, std::string path) {
+		std::vector<core::Composite*> composites = loadAsVector(path);
+		
+		boxModel::components::Stack* rootStack = root->getComponent<boxModel::components::Stack>();
+		for (core::Composite* comp: composites) {
+			if(comp->hasComponent<components::Stack>()) {
+				rootStack->addChild(comp);
 			}
 		}
 	}

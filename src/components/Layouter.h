@@ -24,7 +24,9 @@ public:
 	virtual void layout(bool layoutChildren=true);
 
 	Nano::signal<void(std::vector<core::ComponentContainer*>)> overflowed;
-
+	
+	void onFlush();
+	
 protected:
 	virtual void placeBox(Box* childBox);
 

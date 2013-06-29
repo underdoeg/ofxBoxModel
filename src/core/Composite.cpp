@@ -1,20 +1,20 @@
 #include "Composite.h"
 
-namespace boxModel
-{
+using namespace boxModel::core;
 
-namespace core
-{
-
-
-Composite::Composite()
-{
-		addComponent<boxModel::components::Stack>(this);
-		addComponent<boxModel::components::Addressable>(this);
+Composite::Composite() {
+	addComponent<boxModel::components::Stack>(this);
+	addComponent<boxModel::components::Addressable>(this);
 }
 
-
+void Composite::flush() {
+	for(unsigned int i = 0; i < getNumChildren(); i++){
+		Composite* child = getChild<Composite>(i);
+		if(child != NULL)
+			child->flush();
+	}
+	
+	for(unsigned int i = 0; i < getNumComponents(); i++){
+		getComponent(i)->onFlush();
+	}
 }
-
-}
-

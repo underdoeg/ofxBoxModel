@@ -13,11 +13,14 @@ BoxDefinition::BoxDefinition() {
 	width = 100;
 	stack = NULL;
 	parentBox = NULL;
+	autoWidth = 0;
+	autoHeight = 0;
 }
 BoxDefinition::~BoxDefinition() {
 }
 
 void BoxDefinition::setup() {
+	isDirty = false;
 	box = NULL;
 	LISTEN_FOR_COMPONENT(Box, BoxDefinition, onBox)
 	LISTEN_FOR_COMPONENT(Css, BoxDefinition, onCss)
@@ -66,6 +69,10 @@ void BoxDefinition::onUnitChanged(core::Unit* u) {
 }
 
 void BoxDefinition::recalculateBoxSize() {
+	isDirty = true;
+	if(!isDirty)
+		return;
+		
 	if(box == NULL)
 		return;
 
@@ -88,17 +95,17 @@ void BoxDefinition::recalculateBoxSize() {
 	float _borderBottom = border.bottom.getValueCalculated();
 
 	if(width.getType() == core::Unit::Auto) {
-		onWidthAuto(_width);
+		_width = autoWidth;
 		_width += _paddingLeft + _paddingRight + _borderLeft + _borderRight;
 	}
-
+	
 	box->size.x = _width;
 	box->outerSize.x = _marginLeft + _marginRight + box->size.x;
 	box->contentSize.x = box->size.x - _paddingLeft - _paddingRight - _borderLeft - _borderRight;
 	box->contentPosition.x = _paddingLeft + _borderLeft;
 
 	if(height.getType() == core::Unit::Auto) {
-		onHeightAuto(_height);
+		_height = autoHeight;
 		_height += _paddingTop + _paddingBottom + _borderTop + _borderBottom;
 	}
 
@@ -108,6 +115,17 @@ void BoxDefinition::recalculateBoxSize() {
 	box->contentPosition.y = _paddingTop + _borderTop;
 }
 
+void boxModel::components::BoxDefinition::onFlush()
+{
+	if(width.getType() == core::Unit::Auto) {
+		onWidthAuto(autoWidth);
+	}
+	
+	if(height.getType() == core::Unit::Auto) {
+		onHeightAuto(autoHeight);
+	}
+	recalculateBoxSize();
+}
 
 /************************ PARSER FUNCTIONS *******************************/
 
@@ -259,4 +277,3 @@ void BoxDefinition::pBorderTop(std::string key, std::string value) {
 void BoxDefinition::pBorderBottom(std::string key, std::string value) {
 	border.bottom = Unit::parseCssNumber(value);
 }
-

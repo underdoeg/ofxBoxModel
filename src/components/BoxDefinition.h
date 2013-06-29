@@ -49,6 +49,8 @@ public:
 	Nano::signal<void(float&)> onWidthAuto;
 	Nano::signal<void(float&)> onHeightAuto;
 	
+	void onFlush();
+	
 	static core::Unit parseCssNumber(std::string val);
 	static std::vector<core::Unit> parseCssNumberBlock(std::string val);
 	static Floating parseCssFloating(std::string val);
@@ -104,6 +106,10 @@ private:
 	Box* box;
 	Stack* stack;
 	Box* parentBox;
+	
+	bool isDirty;
+	float autoWidth;
+	float autoHeight;
 };
 
 }

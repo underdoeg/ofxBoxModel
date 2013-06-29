@@ -65,7 +65,7 @@ public:
 		return getChild(index);
 	}
 
-	int getNumChildren() {
+	unsigned int getNumChildren() {
 		return children.size();
 	}
 
