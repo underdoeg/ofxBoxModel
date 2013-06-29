@@ -50,6 +50,7 @@ To* castTo(From* from, bool typecheck = true){
 /****************************************************************************/
 /* STRING STUFF																*/
 /****************************************************************************/
+std::string stringLoadFromFile(std::string filePath);
 std::string floatToString(float number);
 std::string stringTrim(std::string s);
 std::vector<std::string> stringSplit(const std::string &in, char delimiter = ' ');

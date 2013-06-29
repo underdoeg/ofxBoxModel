@@ -14,7 +14,7 @@
 #include "components/Serializer.h"
 #include "components/Linker.h"
 
-class ofxBox: public boxModel::core::Composite, public boxModel::components::Addressable, public boxModel::components::Stack,
+class ofxBox: public boxModel::core::Composite,
 	public boxModel::components::Box, public boxModel::components::BoxDefinition, public boxModel::components::Style, 
 	public boxModel::components::Css, public boxModel::components::Serializer, public boxModel::components::Linker
 {
@@ -23,8 +23,6 @@ public:
 	{
 		addComponent<boxModel::components::Box>(this);
 		addComponent<boxModel::components::BoxDefinition>(this);
-		addComponent<boxModel::components::Stack>(this);
-		addComponent<boxModel::components::Addressable>(this);
 		addComponent<boxModel::components::Layouter>(&layouter);
 		addComponent<boxModel::components::Style>(this);
 		addComponent<boxModel::components::Css>(this);

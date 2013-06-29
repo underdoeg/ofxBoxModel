@@ -6,6 +6,7 @@
 #include "tools/Instancer.h"
 #include "components/Stack.h"
 #include "components/Serializer.h"
+#include "core/Globals.h"
 
 namespace boxModel {
 
@@ -23,6 +24,7 @@ public:
 
 	static core::Composite* load(std::string path) {
 		pugi::xml_document doc;
+		path = core::Globals::get().dataRoot+path;
 		pugi::xml_parse_result result = doc.load_file(path.c_str());
 		if(result.status != pugi::status_ok) {
 			debug::error("could not load "+path);
@@ -33,26 +35,27 @@ public:
 
 		return root;
 	}
-	
-	static void loadInto(core::Composite* root, std::string path){
+
+	static void loadInto(core::Composite* root, std::string path) {
 		pugi::xml_document doc;
+		path = core::Globals::get().dataRoot+path;
 		pugi::xml_parse_result result = doc.load_file(path.c_str());
 		if(result.status != pugi::status_ok) {
 			debug::error("could not load "+path);
 			return;
 		}
-		
+
 		if(root->hasComponent<components::Stack>()) {
 			boxModel::components::Stack* rootStack = root->getComponent<boxModel::components::Stack>();
 			for (pugi::xml_node_iterator it = doc.begin(); it != doc.end(); ++it) {
 				core::Composite* child = parseXmlNode(*it);
-				if(child->hasComponent<components::Stack>()){
+				if(child->hasComponent<components::Stack>()) {
 					rootStack->addChild(child->getComponent<components::Stack>());
 				}
 			}
 		}
 	}
-	
+
 private:
 	static core::Composite* parseXmlNode(pugi::xml_node node) {
 		core::Composite* ret = tools::Instancer::createInstance(node.name());
@@ -81,7 +84,7 @@ private:
 				}
 			}
 		}
-		
+
 		return ret;
 	}
 };

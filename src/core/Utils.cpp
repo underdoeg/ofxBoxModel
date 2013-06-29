@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <algorithm>
+#include <fstream>
 
 namespace boxModel {
 
@@ -9,10 +10,25 @@ namespace core {
 
 using namespace std;
 
-std::string floatToString(float number){
-      std::ostringstream buff;
-      buff<<number;
-      return buff.str();
+std::string stringLoadFromFile(std::string filePath) {
+	std::string ret;
+	std::string line;
+	std::ifstream file (filePath);
+	if (file.is_open()) {
+		while ( file.good() ) {
+			getline (file,line);
+			ret += line;
+		}
+		file.close();
+	}
+	else debug::error("Unable to open file: "+filePath);
+	return ret;
+}
+
+std::string floatToString(float number) {
+	std::ostringstream buff;
+	buff<<number;
+	return buff.str();
 }
 
 // trim from start
@@ -66,12 +82,12 @@ vector <string> stringSplit(const string & source, const string & delimiter) {
 }
 
 std::string stringReplace(std::string s, std::string toReplace, std::string replaceWith) {
-    size_t pos = 0;
-    while ((pos = s.find(toReplace, pos)) != std::string::npos) {
-         s.replace(pos, toReplace.length(), replaceWith);
-         pos += replaceWith.length();
-    }
-    return s;
+	size_t pos = 0;
+	while ((pos = s.find(toReplace, pos)) != std::string::npos) {
+		s.replace(pos, toReplace.length(), replaceWith);
+		pos += replaceWith.length();
+	}
+	return s;
 }
 
 std::string stringRemoveLineBreaks(std::string s) {
@@ -94,18 +110,15 @@ float stringToFloat(std::string s) {
 	return ::atof(s.c_str());
 }
 
-bool stringContains(std::string s, std::string find)
-{
+bool stringContains(std::string s, std::string find) {
 	return s.find(find) != std::string::npos;
 }
 
-int stringToInt(std::string s)
-{
+int stringToInt(std::string s) {
 	return atoi(s.c_str());
 }
 
-std::string intToHexString(int i)
-{
+std::string intToHexString(int i) {
 	if(i == 0)
 		return "00";
 	std::stringstream str;

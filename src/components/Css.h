@@ -50,7 +50,10 @@ protected:
 	void applyCss();
 
 private:
-
+	void onSerializer(Serializer* ser);
+	void onSerialize(core::VariantList& variants);
+	void onDeserialize(core::VariantList& variants);
+	
 	std::map<std::string, std::vector<CssProperty> > properties;
 	std::vector<std::string> propertiesOrder;
 	std::unordered_map<std::string, std::function<void(std::string, std::string)> > parserFunctions;

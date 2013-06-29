@@ -1,26 +1,18 @@
 #include "Css.h"
 #include <fstream>
 #include <streambuf>
+#include "Globals.h"
 
 using namespace boxModel::components;
 using namespace boxModel::core;
 using namespace std;
 
 void Css::setup() {
+	LISTEN_FOR_COMPONENT(Serializer, Css, onSerializer)
 }
 
 void Css::loadCss(std::string path) {
-	std::ifstream t(path);
-	std::string str;
-
-	t.seekg(0, std::ios::end);
-	str.reserve(t.tellg());
-	t.seekg(0, std::ios::beg);
-
-	str.assign((std::istreambuf_iterator<char>(t)),
-	           std::istreambuf_iterator<char>());
-
-	setCss(str);
+	setCss(stringLoadFromFile(Globals::get().dataRoot+path));
 }
 
 void Css::setCss(std::string cssDefinition) {
@@ -151,73 +143,17 @@ void Css::addCssParserFunction(std::string key, std::function<void(std::string, 
 	parserFunctions[key] = func;
 }
 
-/*
-Color Css::parseColor(std::string val) {
-	int r,g,b,a;
-	r = g = b = 0;
-	a = 255;
-	//convert hex color with #
-	if(stringContains(val, "#")) {
-		val = stringTrim(stringReplace(val, "#", ""));
-		if(val.size() == 2) {
-			std::string valNew;
-			valNew+=val[0];
-			valNew+=val[1];
-			valNew+=val[0];
-			valNew+=val[1];
-			valNew+=val[0];
-			valNew+=val[1];
-			val = valNew;
-		} else if(val.size() == 3) { //check for color short codes
-			std::string valNew;
-			valNew+=val[0];
-			valNew+=val[0];
-			valNew+=val[1];
-			valNew+=val[1];
-			valNew+=val[2];
-			valNew+=val[2];
-			val = valNew;
-		} else if(val.size() == 4) { //check for color short codes
-			std::string valNew;
-			valNew+=val[0];
-			valNew+=val[0];
-			valNew+=val[1];
-			valNew+=val[1];
-			valNew+=val[2];
-			valNew+=val[2];
-			valNew+=val[3];
-			valNew+=val[3];
-			val = valNew;
-		}
-		long int number = (int)strtol(val.c_str(), NULL, 16);
-		if(val.size() == 6) {
-			r = ((number >> 16) & 0xFF);
-			g = ((number >> 8) & 0xFF);
-			b = ((number) & 0xFF);
-			a = 255;
-		} else if(val.size() == 8) {
-			r = ((number >> 24) & 0xFF);
-			g = ((number >> 16) & 0xFF);
-			b = ((number >> 8) & 0xFF);
-			a = ((number) & 0xFF);
-		}
-		return Color(r, g, b, a);
-	} else if(stringContains(val, "rgb")) { //for rgb & rgba
-		std::vector<std::string> rgbAndNums = stringSplit(val, '(');
-		if(rgbAndNums.size()>1) {
-			std::vector<std::string> cols = stringSplit(stringReplace(rgbAndNums[1], ")", ""), ',');
-			if(cols.size()>0)
-				r = stringToInt(cols[0]);
-			if(cols.size()>1)
-				g = stringToInt(cols[1]);
-			if(cols.size()>2)
-				b = stringToInt(cols[2]);
-			if(cols.size()>3)
-				a = stringToInt(cols[3]);
-		} else {
-			debug::warning("css could not parse color "+val);
-		}
-	}
-	return Color(r, g, b, a);
+void Css::onSerializer(Serializer* ser) {
+	ser->deserialized.connect<Css, &Css::onDeserialize>(this);
+	ser->serialized.connect<Css, &Css::onSerialize>(this);
 }
-*/
+
+void Css::onSerialize(core::VariantList& variants) {
+	
+}
+
+void Css::onDeserialize(core::VariantList& variants) {
+	if(variants.hasKey("css")) {
+		loadCss(variants.get("css"));
+	}
+}
