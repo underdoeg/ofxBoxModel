@@ -58,10 +58,12 @@ public:
 
 	void set(float val) {
 
-		if(bSet && val == value)
+		if(bSet && val == value && type != Auto)
 			return;
 		bSet = true;
 		value = val;
+		if(type == Auto)
+			set(Pixel);
 		dispatchChanged();
 		valueChanged(value);
 	}

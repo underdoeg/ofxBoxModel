@@ -89,7 +89,7 @@ void Layouter::placeBox(Box* childBox) {
 		switch(childBoxDef->floating) {
 		case Floating::FloatLeft:
 			if(curPosition.x + childBox->outerSize.x > box->contentSize.x) {
-				curPosition.x = box->contentPosition.x;
+				curPosition.x = 0;
 				curPosition.y += rowMaxHeight;
 				rowMaxHeight = 0;
 			}

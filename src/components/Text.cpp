@@ -69,7 +69,7 @@ void Text::onBox(Box* b){
 	box = b;
 	box->contentSize.x.changed.connect<Text, &Text::onWidthChanged>(this);
 	onWidthChanged(box->contentSize.x);
-	box->contentSize.x.changed.connect<Text, &Text::onHeightChanged>(this);
+	box->contentSize.y.changed.connect<Text, &Text::onHeightChanged>(this);
 	onHeightChanged(box->contentSize.y);
 }
 

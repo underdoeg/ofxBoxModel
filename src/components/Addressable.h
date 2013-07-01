@@ -40,7 +40,8 @@ public:
 	std::vector<Type*> findByAddress(std::string path){
 		std::vector<Type*> ret;
 		std::vector<Addressable*> res = findByAddress(path);
-		for(Addressable* item:res){
+		for(std::vector<Addressable*>::iterator it = res.begin(); it<res.end();it++){
+			Addressable* item = *it;
 			if(core::instanceIsBaseOf<Addressable, Type>(item)){
 				ret.push_back(core::castTo<Addressable, Type>(item, false));
 			}
