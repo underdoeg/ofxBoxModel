@@ -18,6 +18,20 @@ public:
 	~Templater();
 	void setTemplate(std::string path);
 	std::vector<core::Composite*> loadContent(std::string path, std::string id);	
+	
+	template <class Type>
+	std::vector<Type*> loadContent(std::string path, std::string id){
+		std::vector<Type*> ret;
+		std::vector<core::Composite*> comps = loadContent(path, id);
+		for(core::Composite* comp: comps){
+			Type* t = core::castTo<core::Composite, Type>(comp);
+			if(t != NULL){
+				ret.push_back(t);
+			}
+		}
+		return ret;
+	}
+	
 private:
 	core::Composite* loadContent(std::vector<core::Composite*> elements, std::string id);
 	

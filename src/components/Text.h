@@ -53,7 +53,10 @@ public:
 	    TEXT_LOWERCASE,
 		TEXT_NONE
 	};
-
+	
+	static void enableHyphenation(std::string language, std::string folderName = "hyphenation");
+	static void disableHyphenation();
+	
 	core::Value<std::string> fontName;
 	core::Unit fontSize;
 	core::Unit leading;
@@ -101,6 +104,9 @@ private:
 	cppFont::FontFamily fontFamily;
 	
 	static cppFont::Font defaultFont;
+	static bool bHyphenate;
+	static string hyphenationLanguage;
+	static string hyphenationFolder;
 };
 
 }

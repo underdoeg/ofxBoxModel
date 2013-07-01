@@ -165,6 +165,13 @@ void TextBlockDrawer::setFont(cppFont::Font* font, int fontSize) {
 }
 
 void TextBlockDrawer::drawCharacter(cppFont::Letter& letter) {
+	if(curImages ==  NULL)
+		return;
+	/*
+	if(letter.glyph->charIndex >= curImages->size())
+		return;
+	*/
+		
 	ofImage& img = curImages->at(letter.glyph->charIndex);
 	if(img.isAllocated())
 		img.draw(letter.x, letter.y - letter.glyph->bitmapHeight + letter.glyph->offsetY, letter.glyph->bitmapWidth, letter.glyph->bitmapHeight);

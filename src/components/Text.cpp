@@ -9,7 +9,23 @@ namespace boxModel {
 namespace components {
 
 cppFont::Font Text::defaultFont("/usr/share/fonts/TTF/arial.ttf");
-	
+
+bool Text::bHyphenate;
+string Text::hyphenationLanguage;
+string Text::hyphenationFolder;
+
+void Text::enableHyphenation(std::string language, std::string folder)
+{
+	hyphenationLanguage = language;
+	hyphenationFolder = folder;
+	bHyphenate = true;
+}
+
+void Text::disableHyphenation(){
+	bHyphenate = false;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 Text::Text():boxDefinition(NULL) {
 	
 }
@@ -18,6 +34,10 @@ Text::~Text() {
 }
 
 void Text::setup() {
+	if(bHyphenate){
+		textBlock.enableHyphenation(hyphenationLanguage, Globals::get().dataRoot+hyphenationFolder+"/");
+	}
+	
 	fontFamily.setFontNormal(&defaultFont);
 	textBlock.setFontFamily(&fontFamily);
 	
@@ -225,6 +245,3 @@ cppFont::TextBlock& Text::getTextBlock()
 } //end namespace
 
 }
-
-
-
