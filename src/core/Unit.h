@@ -80,11 +80,11 @@ public:
 	}
 
 	void set(Unit u) {
-		set(u.getType());
 		set(u.getValue());
+		set(u.getType());
 	}
 
-	const float getValue() {
+	float getValue() {
 		return value;
 	}
 
@@ -194,6 +194,11 @@ public:
 		set(t);
 		return t;
 	}
+	
+	const UnitGroup& operator=(UnitGroup group) {
+		set(group);
+		return *this;
+	}
 
 	const Unit operator=(Unit u) {
 		set(u);
@@ -216,6 +221,13 @@ public:
 		for(typename std::vector<Unit*>::iterator it = units.begin(); it < units.end(); it++) {
 			(*it)->set(type);
 		}
+	}
+	
+	void set(UnitGroup group){
+		top = group.top;
+		right = group.right;
+		bottom = group.bottom;
+		left = group.left;
 	}
 
 	Nano::signal<void(UnitGroup*)> changed;

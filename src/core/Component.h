@@ -22,7 +22,8 @@ class Component {
 public:
 	ComponentContainer* components;
 	
-	virtual void onFlush() {};
+	virtual void onFlush(){};
+	virtual void copyFrom(Component* component){};
 
 protected:
 	Component():components(NULL) {};
@@ -54,8 +55,40 @@ private:
 	};
 	
 	virtual void flush(){};
-
+	
+	class CloneHelperBase{
+		public:
+		virtual void cloneComponentInto(ComponentContainer* source, ComponentContainer* destination) = 0;
+	};
+	
+	template <class ComponentType>
+	class CloneHelper: public CloneHelperBase{
+		public:
+		void cloneComponentInto(ComponentContainer* source, ComponentContainer* destination){
+			ComponentType* comp;
+			if(!destination->hasComponent<ComponentType>()){
+				comp = new ComponentType();
+				destination->addComponent<ComponentType>(comp);
+			}else{
+				comp = destination->getComponent<ComponentType>();
+			}
+			comp->copyFrom(source->getComponent<ComponentType>());
+		}
+	};
+	
 public:
+	ComponentContainer* clone(){
+		ComponentContainer* ret = new ComponentContainer();
+		cloneInto(ret);
+		return ret;
+	}
+	
+	void cloneInto(ComponentContainer* container){
+		for(CloneHelperBase* ch: cloneHelpers){
+			ch->cloneComponentInto(this, container);
+		}
+	}
+	
 	typedef std::unordered_map<std::type_index, Component*> ComponentMap;
 	
 	unsigned int getNumComponents(){
@@ -68,10 +101,18 @@ public:
 	
 	template <class ComponentType>
 	void addComponent(ComponentType* component) {
+		if(hasComponent<ComponentType>()){
+			debug::notice("skipped duplicate component type");
+			return;
+		}
 		std::type_index index = typeid(ComponentType);
 		components[index] = component;
 		componentList.push_back(component);
 		((Component*)component)->setup(this);
+		
+		//add a clone helper fot this type
+		cloneHelpers.push_back(new CloneHelper<ComponentType>());
+		
 		//dispatch the component added event if we have listeners
 		if(componentAddedSignals.find(index) != componentAddedSignals.end()){
 			static_cast<ComponentSignalHelper<ComponentType>*>(componentAddedSignals[index])->signal(component);
@@ -135,6 +176,7 @@ public:
 	std::unordered_map<std::type_index, Component*> components;
 	std::unordered_map<std::type_index, ComponentSignalHelperBase*> componentAddedSignals;
 	std::vector<Component*> componentList;
+	std::vector<CloneHelperBase*> cloneHelpers;
 };
 
 //the following is a macro that helps with listening to Component addition, ONLY USE WITHIN SETUP OF A COMPONENT

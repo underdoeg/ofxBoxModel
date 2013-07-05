@@ -7,6 +7,7 @@
 #include "Serializer.h"
 #include "Utils.h"
 #include "TextBlock.h"
+#include "Linker.h"
 
 namespace boxModel
 {
@@ -33,9 +34,13 @@ public:
 
 	void setup();
 	
+	void copyFrom(Text* text);
+	
 	void onBoxDefinition(BoxDefinition* boxDef);
 	void onCss(Css* css);
 	void onBox(Box* box);
+	void onLinker(Linker* linker);
+	
 	cppFont::TextBlock& getTextBlock();
 	
 	core::Value<std::string> text;
@@ -76,6 +81,7 @@ private:
 	void pCssTextAlignment(std::string key, std::string value);
 	void pCssTextTransform(std::string key, std::string value);
 	
+	void onLinked(Linker* link);
 			
 	void onSerializer(Serializer* ser);
 	

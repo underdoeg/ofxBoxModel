@@ -25,6 +25,13 @@ public:
 		LISTEN_FOR_COMPONENT(Css, Style, onCss)
 	}
 
+	void copyFrom(Style* style) {
+		color.set(style->color);
+		bgColor.set(style->bgColor);
+		borderColor.set(style->borderColor);
+		bBgColor = style->bBgColor;
+	}
+
 	void setColor(core::Color c) {
 		color.set(c);
 	}

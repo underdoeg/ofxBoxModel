@@ -20,6 +20,11 @@ void Linker::setup() {
 	LISTEN_FOR_COMPONENT(Serializer, Linker, onSerializer)
 }
 
+void Linker::copyFrom(Linker* linker)
+{
+	linkToAddress = linker->linkToAddress;
+}
+
 void Linker::onLayouter(Layouter* l) {
 	layouter = l;
 	layouter->overflowed.connect<Linker, &Linker::onOverflow>(this);
@@ -57,7 +62,6 @@ void Linker::updateLinkTo()
 	}
 }
 
-
 void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
 	updateLinkTo();
 
@@ -69,10 +73,12 @@ void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
 	if(linker->components->hasComponent<Stack>()) {
 		Stack* linkerStack = linker->components->getComponent<Stack>();
 		linkerStack->addChildren(compList);
+		
 		layouter->layout();
 		if(linkerStack->components->hasComponent<Layouter>()){
 			linkerStack->components->getComponent<Layouter>()->layout();
 		}
+		
 	}
 }
 
@@ -89,4 +95,3 @@ Linker* Linker::getLinkTo()
 } //end namespace
 
 }
-

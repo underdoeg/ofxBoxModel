@@ -27,7 +27,6 @@ void Text::disableHyphenation(){
 
 ///////////////////////////////////////////////////////////////////////////////
 Text::Text():boxDefinition(NULL) {
-	
 }
 
 Text::~Text() {
@@ -61,8 +60,19 @@ void Text::setup() {
 	LISTEN_FOR_COMPONENT(Css, Text, onCss)
 	LISTEN_FOR_COMPONENT(Box, Text, onBox)
 	LISTEN_FOR_COMPONENT(Serializer, Text, onSerializer)
+	LISTEN_FOR_COMPONENT(Linker, Text, onLinker)
 
 	text.changed.connect<Text, &Text::onTextChange>(this);
+}
+
+void Text::copyFrom(Text* t)
+{
+	text = t->text;
+	fontSize = t->fontSize;
+	letterSpacing = t->letterSpacing;
+	wordSpacing = t->wordSpacing;
+	textAlignment = t->textAlignment;
+	textTransform = t->textTransform;
 }
 
 void Text::onBox(Box* b){
@@ -222,6 +232,16 @@ void Text::onAutoHeight(float& height){
 
 /******************************************************************************************/
 
+void Text::onLinker(Linker* linker)
+{
+	linker->linkedTo.connect<Text, &Text::onLinked>(this);
+}
+
+void Text::onLinked(Linker* link)
+{
+	cout << "LINKI LINKI" << endl;
+}
+
 void Text::onSerializer(Serializer* ser) {
 	ser->deserialized.connect<Text, &Text::onDeserialize>(this);
 	ser->serialized.connect<Text, &Text::onSerialize>(this);
@@ -245,3 +265,4 @@ cppFont::TextBlock& Text::getTextBlock()
 } //end namespace
 
 }
+

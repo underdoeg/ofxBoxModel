@@ -16,7 +16,9 @@ public:
 	void linkTo(Linker* linker);
 	Linker* getLinkTo();
 	Nano::signal<void(Linker* linker)> linkedTo;
+	Nano::signal<void(Linker* linker)> movedTo;
 	
+	void copyFrom(Linker* linker);
 	
 private:
 	void updateLinkTo();

@@ -144,7 +144,7 @@ void  Layouter::triggerLayout() {
 }
 
 void  Layouter::onContentSizeChanged(core::Point p) {
-	triggerLayout();;
+	triggerLayout();
 }
 
 void  Layouter::onChildRemoved(Stack* child) {

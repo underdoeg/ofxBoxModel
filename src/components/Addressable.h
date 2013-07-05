@@ -21,9 +21,9 @@ public:
 
 	bool isType(std::string Addressable);
 	virtual std::string getType(){
-		return "undefined";
+		return type;
 	}
-
+	void setType(std::string type);
 
 	void setId(std::string str);
 	std::string getId();
@@ -34,6 +34,7 @@ public:
 	bool hasClass(std::string className);
 	void addClass(std::string className);
 	void addClasses(std::vector<std::string> classNames);
+	void setClasses(std::vector<std::string> classNames);
 	void removeClass(std::string className);
 	
 	template<class Type>
@@ -48,6 +49,8 @@ public:
 		}
 		return ret;
 	}
+	
+	void copyFrom(Addressable* addressable);
 	
 	std::vector<Addressable*> findByAddress(std::string path);
 
@@ -65,6 +68,7 @@ private:
 
 	std::vector<std::string> classes;
 	std::string id;
+	std::string type;
 };
 
 }

@@ -108,6 +108,11 @@ public:
 		return value;
 	}
 
+	const Value<Type> operator=(Value<Type> val) {
+		set(val.get());
+		return *this;
+	}
+
 	const Type operator=(Type val) {
 		set(val);
 		return value;

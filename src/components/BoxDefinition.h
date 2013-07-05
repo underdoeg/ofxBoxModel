@@ -55,6 +55,9 @@ public:
 	static std::vector<core::Unit> parseCssNumberBlock(std::string val);
 	static Floating parseCssFloating(std::string val);
 	
+	void copyFrom(BoxDefinition* boxDefinition);
+
+	
 private:
 	void pFloat(std::string key, std::string value);
 	void pColor(std::string key, std::string value);

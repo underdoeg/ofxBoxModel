@@ -32,6 +32,8 @@ public:
 	core::ValuePoint contentSize;
 	core::ValuePoint contentPosition;
 	
+	void copyFrom(Box* box);
+	
 private:
 	void onStack(Stack* stack);
 	void onContenSizeChanged(core::Point p);

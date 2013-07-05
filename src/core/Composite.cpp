@@ -18,3 +18,8 @@ void Composite::flush() {
 		getComponent(i)->onFlush();
 	}
 }
+
+Composite* Composite::clone()
+{
+	return clone<Composite>();
+}

@@ -45,6 +45,7 @@ public:
 
 	/***/
 
+	void copyFrom(Css* css);
 
 protected:
 	std::vector<CssProperty> parseCssBlock(std::string propertiesString);

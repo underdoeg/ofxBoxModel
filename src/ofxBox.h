@@ -13,10 +13,12 @@
 #include "components/Css.h"
 #include "components/Serializer.h"
 #include "components/Linker.h"
+#include "components/Splitter.h"
 
 class ofxBox: public boxModel::core::Composite,
 	public boxModel::components::Box, public boxModel::components::BoxDefinition, public boxModel::components::Style, 
-	public boxModel::components::Css, public boxModel::components::Serializer, public boxModel::components::Linker
+	public boxModel::components::Css, public boxModel::components::Serializer, public boxModel::components::Linker,
+	public boxModel::components::Splitter
 {
 public:
 	ofxBox()
@@ -28,6 +30,7 @@ public:
 		addComponent<boxModel::components::Css>(this);
 		addComponent<boxModel::components::Serializer>(this);
 		addComponent<boxModel::components::Linker>(this);
+		addComponent<boxModel::components::Splitter>(this);
 	}
 	
 	~ofxBox()

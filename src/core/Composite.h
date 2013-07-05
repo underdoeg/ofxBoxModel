@@ -18,6 +18,15 @@ class Composite: public ComponentContainer, public components::Addressable, publ
 public:
 	Composite();
 	
+	Composite* clone();
+	
+	template <class Type>
+	Type* clone(){
+		Type* t = new Type();
+		cloneInto(t);
+		return t;
+	}
+	
 	void flush();
 private:
 

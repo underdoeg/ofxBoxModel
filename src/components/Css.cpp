@@ -12,6 +12,12 @@ void Css::setup() {
 	LISTEN_FOR_COMPONENT(Stack, Css, onStack)
 }
 
+void Css::copyFrom(Css* css)
+{
+	properties = css->properties;
+	propertiesOrder = css->propertiesOrder;
+}
+
 void Css::loadCss(std::string path) {
 	setCss(stringLoadFromFile(Globals::get().dataRoot+path));
 }

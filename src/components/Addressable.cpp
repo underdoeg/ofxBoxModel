@@ -17,6 +17,11 @@ bool Addressable::isType(std::string Addressable) {
 	return getType() == Addressable;
 }
 
+void Addressable::setType(std::string t)
+{
+	type = t;
+}
+
 std::vector<std::string> Addressable::getClasses() {
 	return classes;
 }
@@ -61,6 +66,10 @@ void Addressable::addClass(std::string className) {
 
 void Addressable::addClasses(std::vector<std::string> classNames) {
 	classes.insert(classes.end(), classNames.begin(), classNames.end());
+}
+
+void Addressable::setClasses(std::vector<std::string> classNames) {
+	classes = classNames;
 }
 
 void Addressable::removeClass(std::string className) {
@@ -182,6 +191,15 @@ std::vector<Addressable*> Addressable::findByType(std::string typeName, Addressa
 	return ret;
 }
 
+void Addressable::copyFrom(Addressable* addr)
+{
+	setType(addr->getType());
+	setClasses(addr->getClasses());
+	
+	if(addr->hasId())
+		setId(addr->getId());
+}
+
 /************************** SERIALIZING ***********************************************/
 
 void Addressable::onSerializer(Serializer* ser) {
@@ -204,3 +222,4 @@ void Addressable::onDeserialize(VariantList& variants) {
 		setId(variants.get("id"));
 	}
 }
+

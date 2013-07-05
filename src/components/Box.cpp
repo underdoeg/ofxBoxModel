@@ -56,3 +56,12 @@ void Box::onChildAdded(Stack* child)
 {
 	child->components->setUnitContainerSize(contentSize.x, contentSize.y);
 }
+
+void Box::copyFrom(Box* box)
+{
+	position = box->position;
+	outerSize = box->outerSize;
+	size = box->size;
+	contentSize = box->contentSize;
+	contentPosition = box->contentPosition;
+}

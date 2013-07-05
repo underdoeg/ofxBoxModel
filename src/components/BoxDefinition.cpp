@@ -40,6 +40,16 @@ void BoxDefinition::setup() {
 	components->addUnitY(&height);
 }
 
+void BoxDefinition::copyFrom(BoxDefinition* bd)
+{
+	margin = bd->margin;
+	padding = bd->padding;
+	border = bd->border;
+	width = bd->width;
+	height = bd->height;
+	cout << height.getType() << bd->height.getType() << " - " << (height.getType() == Unit::Auto) << endl;
+}
+
 void BoxDefinition::onStack(Stack* s)
 {
 	stack = s;
@@ -277,3 +287,4 @@ void BoxDefinition::pBorderTop(std::string key, std::string value) {
 void BoxDefinition::pBorderBottom(std::string key, std::string value) {
 	border.bottom = Unit::parseCssNumber(value);
 }
+
