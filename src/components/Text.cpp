@@ -4,9 +4,7 @@
 using namespace boxModel::core; 
 using namespace std;
 
-namespace boxModel {
-
-namespace components {
+using namespace boxModel::components;
 
 cppFont::Font Text::defaultFont("/usr/share/fonts/TTF/arial.ttf");
 
@@ -61,6 +59,7 @@ void Text::setup() {
 	LISTEN_FOR_COMPONENT(Box, Text, onBox)
 	LISTEN_FOR_COMPONENT(Serializer, Text, onSerializer)
 	LISTEN_FOR_COMPONENT(Linker, Text, onLinker)
+	LISTEN_FOR_COMPONENT(Splitter, Text, onSplitter)
 
 	text.changed.connect<Text, &Text::onTextChange>(this);
 }
@@ -262,7 +261,24 @@ cppFont::TextBlock& Text::getTextBlock()
 	return textBlock;
 }
 
-} //end namespace
-
+void Text::onSplitter(Splitter* spl)
+{
+	splitter = spl;
+	splitter->splitRequested.connect<Text, &Text::onSplitRequested>(this);
 }
 
+void Text::onSplitRequested(float x, float y)
+{
+	if(boxDefinition != NULL){
+		//first off, we make a copy of the current height
+		textBlock.setHeight(y);
+		if(textBlock.getNumLines() > 1){
+			//ok, we have more than one line, so it is ok to split
+			ComponentContainer* clone = splitter->makeSplit();
+			clone->getComponent<Text>()->text = textBlock.getOverflow();
+		}else{
+			//restore the original height
+			onHeightChanged(box->contentSize.y);
+		}
+	}
+}

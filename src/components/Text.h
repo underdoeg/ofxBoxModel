@@ -8,6 +8,7 @@
 #include "Utils.h"
 #include "TextBlock.h"
 #include "Linker.h"
+#include "Splitter.h"
 
 namespace boxModel
 {
@@ -35,11 +36,6 @@ public:
 	void setup();
 	
 	void copyFrom(Text* text);
-	
-	void onBoxDefinition(BoxDefinition* boxDef);
-	void onCss(Css* css);
-	void onBox(Box* box);
-	void onLinker(Linker* linker);
 	
 	cppFont::TextBlock& getTextBlock();
 	
@@ -69,10 +65,16 @@ public:
 	core::Unit letterSpacing;
 	core::Value<TEXT_ALIGNMENT> textAlignment;
 	core::Value<TEXT_TRANSFORM> textTransform;
-	
-	//static Nano::signal<void(float&, Text*)> onGetTextBoxHeight;
-	
+		
 private:
+	void onBoxDefinition(BoxDefinition* boxDef);
+	void onCss(Css* css);
+	void onBox(Box* box);
+	void onLinker(Linker* linker);
+	
+	void onSplitter(Splitter* splitter);
+	void onSplitRequested(float x, float y);
+	
 	void pCssFontName(std::string key, std::string value);
 	void pCssFontSize(std::string key, std::string value);
 	void pCssLeading(std::string key, std::string value);
@@ -106,8 +108,12 @@ private:
 	
 	Box* box;
 	BoxDefinition* boxDefinition;
+	Text* splittedText;
+	Splitter* splitter;
 	cppFont::TextBlock textBlock;
 	cppFont::FontFamily fontFamily;
+	
+	core::Unit preSplitHeight;
 	
 	static cppFont::Font defaultFont;
 	static bool bHyphenate;

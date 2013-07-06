@@ -142,6 +142,15 @@ std::vector<Addressable*> Addressable::findByAddress(std::string path) {
 	return ret;
 }
 
+std::vector<ComponentContainer*> Addressable::findContainerByAddress(std::string path)
+{
+	std::vector<ComponentContainer*> ret;
+	for(Addressable* addr: findByAddress(path)){
+		ret.push_back(addr->components);
+	}
+	return ret;
+}
+
 
 std::vector<Addressable*> Addressable::findByClass(std::string className, Addressable* root, bool skipRoot) {
 	std::vector<Addressable*> ret;
@@ -222,4 +231,3 @@ void Addressable::onDeserialize(VariantList& variants) {
 		setId(variants.get("id"));
 	}
 }
-

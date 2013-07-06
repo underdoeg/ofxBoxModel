@@ -24,7 +24,13 @@ public:
 	}
 
 	void setup() {
-
+		parent = NULL;
+	}
+	
+	void onFlush(){
+		for(unsigned int i = 0; i < getNumChildren(); i++) {
+			getChild(i)->components->flush();
+		}
 	}
 
 	void onComponentAdded(Component& component) {
@@ -46,8 +52,15 @@ public:
 		}
 	}
 	
+	void addChildContainer(core::ComponentContainer* container){
+		if(container->hasComponent<Stack>())
+			addChild(container->getComponent<Stack>());
+	}
+	
 	void addChild(Stack* child) {
 		if(child->hasParent()){
+			cout << child << endl;
+			cout << child->getParent() << endl;
 			child->getParent()->removeChild(child);
 		}
 		child->setParent(this);
@@ -56,6 +69,9 @@ public:
 	}
 
 	void removeChild(Stack* child) {
+		std::cout << children.size() << endl;
+		if(std::find(children.begin(), children.end(), child)==children.end())
+			return;
 		child->setParent(NULL);
 		children.erase(std::remove(children.begin(), children.end(), child), children.end());
 		childRemoved(child);

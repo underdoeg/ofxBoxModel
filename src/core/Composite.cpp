@@ -8,15 +8,7 @@ Composite::Composite() {
 }
 
 void Composite::flush() {
-	for(unsigned int i = 0; i < getNumChildren(); i++){
-		Composite* child = getChild<Composite>(i);
-		if(child != NULL)
-			child->flush();
-	}
 	
-	for(unsigned int i = 0; i < getNumComponents(); i++){
-		getComponent(i)->onFlush();
-	}
 }
 
 Composite* Composite::clone()

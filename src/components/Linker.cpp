@@ -3,9 +3,7 @@
 using namespace std;
 using namespace boxModel::core;
 
-namespace boxModel {
-
-namespace components {
+using namespace boxModel::components;
 
 Linker::Linker():linker(NULL) {
 
@@ -67,10 +65,9 @@ void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
 
 	if(linker == NULL)
 		return;
-	
-	linkedTo(linker);
-	
+
 	if(linker->components->hasComponent<Stack>()) {
+		//now add the overflowed components to the next linker
 		Stack* linkerStack = linker->components->getComponent<Stack>();
 		linkerStack->addChildren(compList);
 		
@@ -80,6 +77,8 @@ void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
 		}
 		
 	}
+	
+	linkedTo(linker);
 }
 
 void Linker::linkTo(Linker* l) {
@@ -90,8 +89,4 @@ Linker* Linker::getLinkTo()
 {
 	updateLinkTo();
 	return linker;
-}
-
-} //end namespace
-
 }

@@ -17,14 +17,14 @@ public:
 	Templater();
 	~Templater();
 	void setTemplate(std::string path);
-	std::vector<core::Composite*> loadContent(std::string path, std::string id);	
+	std::vector<core::ComponentContainer*> loadContent(std::string path, std::string id);	
 	
 	template <class Type>
 	std::vector<Type*> loadContent(std::string path, std::string id){
 		std::vector<Type*> ret;
-		std::vector<core::Composite*> comps = loadContent(path, id);
-		for(core::Composite* comp: comps){
-			Type* t = core::castTo<core::Composite, Type>(comp);
+		std::vector<core::ComponentContainer*> comps = loadContent(path, id);
+		for(core::ComponentContainer* comp: comps){
+			Type* t = core::castTo<core::ComponentContainer, Type>(comp);
 			if(t != NULL){
 				ret.push_back(t);
 			}
@@ -33,14 +33,14 @@ public:
 	}
 	
 private:
-	core::Composite* loadContent(std::vector<core::Composite*> elements, std::string id);
+	core::ComponentContainer* loadContent(std::vector<core::ComponentContainer*> elements, std::string id);
 	
 	void onOverflow(std::vector<core::ComponentContainer*> compList);
 	void onLinkTo();
 	std::string templatePath;	
-	core::Composite* curRoot;
+	core::ComponentContainer* curRoot;
 	components::Linker* lastLinker;
-	std::vector<core::Composite*> tempRet;
+	std::vector<core::ComponentContainer*> tempRet;
 	std::string curId;
 };
 

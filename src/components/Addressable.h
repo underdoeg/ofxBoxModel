@@ -53,6 +53,7 @@ public:
 	void copyFrom(Addressable* addressable);
 	
 	std::vector<Addressable*> findByAddress(std::string path);
+	std::vector<core::ComponentContainer*> findContainerByAddress(std::string path);
 
 private:
 	static std::vector<std::string > idsTaken;

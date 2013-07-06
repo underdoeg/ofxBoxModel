@@ -1,4 +1,5 @@
 #include "Layouter.h"
+#include "Splitter.h"
 
 using namespace boxModel::components;
 using namespace boxModel::core;
@@ -69,12 +70,46 @@ void  Layouter::layout(bool layoutChildren) {
 	}
 
 	if(overflowElements.size()>0) {
-		overflowed(overflowElements);
+		//these elements don't fit, maybe we can split them?
+		Rectangle bounds;
+		bounds.width = box->contentSize.x;
+		bounds.height = box->contentSize.y;
+
+		Rectangle childBounds;
+		
+		//loop a copy of the element list
+		std::vector<ComponentContainer*> overflowElementsCopy = overflowElements;
+		
+		for(ComponentContainer* container: overflowElementsCopy) {
+			if(container->hasComponent<Box>()) {
+				Box* child = container->getComponent<Box>();
+				childBounds.x = child->position.x;
+				childBounds.y = child->position.y;
+				childBounds.width = child->size.x;
+				childBounds.height = child->size.y;
+				if(bounds.intersects(childBounds)) {
+					Rectangle r = bounds.getIntersection(childBounds);
+					if(container->hasComponent<Splitter>()){
+						Splitter* splitter = container->getComponent<Splitter>();
+						//request the split and if it happens, remove the component from overflow list and add the new splittet item
+						if(splitter->requestSplit(r.width, r.height)){
+							std::vector<ComponentContainer*>::iterator itPos = std::remove(overflowElements.begin(), overflowElements.end(), container);
+							itPos = overflowElements.erase(itPos, overflowElements.end());
+							//cout << splitter->getSplit() << endl;
+							overflowElements.insert(overflowElements.begin(), splitter->getSplit());
+						}
+					}
+				}
+			}
+		}
+		//now if the size is still greater than 0, we can go ahead with the overflowed signal
+		if(overflowElements.size() > 0)
+			overflowed(overflowElements);
 	}
 
 	if(boxDefinition != NULL)
 		boxDefinition->recalculateBoxSize();
-	
+
 	isDirty = false;
 }
 
@@ -227,7 +262,6 @@ void Layouter::onAutoHeight(float& height) {
 	if(maxH>height)
 		height = maxH;
 }
-void Layouter::onFlush()
-{
+void Layouter::onFlush() {
 	layout();
 }

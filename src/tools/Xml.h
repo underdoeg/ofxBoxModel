@@ -22,7 +22,7 @@ public:
 		return core::castTo<core::Composite, Type>(load(path));
 	}
 
-	static core::Composite* load(std::string path) {
+	static core::ComponentContainer* load(std::string path) {
 		pugi::xml_document doc;
 		path = core::Globals::get().dataRoot+path;
 		pugi::xml_parse_result result = doc.load_file(path.c_str());
@@ -30,14 +30,14 @@ public:
 			debug::error("could not load "+path);
 			return NULL;
 		}
-		core::Composite* root = NULL;
+		core::ComponentContainer* root = NULL;
 		root = parseXmlNode(doc.first_child());
 		
 		return root;
 	}
 	
-	static std::vector<core::Composite*> loadAsVector(std::string path){
-		std::vector<core::Composite*> ret;
+	static std::vector<core::ComponentContainer*> loadAsVector(std::string path){
+		std::vector<core::ComponentContainer*> ret;
 		pugi::xml_document doc;
 		path = core::Globals::get().dataRoot+path;
 		pugi::xml_parse_result result = doc.load_file(path.c_str());
@@ -47,26 +47,26 @@ public:
 		}
 		
 		for (pugi::xml_node_iterator it = doc.begin(); it != doc.end(); ++it) {
-			core::Composite* child = parseXmlNode(*it);
+			core::ComponentContainer* child = parseXmlNode(*it);
 			ret.push_back(child);
 		}
 		return ret;
 	}
 
-	static void loadInto(core::Composite* root, std::string path) {
-		std::vector<core::Composite*> composites = loadAsVector(path);
+	static void loadInto(core::ComponentContainer* root, std::string path) {
+		std::vector<core::ComponentContainer*> composites = loadAsVector(path);
 		
 		boxModel::components::Stack* rootStack = root->getComponent<boxModel::components::Stack>();
-		for (core::Composite* comp: composites) {
+		for (core::ComponentContainer* comp: composites) {
 			if(comp->hasComponent<components::Stack>()) {
-				rootStack->addChild(comp);
+				rootStack->addChildContainer(comp);
 			}
 		}
 	}
 
 private:
-	static core::Composite* parseXmlNode(pugi::xml_node node) {
-		core::Composite* ret = tools::Instancer::createInstance(node.name());
+	static core::ComponentContainer* parseXmlNode(pugi::xml_node node) {
+		core::ComponentContainer* ret = tools::Instancer::createInstance(node.name());
 		if(ret == NULL)
 			return NULL;
 
@@ -86,7 +86,7 @@ private:
 			components::Stack* stack = ret->getComponent<components::Stack>();
 			for (pugi::xml_node_iterator it = node.begin(); it != node.end(); ++it) {
 				if((*it).type() != pugi::node_pcdata) {
-					core::Composite* t = parseXmlNode(*it);
+					core::ComponentContainer* t = parseXmlNode(*it);
 					if(t != NULL && t->hasComponent<components::Stack>())
 						stack->addChild(t->getComponent<components::Stack>());
 				}
