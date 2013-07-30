@@ -14,26 +14,31 @@ namespace components
 class Splitter : public boxModel::core::Component
 {
 public:
-	virtual void onFlush();
-	virtual void setup();
+	void onFlush();
+	void setup();
 	
 	Nano::signal<void(float x, float y)> splitRequested;
 	bool requestSplit(float x, float y);
 	
-	core::ComponentContainer* makeSplit();
-	core::ComponentContainer* getSplit();
+	void merge();
+	
+	std::vector<core::ComponentContainer*> makeSplit();
+	std::vector<core::ComponentContainer*> getSplit();
+	bool isSplitted();
 	
 private:
 	void onBoxDefinition(BoxDefinition* boxDefinition);
 	void onBox(Box* box);
+	void onStack(Stack* stack);
 	
-	core::ComponentContainer* split;
+	std::vector<core::ComponentContainer*> splits;
 	core::Point splitPosition;
-	bool curSplitStatus;
+	bool hasSplit;
 	core::Unit originalWidth;
 	core::Unit originalHeight;
 	BoxDefinition* boxDefinition;
 	Box* box;
+	Stack* stack;
 };
 
 }

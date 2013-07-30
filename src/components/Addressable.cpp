@@ -5,6 +5,7 @@ using namespace boxModel::core;
 
 Addressable::Addressable() {
 	id = "";
+	unaddressable = false;
 }
 
 void Addressable::setup() {
@@ -138,7 +139,7 @@ std::vector<Addressable*> Addressable::findByAddress(std::string path) {
 	//remove duplicates
 	sort( ret.begin(), ret.end() );
 	ret.erase( unique( ret.begin(), ret.end() ), ret.end() );
-
+	
 	return ret;
 }
 
@@ -154,7 +155,7 @@ std::vector<ComponentContainer*> Addressable::findContainerByAddress(std::string
 
 std::vector<Addressable*> Addressable::findByClass(std::string className, Addressable* root, bool skipRoot) {
 	std::vector<Addressable*> ret;
-	if(!skipRoot && root->hasClass(className)) {
+	if(!skipRoot && root->unaddressable == false && root->hasClass(className)) {
 		ret.push_back(root);
 	}
 
@@ -170,7 +171,7 @@ std::vector<Addressable*> Addressable::findByClass(std::string className, Addres
 
 std::vector<Addressable*> Addressable::findById(std::string idName, Addressable* root, bool skipRoot) {
 	std::vector<Addressable*> ret;
-	if(!skipRoot && root->isId(idName)) {
+	if(!skipRoot && root->unaddressable == false && root->isId(idName)) {
 		ret.push_back(root);
 	}
 
@@ -186,7 +187,7 @@ std::vector<Addressable*> Addressable::findById(std::string idName, Addressable*
 
 std::vector<Addressable*> Addressable::findByType(std::string typeName, Addressable* root, bool skipRoot) {
 	std::vector<Addressable*> ret;
-	if(!skipRoot && root->isType(typeName)) {
+	if(!skipRoot && root->unaddressable == false && root->isType(typeName)) {
 		ret.push_back(root);
 	}
 

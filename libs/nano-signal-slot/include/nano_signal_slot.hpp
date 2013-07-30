@@ -30,7 +30,7 @@ IN THE SOFTWARE.
 #define NANO_SIGNAL_SLOT_HPP
 
 #include <unordered_map>
-#include <cstdint>
+#include <vector>
 
 namespace Nano
 {
@@ -69,9 +69,9 @@ template <typename Re_t, typename... Args> class function<Re_t(Args...)>
             return (static_cast<const T*>(this_ptr)->*meth_ptr)(args...); } };
     }
 
-    Re_t operator() (Args&&... var) const
+    Re_t operator()(Args&&... args) const
     {
-        return (*m_stub_ptr)(m_this_ptr, var...);
+        return (*m_stub_ptr)(m_this_ptr, args...);
     }
     bool operator== (delegate_key_t const& other) const
     {
@@ -134,7 +134,7 @@ struct tracked
 
 template <typename Re_t> class signal;
 template <typename Re_t, typename... Args>
-    class signal<Re_t(Args...)> : public tracked
+class signal<Re_t(Args...)> : public Nano::tracked
 {
     typedef Nano::function<Re_t(Args...)> function;
     std::unordered_map<delegate_key_t, function> m_slots;
@@ -184,6 +184,8 @@ template <typename Re_t, typename... Args>
         sfinae_con<T>(delegate, instance);
     }
 
+//------------------------------------------------------------------------------
+
     template <Re_t (*func_ptr)(Args... )>
     void disconnect()
     {
@@ -205,12 +207,33 @@ template <typename Re_t, typename... Args>
         m_slots.erase(delegate);
     }
 
-    void operator() (Args... var) const
+//------------------------------------------------------------------------------
+
+    void operator()(Args... args) // TODO deprecated!
     {
         for (auto const& slot : m_slots)
         {
-            slot.second(std::forward<Args>(var)...);
+            slot.second(std::forward<Args>(args)...);
         }
+    }
+    void emit(Args... args) const
+    {
+        for (auto const& slot : m_slots)
+        {
+            slot.second(std::forward<Args>(args)...);
+        }
+    }
+    template <typename Transform>
+    Re_t emit(Args... args) const
+    {
+        std::vector<Re_t> srv;
+        srv.reserve(m_slots.size());
+
+        for (auto const& slot : m_slots)
+        {
+            srv.emplace_back(slot.second(std::forward<Args>(args)...));
+        }
+        return Transform()(srv.cbegin(), srv.cend());
     }
 };
 

@@ -15,7 +15,10 @@ DebugDrawer::~DebugDrawer() {
 }
 
 void DebugDrawer::draw(core::ComponentContainer* container) {
-
+	if(container->hasComponent<Splitter>()){
+		if(container->getComponent<Splitter>()->isSplitted())
+			return;
+	}
 	if(container->hasComponent<Box>()) {
 		Box* box = container->getComponent<Box>();
 		drawBox(box);
@@ -51,7 +54,7 @@ void DebugDrawer::drawText(Box* box, Text* text, Color fg) {
 	
 	ofTranslate(pos);
 	
-	text->getTextBlock().draw(&textDrawer);
+	text->getTextBlock()->draw(&textDrawer);
 	
 	ofPopMatrix();
 }

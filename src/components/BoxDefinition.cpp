@@ -47,7 +47,6 @@ void BoxDefinition::copyFrom(BoxDefinition* bd)
 	border = bd->border;
 	width = bd->width;
 	height = bd->height;
-	cout << height.getType() << bd->height.getType() << " - " << (height.getType() == Unit::Auto) << endl;
 }
 
 void BoxDefinition::onStack(Stack* s)

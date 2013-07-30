@@ -21,6 +21,9 @@ public:
 
 	}
 	~Stack() {
+		if(hasParent()){
+			parent->removeChild(this);
+		}
 	}
 
 	void setup() {
@@ -58,25 +61,41 @@ public:
 	}
 	
 	void addChild(Stack* child) {
+		if(child->getParent() == this)
+			return;
 		if(child->hasParent()){
-			cout << child << endl;
-			cout << child->getParent() << endl;
 			child->getParent()->removeChild(child);
 		}
 		child->setParent(this);
 		children.push_back(child);
 		childAdded(child);
 	}
+	
+	void addChildFromContainer(core::ComponentContainer* child){
+		if(child->hasComponent<Stack>()){
+			addChild(child->getComponent<Stack>());
+		}
+	}
 
 	void removeChild(Stack* child) {
-		std::cout << children.size() << endl;
 		if(std::find(children.begin(), children.end(), child)==children.end())
 			return;
 		child->setParent(NULL);
 		children.erase(std::remove(children.begin(), children.end(), child), children.end());
 		childRemoved(child);
 	}
-
+	
+	void removeChildFromContainer(core::ComponentContainer* child) {
+		if(child->hasComponent<Stack>()){
+			removeChild(child->getComponent<Stack>());
+		}
+	}
+	
+	void removeFromParent(){
+		if(hasParent())
+			parent->removeChild(this);
+	}
+	
 	Stack* operator[](unsigned int index) {
 		return getChild(index);
 	}

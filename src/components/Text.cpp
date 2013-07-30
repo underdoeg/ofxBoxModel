@@ -66,6 +66,8 @@ void Text::setup() {
 
 void Text::copyFrom(Text* t)
 {
+	fontName = t->fontName;
+	leading = t->leading;
 	text = t->text;
 	fontSize = t->fontSize;
 	letterSpacing = t->letterSpacing;
@@ -97,13 +99,11 @@ void Text::onCss(Css* css){
 }
 
 void Text::onTextChange(string _text){
+	_text = stringTrim(_text);
 	if(textTransform==TEXT_NONE) text = _text;
 	if(textTransform==TEXT_LOWERCASE) text = stringToLower(_text);
 	if(textTransform==TEXT_UPPERCASE) text = stringToUpper(_text);
 	textBlock.setText(text);
-	if(boxDefinition != NULL){
-		boxDefinition->recalculateBoxSize();
-	}
 }
 
 void Text::onFontParamChanged(Unit* u)
@@ -238,7 +238,7 @@ void Text::onLinker(Linker* linker)
 
 void Text::onLinked(Linker* link)
 {
-	cout << "LINKI LINKI" << endl;
+	//cout << "LINKI LINKI" << endl;
 }
 
 void Text::onSerializer(Serializer* ser) {
@@ -256,9 +256,14 @@ void Text::onDeserialize(core::VariantList& variants) {
 	}
 }
 
-cppFont::TextBlock& Text::getTextBlock()
+cppFont::TextBlock* Text::getTextBlock()
 {
-	return textBlock;
+	return &textBlock;
+}
+
+std::string Text::getTextOverflow()
+{
+	return textBlock.getOverflow();
 }
 
 void Text::onSplitter(Splitter* spl)
@@ -271,14 +276,26 @@ void Text::onSplitRequested(float x, float y)
 {
 	if(boxDefinition != NULL){
 		//first off, we make a copy of the current height
-		textBlock.setHeight(y);
-		if(textBlock.getNumLines() > 1){
+		//textBlock.setHeight(y);
+		cppFont::TextBlock blockCopy = textBlock;
+		blockCopy.setHeight(y);
+		if(blockCopy.getNumLines() > 1){
 			//ok, we have more than one line, so it is ok to split
-			ComponentContainer* clone = splitter->makeSplit();
-			clone->getComponent<Text>()->text = textBlock.getOverflow();
-		}else{
+			std::vector<ComponentContainer*> clone = splitter->makeSplit();
+			if(clone.size()==2){
+				
+				Text* t1 = clone[0]->getComponent<Text>();
+				if(box != NULL)
+					t1->onWidthChanged(box->contentSize.x);
+				//clone[0]->getComponent<Text>()->getTextBlock()->setDirty();
+				//cout << "RELEVANT OVERFLOW" << clone[0]->getComponent<Text>()->getTextOverflow() << endl;
+				clone[1]->getComponent<Text>()->text = t1->getTextOverflow();
+			}
+			//clone->getComponent<Text>()->text = textBlock.getOverflow();
+		}
+		/*else{ //TO KILL?
 			//restore the original height
 			onHeightChanged(box->contentSize.y);
-		}
+		}*/
 	}
 }

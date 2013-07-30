@@ -11,6 +11,7 @@
 #include "assert.h"
 #include "nano_signal_slot.hpp"
 #include "Unit.h"
+#include "BaseTypes.h"
 
 namespace boxModel {
 
@@ -27,7 +28,7 @@ public:
 
 protected:
 	Component():components(NULL) {};
-	~Component() {};
+	~Component();
 
 	virtual void setup() {};
 
@@ -43,6 +44,8 @@ void componentDependencyWarning(std::string sender, std::string requirement);
 
 class ComponentContainer {
 private:
+
+
 
 	class ComponentSignalHelperBase {
 	public:
@@ -75,6 +78,10 @@ private:
 	};
 
 public:
+	ComponentContainer() {
+		disabled = false;
+	}
+
 	void flush() {
 		for(unsigned int i = 0; i < getNumComponents(); i++) {
 			getComponent(i)->onFlush();
@@ -125,13 +132,25 @@ public:
 
 	template <class ComponentType>
 	ComponentType* getComponent() {
-		assert(hasComponent<ComponentType>() && "component type not found");
+		//assert(hasComponent<ComponentType>() && "component type not found");
 		return static_cast<ComponentType*>(components[typeid(ComponentType)]);
 	}
 
 	template <class ComponentType>
 	bool hasComponent() {
 		return components.find(typeid(ComponentType)) != components.end();
+	}
+	
+	void removeComponent(Component* component){
+		std::unordered_map<std::type_index, Component*>::iterator pos = components.end();
+		for(std::unordered_map<std::type_index, Component*>::iterator it = components.begin(); it != components.end();it++){
+			if(it->second == component){
+				pos = it;
+				break;
+			}
+		}
+		if(pos != components.end())
+			components.erase(pos);
 	}
 
 	//return a signal to attach to a specific component creation
@@ -171,6 +190,8 @@ public:
 			u->setContainerSize(y);
 		}
 	}
+
+	Value<bool> disabled;
 
 private:
 	std::vector<Unit*> units;

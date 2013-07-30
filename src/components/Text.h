@@ -37,7 +37,7 @@ public:
 	
 	void copyFrom(Text* text);
 	
-	cppFont::TextBlock& getTextBlock();
+	cppFont::TextBlock* getTextBlock();
 	
 	core::Value<std::string> text;
 
@@ -57,6 +57,8 @@ public:
 	
 	static void enableHyphenation(std::string language, std::string folderName = "hyphenation");
 	static void disableHyphenation();
+	
+	std::string getTextOverflow();
 	
 	core::Value<std::string> fontName;
 	core::Unit fontSize;

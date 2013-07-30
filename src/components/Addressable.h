@@ -54,7 +54,9 @@ public:
 	
 	std::vector<Addressable*> findByAddress(std::string path);
 	std::vector<core::ComponentContainer*> findContainerByAddress(std::string path);
-
+	
+	core::Value<bool> unaddressable;
+	
 private:
 	static std::vector<std::string > idsTaken;
 

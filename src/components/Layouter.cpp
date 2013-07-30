@@ -63,6 +63,8 @@ void  Layouter::layout(bool layoutChildren) {
 	overflowElements.clear();
 
 	for(Stack * stackChild: stack->getChildren()) {
+		if(stackChild->components->hasComponent<Splitter>())
+			stackChild->components->getComponent<Splitter>()->merge();
 		if(stackChild->components->hasComponent<Box>()) {
 			Box* child = stackChild->components->getComponent<Box>();
 			placeBox(child);
@@ -74,33 +76,45 @@ void  Layouter::layout(bool layoutChildren) {
 		Rectangle bounds;
 		bounds.width = box->contentSize.x;
 		bounds.height = box->contentSize.y;
-
+		
 		Rectangle childBounds;
 		
 		//loop a copy of the element list
 		std::vector<ComponentContainer*> overflowElementsCopy = overflowElements;
-		
+
 		for(ComponentContainer* container: overflowElementsCopy) {
-			if(container->hasComponent<Box>()) {
-				Box* child = container->getComponent<Box>();
-				childBounds.x = child->position.x;
-				childBounds.y = child->position.y;
-				childBounds.width = child->size.x;
-				childBounds.height = child->size.y;
-				if(bounds.intersects(childBounds)) {
-					Rectangle r = bounds.getIntersection(childBounds);
-					if(container->hasComponent<Splitter>()){
+			//only check for overlapping if a splitter is present
+			if(container->hasComponent<Splitter>()) {
+				
+				if(container->hasComponent<Box>()) {
+					Box* child = container->getComponent<Box>();
+					childBounds.x = child->position.x;
+					childBounds.y = child->position.y;
+					childBounds.width = child->size.x;
+					childBounds.height = child->size.y;
+					if(bounds.intersects(childBounds)) {
+						Rectangle r = bounds.getIntersection(childBounds);
+						
 						Splitter* splitter = container->getComponent<Splitter>();
 						//request the split and if it happens, remove the component from overflow list and add the new splittet item
-						if(splitter->requestSplit(r.width, r.height)){
-							std::vector<ComponentContainer*>::iterator itPos = std::remove(overflowElements.begin(), overflowElements.end(), container);
-							itPos = overflowElements.erase(itPos, overflowElements.end());
-							//cout << splitter->getSplit() << endl;
-							overflowElements.insert(overflowElements.begin(), splitter->getSplit());
+						if(splitter->requestSplit(r.width, r.height)) {
+							
+							//stack->removeChildFromContainer(container);
+							
+							std::vector<ComponentContainer*>::iterator itPos = std::find(overflowElements.begin(), overflowElements.end(), container);//std::remove(overflowElements.begin(), overflowElements.end(), container);
+							overflowElements.erase(itPos);
+							
+							std::vector<ComponentContainer*> splits = splitter->getSplit();
+							
+							stack->addChildFromContainer(splits[0]);
+
+							overflowElements.insert(itPos, splits[1]);
 						}
 					}
+				
 				}
-			}
+			}//end check for splitter
+			
 		}
 		//now if the size is still greater than 0, we can go ahead with the overflowed signal
 		if(overflowElements.size() > 0)
@@ -183,7 +197,6 @@ void  Layouter::onContentSizeChanged(core::Point p) {
 }
 
 void  Layouter::onChildRemoved(Stack* child) {
-
 	if(child->components->hasComponent<BoxDefinition>()) {
 		child->components->getComponent<BoxDefinition>()->floating.changed.disconnect<Layouter, &Layouter::onChildFloatingChanged>(this);
 	}
@@ -194,6 +207,12 @@ void  Layouter::onChildRemoved(Stack* child) {
 }
 
 void  Layouter::onChildAdded(Stack* child) {
+	/*
+	if(child->components->hasComponent<Splitter>()){
+		if(child->components->getComponent<Splitter>()->isSplitted())
+			return;
+	}
+	*/
 	if(child->components->hasComponent<BoxDefinition>()) {
 		BoxDefinition* boxDef = child->components->getComponent<BoxDefinition>();
 		boxDef->floating.changed.connect<Layouter, &Layouter::onChildFloatingChanged>(this);
@@ -206,7 +225,7 @@ void  Layouter::onChildAdded(Stack* child) {
 	if(child->components->hasComponent<Box>()) {
 		Box* childBox = child->components->getComponent<Box>();
 		childBox->outerSize.changed.connect<Layouter, &Layouter::onChildSizeChanged>(this);
-		placeBox(childBox);
+		//placeBox(childBox);
 		if(boxDefinition != NULL)
 			boxDefinition->recalculateBoxSize();
 	}
