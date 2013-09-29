@@ -24,21 +24,25 @@ public:
 	
 	std::vector<core::ComponentContainer*> makeSplit();
 	std::vector<core::ComponentContainer*> getSplit();
-	bool isSplitted();
 	
+	core::Value<bool> hasSplits;
+	core::Value<bool> isSplit;
+
 private:
+	void markAsSplit(Splitter* splitter);
 	void onBoxDefinition(BoxDefinition* boxDefinition);
 	void onBox(Box* box);
 	void onStack(Stack* stack);
 	
 	std::vector<core::ComponentContainer*> splits;
 	core::Point splitPosition;
-	bool hasSplit;
+	
 	core::Unit originalWidth;
 	core::Unit originalHeight;
 	BoxDefinition* boxDefinition;
 	Box* box;
 	Stack* stack;
+	Splitter* splitter;
 };
 
 }

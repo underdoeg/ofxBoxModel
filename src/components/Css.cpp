@@ -160,7 +160,7 @@ void Css::onChildAdded(Stack* stack){
 	Stack* parent = stack;
 	while(parent->hasParent()){
 		parent = parent->getParent();
-		if(parent->components->hasComponent<Css>()){
+		if(parent != NULL && parent->components->hasComponent<Css>()){
 			parent->components->getComponent<Css>()->applyCss();
 		}
 	}

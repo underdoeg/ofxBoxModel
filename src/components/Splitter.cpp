@@ -4,111 +4,96 @@ using namespace boxModel::core;
 using namespace boxModel::components;
 using namespace std;
 
-void Splitter::setup()
-{
-	hasSplit = false;
+void Splitter::setup() {
+	hasSplits = false;
+	isSplit = false;
 	boxDefinition = NULL;
 	LISTEN_FOR_COMPONENT(BoxDefinition, Splitter, onBoxDefinition)
 	LISTEN_FOR_COMPONENT(Box, Splitter, onBox)
 	LISTEN_FOR_COMPONENT(Stack, Splitter, onStack)
 }
 
-void Splitter::onBoxDefinition(BoxDefinition* bd)
-{
+void Splitter::onBoxDefinition(BoxDefinition* bd) {
 	boxDefinition = bd;
 }
 
-void Splitter::onBox(Box* b)
-{
+void Splitter::onBox(Box* b) {
 	box = b;
 }
 
-void Splitter::onStack(Stack* s)
-{
+void Splitter::onStack(Stack* s) {
 	stack = s;
 }
 
-void Splitter::onFlush()
-{
+void Splitter::onFlush() {
 }
 
-std::vector<ComponentContainer*> Splitter::makeSplit()
-{
-	if(!hasSplit){
-		merge();
-		splits.clear();
+void Splitter::markAsSplit(Splitter* s) {
+	isSplit = true;
+	splitter = s;
+}
+
+std::vector<ComponentContainer*> Splitter::makeSplit() {
+	std::vector<ComponentContainer*> ret;
+	if(!hasSplits) {
+		float splitHeight = box->size.y - splitPosition.y;
+		//if(!isSplit) {
+		cout << "SPLITTY SPLIT" << endl;
+		//merge();
 		ComponentContainer* split1 = components->clone();
+		split1->getComponent<Splitter>()->markAsSplit(this);
 		ComponentContainer* split2 = components->clone();
-		
-		if(stack != NULL){
-			//stack->removeFromParent();
+		split2->getComponent<Splitter>()->markAsSplit(this);
+
+		if(stack != NULL && stack->hasParent()) {
+			//TODO: is this necessary?
+			stack->getParent()->addChildContainer(split1);
+			stack->getParent()->addChildContainer(split2);
 		}
-		
-		if(boxDefinition != NULL && box != NULL){
-			float splitHeight = box->size.y - splitPosition.y;
+
+		if(boxDefinition != NULL && box != NULL) {
 			split1->getComponent<BoxDefinition>()->height = splitPosition.y;
 			split1->getComponent<BoxDefinition>()->height = Unit::Pixel;
-			
+
 			split2->getComponent<BoxDefinition>()->height = Unit::Pixel;
 			split2->getComponent<BoxDefinition>()->height = splitHeight;
 		}
-		
+
 		splits.push_back(split1);
 		splits.push_back(split2);
-		hasSplit = true;
-		
-		/*
-		if(boxDefinition != NULL && box != NULL){
-			
-			
-			originalWidth = boxDefinition->width;
-			originalHeight = boxDefinition->height;
-			boxDefinition->height = splitPosition.y;
-			boxDefinition->height = Unit::Pixel;
-			
-			BoxDefinition* boxDefSplit = split->getComponent<BoxDefinition>();
-			boxDefSplit->height = Unit::Pixel;
-			boxDefSplit->height = splitHeight;
-		}
-		curSplitStatus = true;
-		if(split->hasComponent<Addressable>()){
-			split->getComponent<Addressable>()->unaddressable = true;
-		}
-		*/
+
+		ret.push_back(split1);
+		ret.push_back(split2);
+		hasSplits = true;
+	} else {
+		cout << "NO SPLIT!" << endl;
 	}
+	return ret;
+}
+
+std::vector<ComponentContainer*> Splitter::getSplits() {
 	return splits;
 }
 
-std::vector<ComponentContainer*> Splitter::getSplit()
-{
-	return splits;
-}
-
-bool Splitter::requestSplit(float x, float y)
-{
-	if(box != NULL){
-		if(x != box->size.x){
+bool Splitter::requestSplit(float x, float y) {
+	if(box != NULL) {
+		if(x != box->size.x) {
 			debug::warning("SPLITTING X OVERFLOW IS NOT SUPPORTED");
 		}
 	}
 	splitPosition.set(x, y);
-	hasSplit = false;
+	hasSplits = false;
 	splitRequested(x, y);
-	return hasSplit;
+	return hasSplits;
 }
 
-void Splitter::merge()
-{
-	hasSplit = false;
-	if(splits.size() != 2)
-		return;
-	delete splits[0];
-	delete splits[1];
-	splits.clear();
-	//delete split;
-}
-
-bool Splitter::isSplitted()
-{
-	return hasSplit;
+void Splitter::merge() {
+	if(hasSplits) {
+		hasSplits = false;
+		for(ComponentContainer* comp: splits) {
+			cout << "GOING TO MERGE" << endl;
+			delete comp;
+		}
+		splits.clear();
+	}
 }

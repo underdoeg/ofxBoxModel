@@ -5,7 +5,7 @@ using namespace boxModel::core;
 
 using namespace boxModel::components;
 
-Linker::Linker():linker(NULL) {
+Linker::Linker():linkerTo(NULL) {
 
 }
 
@@ -16,6 +16,7 @@ Linker::~Linker() {
 void Linker::setup() {
 	LISTEN_FOR_COMPONENT(Layouter, Linker, onLayouter)
 	LISTEN_FOR_COMPONENT(Serializer, Linker, onSerializer)
+	LISTEN_FOR_COMPONENT(Stack, Linker, onStack)
 }
 
 void Linker::copyFrom(Linker* linker)
@@ -26,6 +27,10 @@ void Linker::copyFrom(Linker* linker)
 void Linker::onLayouter(Layouter* l) {
 	layouter = l;
 	layouter->overflowed.connect<Linker, &Linker::onOverflow>(this);
+}
+
+void Linker::onStack(Stack* s) {
+	stack = s;
 }
 
 void Linker::onSerializer(Serializer* ser) {
@@ -46,7 +51,7 @@ void Linker::onDeserialize(core::VariantList& variants) {
 
 void Linker::updateLinkTo()
 {
-	if(linker == NULL && linkToAddress.size()>0) {
+	if(linkerTo == NULL && linkToAddress.size()>0) {
 		if(components->hasComponent<Stack>()) {
 			Stack* stack = components->getComponent<Stack>();
 			stack = stack->getUltimateParent();
@@ -63,12 +68,12 @@ void Linker::updateLinkTo()
 void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
 	updateLinkTo();
 
-	if(linker == NULL)
+	if(linkerTo == NULL)
 		return;
 
-	if(linker->components->hasComponent<Stack>()) {
+	if(linkerTo->components->hasComponent<Stack>()) {
 		//now add the overflowed components to the next linker
-		Stack* linkerStack = linker->components->getComponent<Stack>();
+		Stack* linkerStack = linkerTo->components->getComponent<Stack>();
 		linkerStack->addChildren(compList);
 		
 		/*
@@ -78,16 +83,76 @@ void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
 		}
 		*/
 	}
+	overflowed.insert(overflowed.end(), compList.begin(), compList.end());
 	
-	linkedTo(linker);
+	//add listener to remove a container if it gets deleted
+	for(ComponentContainer* c: overflowed){
+		c->deleted.connect<Linker, &Linker::onContainerDeleted>(this);
+	}
+	
+	linkedTo(linkerTo);
+}
+
+void Linker::unlink()
+{
+	cout << "UNLINK " << overflowed.size() << endl;
+	if(stack != NULL){
+		
+		for(ComponentContainer* c: overflowed){
+			c->deleted.disconnect<Linker, &Linker::onContainerDeleted>(this);
+		}
+		stack->addChildren(overflowed);
+		
+		overflowed.clear();
+	}
 }
 
 void Linker::linkTo(Linker* l) {
-	linker = l;
+	if(linkerTo == l)
+		return;
+	if(linkerTo != NULL)
+		linkerTo->removeLinkerFrom(this);
+	linkerTo = l;
+	linkerTo->addLinkerFrom(this);
+	if(linkerTo->components->hasComponent<Layouter>()){
+		linkerTo->components->getComponent<Layouter>()->preLayouted.connect<Linker, &Linker::onPreLayout>(this);
+	}
 }
 
 Linker* Linker::getLinkTo()
 {
 	updateLinkTo();
-	return linker;
+	return linkerTo;
+}
+
+void Linker::onContainerDeleted(core::ComponentContainer* container)
+{
+	overflowed.erase(std::remove(overflowed.begin(), overflowed.end(), container), overflowed.end());
+}
+
+void Linker::onLayout()
+{
+	/*
+	if(layouter != NULL)
+		layouter->layout();
+	*/
+}
+
+void Linker::onPreLayout()
+{
+	//unlink();
+}
+
+void Linker::addLinkerFrom(Linker* linker)
+{
+	if(linker->components->hasComponent<Layouter>()){
+		linker->components->getComponent<Layouter>()->layouted.connect<Linker, &Linker::onLayout>(this);
+	}
+}
+
+void Linker::removeLinkerFrom(Linker* linker)
+{
+	if(linker->components->hasComponent<Layouter>()){
+		linker->components->getComponent<Layouter>()->layouted.disconnect<Linker, &Linker::onLayout>(this);
+	}
 }

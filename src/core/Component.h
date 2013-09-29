@@ -22,7 +22,8 @@ class ComponentContainer;
 class Component {
 public:
 	ComponentContainer* components;
-
+	
+	virtual void onDelete() {};
 	virtual void onFlush() {};
 	virtual void copyFrom(Component* component) {};
 
@@ -44,8 +45,6 @@ void componentDependencyWarning(std::string sender, std::string requirement);
 
 class ComponentContainer {
 private:
-
-
 
 	class ComponentSignalHelperBase {
 	public:
@@ -80,6 +79,17 @@ private:
 public:
 	ComponentContainer() {
 		disabled = false;
+	}
+	
+	virtual ~ComponentContainer(){
+		sendDelete();
+	}
+	
+	void sendDelete(){
+		for(unsigned int i = 0; i < getNumComponents(); i++) {
+			getComponent(i)->onDelete();
+		}
+		deleted(this);
 	}
 
 	void flush() {
@@ -138,6 +148,8 @@ public:
 
 	template <class ComponentType>
 	bool hasComponent() {
+		if(components.size() == 0)
+			return false;
 		return components.find(typeid(ComponentType)) != components.end();
 	}
 	
@@ -192,6 +204,8 @@ public:
 	}
 
 	Value<bool> disabled;
+	
+	Nano::signal<void(ComponentContainer*)> deleted;
 
 private:
 	std::vector<Unit*> units;

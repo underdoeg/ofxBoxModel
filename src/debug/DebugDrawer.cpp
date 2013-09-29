@@ -16,7 +16,7 @@ DebugDrawer::~DebugDrawer() {
 
 void DebugDrawer::draw(core::ComponentContainer* container) {
 	if(container->hasComponent<Splitter>()){
-		if(container->getComponent<Splitter>()->isSplitted())
+		if(container->getComponent<Splitter>()->hasSplits)
 			return;
 	}
 	if(container->hasComponent<Box>()) {

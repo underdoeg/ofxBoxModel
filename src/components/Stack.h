@@ -20,7 +20,9 @@ public:
 	Stack():parent(NULL) {
 
 	}
-	~Stack() {
+	
+	void onDelete() {
+		cout << "ON DELETE CALLED" << endl;
 		if(hasParent()){
 			parent->removeChild(this);
 		}
@@ -61,6 +63,8 @@ public:
 	}
 	
 	void addChild(Stack* child) {
+		if(child == NULL)
+			return;
 		if(child->getParent() == this)
 			return;
 		if(child->hasParent()){
@@ -80,7 +84,7 @@ public:
 	void removeChild(Stack* child) {
 		if(std::find(children.begin(), children.end(), child)==children.end())
 			return;
-		child->setParent(NULL);
+		child->parent = NULL;
 		children.erase(std::remove(children.begin(), children.end(), child), children.end());
 		childRemoved(child);
 	}
@@ -131,6 +135,9 @@ public:
 	}
 
 	void setParent(Stack* p) {
+		if(parent == p)
+			return;
+		removeFromParent();
 		parent = p;
 		if(p != NULL)
 			parentChanged(p);

@@ -13,26 +13,38 @@ public:
 	Linker();
 	~Linker();
 	void setup();
-	void linkTo(Linker* linker);
+	void linkTo(Linker* linkerTo);
+	void unlink();
 	Linker* getLinkTo();
-	Nano::signal<void(Linker* linker)> linkedTo;
-	Nano::signal<void(Linker* linker)> movedTo;
+	Nano::signal<void(Linker* linkerTo)> linkedTo;
+	Nano::signal<void(Linker* linkerTo)> movedTo;
 	
-	void copyFrom(Linker* linker);
+	void copyFrom(Linker* linkerTo);
 	
 private:
+	void addLinkerFrom(Linker* linker);
+	void removeLinkerFrom(Linker* linker);
 	void updateLinkTo();
+	void onContainerDeleted(core::ComponentContainer* container);
 
 	void onLayouter(Layouter* layouter);
 	void onSerializer(Serializer* s);
+	void onStack(Stack* stack);
+	
+	void onLayout();
+	void onPreLayout();
+
 	void onSerialize(core::VariantList& variants);
 	void onDeserialize(core::VariantList& variants);
 	
 	void onOverflow(std::vector<core::ComponentContainer*> components);
 	
-	Linker* linker;
+	Linker* linkerTo;
+	//Linker* linkerFrom;
 	Layouter* layouter;
+	Stack* stack;
 	string linkToAddress;
+	std::vector<core::ComponentContainer*> overflowed;
 };
 
 }

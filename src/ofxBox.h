@@ -32,11 +32,9 @@ public:
 		addComponent<boxModel::components::Linker>(this);
 		addComponent<boxModel::components::Splitter>(this);
 	}
-	
-	~ofxBox()
-	{
-	}
-	
+
+	virtual ~ofxBox(){};
+
 	virtual string getType(){
 		return "box";
 	}

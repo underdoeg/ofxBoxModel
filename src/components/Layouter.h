@@ -24,6 +24,8 @@ public:
 	virtual void layout(bool layoutChildren=true);
 
 	Nano::signal<void(std::vector<core::ComponentContainer*>)> overflowed;
+	Nano::signal<void()> preLayouted;
+	Nano::signal<void()> layouted;
 	
 	void onFlush();
 	

@@ -238,7 +238,6 @@ void Text::onLinker(Linker* linker)
 
 void Text::onLinked(Linker* link)
 {
-	//cout << "LINKI LINKI" << endl;
 }
 
 void Text::onSerializer(Serializer* ser) {
@@ -274,28 +273,26 @@ void Text::onSplitter(Splitter* spl)
 
 void Text::onSplitRequested(float x, float y)
 {
+
 	if(boxDefinition != NULL){
-		//first off, we make a copy of the current height
-		//textBlock.setHeight(y);
-		cppFont::TextBlock blockCopy = textBlock;
-		blockCopy.setHeight(y);
-		if(blockCopy.getNumLines() > 1){
+
+		if(textBlock.getNumLines() > 1){
 			//ok, we have more than one line, so it is ok to split
-			std::vector<ComponentContainer*> clone = splitter->makeSplit();
-			if(clone.size()==2){
+			std::vector<ComponentContainer*> clones = splitter->makeSplit();
+
+			if(clones.size()==2){
 				
-				Text* t1 = clone[0]->getComponent<Text>();
-				if(box != NULL)
-					t1->onWidthChanged(box->contentSize.x);
-				//clone[0]->getComponent<Text>()->getTextBlock()->setDirty();
-				//cout << "RELEVANT OVERFLOW" << clone[0]->getComponent<Text>()->getTextOverflow() << endl;
-				clone[1]->getComponent<Text>()->text = t1->getTextOverflow();
+				Text* t1 = clones[0]->getComponent<Text>();
+				
+				//cout << t1->getTextOverflow() << endl;
+				clones[1]->getComponent<Text>()->text = t1->getTextOverflow();
+				//clones[1]->getComponent<Text>()->text = "HELLO";
+				
+				if(boxDefinition != NULL){
+					//we set the height explicitely to the height of the text field, because of the line height the splitted height is too short
+					clones[1]->getComponent<BoxDefinition>()->height = clones[1]->getComponent<Text>()->getTextBlock()->getHeight();
+				}
 			}
-			//clone->getComponent<Text>()->text = textBlock.getOverflow();
 		}
-		/*else{ //TO KILL?
-			//restore the original height
-			onHeightChanged(box->contentSize.y);
-		}*/
 	}
 }

@@ -18,6 +18,8 @@ class Composite: public ComponentContainer, public components::Addressable, publ
 public:
 	Composite();
 	
+	virtual ~Composite();
+	
 	Composite* clone();
 	
 	template <class Type>
@@ -27,7 +29,6 @@ public:
 		return t;
 	}
 	
-	void flush();
 private:
 
 };

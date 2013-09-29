@@ -18,8 +18,7 @@ bool Addressable::isType(std::string Addressable) {
 	return getType() == Addressable;
 }
 
-void Addressable::setType(std::string t)
-{
+void Addressable::setType(std::string t) {
 	type = t;
 }
 
@@ -139,14 +138,13 @@ std::vector<Addressable*> Addressable::findByAddress(std::string path) {
 	//remove duplicates
 	sort( ret.begin(), ret.end() );
 	ret.erase( unique( ret.begin(), ret.end() ), ret.end() );
-	
+
 	return ret;
 }
 
-std::vector<ComponentContainer*> Addressable::findContainerByAddress(std::string path)
-{
+std::vector<ComponentContainer*> Addressable::findContainerByAddress(std::string path) {
 	std::vector<ComponentContainer*> ret;
-	for(Addressable* addr: findByAddress(path)){
+	for(Addressable* addr: findByAddress(path)) {
 		ret.push_back(addr->components);
 	}
 	return ret;
@@ -162,8 +160,10 @@ std::vector<Addressable*> Addressable::findByClass(std::string className, Addres
 	Stack* stack = root->components->getComponent<Stack>();
 
 	for(Stack* stackChild: stack->getChildren()) {
-		std::vector<Addressable*> v = findByClass(className, stackChild->components->getComponent<Addressable>());
-		ret.insert( ret.end(), v.begin(), v.end() );
+		if(stackChild->components->hasComponent<Addressable>()) {
+			std::vector<Addressable*> v = findByClass(className, stackChild->components->getComponent<Addressable>());
+			ret.insert( ret.end(), v.begin(), v.end() );
+		}
 	}
 
 	return ret;
@@ -178,8 +178,10 @@ std::vector<Addressable*> Addressable::findById(std::string idName, Addressable*
 	Stack* stack = root->components->getComponent<Stack>();
 
 	for(Stack* stackChild: stack->getChildren()) {
-		std::vector<Addressable*> v = findById(idName, stackChild->components->getComponent<Addressable>());
-		ret.insert( ret.end(), v.begin(), v.end() );
+		if(stackChild->components->hasComponent<Addressable>()) {
+			std::vector<Addressable*> v = findById(idName, stackChild->components->getComponent<Addressable>());
+			ret.insert( ret.end(), v.begin(), v.end() );
+		}
 	}
 
 	return ret;
@@ -194,18 +196,19 @@ std::vector<Addressable*> Addressable::findByType(std::string typeName, Addressa
 	Stack* stack = root->components->getComponent<Stack>();
 
 	for(Stack* stackChild: stack->getChildren()) {
-		std::vector<Addressable*> v = findByType(typeName, stackChild->components->getComponent<Addressable>());
-		ret.insert( ret.end(), v.begin(), v.end() );
+		if(stackChild->components->hasComponent<Addressable>()) {
+			std::vector<Addressable*> v = findByType(typeName, stackChild->components->getComponent<Addressable>());
+			ret.insert( ret.end(), v.begin(), v.end() );
+		}
 	}
 
 	return ret;
 }
 
-void Addressable::copyFrom(Addressable* addr)
-{
+void Addressable::copyFrom(Addressable* addr) {
 	setType(addr->getType());
 	setClasses(addr->getClasses());
-	
+
 	if(addr->hasId())
 		setId(addr->getId());
 }

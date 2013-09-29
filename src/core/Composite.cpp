@@ -7,11 +7,13 @@ Composite::Composite() {
 	addComponent<boxModel::components::Addressable>(this);
 }
 
-void Composite::flush() {
-	
-}
-
 Composite* Composite::clone()
 {
 	return clone<Composite>();
+}
+
+Composite::~Composite()
+{
+	sendDelete();
+	//ComponentContainer::~ComponentContainer();
 }
