@@ -19,7 +19,7 @@ public:
 
 	template <class Type>
 	static Type* load(std::string path) {
-		return core::castTo<core::Composite, Type>(load(path));
+		return core::castTo<core::ComponentContainer, Type>(load(path));
 	}
 
 	static core::ComponentContainer* load(std::string path) {

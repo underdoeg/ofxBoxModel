@@ -23,7 +23,7 @@ public:
 	void merge();
 	
 	std::vector<core::ComponentContainer*> makeSplit();
-	std::vector<core::ComponentContainer*> getSplit();
+	std::vector<core::ComponentContainer*> getSplits();
 	
 	core::Value<bool> hasSplits;
 	core::Value<bool> isSplit;

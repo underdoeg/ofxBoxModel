@@ -29,7 +29,9 @@ class Instancer {
 public:
 	Instancer();
 	~Instancer();
-
+	
+	static void setup();
+	
 	template <class InstanceType>
 	static void addInstancer(std::string name) {
 		instancers[name] = new InstancerHelper<InstanceType>();
@@ -58,6 +60,7 @@ public:
 	}
 	
 	static core::Composite* createInstance(std::string type){
+		setup();
 		if(instancers.find(type) == instancers.end()){
 			debug::warning(type+" not found in instancers");
 			return NULL;
@@ -67,6 +70,7 @@ public:
 
 private:
 	static std::unordered_map<std::string, InstancerHelperBase*> instancers;
+	static bool isSetup;
 };
 
 }

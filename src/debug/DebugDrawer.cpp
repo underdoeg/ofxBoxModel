@@ -80,7 +80,8 @@ void DebugDrawer::drawBox(Box* box) {
 	if(style->hasBgColor()) {
 		ofFill();
 		ofSetColor(bgcol.r,bgcol.g,bgcol.b);
-		ofRect(box->getGlobalPosition().x,box->getGlobalPosition().y,box->size.x, box->size.y);
+		ofRect(box->getGlobalPosition().x, box->getGlobalPosition().y, box->size.x, box->size.y);
+		cout << box->getGlobalPosition().x << " - " << box->getGlobalPosition().y << " - " << box->size.x << " - " << box->size.y << endl;
 	}
 
 	//

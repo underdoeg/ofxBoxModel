@@ -21,7 +21,7 @@ public:
 	Nano::signal<void(Type)> typeChanged;
 	Nano::signal<void(float)> containerSizeChanged;
 
-	Unit():bSet(false),value(0),type(Pixel) {
+	Unit():bSet(false),value(0),type(Pixel),containerSize(0),bContainerSizeSet(false) {
 	}
 
 	void set(float value, Type type) {
@@ -57,13 +57,13 @@ public:
 	}
 
 	void set(float val) {
-
-		if(bSet && val == value && type != Auto)
+		if(bSet && val == value)
 			return;
 		bSet = true;
-		value = val;
-		if(type == Auto)
+		if(type == Auto){
 			set(Pixel);
+		}
+		value = val;
 		dispatchChanged();
 		valueChanged(value);
 	}
@@ -97,13 +97,14 @@ public:
 	}
 
 	float getValueCalculated() {
-		return getValueCalculated(containerSize);
+		return getValueCalculated(containerSize, bContainerSizeSet);
 	}
 
 	void setContainerSize(float s) {
-		if(containerSize == s)
+		if(bContainerSizeSet && containerSize == s)
 			return;
 		containerSize = s;
+		bContainerSizeSet = true;
 		if(type == Percent){
 			dispatchChanged();
 		}
@@ -145,9 +146,11 @@ private:
 		changed(this);
 	}
 
-	float getValueCalculated(float parentSize) { //helper function, only for internal use
+	float getValueCalculated(float parentSize, bool hasParent) { //helper function, only for internal use
 		if(type == Percent) {
-			return value*.01*parentSize;
+			if(hasParent)
+				return value*.01*parentSize;
+			else return value;
 		} else if(type == Auto)
 			return 0;
 		return value;
@@ -158,6 +161,7 @@ private:
 	Type type;
 
 	float containerSize;
+	bool bContainerSizeSet;
 
 	friend class BoxModel;
 };

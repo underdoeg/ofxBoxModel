@@ -4,6 +4,8 @@
 
 #include "ofxBox.h"
 #include "debug/DebugDrawer.h"
+#include "tools/Instancer.h"
+#include "tools/Xml.h"
 
 class CustomBox: public ofxBox{
 	string getType(){
@@ -29,6 +31,6 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
 		
-		ofxBox::DebugDrawer debugDrawer;
+		boxModel::debug::DebugDrawer debugDrawer;
 		ofxBox* rootBox;
  };

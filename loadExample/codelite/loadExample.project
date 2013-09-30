@@ -5,6 +5,157 @@
       <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
     </Plugin>
   </Plugins>
+  <VirtualDirectory Name="ofxBoxModel">
+    <VirtualDirectory Name="src">
+      <VirtualDirectory Name="debug">
+        <File Name="../../src/debug/Print.cpp"/>
+        <File Name="../../src/debug/DebugDrawer.cpp"/>
+        <File Name="../../src/debug/DebugDrawer.h"/>
+        <File Name="../../src/debug/Print.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="core">
+        <File Name="../../src/core/Globals.h"/>
+        <File Name="../../src/core/Unit.h"/>
+        <File Name="../../src/core/Utils.h"/>
+        <File Name="../../src/core/Globals.cpp"/>
+        <File Name="../../src/core/Component.cpp"/>
+        <File Name="../../src/core/Utils.cpp"/>
+        <File Name="../../src/core/Composite.h"/>
+        <File Name="../../src/core/Component.h"/>
+        <File Name="../../src/core/Composite.cpp"/>
+        <File Name="../../src/core/BaseTypes.h"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="tools">
+        <File Name="../../src/tools/Instancer.cpp"/>
+        <File Name="../../src/tools/Instancer.h"/>
+        <File Name="../../src/tools/Xml.h"/>
+        <File Name="../../src/tools/Templater.h"/>
+        <File Name="../../src/tools/Xml.cpp"/>
+        <File Name="../../src/tools/Templater.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="components">
+        <File Name="../../src/components/Text.h"/>
+        <File Name="../../src/components/Splitter.cpp"/>
+        <File Name="../../src/components/Text.cpp"/>
+        <File Name="../../src/components/Addressable.cpp"/>
+        <File Name="../../src/components/Stack.h"/>
+        <File Name="../../src/components/Linker.h"/>
+        <File Name="../../src/components/Box.h"/>
+        <File Name="../../src/components/Style.cpp"/>
+        <File Name="../../src/components/BoxDefinition.cpp"/>
+        <File Name="../../src/components/Css.h"/>
+        <File Name="../../src/components/Layouter.h"/>
+        <File Name="../../src/components/Style.h"/>
+        <File Name="../../src/components/Serializer.cpp"/>
+        <File Name="../../src/components/Box.cpp"/>
+        <File Name="../../src/components/BoxDefinition.h"/>
+        <File Name="../../src/components/Linker.cpp"/>
+        <File Name="../../src/components/Splitter.h"/>
+        <File Name="../../src/components/Addressable.h"/>
+        <File Name="../../src/components/Serializer.h"/>
+        <File Name="../../src/components/Layouter.cpp"/>
+        <File Name="../../src/components/Css.cpp"/>
+      </VirtualDirectory>
+      <File Name="../../src/ofxBox.h"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="libs">
+      <VirtualDirectory Name="nano-signal-slot">
+        <VirtualDirectory Name="include">
+          <File Name="../../libs/nano-signal-slot/include/nano_signal_slot.hpp"/>
+        </VirtualDirectory>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <VirtualDirectory Name="saveExample">
+      <VirtualDirectory Name="bin">
+        <File Name="../../saveExample/bin/saveExample"/>
+        <File Name="../../saveExample/bin/saveExample_debug"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="src">
+        <File Name="../../saveExample/src/testApp.cpp"/>
+        <File Name="../../saveExample/src/testApp.h"/>
+        <File Name="../../saveExample/src/main.cpp"/>
+      </VirtualDirectory>
+      <File Name="../../saveExample/Makefile"/>
+    </VirtualDirectory>
+  </VirtualDirectory>
+  <VirtualDirectory Name="cppFont">
+    <VirtualDirectory Name="ofExample">
+      <VirtualDirectory Name="bin">
+        <VirtualDirectory Name="data">
+          <VirtualDirectory Name="hyphenate">
+            <File Name="../../../cppFont/ofExample/bin/data/hyphenate/de"/>
+            <File Name="../../../cppFont/ofExample/bin/data/hyphenate/fr"/>
+            <File Name="../../../cppFont/ofExample/bin/data/hyphenate/es"/>
+            <File Name="../../../cppFont/ofExample/bin/data/hyphenate/de-DE-1901"/>
+            <File Name="../../../cppFont/ofExample/bin/data/hyphenate/en"/>
+            <File Name="../../../cppFont/ofExample/bin/data/hyphenate/de-1901"/>
+          </VirtualDirectory>
+        </VirtualDirectory>
+        <File Name="../../../cppFont/ofExample/bin/ofExample_debug"/>
+        <File Name="../../../cppFont/ofExample/bin/ofExample"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="src">
+        <File Name="../../../cppFont/ofExample/src/testApp.cpp"/>
+        <File Name="../../../cppFont/ofExample/src/ofTextBlockDrawer.cpp"/>
+        <File Name="../../../cppFont/ofExample/src/testApp.h"/>
+        <File Name="../../../cppFont/ofExample/src/ofTextBlockDrawer.h"/>
+        <File Name="../../../cppFont/ofExample/src/main.cpp"/>
+      </VirtualDirectory>
+      <File Name="../../../cppFont/ofExample/Makefile"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="libs">
+      <VirtualDirectory Name="libhyphenate">
+        <VirtualDirectory Name="include">
+          <File Name="../../../cppFont/libs/libhyphenate/include/Hyphenator.h"/>
+          <File Name="../../../cppFont/libs/libhyphenate/include/hyphenate.h"/>
+          <File Name="../../../cppFont/libs/libhyphenate/include/HyphenationTree.h"/>
+          <File Name="../../../cppFont/libs/libhyphenate/include/Language.h"/>
+          <File Name="../../../cppFont/libs/libhyphenate/include/HyphenationRule.h"/>
+        </VirtualDirectory>
+        <VirtualDirectory Name="src">
+          <File Name="../../../cppFont/libs/libhyphenate/src/hyphenate.cpp"/>
+          <File Name="../../../cppFont/libs/libhyphenate/src/Hyphenator.cpp"/>
+          <File Name="../../../cppFont/libs/libhyphenate/src/HyphenationTree.cpp"/>
+          <File Name="../../../cppFont/libs/libhyphenate/src/Language.cpp"/>
+          <File Name="../../../cppFont/libs/libhyphenate/src/HyphenationRule.cpp"/>
+        </VirtualDirectory>
+      </VirtualDirectory>
+      <VirtualDirectory Name="utf8">
+        <VirtualDirectory Name="utf8">
+          <File Name="../../../cppFont/libs/utf8/utf8/core.h"/>
+          <File Name="../../../cppFont/libs/utf8/utf8/unchecked.h"/>
+          <File Name="../../../cppFont/libs/utf8/utf8/checked.h"/>
+        </VirtualDirectory>
+        <File Name="../../../cppFont/libs/utf8/utf8.h"/>
+      </VirtualDirectory>
+    </VirtualDirectory>
+    <VirtualDirectory Name="ofLibharuExample">
+      <VirtualDirectory Name="bin">
+        <File Name="../../../cppFont/ofLibharuExample/bin/ofLibharuExample_debug"/>
+        <File Name="../../../cppFont/ofLibharuExample/bin/ofLibharuExample"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="src">
+        <File Name="../../../cppFont/ofLibharuExample/src/libharuTextBlockDrawer.cpp"/>
+        <File Name="../../../cppFont/ofLibharuExample/src/testApp.cpp"/>
+        <File Name="../../../cppFont/ofLibharuExample/src/ofTextBlockDrawer.cpp"/>
+        <File Name="../../../cppFont/ofLibharuExample/src/testApp.h"/>
+        <File Name="../../../cppFont/ofLibharuExample/src/libharuTextBlockDrawer.h"/>
+        <File Name="../../../cppFont/ofLibharuExample/src/ofTextBlockDrawer.h"/>
+        <File Name="../../../cppFont/ofLibharuExample/src/main.cpp"/>
+      </VirtualDirectory>
+      <File Name="../../../cppFont/ofLibharuExample/Makefile"/>
+    </VirtualDirectory>
+    <VirtualDirectory Name="src">
+      <File Name="../../../cppFont/src/TextBlock.cpp"/>
+      <File Name="../../../cppFont/src/TextBlockDrawer.cpp"/>
+      <File Name="../../../cppFont/src/Types.h"/>
+      <File Name="../../../cppFont/src/TextBlockDrawer.h"/>
+      <File Name="../../../cppFont/src/TextBlock.h"/>
+      <File Name="../../../cppFont/src/Font.cpp"/>
+      <File Name="../../../cppFont/src/Types.cpp"/>
+      <File Name="../../../cppFont/src/Font.h"/>
+    </VirtualDirectory>
+  </VirtualDirectory>
   <VirtualDirectory Name="libs">
     <VirtualDirectory Name="pugixml">
       <VirtualDirectory Name="include">
@@ -36,39 +187,10 @@
     <File Name="../config.make"/>
     <File Name="../addons.make"/>
   </VirtualDirectory>
-  <VirtualDirectory Name="addons">
-    <VirtualDirectory Name="ofxBoxModel">
-      <VirtualDirectory Name="src">
-        <VirtualDirectory Name="core">
-          <File Name="../../src/core/BoxModel.cpp"/>
-          <File Name="../../src/core/BoxModel.h"/>
-          <File Name="../../src/core/TreeNode.h"/>
-          <File Name="../../src/core/Property.h"/>
-          <File Name="../../src/core/Unit.h"/>
-          <File Name="../../src/core/Utils.h"/>
-          <File Name="../../src/core/Utils.cpp"/>
-          <File Name="../../src/core/Addressable.h"/>
-          <File Name="../../src/core/Styleable.h"/>
-          <File Name="../../src/core/Layoutable.h"/>
-          <File Name="../../src/core/CssLoadable.h"/>
-          <File Name="../../src/core/Drawable.h"/>
-          <File Name="../../src/core/XmlLoadable.h"/>
-          <File Name="../../src/core/Serializable.h"/>
-          <File Name="../../src/core/Instanceable.h"/>
-        </VirtualDirectory>
-        <VirtualDirectory Name="debug">
-          <File Name="../../src/debug/DebugDrawer.h"/>
-          <File Name="../../src/debug/DebugDrawer.cpp"/>
-          <File Name="../../src/debug/Print.h"/>
-          <File Name="../../src/debug/Print.cpp"/>
-        </VirtualDirectory>
-        <File Name="../../src/ofxBox.cpp"/>
-        <File Name="../../src/ofxBox.h"/>
-      </VirtualDirectory>
-    </VirtualDirectory>
-  </VirtualDirectory>
+  <VirtualDirectory Name="addons"/>
   <VirtualDirectory Name="data">
     <File Name="../bin/data/style.css"/>
+    <File Name="../bin/data/scene.xml"/>
   </VirtualDirectory>
   <Settings Type="Dynamic Library">
     <GlobalSettings>

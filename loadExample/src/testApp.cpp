@@ -1,14 +1,22 @@
 #include "testApp.h"
 
-
+using namespace boxModel::tools;
+using namespace boxModel::core;
+using namespace boxModel::debug;
 
 //--------------------------------------------------------------
 void testApp::setup() {
 	
 	//add the customBox to the instancer system
-	ofxBox::addInstancer<CustomBox>();
+	Instancer::addInstancer<CustomBox>();
 	
-	rootBox = ofxBox::loadXml(ofToDataPath("scene.xml"));
+	rootBox = Xml::load<ofxBox>(ofToDataPath("scene.xml"));
+	rootBox->loadCss(ofToDataPath("style.css"));
+	
+	rootBox->width = ofGetWidth();
+	rootBox->height = ofGetHeight();
+	
+	rootBox->flush();
 }
 
 //--------------------------------------------------------------
@@ -18,7 +26,7 @@ void testApp::update() {
 
 //--------------------------------------------------------------
 void testApp::draw() {
-	debugDrawer.drawTree(rootBox);
+	debugDrawer.draw(rootBox);
 }
 
 //--------------------------------------------------------------

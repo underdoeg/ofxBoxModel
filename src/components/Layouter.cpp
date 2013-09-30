@@ -134,10 +134,9 @@ void  Layouter::layout(bool layoutChildren) {
 							}
 						}
 					}
-				
 				}
-			}//end check for splitter
-			
+			}
+			//end check for splitter
 		}
 		//now if the size is still greater than 0, we can go ahead with the overflowed signal
 		if(overflowElements.size() > 0)
