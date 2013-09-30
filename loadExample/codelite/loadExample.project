@@ -55,6 +55,8 @@
         <File Name="../../src/components/Serializer.h"/>
         <File Name="../../src/components/Layouter.cpp"/>
         <File Name="../../src/components/Css.cpp"/>
+        <File Name="../../src/components/Mouse.h"/>
+        <File Name="../../src/components/Mouse.cpp"/>
       </VirtualDirectory>
       <File Name="../../src/ofxBox.h"/>
     </VirtualDirectory>
