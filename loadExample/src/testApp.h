@@ -12,8 +12,12 @@ class CustomBox: public ofxBox{
 		return "customBox";
 	}
 	
-	void onMouseMove(float x, float y){
-		cout << "MOVED" << endl;
+	void onMouseEnter(float x, float y){
+		
+	}
+	
+	void onMouseExit(float x, float y){
+		
 	}
 };
 

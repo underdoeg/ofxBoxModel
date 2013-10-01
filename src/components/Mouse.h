@@ -14,6 +14,8 @@ public:
 	Mouse();
 	~Mouse();
 	
+	void setup();
+	
 	core::Point mousePos;
 	core::Point mousePosOld;
 	bool isMouseOver;
@@ -31,12 +33,19 @@ public:
 	Nano::signal<void(float mouseX, float mouseY, int button)> mousePress;
 	Nano::signal<void(float mouseX, float mouseY, int button)> mouseRelease;
 	Nano::signal<void(float mouseX, float mouseY, int button)> mouseDrag;
+	Nano::signal<void(float mouseX, float mouseY, int button)> mouseClick;
 	Nano::signal<void(float mouseX, float mouseY, int button)> mouseReleaseOutside;	
 	Nano::signal<void(float mouseX, float mouseY)> mouseEnter;
 	Nano::signal<void(float mouseX, float mouseY)> mouseExit;
-
 	
-	void setup();
+	Nano::signal<void(float mouseX, float mouseY, Mouse* m)> mouseMoveRef;
+	Nano::signal<void(float mouseX, float mouseY, int button, Mouse* m)> mousePressRef;
+	Nano::signal<void(float mouseX, float mouseY, int button, Mouse* m)> mouseReleaseRef;
+	Nano::signal<void(float mouseX, float mouseY, int button, Mouse* m)> mouseDragRef;
+	Nano::signal<void(float mouseX, float mouseY, int button, Mouse* m)> mouseReleaseOutsideRef;
+	Nano::signal<void(float mouseX, float mouseY, int button, Mouse* m)> mouseClickRef;	
+	Nano::signal<void(float mouseX, float mouseY, Mouse* m)> mouseEnterRef;
+	Nano::signal<void(float mouseX, float mouseY, Mouse* m)> mouseExitRef;
 	
 	void setMousePos(float x, float y);
 	void setMouseButtonPressed(int button);
@@ -48,6 +57,12 @@ private:
 	
 	Stack* stack;
 	Box* box;
+	
+	std::map<int, bool> buttonStates;
+	
+	bool capture;
+	
+	long int lastClick;
 };
 
 }
