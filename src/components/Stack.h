@@ -17,150 +17,52 @@ public:
 	typedef std::vector<Stack*> 	ChildrenList;
 	typedef ChildrenList::iterator 		ChildrenIterator;
 
-	Stack():parent(NULL) {
+	Stack();
 
-	}
-	
-	void onDelete() {
-		cout << "ON DELETE CALLED" << endl;
-		if(hasParent()){
-			parent->removeChild(this);
-		}
-	}
+	void onDelete();
 
-	void setup() {
-		parent = NULL;
-	}
-	
-	void onFlush(){
-		for(unsigned int i = 0; i < getNumChildren(); i++) {
-			getChild(i)->components->flush();
-		}
-	}
+	void setup();
 
-	void onComponentAdded(Component& component) {
+	void onFlush();
 
-	}
+	void onComponentAdded(Component& component);
 
 	/**** BEGIN HIERARCHY FUNCTIONS ****/
-	void addChildren(std::vector<Stack*> children){
-		for(Stack* s: children){
-			addChild(s);
-		}
-	}
-	
-	void addChildren(std::vector<core::ComponentContainer*> compList){
-		for(core::ComponentContainer* comp: compList){
-			if(comp->hasComponent<Stack>()){
-				addChild(comp->getComponent<Stack>());
-			}
-		}
-	}
-	
-	void addChildContainer(core::ComponentContainer* container){
-		if(container->hasComponent<Stack>())
-			addChild(container->getComponent<Stack>());
-	}
-	
-	void addChild(Stack* child) {
-		if(child == NULL)
-			return;
-		if(child->getParent() == this)
-			return;
-		if(child->hasParent()){
-			child->getParent()->removeChild(child);
-		}
-		child->setParent(this);
-		children.push_back(child);
-		childAdded(child);
-	}
-	
-	void addChildFromContainer(core::ComponentContainer* child){
-		if(child->hasComponent<Stack>()){
-			addChild(child->getComponent<Stack>());
-		}
-	}
+	void addChildren(std::vector<Stack*> children);
 
-	void removeChild(Stack* child) {
-		if(std::find(children.begin(), children.end(), child)==children.end())
-			return;
-		child->parent = NULL;
-		children.erase(std::remove(children.begin(), children.end(), child), children.end());
-		childRemoved(child);
-	}
-	
-	void removeChildFromContainer(core::ComponentContainer* child) {
-		if(child->hasComponent<Stack>()){
-			removeChild(child->getComponent<Stack>());
-		}
-	}
-	
-	void removeFromParent(){
-		if(hasParent())
-			parent->removeChild(this);
-	}
-	
-	Stack* operator[](unsigned int index) {
-		return getChild(index);
-	}
+	void addChildren(std::vector<core::ComponentContainer*> compList);
 
-	unsigned int getNumChildren() {
-		return children.size();
-	}
+	void addChildContainer(core::ComponentContainer* container);
+	void addChild(Stack* child);
+	void addChildFromContainer(core::ComponentContainer* child);
 
-	Stack* getChild(unsigned int index) {
-		assert(index < children.size());
-		return children[index];
-	}
+	void removeChild(Stack* child);
+	void removeChildFromContainer(core::ComponentContainer* child);
+	void removeFromParent();
+
+	unsigned int getNumChildren();
+	Stack* operator[](unsigned int index);
+	Stack* getChild(unsigned int index);
 
 	template <class Type>
 	Type* getChild(unsigned int index) {
 		return core::castTo<Stack, Type>(getChild(index));
 	}
 
-	ChildrenIterator childrenBegin() {
-		return children.begin();
-	}
+	ChildrenIterator childrenBegin();
+	ChildrenIterator childrenEnd();
 
-	ChildrenIterator childrenEnd() {
-		return children.end();
-	}
+	bool hasParent();
+	Stack* getParent();
+	void setParent(Stack* p);
 
-	bool hasParent() {
-		return parent != NULL;
-	}
+	ChildrenList getChildren();
+	Stack* getUltimateParent();
 
-	Stack* getParent() {
-		return parent;
-	}
-
-	void setParent(Stack* p) {
-		if(parent == p)
-			return;
-		removeFromParent();
-		parent = p;
-		if(p != NULL)
-			parentChanged(p);
-	}
-
-	ChildrenList getChildren() {
-		return children;
-	};
-	
-	Stack* getUltimateParent(){
-		if(!hasParent())
-			return this;
-		Stack* ret = getParent();
-		while(ret->hasParent()){
-			ret = ret->getParent();
-		}
-		return ret;
-	}
-	
 	Nano::signal<void(Stack*)> childAdded;
 	Nano::signal<void(Stack*)> childRemoved;
 	Nano::signal<void(Stack*)> parentChanged;
-	
+
 private:
 	ChildrenList children;
 	Stack* parent;

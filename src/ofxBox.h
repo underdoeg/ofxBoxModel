@@ -14,11 +14,12 @@
 #include "components/Serializer.h"
 #include "components/Linker.h"
 #include "components/Splitter.h"
+#include "components/Mouse.h"
 
 class ofxBox: public boxModel::core::Composite,
 	public boxModel::components::Box, public boxModel::components::BoxDefinition, public boxModel::components::Style, 
 	public boxModel::components::Css, public boxModel::components::Serializer, public boxModel::components::Linker,
-	public boxModel::components::Splitter
+	public boxModel::components::Splitter, public boxModel::components::Mouse
 {
 public:
 	ofxBox()
@@ -31,6 +32,7 @@ public:
 		addComponent<boxModel::components::Serializer>(this);
 		addComponent<boxModel::components::Linker>(this);
 		addComponent<boxModel::components::Splitter>(this);
+		addComponent<boxModel::components::Mouse>(this);
 	}
 
 	virtual ~ofxBox(){};

@@ -11,6 +11,10 @@ class CustomBox: public ofxBox{
 	string getType(){
 		return "customBox";
 	}
+	
+	void onMouseMove(float x, float y){
+		cout << "MOVED" << endl;
+	}
 };
 
 class testApp : public ofBaseApp{

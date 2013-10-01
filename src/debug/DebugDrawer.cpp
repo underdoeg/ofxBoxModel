@@ -3,6 +3,7 @@
 #include "components/Stack.h"
 #include "components/Style.h"
 #include "components/Text.h"
+#include "components/Mouse.h"
 
 using namespace boxModel::core;
 using namespace boxModel::components;
@@ -133,6 +134,19 @@ void DebugDrawer::drawBox(Box* box) {
 	ofLine(box->getGlobalPosition() + box->contentPosition + core::Point(box->contentSize.x, 0), box->getGlobalPosition() + box->contentPosition + core::Point(0, box->contentSize.y));
 
 	ofPopStyle();
+	
+	if(box->components->hasComponent<Mouse>()){
+	
+		Mouse* mouse = box->components->getComponent<Mouse>();
+		
+		ofPushStyle();
+		
+		ofSetColor(255, 0, 0);
+		ofCircle(box->getGlobalPosition().x + box->contentPosition.x + mouse->mousePos.x, box->getGlobalPosition().y + box->contentPosition.y + mouse->mousePos.y, 3, 3);
+	
+		ofPopStyle();
+	
+	}
 }
 
 

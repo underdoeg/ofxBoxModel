@@ -122,12 +122,26 @@ std::string intToHexString(int i) {
 	if(i == 0)
 		return "00";
 	std::stringstream str;
-	str << std::hex << i;
 	return str.str();
 }
 
+//////////////////////////////////////////////////////////////////
+
+bool rectContains(float x, float y, float rx, float ry, float rw, float rh)
+{
+	if(x < rx)
+		return false;
+	if(y < ry)
+		return false;
+	if(x > rx + rw)
+		return false;
+	if(y > ry + rh)
+		return false;
+	return true;
+}
 
 //end namespace
 }
 
 }
+

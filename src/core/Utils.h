@@ -64,6 +64,11 @@ int stringToInt(std::string s);
 bool stringContains(std::string s, std::string find);
 std::string intToHexString(int i);
 
+/****************************************************************************/
+/* MATH STUFF																*/
+/****************************************************************************/
+bool rectContains(float x, float y, float rx, float ry, float rw, float rh);
+
 }
 
 }

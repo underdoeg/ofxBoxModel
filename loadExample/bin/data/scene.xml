@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <box id="root">
-	<box class="quarter">
+	<customBox class="quarter">
 		
-	</box>
+	</customBox>
 	<box class="quarter">
 		
 	</box>

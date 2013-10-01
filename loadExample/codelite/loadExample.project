@@ -57,6 +57,7 @@
         <File Name="../../src/components/Css.cpp"/>
         <File Name="../../src/components/Mouse.h"/>
         <File Name="../../src/components/Mouse.cpp"/>
+        <File Name="../../src/components/Stack.cpp"/>
       </VirtualDirectory>
       <File Name="../../src/ofxBox.h"/>
     </VirtualDirectory>

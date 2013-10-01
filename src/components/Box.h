@@ -22,8 +22,6 @@ public:
 	
 	void setup();
 	
-	
-	
 	core::Point getGlobalPosition();
 	
 	core::ValuePoint position;
@@ -33,6 +31,12 @@ public:
 	core::ValuePoint contentPosition;
 	
 	void copyFrom(Box* box);
+	
+	bool isInside(core::Point p);
+	bool isInside(float x, float y);
+	
+	bool isInsideContent(core::Point p);
+	bool isInsideContent(float x, float y);
 	
 private:
 	void onStack(Stack* stack);
