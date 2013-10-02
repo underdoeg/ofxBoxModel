@@ -313,3 +313,7 @@ void Layouter::onAutoHeight(float& height) {
 void Layouter::onFlush() {
 	layout();
 }
+
+void Layouter::getInfo(core::Component::Info& info){
+
+}

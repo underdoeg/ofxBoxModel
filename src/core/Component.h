@@ -30,15 +30,19 @@ public:
 	virtual void onFlush() {};
 	virtual void copyFrom(Component* component) {};
 	virtual std::string getName() = 0;
-	virtual Info getInfo(){return Info();};
+	virtual void getInfo(Info& info){};
+	
+	unsigned int getId();
 	
 protected:
-	Component():components(NULL) {};
+	Component();
 	~Component();
 
 	virtual void setup() {};
 
 private:
+	static unsigned int curID;
+	unsigned int id;
 	friend class ComponentContainer;
 	void setup(ComponentContainer* c) {
 		components = c;

@@ -98,3 +98,7 @@ Color Style::parseCssColor(std::string val) {
 	}
 	return Color(r, g, b, a);
 }
+
+void Style::getInfo(core::Component::Info& info){
+
+}

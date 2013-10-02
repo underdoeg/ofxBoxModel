@@ -62,6 +62,8 @@ public:
 	ChildrenList getChildren();
 	Stack* getUltimateParent();
 
+	void getInfo(core::Component::Info& info);
+
 	Nano::signal<void(Stack*)> childAdded;
 	Nano::signal<void(Stack*)> childRemoved;
 	Nano::signal<void(Stack*)> parentChanged;

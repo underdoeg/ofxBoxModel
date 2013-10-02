@@ -24,7 +24,8 @@ public:
 	
 	core::VariantList serialize();
 	void deserialize(core::VariantList values);
-	
+	void getInfo(core::Component::Info& info);
+
 public:
 	void setup();
 };

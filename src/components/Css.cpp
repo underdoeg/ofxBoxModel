@@ -185,3 +185,7 @@ void Css::onDeserialize(core::VariantList& variants) {
 		loadCss(variants.get("css"));
 	}
 }
+
+void Css::getInfo(core::Component::Info& info){
+
+}

@@ -35,6 +35,10 @@ core::VariantList Serializer::serialize()
 	return values;
 }
 
+void Serializer::getInfo(core::Component::Info& info){
+
+}
+
 }
 
 }

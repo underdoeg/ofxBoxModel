@@ -60,8 +60,8 @@ public:
 	static Floating parseCssFloating(std::string val);
 	
 	void copyFrom(BoxDefinition* boxDefinition);
+	void getInfo(core::Component::Info& info);
 
-	
 private:
 	void pFloat(std::string key, std::string value);
 	void pColor(std::string key, std::string value);

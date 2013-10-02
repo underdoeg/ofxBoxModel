@@ -94,6 +94,8 @@ public:
 		return borderColor;
 	}
 
+	void getInfo(core::Component::Info& info);
+
 	static core::Color parseCssColor(std::string val);
 private:
 	void onCss(Css* css);

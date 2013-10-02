@@ -26,7 +26,8 @@ public:
 	bool requestSplit(float x, float y);
 	
 	void merge();
-	
+	void getInfo(core::Component::Info& info);
+
 	std::vector<core::ComponentContainer*> makeSplit();
 	std::vector<core::ComponentContainer*> getSplits();
 	

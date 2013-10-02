@@ -62,6 +62,8 @@ public:
 	static void disableHyphenation();
 	
 	std::string getTextOverflow();
+
+	void getInfo(core::Component::Info& info);
 	
 	core::Value<std::string> fontName;
 	core::Unit fontSize;

@@ -41,6 +41,8 @@ public:
 	bool isInsideContent(core::Point p);
 	bool isInsideContent(float x, float y);
 	
+	void getInfo(core::Component::Info& info);
+	
 private:
 	void onStack(Stack* stack);
 	void onContenSizeChanged(core::Point p);

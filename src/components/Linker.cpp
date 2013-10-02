@@ -160,3 +160,7 @@ void Linker::removeLinkerFrom(Linker* linker)
 		linker->components->getComponent<Layouter>()->layouted.disconnect<Linker, &Linker::onLayout>(this);
 	}
 }
+
+void Linker::getInfo(core::Component::Info& info){
+
+}

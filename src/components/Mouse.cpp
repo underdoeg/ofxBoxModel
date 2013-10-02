@@ -279,6 +279,10 @@ bool Mouse::isMouseOver()
 	return bMouseOver;
 }
 
+void Mouse::getInfo(core::Component::Info& info){
+
+}
+
 } // end namespace
 
 }

@@ -24,7 +24,8 @@ public:
 	Nano::signal<void(Linker* linkerTo)> movedTo;
 	
 	void copyFrom(Linker* linkerTo);
-	
+	void getInfo(core::Component::Info& info);
+
 private:
 	void addLinkerFrom(Linker* linker);
 	void removeLinkerFrom(Linker* linker);

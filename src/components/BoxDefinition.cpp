@@ -291,3 +291,6 @@ void BoxDefinition::pBorderBottom(std::string key, std::string value) {
 	border.bottom = Unit::parseCssNumber(value);
 }
 
+void BoxDefinition::getInfo(core::Component::Info& info){
+	
+}

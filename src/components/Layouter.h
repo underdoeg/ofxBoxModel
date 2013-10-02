@@ -30,7 +30,8 @@ public:
 	Nano::signal<void()> layouted;
 	
 	void onFlush();
-	
+	void getInfo(core::Component::Info& info);
+
 protected:
 	virtual void placeBox(Box* childBox);
 

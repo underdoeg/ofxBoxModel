@@ -54,6 +54,8 @@ public:
 	
 	void copyFrom(Addressable* addressable);
 	
+	void getInfo(core::Component::Info& info);
+	
 	std::vector<Addressable*> findByAddress(std::string path);
 	std::vector<core::ComponentContainer*> findContainerByAddress(std::string path);
 	

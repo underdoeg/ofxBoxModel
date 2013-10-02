@@ -239,3 +239,7 @@ void Addressable::onDeserialize(VariantList& variants) {
 		setId(variants.get("id"));
 	}
 }
+
+void Addressable::getInfo(core::Component::Info& info){
+
+}

@@ -78,6 +78,8 @@ public:
 	static unsigned long clickTime;
 	static unsigned long doubleClickTime;
 
+	void getInfo(core::Component::Info& info);
+
 private:
 
 	bool bMouseOver;

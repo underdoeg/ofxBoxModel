@@ -84,3 +84,8 @@ bool Box::isInsideContent(core::Point p){
 bool Box::isInsideContent(float x, float y){
 	return core::rectContains(x, y, position.x + contentPosition.x, position.y + contentPosition.y, contentSize.x, contentSize.y);
 }
+
+void Box::getInfo(core::Component::Info& info)
+{
+	info["position"] = "0,0";
+}

@@ -142,6 +142,9 @@ Stack* Stack::getUltimateParent() {
 	return ret;
 }
 
+void Stack::getInfo(core::Component::Info& info){
+
+}
 
 }
 

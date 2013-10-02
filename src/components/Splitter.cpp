@@ -101,3 +101,7 @@ void Splitter::merge() {
 		splits.clear();
 	}
 }
+
+void Splitter::getInfo(core::Component::Info& info){
+
+}
