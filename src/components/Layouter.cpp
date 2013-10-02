@@ -5,8 +5,11 @@
 using namespace boxModel::components;
 using namespace boxModel::core;
 
+std::string Layouter::getName(){
+	return "layouter";
+}
 
-void  Layouter::setup() {
+void Layouter::setup() {
 
 	stack = NULL;
 	box = NULL;
@@ -18,24 +21,24 @@ void  Layouter::setup() {
 	LISTEN_FOR_COMPONENT(BoxDefinition, Layouter, onBoxDefinition)
 }
 
-void  Layouter::onStack(Stack* _stack) {
+void Layouter::onStack(Stack* _stack) {
 	stack = _stack;
 	stack->childAdded.connect<Layouter, &Layouter::onChildAdded>(this);
 	stack->childRemoved.connect<Layouter, &Layouter::onChildRemoved>(this);
 }
 
-void  Layouter::onBox(Box* _box) {
+void Layouter::onBox(Box* _box) {
 	box = _box;
 	box->contentSize.changed.connect<Layouter, &Layouter::onContentSizeChanged>(this);
 }
 
-void  Layouter::onBoxDefinition(BoxDefinition* box) {
+void Layouter::onBoxDefinition(BoxDefinition* box) {
 	boxDefinition = box;
 	boxDefinition->onHeightAuto.connect<Layouter, &Layouter::onAutoHeight>(this);
 	boxDefinition->onWidthAuto.connect<Layouter, &Layouter::onAutoWidth>(this);
 }
 
-void  Layouter::layout(bool layoutChildren) {
+void Layouter::layout(bool layoutChildren) {
 	
 	preLayouted();
 	
@@ -214,15 +217,15 @@ void Layouter::placeBox(Box* childBox) {
 	}
 }
 
-void  Layouter::triggerLayout() {
+void Layouter::triggerLayout() {
 	isDirty = true;
 }
 
-void  Layouter::onContentSizeChanged(core::Point p) {
+void Layouter::onContentSizeChanged(core::Point p) {
 	triggerLayout();
 }
 
-void  Layouter::onChildRemoved(Stack* child) {
+void Layouter::onChildRemoved(Stack* child) {
 	if(child->components->hasComponent<BoxDefinition>()) {
 		child->components->getComponent<BoxDefinition>()->floating.changed.disconnect<Layouter, &Layouter::onChildFloatingChanged>(this);
 	}
@@ -232,7 +235,7 @@ void  Layouter::onChildRemoved(Stack* child) {
 	triggerLayout();
 }
 
-void  Layouter::onChildAdded(Stack* child) {
+void Layouter::onChildAdded(Stack* child) {
 	/*
 	if(child->components->hasComponent<Splitter>()){
 		if(child->components->getComponent<Splitter>()->hasSplits)
@@ -258,23 +261,23 @@ void  Layouter::onChildAdded(Stack* child) {
 	triggerLayout();
 }
 
-void  Layouter::onChildFloatingChanged(Floating floating) {
+void Layouter::onChildFloatingChanged(Floating floating) {
 	triggerLayout();
 }
 
-void  Layouter::onChildSizeChanged(core::Point p) {
+void Layouter::onChildSizeChanged(core::Point p) {
 	triggerLayout();
 }
 
-void  Layouter::onChildPositioningChanged(Position p) {
+void Layouter::onChildPositioningChanged(Position p) {
 	triggerLayout();
 }
 
-void  Layouter::onChildUnitChanged(core::Unit* unit) {
+void Layouter::onChildUnitChanged(core::Unit* unit) {
 	triggerLayout();
 }
 
-void  Layouter::onAutoWidth(float& width) {
+void Layouter::onAutoWidth(float& width) {
 	if(stack == NULL)
 		return;
 

@@ -56,6 +56,10 @@ Mouse::Mouse() {
 Mouse::~Mouse() {
 }
 
+std::string Mouse::getName(){
+	return "mouse";
+}
+
 void Mouse::setup() {
 	passEventsThrough = false;
 	bMouseOver = false;

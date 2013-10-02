@@ -20,6 +20,8 @@ public:
 	Box(){};
 	~Box(){};
 	
+	std::string getName();
+	
 	void setup();
 	
 	core::Point getGlobalPosition();

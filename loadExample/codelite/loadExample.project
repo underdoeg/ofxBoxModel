@@ -20,9 +20,7 @@
         <File Name="../../src/core/Globals.cpp"/>
         <File Name="../../src/core/Component.cpp"/>
         <File Name="../../src/core/Utils.cpp"/>
-        <File Name="../../src/core/Composite.h"/>
         <File Name="../../src/core/Component.h"/>
-        <File Name="../../src/core/Composite.cpp"/>
         <File Name="../../src/core/BaseTypes.h"/>
       </VirtualDirectory>
       <VirtualDirectory Name="tools">

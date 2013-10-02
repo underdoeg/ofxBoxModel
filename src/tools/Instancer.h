@@ -1,7 +1,6 @@
 #ifndef INSTANCER_H
 #define INSTANCER_H
 
-#include "Composite.h"
 #include "components/Addressable.h"
 #include <unordered_map>
 #include "Utils.h"
@@ -13,7 +12,7 @@ namespace tools {
 
 class InstancerHelperBase {
 public:
-	virtual core::Composite* create() = 0;
+	virtual core::ComponentContainer* create() = 0;
 };
 
 template <class InstanceType>
@@ -45,7 +44,7 @@ public:
 		}
 
 		InstanceType inst;
-		core::Composite* comp = &inst;
+		core::ComponentContainer* comp = &inst;
 		if(!comp->hasComponent<components::Addressable>()) {
 			debug::error("Only Composite types with the Addressable Component are instanceable");
 			return;
@@ -56,10 +55,10 @@ public:
 
 	template <class InstanceType>
 	static bool checkIfInstanceable() {
-		return core::isBaseOf<core::Composite, InstanceType>::value;
+		return core::isBaseOf<core::ComponentContainer, InstanceType>::value;
 	}
 	
-	static core::Composite* createInstance(std::string type){
+	static core::ComponentContainer* createInstance(std::string type){
 		setup();
 		if(instancers.find(type) == instancers.end()){
 			debug::warning(type+" not found in instancers");

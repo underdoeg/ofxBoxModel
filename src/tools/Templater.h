@@ -2,7 +2,6 @@
 #define TEMPLATE_H
 
 #include "core/Component.h"
-#include "Composite.h"
 #include "Linker.h"
 
 namespace boxModel

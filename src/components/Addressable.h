@@ -16,7 +16,9 @@ namespace components {
 class Addressable: public core::Component {
 public:
 	Addressable();
-
+	
+	std::string getName();
+	
 	void setup();	
 
 	bool isType(std::string Addressable);

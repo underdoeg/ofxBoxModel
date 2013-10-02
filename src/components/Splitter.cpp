@@ -4,6 +4,10 @@ using namespace boxModel::core;
 using namespace boxModel::components;
 using namespace std;
 
+std::string Splitter::getName(){
+	return "splitter";
+}
+
 void Splitter::setup() {
 	hasSplits = false;
 	isSplit = false;

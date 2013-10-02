@@ -32,6 +32,8 @@ class Text : public boxModel::core::Component
 public:
 	Text();
 	~Text();
+	
+	std::string getName();
 
 	void setup();
 	

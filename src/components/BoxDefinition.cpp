@@ -19,6 +19,10 @@ BoxDefinition::BoxDefinition() {
 BoxDefinition::~BoxDefinition() {
 }
 
+std::string BoxDefinition::getName(){
+	return "box definition";
+}
+
 void BoxDefinition::setup() {
 	isDirty = false;
 	box = NULL;

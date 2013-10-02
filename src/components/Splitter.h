@@ -14,8 +14,12 @@ namespace components
 class Splitter : public boxModel::core::Component
 {
 public:
-	void onFlush();
+
+	std::string getName();
+	
 	void setup();
+	
+	void onFlush();
 	
 	Nano::signal<void(float x, float y)> splitRequested;
 	bool requestSplit(float x, float y);

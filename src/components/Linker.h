@@ -12,6 +12,9 @@ class Linker: public core::Component {
 public:
 	Linker();
 	~Linker();
+	
+	std::string getName();
+	
 	void setup();
 	void linkTo(Linker* linkerTo);
 	void unlink();

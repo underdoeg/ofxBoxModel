@@ -14,6 +14,10 @@ Serializer::~Serializer()
 {
 }
 
+std::string Serializer::getName(){
+	return "serializer";
+}
+
 void Serializer::setup()
 {
 }

@@ -13,6 +13,10 @@ Linker::~Linker() {
 
 }
 
+std::string Linker::getName(){
+	return "linker";
+}
+
 void Linker::setup() {
 	LISTEN_FOR_COMPONENT(Layouter, Linker, onLayouter)
 	LISTEN_FOR_COMPONENT(Serializer, Linker, onSerializer)

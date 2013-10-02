@@ -2,7 +2,6 @@
 #define XML_H
 
 #include "pugixml.hpp"
-#include "core/Composite.h"
 #include "tools/Instancer.h"
 #include "components/Stack.h"
 #include "components/Serializer.h"

@@ -7,6 +7,10 @@ using namespace boxModel::components;
 using namespace boxModel::core;
 using namespace std;
 
+std::string Css::getName(){
+	return "css";
+}
+
 void Css::setup() {
 	LISTEN_FOR_COMPONENT(Serializer, Css, onSerializer)
 	LISTEN_FOR_COMPONENT(Stack, Css, onStack)

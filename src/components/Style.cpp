@@ -3,6 +3,10 @@
 using namespace boxModel::components;
 using namespace boxModel::core;
 
+std::string Style::getName(){
+	return "style";
+}
+
 void Style::onCss(Css* css) {
 	css->addCssParserFunction<Style, &Style::pCssColor>("color", this);
 	css->addCssParserFunction<Style, &Style::pCssBgColor>("background-color", this);

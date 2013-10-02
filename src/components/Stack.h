@@ -18,6 +18,8 @@ public:
 	typedef ChildrenList::iterator 		ChildrenIterator;
 
 	Stack();
+	
+	std::string getName();
 
 	void onDelete();
 

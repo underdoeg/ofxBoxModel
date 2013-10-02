@@ -14,6 +14,10 @@ void Stack::onDelete() {
 	}
 }
 
+std::string Stack::getName(){
+	return "stack";
+}
+
 void Stack::setup() {
 	parent = NULL;
 }

@@ -5,6 +5,10 @@
 using namespace boxModel::core;
 using namespace boxModel::components;
 
+std::string Box::getName(){
+	return "box";
+}
+
 void Box::setup() {
 	stack = NULL;
 

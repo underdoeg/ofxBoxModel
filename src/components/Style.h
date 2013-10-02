@@ -20,6 +20,8 @@ public:
 	}
 	~Style() {
 	}
+	
+	std::string getName();
 
 	virtual void setup() {
 		LISTEN_FOR_COMPONENT(Css, Style, onCss)

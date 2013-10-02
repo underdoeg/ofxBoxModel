@@ -28,7 +28,9 @@ public:
 
 	~Css() {
 	}
-
+	
+	std::string getName();
+	
 	void setup();
 
 	void loadCss(std::string path);

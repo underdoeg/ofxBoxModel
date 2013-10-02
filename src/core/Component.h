@@ -26,7 +26,8 @@ public:
 	virtual void onDelete() {};
 	virtual void onFlush() {};
 	virtual void copyFrom(Component* component) {};
-
+	virtual std::string getName() = 0;
+	
 protected:
 	Component():components(NULL) {};
 	~Component();

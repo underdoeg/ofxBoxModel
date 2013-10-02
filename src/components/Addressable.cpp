@@ -8,6 +8,10 @@ Addressable::Addressable() {
 	unaddressable = false;
 }
 
+std::string Addressable::getName(){
+	return "addressable";
+}
+
 void Addressable::setup() {
 	//assert(componentContainer->hasComponent<Stackable<Addressable>>());
 	LISTEN_FOR_COMPONENT(Serializer, Addressable, onSerializer)

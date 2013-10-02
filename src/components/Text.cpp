@@ -30,6 +30,10 @@ Text::Text():boxDefinition(NULL) {
 Text::~Text() {
 }
 
+std::string Text::getName(){
+	return "text";
+}
+
 void Text::setup() {
 	if(bHyphenate){
 		textBlock.enableHyphenation(hyphenationLanguage, Globals::get().dataRoot+hyphenationFolder+"/");

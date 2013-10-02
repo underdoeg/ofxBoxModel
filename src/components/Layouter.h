@@ -12,7 +12,8 @@ namespace components {
 
 class Layouter: public core::Component {
 public:
-
+	std::string getName();
+	
 	void setup();
 
 	void onStack(Stack* _stack);

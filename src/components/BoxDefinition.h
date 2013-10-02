@@ -28,6 +28,9 @@ class BoxDefinition : public core::Component {
 public:
 	BoxDefinition();
 	~BoxDefinition();
+	
+	std::string getName();
+	
 	void setup();
 	void recalculateBoxSize();
 
