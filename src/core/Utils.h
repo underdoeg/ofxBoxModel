@@ -69,6 +69,11 @@ std::string intToHexString(int i);
 /****************************************************************************/
 bool rectContains(float x, float y, float rx, float ry, float rw, float rh);
 
+/****************************************************************************/
+/* OTHER STUFF																*/
+/****************************************************************************/
+unsigned long long getSystemTime( );
+
 }
 
 }

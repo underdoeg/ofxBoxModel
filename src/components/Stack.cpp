@@ -9,7 +9,6 @@ Stack::Stack():parent(NULL) {
 }
 
 void Stack::onDelete() {
-	cout << "ON DELETE CALLED" << endl;
 	if(hasParent()) {
 		parent->removeChild(this);
 	}

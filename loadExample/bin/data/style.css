@@ -9,3 +9,9 @@
 	float: left;
 	padding: 15:
 }
+
+.inside{
+	width: 50%;
+	height: 50%;
+	background-color: #ff00ff;
+}

@@ -46,17 +46,17 @@ void testApp::mouseMoved(int x, int y ) {
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button) {
-
+	rootBox->setMousePos(x, y);
 }
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button) {
-
+	rootBox->setMouseButtonPressed(button);
 }
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button) {
-
+	rootBox->setMouseButtonReleased(button);
 }
 
 //--------------------------------------------------------------

@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <fstream>
 
+#include <chrono>
+
 namespace boxModel {
 
 namespace core {
@@ -138,6 +140,11 @@ bool rectContains(float x, float y, float rx, float ry, float rw, float rh)
 	if(y > ry + rh)
 		return false;
 	return true;
+}
+
+/****************************************************************************/
+unsigned long long getSystemTime( ) {
+    return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
 //end namespace
