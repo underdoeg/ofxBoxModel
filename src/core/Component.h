@@ -12,6 +12,7 @@
 #include "nano_signal_slot.hpp"
 #include "Unit.h"
 #include "BaseTypes.h"
+#include <map>
 
 namespace boxModel {
 
@@ -23,10 +24,13 @@ class Component {
 public:
 	ComponentContainer* components;
 	
+	typedef std::map<std::string, std::string> Info;
+	
 	virtual void onDelete() {};
 	virtual void onFlush() {};
 	virtual void copyFrom(Component* component) {};
 	virtual std::string getName() = 0;
+	virtual Info getInfo(){return Info();};
 	
 protected:
 	Component():components(NULL) {};

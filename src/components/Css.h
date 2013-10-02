@@ -8,6 +8,7 @@
 #include "Stack.h"
 #include <functional>
 
+
 namespace boxModel {
 
 namespace components {
