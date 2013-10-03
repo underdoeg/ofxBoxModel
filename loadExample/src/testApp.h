@@ -6,6 +6,9 @@
 #include "debug/DebugDrawer.h"
 #include "tools/Instancer.h"
 #include "tools/Xml.h"
+#include "InfoViewer.h"
+
+using namespace boxModel;
 
 class CustomBox: public ofxBox{
 	string getType(){
@@ -66,7 +69,8 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-		
 		boxModel::debug::DebugDrawer debugDrawer;
 		ofxBox* rootBox;
+		
+		debug::InfoViewer infoViewer;
  };

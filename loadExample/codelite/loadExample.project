@@ -12,6 +12,8 @@
         <File Name="../../src/debug/DebugDrawer.cpp"/>
         <File Name="../../src/debug/DebugDrawer.h"/>
         <File Name="../../src/debug/Print.h"/>
+        <File Name="../../src/debug/InfoViewer.h"/>
+        <File Name="../../src/debug/InfoViewer.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="core">
         <File Name="../../src/core/Globals.h"/>
@@ -192,6 +194,7 @@
   <VirtualDirectory Name="data">
     <File Name="../bin/data/style.css"/>
     <File Name="../bin/data/scene.xml"/>
+    <File Name="../bin/data/infoViewer.css"/>
   </VirtualDirectory>
   <Settings Type="Dynamic Library">
     <GlobalSettings>

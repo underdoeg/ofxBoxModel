@@ -17,6 +17,11 @@ void testApp::setup() {
 	rootBox->height = ofGetHeight();
 	
 	rootBox->flush();
+	
+	infoViewer.loadCss(ofToDataPath("infoViewer.css"));
+	
+	rootBox->addChild(&infoViewer);
+	
 }
 
 //--------------------------------------------------------------
@@ -26,7 +31,7 @@ void testApp::update() {
 
 //--------------------------------------------------------------
 void testApp::draw() {
-	debugDrawer.draw(rootBox);
+	debugDrawer.draw(rootBox);	
 }
 
 //--------------------------------------------------------------
