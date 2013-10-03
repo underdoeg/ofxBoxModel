@@ -1,0 +1,15 @@
+infoViewer{
+	background-color: #ccc;
+	width: 300;
+	height: 100%;
+	position: absolute;
+	right: 0px;
+}
+
+infoViewer h1{
+	font-size: 20;
+}
+
+infoViewer h2{
+	font-size: 15;
+}

@@ -8,9 +8,7 @@
 #include "tools/Xml.h"
 #include "InfoViewer.h"
 
-using namespace boxModel;
-
-class CustomBox: public boxes::Box{
+class CustomBox: public boxModel::boxes::Box{
 	string getType(){
 		return "customBox";
 	}
@@ -70,7 +68,7 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
 		boxModel::debug::DebugDrawer debugDrawer;
-		boxes::Box* rootBox;
+		boxModel::boxes::Box* rootBox;
 		
-		debug::InfoViewer infoViewer;
+		boxModel::debug::InfoViewer infoViewer;
  };

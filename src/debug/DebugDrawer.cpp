@@ -135,8 +135,9 @@ void DebugDrawer::drawBox(BoxDefinition* box) {
 
 	ofPopStyle();
 	
+	/*
 	if(box->components->hasComponent<Mouse>()){
-	
+		
 		Mouse* mouse = box->components->getComponent<Mouse>();
 		
 		ofPushStyle();
@@ -147,6 +148,7 @@ void DebugDrawer::drawBox(BoxDefinition* box) {
 		ofPopStyle();
 	
 	}
+	*/
 }
 
 

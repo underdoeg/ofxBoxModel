@@ -9,8 +9,9 @@ namespace boxes {
 
 class TextBox: public Box, public components::Text {
 public:
-	TextBox() {
+	TextBox(std::string t = "") {
 		addComponent<Text>(this);
+		text = t;
 	}
 
 	virtual string getType() {
@@ -19,18 +20,30 @@ public:
 };
 
 class H1: public TextBox {
+public:
+	H1(std::string t = ""):TextBox(t) {
+
+	}
 	virtual string getType() {
 		return "h1";
 	}
 };
 
 class H2: public TextBox {
+public:
+	H2(std::string t = ""):TextBox(t) {
+
+	}
 	virtual string getType() {
 		return "h2";
 	}
 };
 
 class H3: public TextBox {
+public:
+	H3(std::string t = ""):TextBox(t) {
+
+	}
 	virtual string getType() {
 		return "h3";
 	}

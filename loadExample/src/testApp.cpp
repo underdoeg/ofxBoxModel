@@ -10,7 +10,7 @@ void testApp::setup() {
 	//add the customBox to the instancer system
 	Instancer::addInstancer<CustomBox>();
 	
-	rootBox = Xml::load<boxes::Box>(ofToDataPath("scene.xml"));
+	rootBox = Xml::load<boxModel::boxes::Box>(ofToDataPath("scene.xml"));
 	rootBox->loadCss(ofToDataPath("style.css"));
 	
 	rootBox->width = ofGetWidth();
@@ -21,6 +21,8 @@ void testApp::setup() {
 	rootBox->addChild(&infoViewer);
 	
 	rootBox->flush();
+	
+	infoViewer.setComponentContainer(rootBox);
 }
 
 //--------------------------------------------------------------
