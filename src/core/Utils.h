@@ -64,6 +64,13 @@ int stringToInt(std::string s);
 bool stringContains(std::string s, std::string find);
 std::string intToHexString(int i);
 
+//to stirng functions
+std::string toString(std::vector<std::string> vec);
+std::string toString(std::vector<int> vec);
+std::string toString(int i);
+
+//std::string toString(Point p);
+//std::string toString(bool b);
 /****************************************************************************/
 /* MATH STUFF																*/
 /****************************************************************************/

@@ -24,8 +24,12 @@ Component::~Component()
 	components->removeComponent(this);
 }
 
+unsigned int Component::getId()
+{
+	return id;
 }
 
 }
 
+}
 

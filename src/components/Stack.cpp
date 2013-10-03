@@ -1,4 +1,5 @@
 #include "Stack.h"
+#include "core/Utils.h"
 
 namespace boxModel {
 
@@ -143,7 +144,12 @@ Stack* Stack::getUltimateParent() {
 }
 
 void Stack::getInfo(core::Component::Info& info){
-
+	info["num children"] = core::toString(getNumChildren());
+	//info["children"] = core::toString(getChildren())
+	if(hasParent())
+		info["parent"] = getParent()->getId();
+	else
+		info["parent"] = "none";
 }
 
 }

@@ -1,4 +1,5 @@
 #include "Addressable.h"
+#include "core/Utils.h"
 
 using namespace boxModel::components;
 using namespace boxModel::core;
@@ -241,5 +242,10 @@ void Addressable::onDeserialize(VariantList& variants) {
 }
 
 void Addressable::getInfo(core::Component::Info& info){
-
+	if(classes.size() == 0)
+		info["classes"] = "-";
+	else
+		info["classes"] = core::toString(classes);
+		
+	info["id"] = id;
 }

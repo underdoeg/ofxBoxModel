@@ -127,6 +127,45 @@ std::string intToHexString(int i) {
 	return str.str();
 }
 
+///to string
+
+std::string toString(std::vector<std::string> vec)
+{
+	std::string ret;
+	for(std::string str:vec){
+		ret += str;
+		ret += ", ";
+	}
+	if(ret.size() > 2)
+		ret = ret.substr(0, ret.size()-2);
+	return ret;
+}
+
+std::string toString(std::vector<int> vec)
+{
+	std::string ret;
+	for(int i:vec){
+		ret += toString(i);
+		ret += ", ";
+	}
+	if(ret.size() > 2)
+		ret = ret.substr(0, ret.size()-2);
+	return ret;
+}
+
+std::string toString(int i){
+	std::ostringstream convert;
+	convert << i;
+	return convert.str();
+}
+/*
+std::string toString(bool b){
+	if(b)
+		return "true";
+	return "false";
+}
+*/
+
 //////////////////////////////////////////////////////////////////
 
 bool rectContains(float x, float y, float rx, float ry, float rw, float rh)
@@ -151,4 +190,3 @@ unsigned long long getSystemTime( ) {
 }
 
 }
-
