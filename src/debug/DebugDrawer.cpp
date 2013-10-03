@@ -20,8 +20,8 @@ void DebugDrawer::draw(core::ComponentContainer* container) {
 		if(container->getComponent<Splitter>()->hasSplits)
 			return;
 	}
-	if(container->hasComponent<Box>()) {
-		Box* box = container->getComponent<Box>();
+	if(container->hasComponent<BoxDefinition>()) {
+		BoxDefinition* box = container->getComponent<BoxDefinition>();
 		drawBox(box);
 
 		if(container->hasComponent<Text>()) {
@@ -45,7 +45,7 @@ void DebugDrawer::draw(core::ComponentContainer* container) {
 	}
 }
 
-void DebugDrawer::drawText(Box* box, Text* text, Color fg) {
+void DebugDrawer::drawText(BoxDefinition* box, Text* text, Color fg) {
 
 	Point pos = box->getGlobalPosition() + box->contentPosition;
 	
@@ -60,7 +60,7 @@ void DebugDrawer::drawText(Box* box, Text* text, Color fg) {
 	ofPopMatrix();
 }
 
-void DebugDrawer::drawBox(Box* box) {
+void DebugDrawer::drawBox(BoxDefinition* box) {
 
 	//
 	Style* style;
@@ -88,9 +88,9 @@ void DebugDrawer::drawBox(Box* box) {
 	bool drawBorderTop = false, drawBorderLeft = false, drawBorderRight = false, drawBorderBottom = false;
 	float borderTopWidth, borderLeftWidth, borderBottomWidth, borderRightWidth;
 
-	BoxDefinition* boxDef;
-	if(box->components->hasComponent<BoxDefinition>()) {
-		boxDef = box->components->getComponent<BoxDefinition>();
+	BoxModel* boxDef;
+	if(box->components->hasComponent<BoxModel>()) {
+		boxDef = box->components->getComponent<BoxModel>();
 		if(boxDef->border.top.getType()==Unit::Type_None) drawBorderTop = false;
 		else drawBorderTop = true;
 		if(boxDef->border.left.getType()==Unit::Type_None) drawBorderLeft = false;

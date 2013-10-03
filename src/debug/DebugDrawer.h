@@ -3,7 +3,7 @@
 
 #include "Component.h"
 #include "BaseTypes.h"
-#include "components/Box.h"
+#include "components/BoxDefinition.h"
 #include "components/Text.h"
 
 
@@ -43,8 +43,8 @@ public:
 	~DebugDrawer();
 	void draw(core::ComponentContainer* container);
 	
-	void drawBox(boxModel::components::Box* box);
-	void drawText(boxModel::components::Box* box, boxModel::components::Text* text, boxModel::core::Color fg);
+	void drawBox(boxModel::components::BoxDefinition* box);
+	void drawText(boxModel::components::BoxDefinition* box, boxModel::components::Text* text, boxModel::core::Color fg);
 	
 	boxModel::core::Color color;
 	

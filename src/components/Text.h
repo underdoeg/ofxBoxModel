@@ -3,7 +3,7 @@
 
 #include "Component.h" // Base class: boxModel::core::Component
 #include "BaseTypes.h"
-#include "BoxDefinition.h"
+#include "Box.h"
 #include "Serializer.h"
 #include "Utils.h"
 #include "TextBlock.h"
@@ -74,9 +74,9 @@ public:
 	core::Value<TEXT_TRANSFORM> textTransform;
 		
 private:
-	void onBoxDefinition(BoxDefinition* boxDef);
+	void onBoxDefinition(BoxModel* boxDef);
 	void onCss(Css* css);
-	void onBox(Box* box);
+	void onBox(BoxDefinition* box);
 	void onLinker(Linker* linker);
 	
 	void onSplitter(Splitter* splitter);
@@ -113,8 +113,8 @@ private:
 	void onHeightChanged(float height);
 	void onFontNameChanged(std::string fontName);
 	
-	Box* box;
-	BoxDefinition* boxDefinition;
+	BoxDefinition* box;
+	BoxModel* boxDefinition;
 	Text* splittedText;
 	Splitter* splitter;
 	cppFont::TextBlock textBlock;

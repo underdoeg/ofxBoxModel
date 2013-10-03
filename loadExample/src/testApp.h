@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 
-#include "ofxBox.h"
+#include "boxes/Box.h"
 #include "debug/DebugDrawer.h"
 #include "tools/Instancer.h"
 #include "tools/Xml.h"
@@ -10,7 +10,7 @@
 
 using namespace boxModel;
 
-class CustomBox: public ofxBox{
+class CustomBox: public boxes::Box{
 	string getType(){
 		return "customBox";
 	}
@@ -70,7 +70,7 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
 		boxModel::debug::DebugDrawer debugDrawer;
-		ofxBox* rootBox;
+		boxes::Box* rootBox;
 		
 		debug::InfoViewer infoViewer;
  };

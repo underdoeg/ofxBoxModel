@@ -40,15 +40,11 @@
         <File Name="../../src/components/Addressable.cpp"/>
         <File Name="../../src/components/Stack.h"/>
         <File Name="../../src/components/Linker.h"/>
-        <File Name="../../src/components/Box.h"/>
         <File Name="../../src/components/Style.cpp"/>
-        <File Name="../../src/components/BoxDefinition.cpp"/>
         <File Name="../../src/components/Css.h"/>
         <File Name="../../src/components/Layouter.h"/>
         <File Name="../../src/components/Style.h"/>
         <File Name="../../src/components/Serializer.cpp"/>
-        <File Name="../../src/components/Box.cpp"/>
-        <File Name="../../src/components/BoxDefinition.h"/>
         <File Name="../../src/components/Linker.cpp"/>
         <File Name="../../src/components/Splitter.h"/>
         <File Name="../../src/components/Addressable.h"/>
@@ -58,8 +54,17 @@
         <File Name="../../src/components/Mouse.h"/>
         <File Name="../../src/components/Mouse.cpp"/>
         <File Name="../../src/components/Stack.cpp"/>
+        <File Name="../../src/components/BoxModel.h"/>
+        <File Name="../../src/components/BoxModel.cpp"/>
+        <File Name="../../src/components/BoxDefinition.h"/>
+        <File Name="../../src/components/BoxDefinition.cpp"/>
       </VirtualDirectory>
-      <File Name="../../src/ofxBox.h"/>
+      <VirtualDirectory Name="boxes">
+        <File Name="../../src/boxes/Box.h"/>
+        <File Name="../../src/boxes/Box.cpp"/>
+        <File Name="../../src/boxes/Texts.h"/>
+        <File Name="../../src/boxes/Texts.cpp"/>
+      </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="libs">
       <VirtualDirectory Name="nano-signal-slot">

@@ -1,6 +1,7 @@
 
 #include "Instancer.h"
-#include "ofxBox.h"
+#include "boxes/Box.h"
+#include "boxes/Texts.h"
 
 namespace boxModel {
 
@@ -20,8 +21,11 @@ void Instancer::setup()
 	if(isSetup)
 		return;
 	
-	addInstancer<ofxBox>();
-	addInstancer<ofxBox>("box");
+	addInstancer<boxes::Box>();
+	addInstancer<boxes::TextBox>();
+	addInstancer<boxes::H1>();
+	addInstancer<boxes::H2>();
+	addInstancer<boxes::H3>();
 	
 	isSetup = true;
 }

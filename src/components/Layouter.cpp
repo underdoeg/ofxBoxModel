@@ -17,8 +17,8 @@ void Layouter::setup() {
 	isDirty = false;
 
 	LISTEN_FOR_COMPONENT(Stack, Layouter, onStack)
-	LISTEN_FOR_COMPONENT(Box, Layouter, onBox)
-	LISTEN_FOR_COMPONENT(BoxDefinition, Layouter, onBoxDefinition)
+	LISTEN_FOR_COMPONENT(BoxDefinition, Layouter, onBox)
+	LISTEN_FOR_COMPONENT(BoxModel, Layouter, onBoxDefinition)
 }
 
 void Layouter::onStack(Stack* _stack) {
@@ -27,12 +27,12 @@ void Layouter::onStack(Stack* _stack) {
 	stack->childRemoved.connect<Layouter, &Layouter::onChildRemoved>(this);
 }
 
-void Layouter::onBox(Box* _box) {
+void Layouter::onBox(BoxDefinition* _box) {
 	box = _box;
 	box->contentSize.changed.connect<Layouter, &Layouter::onContentSizeChanged>(this);
 }
 
-void Layouter::onBoxDefinition(BoxDefinition* box) {
+void Layouter::onBoxDefinition(BoxModel* box) {
 	boxDefinition = box;
 	boxDefinition->onHeightAuto.connect<Layouter, &Layouter::onAutoHeight>(this);
 	boxDefinition->onWidthAuto.connect<Layouter, &Layouter::onAutoWidth>(this);
@@ -91,8 +91,8 @@ void Layouter::layout(bool layoutChildren) {
 	
 	//place all elements
 	for(Stack * stackChild: stack->getChildren()) {
-		if(stackChild->components->hasComponent<Box>()) {
-			placeBox(stackChild->components->getComponent<Box>());
+		if(stackChild->components->hasComponent<BoxDefinition>()) {
+			placeBox(stackChild->components->getComponent<BoxDefinition>());
 		}
 	}
 
@@ -111,8 +111,8 @@ void Layouter::layout(bool layoutChildren) {
 			//only check for overlapping if a splitter is present
 			if(container->hasComponent<Splitter>()) {
 				
-				if(container->hasComponent<Box>()) {
-					Box* child = container->getComponent<Box>();
+				if(container->hasComponent<BoxDefinition>()) {
+					BoxDefinition* child = container->getComponent<BoxDefinition>();
 					childBounds.x = child->position.x;
 					childBounds.y = child->position.y;
 					childBounds.width = child->size.x;
@@ -155,12 +155,11 @@ void Layouter::layout(bool layoutChildren) {
 	layouted();
 }
 
-
-void Layouter::placeBox(Box* childBox) {
-	if(!childBox->components->hasComponent<BoxDefinition>())
+void Layouter::placeBox(BoxDefinition* childBox) {
+	if(!childBox->components->hasComponent<BoxModel>())
 		return;
 
-	BoxDefinition* childBoxDef = childBox->components->getComponent<BoxDefinition>();
+	BoxModel* childBoxDef = childBox->components->getComponent<BoxModel>();
 
 	if(childBoxDef->positioning == Relative) {
 		switch(childBoxDef->floating) {
@@ -226,11 +225,11 @@ void Layouter::onContentSizeChanged(core::Point p) {
 }
 
 void Layouter::onChildRemoved(Stack* child) {
-	if(child->components->hasComponent<BoxDefinition>()) {
-		child->components->getComponent<BoxDefinition>()->floating.changed.disconnect<Layouter, &Layouter::onChildFloatingChanged>(this);
+	if(child->components->hasComponent<BoxModel>()) {
+		child->components->getComponent<BoxModel>()->floating.changed.disconnect<Layouter, &Layouter::onChildFloatingChanged>(this);
 	}
-	if(child->components->hasComponent<Box>()) {
-		child->components->getComponent<Box>()->outerSize.changed.disconnect<Layouter, &Layouter::onChildSizeChanged>(this);
+	if(child->components->hasComponent<BoxDefinition>()) {
+		child->components->getComponent<BoxDefinition>()->outerSize.changed.disconnect<Layouter, &Layouter::onChildSizeChanged>(this);
 	}
 	triggerLayout();
 }
@@ -242,8 +241,8 @@ void Layouter::onChildAdded(Stack* child) {
 			return;
 	}
 	*/
-	if(child->components->hasComponent<BoxDefinition>()) {
-		BoxDefinition* boxDef = child->components->getComponent<BoxDefinition>();
+	if(child->components->hasComponent<BoxModel>()) {
+		BoxModel* boxDef = child->components->getComponent<BoxModel>();
 		boxDef->floating.changed.connect<Layouter, &Layouter::onChildFloatingChanged>(this);
 		boxDef->positioning.changed.connect<Layouter, &Layouter::onChildPositioningChanged>(this);
 		boxDef->left.changed.connect<Layouter, &Layouter::onChildUnitChanged>(this);
@@ -251,8 +250,8 @@ void Layouter::onChildAdded(Stack* child) {
 		boxDef->right.changed.connect<Layouter, &Layouter::onChildUnitChanged>(this);
 		boxDef->bottom.changed.connect<Layouter, &Layouter::onChildUnitChanged>(this);
 	}
-	if(child->components->hasComponent<Box>()) {
-		Box* childBox = child->components->getComponent<Box>();
+	if(child->components->hasComponent<BoxDefinition>()) {
+		BoxDefinition* childBox = child->components->getComponent<BoxDefinition>();
 		childBox->outerSize.changed.connect<Layouter, &Layouter::onChildSizeChanged>(this);
 		//placeBox(childBox);
 		if(boxDefinition != NULL)
@@ -283,8 +282,8 @@ void Layouter::onAutoWidth(float& width) {
 
 	float maxW = 0;
 	for(Stack* child: stack->getChildren()) {
-		if(child->components->hasComponent<Box>()) {
-			Box* childBox = child->components->getComponent<Box>();
+		if(child->components->hasComponent<BoxDefinition>()) {
+			BoxDefinition* childBox = child->components->getComponent<BoxDefinition>();
 			float r = childBox->position.x + childBox->size.x;
 			if( r > maxW)
 				maxW = r;
@@ -300,8 +299,8 @@ void Layouter::onAutoHeight(float& height) {
 
 	float maxH = 0;
 	for(Stack* child: stack->getChildren()) {
-		if(child->components->hasComponent<Box>()) {
-			Box* childBox = child->components->getComponent<Box>();
+		if(child->components->hasComponent<BoxDefinition>()) {
+			BoxDefinition* childBox = child->components->getComponent<BoxDefinition>();
 			float r = childBox->position.y + childBox->size.y;
 			if( r > maxH)
 				maxH = r;

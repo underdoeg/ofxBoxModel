@@ -58,9 +58,9 @@ void Text::setup() {
 	textAlignment = ALIGN_LEFT;
 	textTransform = TEXT_NONE;
 	
-	LISTEN_FOR_COMPONENT(BoxDefinition, Text, onBoxDefinition)
+	LISTEN_FOR_COMPONENT(BoxModel, Text, onBoxDefinition)
 	LISTEN_FOR_COMPONENT(Css, Text, onCss)
-	LISTEN_FOR_COMPONENT(Box, Text, onBox)
+	LISTEN_FOR_COMPONENT(BoxDefinition, Text, onBox)
 	LISTEN_FOR_COMPONENT(Serializer, Text, onSerializer)
 	LISTEN_FOR_COMPONENT(Linker, Text, onLinker)
 	LISTEN_FOR_COMPONENT(Splitter, Text, onSplitter)
@@ -80,7 +80,7 @@ void Text::copyFrom(Text* t)
 	textTransform = t->textTransform;
 }
 
-void Text::onBox(Box* b){
+void Text::onBox(BoxDefinition* b){
 	box = b;
 	box->contentSize.x.changed.connect<Text, &Text::onWidthChanged>(this);
 	onWidthChanged(box->contentSize.x);
@@ -114,7 +114,7 @@ void Text::onFontParamChanged(Unit* u)
 {
 }
 
-void Text::onBoxDefinition(BoxDefinition* bd){
+void Text::onBoxDefinition(BoxModel* bd){
 	boxDefinition = bd;
 	boxDefinition->onHeightAuto.connect<Text, &Text::onAutoHeight>(this);
 	boxDefinition->onWidthAuto.connect<Text, &Text::onAutoWidth>(this);
@@ -294,7 +294,7 @@ void Text::onSplitRequested(float x, float y)
 				
 				if(boxDefinition != NULL){
 					//we set the height explicitely to the height of the text field, because of the line height the splitted height is too short
-					clones[1]->getComponent<BoxDefinition>()->height = clones[1]->getComponent<Text>()->getTextBlock()->getHeight();
+					clones[1]->getComponent<BoxModel>()->height = clones[1]->getComponent<Text>()->getTextBlock()->getHeight();
 				}
 			}
 		}

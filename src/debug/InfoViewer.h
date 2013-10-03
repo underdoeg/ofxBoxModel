@@ -1,17 +1,17 @@
 #ifndef INFOVIEWER_H
 #define INFOVIEWER_H
 
-#include "ofxBox.h"
-
+#include "boxes/Box.h"
 namespace boxModel {
 namespace debug {
 
-class InfoViewer: public ofxBox {
+class InfoViewer: public boxes::Box {
 public:
 	InfoViewer();
 	~InfoViewer();
 
 	void setComponentContainer(core::ComponentContainer* container);
+	string getType();
 	
 private:
 	core::ComponentContainer* container;

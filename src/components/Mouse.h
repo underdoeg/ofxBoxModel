@@ -2,7 +2,7 @@
 #define MOUSE_H
 
 #include "Component.h" // Base class: boxModel::core::Component
-#include "Box.h"
+#include "BoxDefinition.h"
 #include "Stack.h"
 
 
@@ -85,7 +85,7 @@ private:
 	bool bMouseOver;
 
 	void onStack(Stack* stack);
-	void onBox(Box* box);
+	void onBox(BoxDefinition* box);
 
 	bool handleMouseMove(float x, float y);
 	void handleMouseExit();
@@ -94,7 +94,7 @@ private:
 	void handleMouseReleasedOutside(int button);
 
 	Stack* stack;
-	Box* box;
+	BoxDefinition* box;
 
 	ButtonStates buttonStates;
 

@@ -2,9 +2,9 @@
 #define LAYOUTER_H
 
 #include "core/Component.h"
-#include "components/Box.h"
-#include "components/Stack.h"
 #include "components/BoxDefinition.h"
+#include "components/Stack.h"
+#include "components/BoxModel.h"
 
 
 namespace boxModel {
@@ -19,9 +19,9 @@ public:
 
 	void onStack(Stack* _stack);
 
-	void onBox(Box* _box);
+	void onBox(BoxDefinition* _box);
 
-	void onBoxDefinition(BoxDefinition* box);
+	void onBoxDefinition(BoxModel* box);
 
 	virtual void layout(bool layoutChildren=true);
 
@@ -33,7 +33,7 @@ public:
 	void getInfo(core::Component::Info& info);
 
 protected:
-	virtual void placeBox(Box* childBox);
+	virtual void placeBox(BoxDefinition* childBox);
 
 private:
 	void triggerLayout();
@@ -54,8 +54,8 @@ private:
 	std::vector<core::ComponentContainer*> overflowElements;
 
 	Stack* stack;
-	Box* box;
-	BoxDefinition* boxDefinition;
+	BoxDefinition* box;
+	BoxModel* boxDefinition;
 	bool isDirty;
 };
 

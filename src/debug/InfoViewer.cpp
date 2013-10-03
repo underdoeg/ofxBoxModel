@@ -1,11 +1,11 @@
 #include "InfoViewer.h"
 
-using namespace boxModel;
-using namespace debug;
+namespace boxModel{
+namespace debug{
 
 InfoViewer::InfoViewer()
 {
-	addClass("infoViewer");
+	
 }
 
 InfoViewer::~InfoViewer()
@@ -16,3 +16,10 @@ void InfoViewer::setComponentContainer(core::ComponentContainer* container)
 {
 	
 }
+
+string InfoViewer::getType()
+{
+	return "infoViewer";
+}
+
+}} //end namespace

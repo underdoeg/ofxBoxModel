@@ -18,8 +18,8 @@ void Addressable::setup() {
 }
 
 
-bool Addressable::isType(std::string Addressable) {
-	return getType() == Addressable;
+bool Addressable::isType(std::string t) {
+	return getType() == t;
 }
 
 void Addressable::setType(std::string t) {

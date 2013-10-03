@@ -10,18 +10,17 @@ void testApp::setup() {
 	//add the customBox to the instancer system
 	Instancer::addInstancer<CustomBox>();
 	
-	rootBox = Xml::load<ofxBox>(ofToDataPath("scene.xml"));
+	rootBox = Xml::load<boxes::Box>(ofToDataPath("scene.xml"));
 	rootBox->loadCss(ofToDataPath("style.css"));
 	
 	rootBox->width = ofGetWidth();
 	rootBox->height = ofGetHeight();
 	
-	rootBox->flush();
-	
 	infoViewer.loadCss(ofToDataPath("infoViewer.css"));
 	
 	rootBox->addChild(&infoViewer);
 	
+	rootBox->flush();
 }
 
 //--------------------------------------------------------------
@@ -68,6 +67,7 @@ void testApp::mouseReleased(int x, int y, int button) {
 void testApp::windowResized(int w, int h) {
 	rootBox->width = w;
 	rootBox->height = h;
+	rootBox->flush();
 }
 
 //--------------------------------------------------------------

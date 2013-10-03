@@ -3,7 +3,7 @@
 
 #include "Component.h" // Base class: boxModel::core::Component
 #include "BaseTypes.h"
-#include "BoxDefinition.h"
+#include "BoxModel.h"
 
 
 namespace boxModel
@@ -36,8 +36,8 @@ public:
 
 private:
 	void markAsSplit(Splitter* splitter);
-	void onBoxDefinition(BoxDefinition* boxDefinition);
-	void onBox(Box* box);
+	void onBoxDefinition(BoxModel* boxDefinition);
+	void onBox(BoxDefinition* box);
 	void onStack(Stack* stack);
 	
 	std::vector<core::ComponentContainer*> splits;
@@ -45,8 +45,8 @@ private:
 	
 	core::Unit originalWidth;
 	core::Unit originalHeight;
-	BoxDefinition* boxDefinition;
-	Box* box;
+	BoxModel* boxDefinition;
+	BoxDefinition* box;
 	Stack* stack;
 	Splitter* splitter;
 };

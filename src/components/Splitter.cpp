@@ -12,16 +12,16 @@ void Splitter::setup() {
 	hasSplits = false;
 	isSplit = false;
 	boxDefinition = NULL;
-	LISTEN_FOR_COMPONENT(BoxDefinition, Splitter, onBoxDefinition)
-	LISTEN_FOR_COMPONENT(Box, Splitter, onBox)
+	LISTEN_FOR_COMPONENT(BoxModel, Splitter, onBoxDefinition)
+	LISTEN_FOR_COMPONENT(BoxDefinition, Splitter, onBox)
 	LISTEN_FOR_COMPONENT(Stack, Splitter, onStack)
 }
 
-void Splitter::onBoxDefinition(BoxDefinition* bd) {
+void Splitter::onBoxDefinition(BoxModel* bd) {
 	boxDefinition = bd;
 }
 
-void Splitter::onBox(Box* b) {
+void Splitter::onBox(BoxDefinition* b) {
 	box = b;
 }
 
@@ -56,11 +56,11 @@ std::vector<ComponentContainer*> Splitter::makeSplit() {
 		}
 
 		if(boxDefinition != NULL && box != NULL) {
-			split1->getComponent<BoxDefinition>()->height = splitPosition.y;
-			split1->getComponent<BoxDefinition>()->height = Unit::Pixel;
+			split1->getComponent<BoxModel>()->height = splitPosition.y;
+			split1->getComponent<BoxModel>()->height = Unit::Pixel;
 
-			split2->getComponent<BoxDefinition>()->height = Unit::Pixel;
-			split2->getComponent<BoxDefinition>()->height = splitHeight;
+			split2->getComponent<BoxModel>()->height = Unit::Pixel;
+			split2->getComponent<BoxModel>()->height = splitHeight;
 		}
 
 		splits.push_back(split1);

@@ -66,7 +66,7 @@ void Mouse::setup() {
 	stack = NULL;
 	box = NULL;
 	LISTEN_FOR_COMPONENT(Stack, Mouse, onStack)
-	LISTEN_FOR_COMPONENT(Box, Mouse, onBox)
+	LISTEN_FOR_COMPONENT(BoxDefinition, Mouse, onBox)
 
 	mouseMove.connect<Mouse, &Mouse::onMouseMove>(this);
 	mousePress.connect<Mouse, &Mouse::onMousePress>(this);
@@ -83,7 +83,7 @@ void Mouse::onStack(Stack* s) {
 	stack = s;
 }
 
-void Mouse::onBox(Box* b) {
+void Mouse::onBox(BoxDefinition* b) {
 	box = b;
 }
 
@@ -115,7 +115,7 @@ bool Mouse::handleMouseMove(float x, float y) {
 		for(int i= stack->getNumChildren() - 1; i>=0; i--) {
 			Stack * child = stack->getChild(i);
 
-			if(child->components->hasComponent<Box>()) {
+			if(child->components->hasComponent<BoxDefinition>()) {
 				//check if child even has a mouse component
 				if(child->components->hasComponent<Mouse>()) {
 					//check if child handles the mouse
@@ -182,7 +182,7 @@ bool Mouse::handleMousePressed(int button) {
 		for(int i= stack->getNumChildren() - 1; i>=0; i--) {
 			Stack * child = stack->getChild(i);
 
-			if(child->components->hasComponent<Box>()) {
+			if(child->components->hasComponent<BoxDefinition>()) {
 				//check if child even has a mouse component
 				if(child->components->hasComponent<Mouse>()) {
 					//check if child handles the mouse
@@ -221,7 +221,7 @@ bool Mouse::handleMouseReleased(int button) {
 		for(int i= stack->getNumChildren() - 1; i>=0; i--) {
 			Stack * child = stack->getChild(i);
 
-			if(child->components->hasComponent<Box>()) {
+			if(child->components->hasComponent<BoxDefinition>()) {
 				//check if child even has a mouse component
 				if(child->components->hasComponent<Mouse>()) {
 					//check if child handles the mouse

@@ -18,19 +18,6 @@ public:
 	}
 };
 
-/*
-class TextBox: public ofxBox, public Text{
-public:
-	TextBox(){
-		addComponent<Text>(this);
-	}
-	
-	string getType(){
-		return "text";
-	}
-};
-*/
-
 class testApp : public ofBaseApp{
 
 	public:
