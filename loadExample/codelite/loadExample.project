@@ -24,6 +24,8 @@
         <File Name="../../src/core/Utils.cpp"/>
         <File Name="../../src/core/Component.h"/>
         <File Name="../../src/core/BaseTypes.h"/>
+        <File Name="../../src/core/RendererBase.h"/>
+        <File Name="../../src/core/RendererBase.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="tools">
         <File Name="../../src/tools/Instancer.cpp"/>
@@ -58,12 +60,18 @@
         <File Name="../../src/components/BoxModel.cpp"/>
         <File Name="../../src/components/BoxDefinition.h"/>
         <File Name="../../src/components/BoxDefinition.cpp"/>
+        <File Name="../../src/components/Draw.h"/>
+        <File Name="../../src/components/Draw.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="boxes">
         <File Name="../../src/boxes/Box.h"/>
         <File Name="../../src/boxes/Box.cpp"/>
         <File Name="../../src/boxes/Texts.h"/>
         <File Name="../../src/boxes/Texts.cpp"/>
+      </VirtualDirectory>
+      <VirtualDirectory Name="ofx">
+        <File Name="../../src/ofx/Renderer.h"/>
+        <File Name="../../src/ofx/Renderer.cpp"/>
       </VirtualDirectory>
     </VirtualDirectory>
     <VirtualDirectory Name="libs">

@@ -99,7 +99,6 @@ void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
 
 void Linker::unlink()
 {
-	cout << "UNLINK " << overflowed.size() << endl;
 	if(stack != NULL){
 		
 		for(ComponentContainer* c: overflowed){

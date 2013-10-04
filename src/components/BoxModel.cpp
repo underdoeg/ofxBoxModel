@@ -166,11 +166,11 @@ void BoxModel::onCss(Css* css) {
 	css->addCssParserFunction<BoxModel, &BoxModel::pPaddingBottom>("padding-bottom", this);
 	css->addCssParserFunction<BoxModel, &BoxModel::pPaddingTop>("padding-top", this);
 
-	css->addCssParserFunction<BoxModel, &BoxModel::pBorder>("border", this);
-	css->addCssParserFunction<BoxModel, &BoxModel::pBorderLeft>("border-left", this);
-	css->addCssParserFunction<BoxModel, &BoxModel::pBorderRight>("border-right", this);
-	css->addCssParserFunction<BoxModel, &BoxModel::pBorderBottom>("border-bottom", this);
-	css->addCssParserFunction<BoxModel, &BoxModel::pBorderTop>("border-top", this);
+	css->addCssParserFunction<BoxModel, &BoxModel::pBorder>("border-width", this);
+	css->addCssParserFunction<BoxModel, &BoxModel::pBorderLeft>("border-left-width", this);
+	css->addCssParserFunction<BoxModel, &BoxModel::pBorderRight>("border-right-width", this);
+	css->addCssParserFunction<BoxModel, &BoxModel::pBorderBottom>("border-bottom-width", this);
+	css->addCssParserFunction<BoxModel, &BoxModel::pBorderTop>("border-top-width", this);
 }
 
 /************************ PARSER HELPERS *******************************/

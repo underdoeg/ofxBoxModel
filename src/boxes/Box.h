@@ -13,6 +13,7 @@
 #include "components/Linker.h"
 #include "components/Splitter.h"
 #include "components/Mouse.h"
+#include "components/Draw.h"
 
 namespace boxModel {
 namespace boxes {
@@ -21,7 +22,7 @@ class Box:
 	public boxModel::core::ComponentContainer, public boxModel::components::Addressable, public boxModel::components::Stack,
 	public boxModel::components::BoxDefinition, public boxModel::components::BoxModel, public boxModel::components::Style,
 	public boxModel::components::Css, public boxModel::components::Serializer, public boxModel::components::Linker,
-	public boxModel::components::Splitter, public boxModel::components::Mouse {
+	public boxModel::components::Splitter, public boxModel::components::Mouse, public boxModel::components::Draw{
 public:
 	Box() {
 		addComponent<boxModel::components::Stack>(this);
@@ -35,6 +36,7 @@ public:
 		addComponent<boxModel::components::Linker>(this);
 		addComponent<boxModel::components::Splitter>(this);
 		addComponent<boxModel::components::Mouse>(this);
+		addComponent<boxModel::components::Draw>(this);
 	}
 
 	virtual ~Box() {};

@@ -1,4 +1,5 @@
 #include "testApp.h"
+#include "ofx/Renderer.h"
 
 using namespace boxModel::tools;
 using namespace boxModel::core;
@@ -6,6 +7,9 @@ using namespace boxModel::debug;
 
 //--------------------------------------------------------------
 void testApp::setup() {
+	
+	//set the renderer
+	boxModel::components::Draw::renderer = new boxModel::ofx::Renderer();
 	
 	//add the customBox to the instancer system
 	Instancer::addInstancer<CustomBox>();
@@ -32,7 +36,8 @@ void testApp::update() {
 
 //--------------------------------------------------------------
 void testApp::draw() {
-	debugDrawer.draw(rootBox);	
+	//debugDrawer.draw(rootBox);	
+	rootBox->draw();
 }
 
 //--------------------------------------------------------------
