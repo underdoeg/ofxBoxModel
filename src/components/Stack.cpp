@@ -133,6 +133,26 @@ Stack::ChildrenList Stack::getChildren() {
 	return children;
 };
 
+Stack::ChildrenList Stack::getChildrenRecursive()
+{
+	Stack::ChildrenList ret;
+	getChildrenRecursiveHelper(ret);
+	return ret;
+}
+
+void Stack::getChildrenRecursiveHelper(ChildrenList& list)
+{
+	appendChildrenToList(list);
+	for(Stack* child: children){
+		child->getChildrenRecursiveHelper(list);
+	}
+}
+
+void Stack::appendChildrenToList(ChildrenList& list)
+{
+	list.insert(list.end(), children.begin(), children.end());
+}
+
 Stack* Stack::getUltimateParent() {
 	if(!hasParent())
 		return this;
@@ -152,6 +172,4 @@ void Stack::getInfo(core::Component::Info& info){
 		info["parent"] = "none";
 }
 
-}
-
-}
+}} //end namespace

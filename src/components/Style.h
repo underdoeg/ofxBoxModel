@@ -101,6 +101,9 @@ public:
 		return borderColor;
 	}
 
+	void hide();
+	void show();
+
 	void getInfo(core::Component::Info& info);
 
 	core::Value<DisplayType> display;

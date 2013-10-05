@@ -24,6 +24,12 @@ public:
 	std::string getName();
 	static core::RendererBase* renderer;
 
+	Nano::signal<void()> preDraw;
+	Nano::signal<void(Draw*)> preDrawRef;
+
+	Nano::signal<void()> postDraw;
+	Nano::signal<void(Draw*)> postDrawRef;
+
 protected:
 	void drawDecorators();
 private:
@@ -37,7 +43,7 @@ private:
 	Style* style;
 	BoxModel* boxModel;
 	BoxDefinition* boxDefinition;
-	
+
 	bool bDrawDecorators;
 };
 

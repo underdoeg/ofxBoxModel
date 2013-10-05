@@ -1,9 +1,11 @@
 #include "Style.h"
 
-using namespace boxModel::components;
-using namespace boxModel::core;
+namespace boxModel {
+namespace components {
 
-std::string Style::getName(){
+using namespace core;
+
+std::string Style::getName() {
 	return "style";
 }
 
@@ -13,19 +15,19 @@ void Style::onCss(Css* css) {
 	css->addCssParserFunction<Style, &Style::pCssBorderColor>("border-color", this);
 }
 
-void Style::pCssColor(std::string key, std::string value){
+void Style::pCssColor(std::string key, std::string value) {
 	setColor(parseCssColor(value));
 }
 
-void Style::pCssBgColor(std::string key, std::string value){
-	if(value == "none"){
+void Style::pCssBgColor(std::string key, std::string value) {
+	if(value == "none") {
 		setBgColorNone();
 		return;
 	}
 	setBgColor(parseCssColor(value));
 }
 
-void Style::pCssBorderColor(std::string key, std::string value){
+void Style::pCssBorderColor(std::string key, std::string value) {
 	setBorderColor(parseCssColor(value));
 }
 
@@ -98,6 +100,16 @@ Color Style::parseCssColor(std::string val) {
 	return Color(r, g, b, a);
 }
 
-void Style::getInfo(core::Component::Info& info){
+void Style::getInfo(core::Component::Info& info) {
 
 }
+
+void Style::hide() {
+	display = DisplayType::NONE;
+}
+
+void Style::show() {
+	display = DisplayType::BLOCK;
+}
+
+}} // end namespace

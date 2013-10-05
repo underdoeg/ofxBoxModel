@@ -19,7 +19,7 @@ public:
 	typedef ChildrenList::iterator 		ChildrenIterator;
 
 	Stack();
-	
+
 	std::string getName();
 
 	void onDelete();
@@ -32,7 +32,6 @@ public:
 
 	/**** BEGIN HIERARCHY FUNCTIONS ****/
 	void addChildren(std::vector<Stack*> children);
-
 	void addChildren(std::vector<core::ComponentContainer*> compList);
 
 	void addChildContainer(core::ComponentContainer* container);
@@ -60,6 +59,7 @@ public:
 	void setParent(Stack* p);
 
 	ChildrenList getChildren();
+	ChildrenList getChildrenRecursive();
 	Stack* getUltimateParent();
 
 	void getInfo(core::Component::Info& info);
@@ -69,6 +69,9 @@ public:
 	Nano::signal<void(Stack*)> parentChanged;
 
 private:
+	void appendChildrenToList(ChildrenList& list);
+	void getChildrenRecursiveHelper(ChildrenList& list);
+
 	ChildrenList children;
 	Stack* parent;
 };

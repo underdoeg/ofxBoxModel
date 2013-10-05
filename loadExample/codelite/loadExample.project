@@ -209,7 +209,7 @@
   <VirtualDirectory Name="data">
     <File Name="../bin/data/style.css"/>
     <File Name="../bin/data/scene.xml"/>
-    <File Name="../bin/data/infoViewer.css"/>
+    <File Name="../bin/data/debugger.css"/>
   </VirtualDirectory>
   <Settings Type="Dynamic Library">
     <GlobalSettings>

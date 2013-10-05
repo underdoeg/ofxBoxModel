@@ -41,6 +41,9 @@ void Draw::onStyle(Style* s) {
 }
 
 void Draw::draw() {
+	preDraw();
+	preDrawRef(this);
+
 	if(renderer != NULL && boxDefinition != NULL) {
 		renderer->pushMatrix();
 		renderer->translate(boxDefinition->position);
@@ -59,6 +62,9 @@ void Draw::draw() {
 	if(renderer != NULL && boxDefinition != NULL) {
 		renderer->popMatrix();
 	}
+
+	postDraw();
+	postDrawRef(this);
 }
 
 void Draw::drawDecorators() {
@@ -92,7 +98,7 @@ void Draw::drawDecorators() {
 			drawBorderBottom = true;
 			borderBottomWidth = boxModel->border.bottom.getValueCalculated();
 		}
-		
+
 		if(drawBorderTop) {
 			renderer->drawRect(core::Point(0, 0), core::Point(boxDefinition->size.x, borderTopWidth), style->getBorderColor());
 		}
