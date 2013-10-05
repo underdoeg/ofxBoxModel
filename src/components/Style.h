@@ -13,15 +13,22 @@ namespace components {
 
 class Style : public core::Component {
 public:
+	enum DisplayType{
+		BLOCK,
+		NONE,
+		HIDDEN
+	};
+
 	Style() {
 		color.set(0);
-		bgColor.set(255);
+		setBgColorNone();
 		borderColor.set(0);
-		bBgColor = true;
+		display = DisplayType::BLOCK;
 	}
+
 	~Style() {
 	}
-	
+
 	std::string getName();
 
 	virtual void setup() {
@@ -95,6 +102,8 @@ public:
 	}
 
 	void getInfo(core::Component::Info& info);
+
+	core::Value<DisplayType> display;
 
 	static core::Color parseCssColor(std::string val);
 private:

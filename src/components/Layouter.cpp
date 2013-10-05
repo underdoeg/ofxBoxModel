@@ -1,6 +1,7 @@
 #include "Layouter.h"
 #include "Splitter.h"
 #include "Linker.h"
+#include "Style.h"
 
 using namespace boxModel::components;
 using namespace boxModel::core;
@@ -39,42 +40,42 @@ void Layouter::onBoxDefinition(BoxModel* box) {
 }
 
 void Layouter::layout(bool layoutChildren) {
-	
+
 	preLayouted();
-	
+
 	if(stack == NULL )
 		return;
 
 	if(stack->getNumChildren() == 0)
 		return;
-	
+
 	if(layoutChildren) {
 		for(Stack* child: stack->getChildren()) {
 			if(child->components->hasComponent<Layouter>())
 				child->components->getComponent<Layouter>()->layout(true);
 		}
 	}
-	
+
 	if(!isDirty || box == NULL)
 		return;
-	
+
 	//reset linked elements
 	for(Stack * stackChild: stack->getChildren()) {
 		if(stackChild->components->hasComponent<Linker>()){
 			stackChild->components->getComponent<Linker>()->unlink();
 		}
 	}
-	
+
 	//merge splitted components before rearranging
 	for(Stack * stackChild: stack->getChildren()) {
 		if(stackChild->components->hasComponent<Splitter>()){
-			if(stackChild->components->getComponent<Splitter>()->hasSplits)	
+			if(stackChild->components->getComponent<Splitter>()->hasSplits)
 				stackChild->components->getComponent<Splitter>()->merge();
 		}
 	}
-	
+
 	std::string id  = components->getComponent<Addressable>()->getId();
-		
+
 	//this is the root box
 	if(!stack->hasParent()) {
 		if(boxDefinition != NULL) {
@@ -86,9 +87,9 @@ void Layouter::layout(bool layoutChildren) {
 	curPosition.set(0, 0);
 	rowMaxHeight = 0;
 	overflowElements.clear();
-	
-	
-	
+
+
+
 	//place all elements
 	for(Stack * stackChild: stack->getChildren()) {
 		if(stackChild->components->hasComponent<BoxDefinition>()) {
@@ -101,16 +102,16 @@ void Layouter::layout(bool layoutChildren) {
 		Rectangle bounds;
 		bounds.width = box->contentSize.x;
 		bounds.height = box->contentSize.y;
-		
+
 		Rectangle childBounds;
-		
+
 		//loop a copy of the element list
 		std::vector<ComponentContainer*> overflowElementsCopy = overflowElements;
 
 		for(ComponentContainer* container: overflowElementsCopy) {
 			//only check for overlapping if a splitter is present
 			if(container->hasComponent<Splitter>()) {
-				
+
 				if(container->hasComponent<BoxDefinition>()) {
 					BoxDefinition* child = container->getComponent<BoxDefinition>();
 					childBounds.x = child->position.x;
@@ -119,16 +120,16 @@ void Layouter::layout(bool layoutChildren) {
 					childBounds.height = child->size.y;
 					if(bounds.intersects(childBounds)) {
 						Rectangle r = bounds.getIntersection(childBounds);
-						
+
 						Splitter* splitter = container->getComponent<Splitter>();
 						//request the split and if it happens, remove the component from overflow list and add the new splittet item
 						if(splitter->requestSplit(r.width, r.height)) {
-							
+
 							std::vector<ComponentContainer*>::iterator itPos = std::find(overflowElements.begin(), overflowElements.end(), container);//std::remove(overflowElements.begin(), overflowElements.end(), container);
 							overflowElements.erase(itPos);
-							
+
 							std::vector<ComponentContainer*> splits = splitter->getSplits();
-							
+
 							if(splits.size() == 2){
 								stack->addChildFromContainer(splits[0]);
 								overflowElements.insert(itPos, splits[1]);
@@ -150,7 +151,7 @@ void Layouter::layout(bool layoutChildren) {
 		boxDefinition->recalculateBoxSize();
 
 	isDirty = false;
-	
+
 	//trigger layouted event
 	layouted();
 }
@@ -158,6 +159,11 @@ void Layouter::layout(bool layoutChildren) {
 void Layouter::placeBox(BoxDefinition* childBox) {
 	if(!childBox->components->hasComponent<BoxModel>())
 		return;
+
+	if(childBox->components->hasComponent<Style>()){
+		if(childBox->components->getComponent<Style>()->display == Style::DisplayType::NONE)
+			return;
+	}
 
 	BoxModel* childBoxDef = childBox->components->getComponent<BoxModel>();
 

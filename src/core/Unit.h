@@ -47,11 +47,11 @@ public:
 		set(t);
 		return t;
 	}
-	
+
 	const bool operator==(Type t){
 		return type == t;
 	}
-	
+
 	const bool operator==(float v){
 		return value == v;
 	}
@@ -163,7 +163,6 @@ private:
 	float containerSize;
 	bool bContainerSizeSet;
 
-	friend class BoxModel;
 };
 
 class UnitGroup {
@@ -198,7 +197,7 @@ public:
 		set(t);
 		return t;
 	}
-	
+
 	const UnitGroup& operator=(UnitGroup group) {
 		set(group);
 		return *this;
@@ -226,7 +225,7 @@ public:
 			(*it)->set(type);
 		}
 	}
-	
+
 	void set(UnitGroup group){
 		top = group.top;
 		right = group.right;

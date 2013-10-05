@@ -14,11 +14,13 @@ void testApp::setup() {
 	//add the customBox to the instancer system
 	Instancer::addInstancer<CustomBox>();
 	
+	//load the structure
 	rootBox = Xml::load<boxModel::boxes::Box>(ofToDataPath("scene.xml"));
 	rootBox->loadCss(ofToDataPath("style.css"));
 	
 	rootBox->width = ofGetWidth();
 	rootBox->height = ofGetHeight();
+	
 	
 	infoViewer.loadCss(ofToDataPath("infoViewer.css"));
 	
