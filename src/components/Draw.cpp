@@ -50,6 +50,12 @@ void Draw::draw() {
 		drawDecorators();
 		renderer->translate(boxDefinition->contentPosition);
 	}
+	/*
+	if(components->hasComponent<Text>()){
+		cout << "TEXT" << endl;
+	}
+	*/
+
 	onDraw();
 	if(stack != NULL) {
 		for(unsigned int i=0; i<stack->getNumChildren(); i++) {

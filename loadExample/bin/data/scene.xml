@@ -1,17 +1,19 @@
 <?xml version="1.0"?>
 <box id="root">
 	<customBox class="quarter">
-		<box class="inside">
-		
-		</box>
+		<!--
+			<box class="inside">
+
+			</box>
+		-->
 	</customBox>
 	<box class="quarter">
-		
+
 	</box>
 	<box class="quarter">
-		
+
 	</box>
 	<box class="quarter">
-		
+
 	</box>
 </box>

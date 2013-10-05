@@ -2,22 +2,20 @@
 #define TEXT_H
 
 #include "Component.h" // Base class: boxModel::core::Component
-#include "BaseTypes.h"
-#include "Box.h"
-#include "Serializer.h"
-#include "Utils.h"
+#include "core/BaseTypes.h"
+#include "components/Serializer.h"
+#include "core/Utils.h"
 #include "TextBlock.h"
-#include "Linker.h"
-#include "Splitter.h"
+#include "components/Linker.h"
+#include "components/Splitter.h"
+#include "components/Draw.h"
 
 
-namespace boxModel
-{
+namespace boxModel {
 
-namespace components
-{
-	
-struct TextInfo{
+namespace components {
+
+struct TextInfo {
 	std::string text;
 	float width;
 	float height;
@@ -28,20 +26,19 @@ struct TextInfo{
 	float wordSpacing;
 };
 
-class Text : public boxModel::core::Component
-{
+class Text : public boxModel::core::Component {
 public:
 	Text();
 	~Text();
-	
+
 	std::string getName();
 
 	void setup();
-	
+
 	void copyFrom(Text* text);
-	
+
 	cppFont::TextBlock* getTextBlock();
-	
+
 	core::Value<std::string> text;
 
 	enum TEXT_ALIGNMENT {
@@ -51,20 +48,20 @@ public:
 	    ALIGN_JUSTIFY,
 	    ALIGN_JUSTIFY_ALL
 	};
-	
+
 	enum TEXT_TRANSFORM {
 	    TEXT_UPPERCASE,
 	    TEXT_LOWERCASE,
-		TEXT_NONE
+	    TEXT_NONE
 	};
-	
+
 	static void enableHyphenation(std::string language, std::string folderName = "hyphenation");
 	static void disableHyphenation();
-	
+
 	std::string getTextOverflow();
 
 	void getInfo(core::Component::Info& info);
-	
+
 	core::Value<std::string> fontName;
 	core::Unit fontSize;
 	core::Unit leading;
@@ -72,16 +69,17 @@ public:
 	core::Unit letterSpacing;
 	core::Value<TEXT_ALIGNMENT> textAlignment;
 	core::Value<TEXT_TRANSFORM> textTransform;
-		
+
 private:
 	void onBoxDefinition(BoxModel* boxDef);
 	void onCss(Css* css);
 	void onBox(BoxDefinition* box);
 	void onLinker(Linker* linker);
-	
+	void onDraw(Draw* linker);
+
 	void onSplitter(Splitter* splitter);
 	void onSplitRequested(float x, float y);
-	
+
 	void pCssFontName(std::string key, std::string value);
 	void pCssFontSize(std::string key, std::string value);
 	void pCssLeading(std::string key, std::string value);
@@ -89,17 +87,17 @@ private:
 	void pCssWordSpacing(std::string key, std::string value);
 	void pCssTextAlignment(std::string key, std::string value);
 	void pCssTextTransform(std::string key, std::string value);
-	
+
 	void onLinked(Linker* link);
-			
+
 	void onSerializer(Serializer* ser);
-	
+
 	void onSerialize(core::VariantList& variants);
-	
+
 	void onDeserialize(core::VariantList& variants);
-	
+
 	void onTextChange(string text);
-	
+
 	void onFontParamChanged(core::Unit* u);
 
 	void onFontSizeChanged(core::Unit* u);
@@ -112,16 +110,17 @@ private:
 	void onWidthChanged(float width);
 	void onHeightChanged(float height);
 	void onFontNameChanged(std::string fontName);
-	
+
 	BoxDefinition* box;
 	BoxModel* boxDefinition;
 	Text* splittedText;
+	Draw* draw;
 	Splitter* splitter;
 	cppFont::TextBlock textBlock;
 	cppFont::FontFamily fontFamily;
-	
+
 	core::Unit preSplitHeight;
-	
+
 	static cppFont::Font defaultFont;
 	static bool bHyphenate;
 	static string hyphenationLanguage;
