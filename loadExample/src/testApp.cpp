@@ -30,6 +30,7 @@ void testApp::setup() {
 	//assign the debugger
 	debugger.setComponentContainer(rootBox);
 	debugger.loadCss(ofToDataPath("debugger.css"));
+	debugger.hide();
 }
 
 //--------------------------------------------------------------

@@ -41,6 +41,11 @@ void Draw::onStyle(Style* s) {
 }
 
 void Draw::draw() {
+	
+	if(style != NULL)
+		if(style->display == Style::DisplayType::NONE || style->display == Style::DisplayType::HIDDEN)
+			return;
+	
 	preDraw();
 	preDrawRef(this);
 
