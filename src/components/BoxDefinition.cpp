@@ -12,14 +12,14 @@ std::string BoxDefinition::getName(){
 void BoxDefinition::setup() {
 	stack = NULL;
 
-	contentSize.changed.connect<BoxDefinition, &BoxDefinition::onContenSizeChanged>(this);
+	contentSize.changed.connect<BoxDefinition, &BoxDefinition::onContentSizeChanged>(this);
 
 	LISTEN_FOR_COMPONENT(Stack, BoxDefinition, onStack)
 }
 
 void BoxDefinition::onStack(Stack* s) {
 	stack = s;
-	onContenSizeChanged(contentSize);
+	onContentSizeChanged(contentSize);
 	stack->childAdded.connect<BoxDefinition, &BoxDefinition::onChildAdded>(this);
 }
 
@@ -47,7 +47,7 @@ Point BoxDefinition::getGlobalPosition() {
 	return pos;
 }
 
-void BoxDefinition::onContenSizeChanged(core::Point p) {
+void BoxDefinition::onContentSizeChanged(core::Point p) {
 	if(stack != NULL) {
 		for(Stack* child: stack->getChildren()) {
 			child->components->setUnitContainerSize(p.x, p.y);

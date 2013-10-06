@@ -180,8 +180,8 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 			curPosition.x += childBox->outerSize.x - childBoxDef->margin.left.getValueCalculated();
 			break;
 		default:
-			curPosition.x = box->contentPosition.x;
-			//curPosition.x = 0;
+			//curPosition.x = box->contentPosition.x;
+			curPosition.x = 0;
 			curPosition.y += rowMaxHeight;
 			rowMaxHeight = 0;
 			childBox->position.set(curPosition + core::Point(childBoxDef->margin.left.getValueCalculated(), childBoxDef->margin.top.getValueCalculated()));

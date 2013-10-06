@@ -45,7 +45,7 @@ public:
 	
 private:
 	void onStack(Stack* stack);
-	void onContenSizeChanged(core::Point p);
+	void onContentSizeChanged(core::Point p);
 	void onChildAdded(Stack* child);
 	Stack* stack;
 };
