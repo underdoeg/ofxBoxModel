@@ -79,7 +79,7 @@ void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
 		//now add the overflowed components to the next linker
 		Stack* linkerStack = linkerTo->components->getComponent<Stack>();
 		linkerStack->addChildren(compList);
-		
+
 		/*
 		layouter->layout();
 		if(linkerStack->components->hasComponent<Layouter>()){
@@ -88,24 +88,24 @@ void Linker::onOverflow(std::vector<ComponentContainer*> compList) {
 		*/
 	}
 	overflowed.insert(overflowed.end(), compList.begin(), compList.end());
-	
+
 	//add listener to remove a container if it gets deleted
 	for(ComponentContainer* c: overflowed){
 		c->deleted.connect<Linker, &Linker::onContainerDeleted>(this);
 	}
-	
+
 	linkedTo(linkerTo);
 }
 
 void Linker::unlink()
 {
 	if(stack != NULL){
-		
+
 		for(ComponentContainer* c: overflowed){
 			c->deleted.disconnect<Linker, &Linker::onContainerDeleted>(this);
 		}
 		stack->addChildren(overflowed);
-		
+
 		overflowed.clear();
 	}
 }

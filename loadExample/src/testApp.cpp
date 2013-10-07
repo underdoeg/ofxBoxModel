@@ -8,8 +8,12 @@ using namespace boxModel::debug;
 //--------------------------------------------------------------
 void testApp::setup() {
 
+	ofSetFrameRate(60);
+
+	ofEnableAlphaBlending();
+
 	//set the renderer
-	boxModel::components::Draw::renderer = new boxModel::ofx::Renderer();
+	boxModel::components::Draw::setRenderer(new boxModel::ofx::Renderer());
 
 	//add the customBox to the instancer system
 	Instancer::addInstancer<CustomBox>();
@@ -31,6 +35,9 @@ void testApp::setup() {
 	debugger.setComponentContainer(rootBox);
 	debugger.loadCss(ofToDataPath("debugger.css"));
 	debugger.hide();
+
+	//boxModel::boxes::TextBox* tb = rootBox->findByAddress<boxModel::boxes::TextBox>("p")[0];
+
 }
 
 //--------------------------------------------------------------
@@ -41,7 +48,9 @@ void testApp::update() {
 //--------------------------------------------------------------
 void testApp::draw() {
 	//debugDrawer.draw(rootBox);
+	//debugDrawer.draw(&debugger);
 	rootBox->draw();
+
 }
 
 //--------------------------------------------------------------

@@ -6,7 +6,7 @@ using namespace std;
 using namespace boxModel::components;
 
 //////////////////////////////////////////////////////////////////////////////////
-
+/*
 class TextDrawer: public cppFont::TextBlockDrawer {
 public:
 	bool allocateFont(Font* font, int fontSize) {
@@ -31,7 +31,7 @@ public:
 };
 
 TextDrawer textDrawer;
-
+*/
 //////////////////////////////////////////////////////////////////////////////////
 
 cppFont::Font Text::defaultFont("/usr/share/fonts/TTF/arial.ttf");
@@ -66,6 +66,11 @@ void Text::setup() {
 		textBlock.enableHyphenation(hyphenationLanguage, Globals::get().dataRoot+hyphenationFolder+"/");
 	}
 
+	style = NULL;
+
+	bDrawDirty = true;
+	bHasDrawImage = false;
+
 	fontFamily.setFontNormal(&defaultFont);
 	textBlock.setFontFamily(&fontFamily);
 
@@ -92,6 +97,7 @@ void Text::setup() {
 	LISTEN_FOR_COMPONENT(Linker, Text, onLinker)
 	LISTEN_FOR_COMPONENT(Splitter, Text, onSplitter)
 	LISTEN_FOR_COMPONENT(Draw, Text, onDraw)
+	LISTEN_FOR_COMPONENT(Style, Text, onStyle)
 
 	text.changed.connect<Text, &Text::onTextChange>(this);
 }
@@ -135,6 +141,7 @@ void Text::onTextChange(string _text) {
 	if(textTransform==TEXT_LOWERCASE) text = stringToLower(_text);
 	if(textTransform==TEXT_UPPERCASE) text = stringToUpper(_text);
 	textBlock.setText(text);
+	bDrawDirty = true;
 }
 
 void Text::onFontParamChanged(Unit* u) {
@@ -195,6 +202,7 @@ void Text::onHeightChanged(float height) {
 		}
 	}
 	textBlock.setHeight(height);
+	bDrawDirty = true;
 }
 
 void Text::onWidthChanged(float width) {
@@ -209,6 +217,7 @@ void Text::onWidthChanged(float width) {
 		}
 	}
 	textBlock.setWidth(width);
+	bDrawDirty = true;
 }
 
 void Text::onFontSizeChanged(core::Unit* u) {
@@ -216,6 +225,7 @@ void Text::onFontSizeChanged(core::Unit* u) {
 	if(boxDefinition != NULL) {
 		boxDefinition->recalculateBoxSize();
 	}
+	bDrawDirty = true;
 }
 
 void Text::onLeadingChanged(core::Unit* u) {
@@ -223,6 +233,7 @@ void Text::onLeadingChanged(core::Unit* u) {
 	if(boxDefinition != NULL) {
 		boxDefinition->recalculateBoxSize();
 	}
+	bDrawDirty = true;
 }
 
 void Text::onLetterSpacingChanged(core::Unit* u) {
@@ -230,6 +241,7 @@ void Text::onLetterSpacingChanged(core::Unit* u) {
 	if(boxDefinition != NULL) {
 		boxDefinition->recalculateBoxSize();
 	}
+	bDrawDirty = true;
 }
 
 void Text::onWordSpacingChanged(core::Unit* u) {
@@ -237,11 +249,13 @@ void Text::onWordSpacingChanged(core::Unit* u) {
 	if(boxDefinition != NULL) {
 		boxDefinition->recalculateBoxSize();
 	}
+	bDrawDirty = true;
 }
 
 void Text::onFontNameChanged(std::string fontName) {
 	fontFamily.loadNormal(Globals::get().dataRoot+fontName);
 	textBlock.setDirty();
+	bDrawDirty = true;
 }
 
 void Text::onAutoWidth(float& width) {
@@ -258,9 +272,47 @@ void Text::onLinker(Linker* linker) {
 	linker->linkedTo.connect<Text, &Text::onLinked>(this);
 }
 
-void Text::onDraw(Draw* d)
-{
+void Text::onStyle(Style* s) {
+	style = s;
+}
+
+void Text::onDraw(Draw* d) {
 	draw = d;
+	draw->onDraw.connect<Text, &Text::drawIt>(this);
+}
+
+void Text::drawIt() {
+	//check if something has changed
+	if(bDrawDirty) {
+		if(bHasDrawImage) {
+			boxModel::core::RendererResources::removeImage(drawImageId);
+		}
+		cppFont::TextBlockImage img = textBlock.getAsImage();
+
+		boxModel::core::Color color(255, 255, 255);
+		if(style)
+			color = style->getColor();
+
+		//create a colored image with an alpha channel
+		unsigned char* pixels = new unsigned char[img.width*img.height*4];
+		unsigned int iAlpha = 0;
+		for(unsigned int i=0; i< img.width*img.height*4; i+=4) {
+			pixels[i] = color.r;
+			pixels[i+1] = color.g;
+			pixels[i+2] = color.b;
+			pixels[i+3] = img.pixels[iAlpha];
+			iAlpha++;
+		}
+
+		//cleanup
+		delete[] img.pixels;
+
+		drawImageId = boxModel::core::RendererResources::addImage(pixels, img.width, img.height, 4);
+		bHasDrawImage = true;
+		bDrawDirty = false;
+	}
+
+	Draw::getRenderer()->drawImage(drawImageId);
 }
 
 void Text::onLinked(Linker* link) {

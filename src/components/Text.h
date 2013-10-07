@@ -9,6 +9,7 @@
 #include "components/Linker.h"
 #include "components/Splitter.h"
 #include "components/Draw.h"
+#include "components/Style.h"
 
 
 namespace boxModel {
@@ -92,6 +93,8 @@ private:
 
 	void onSerializer(Serializer* ser);
 
+	void onStyle(Style* ser);
+
 	void onSerialize(core::VariantList& variants);
 
 	void onDeserialize(core::VariantList& variants);
@@ -111,15 +114,22 @@ private:
 	void onHeightChanged(float height);
 	void onFontNameChanged(std::string fontName);
 
+	void drawIt();
+
 	BoxDefinition* box;
 	BoxModel* boxDefinition;
 	Text* splittedText;
 	Draw* draw;
 	Splitter* splitter;
+	Style* style;
 	cppFont::TextBlock textBlock;
 	cppFont::FontFamily fontFamily;
 
 	core::Unit preSplitHeight;
+
+	bool bDrawDirty;
+	bool bHasDrawImage;
+	unsigned int drawImageId;
 
 	static cppFont::Font defaultFont;
 	static bool bHyphenate;

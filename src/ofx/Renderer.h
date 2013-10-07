@@ -9,7 +9,8 @@ namespace boxModel {
 namespace ofx {
 
 class Renderer: public boxModel::core::RendererBase {
-public:
+	public:
+
 	Renderer();
 	~Renderer();
 
@@ -18,6 +19,9 @@ public:
 	void popMatrix();
 	void pushMatrix();
 	void translate(boxModel::core::Point pos);
+	virtual ImagePointer allocateImage(unsigned char* pixels, int width, int height, int bpp);
+	virtual void drawImage(ImagePointer img);
+
 };
 
 }

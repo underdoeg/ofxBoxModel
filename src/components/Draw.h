@@ -19,25 +19,33 @@ public:
 
 	void setup();
 
+	static void setRenderer(boxModel::core::RendererBase* renderer);
+	static boxModel::core::RendererBase* getRenderer();
+
 	void draw();
-	virtual void onDraw();
 	std::string getName();
-	static core::RendererBase* renderer;
 
 	Nano::signal<void()> preDraw;
 	Nano::signal<void(Draw*)> preDrawRef;
+
+	Nano::signal<void()> onDraw;
+	Nano::signal<void(Draw*)> onDrawRef;
 
 	Nano::signal<void()> postDraw;
 	Nano::signal<void(Draw*)> postDrawRef;
 
 protected:
+	virtual void customDraw();
 	void drawDecorators();
+
 private:
 
 	void onStack(Stack* s);
 	void onStyle(Style* s);
 	void onBoxModel(BoxModel* bm);
 	void onBoxDefinition(BoxDefinition* bd);
+
+	static core::RendererBase* renderer;
 
 	Stack* stack;
 	Style* style;

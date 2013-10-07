@@ -4,7 +4,20 @@ namespace boxModel {
 
 namespace components {
 
-boxModel::core::RendererBase* Draw::renderer = NULL;
+class DummyRenderer: public boxModel::core::RendererBase {
+public:
+	virtual ImagePointer allocateImage(unsigned char* pixels, int width, int height, int bpp) {
+		return NULL;
+	}
+	virtual void drawImage(ImagePointer img) {}
+	virtual void drawLine(boxModel::core::Point a, boxModel::core::Point b, boxModel::core::Color color, float width) {}
+	virtual void drawRect(boxModel::core::Point position, boxModel::core::Point size, boxModel::core::Color color) {}
+	virtual void popMatrix() {}
+	virtual void pushMatrix() {}
+	virtual void translate(boxModel::core::Point pos) {}
+};
+
+boxModel::core::RendererBase* Draw::renderer = new DummyRenderer();
 
 Draw::Draw() {
 }
@@ -40,12 +53,20 @@ void Draw::onStyle(Style* s) {
 	style = s;
 }
 
+void Draw::setRenderer(core::RendererBase* r) {
+	renderer = r;
+}
+
+boxModel::core::RendererBase* Draw::getRenderer() {
+	return renderer;
+}
+
 void Draw::draw() {
-	
+
 	if(style != NULL)
 		if(style->display == Style::DisplayType::NONE || style->display == Style::DisplayType::HIDDEN)
 			return;
-	
+
 	preDraw();
 	preDrawRef(this);
 
@@ -55,13 +76,11 @@ void Draw::draw() {
 		drawDecorators();
 		renderer->translate(boxDefinition->contentPosition);
 	}
-	/*
-	if(components->hasComponent<Text>()){
-		cout << "TEXT" << endl;
-	}
-	*/
 
 	onDraw();
+	onDrawRef(this);
+
+	customDraw();
 	if(stack != NULL) {
 		for(unsigned int i=0; i<stack->getNumChildren(); i++) {
 			Stack* child = stack->getChild(i);
@@ -70,12 +89,14 @@ void Draw::draw() {
 		}
 	}
 
+	postDraw();
+	postDrawRef(this);
+
 	if(renderer != NULL && boxDefinition != NULL) {
 		renderer->popMatrix();
 	}
 
-	postDraw();
-	postDrawRef(this);
+
 }
 
 void Draw::drawDecorators() {
@@ -125,7 +146,7 @@ void Draw::drawDecorators() {
 	}
 }
 
-void Draw::onDraw() {
+void Draw::customDraw() {
 
 }
 

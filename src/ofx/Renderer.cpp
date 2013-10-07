@@ -38,5 +38,24 @@ void Renderer::drawRect(boxModel::core::Point position, boxModel::core::Point si
 	ofPopStyle();
 }
 
+boxModel::core::RendererBase::ImagePointer Renderer::allocateImage(unsigned char* pixels, int width, int height, int bpp) {
+	ofImage* img = new ofImage();
+	ofImageType type = OF_IMAGE_GRAYSCALE;
+	//if(bpp == 2)
+	if(bpp == 3)
+		type = OF_IMAGE_COLOR;
+	else if(bpp == 4)
+		type = OF_IMAGE_COLOR_ALPHA;
+	img->setFromPixels(pixels, width, height, type);
+	return (ImagePointer)img;
+}
+
+void Renderer::drawImage(ImagePointer img)
+{
+	ofPushStyle();
+	((ofImage*)img)->draw(0, 0);
+	ofPopStyle();
+}
+
 }} // end namespace
 

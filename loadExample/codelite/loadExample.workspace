@@ -12,7 +12,7 @@
       <Project Name="linux" ConfigName="Debug"/>
       <Project Name="loadExample" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release" Selected="yes">
+    <WorkspaceConfiguration Name="Release" Selected="no">
       <Project Name="linux" ConfigName="Release"/>
       <Project Name="loadExample" ConfigName="Release"/>
     </WorkspaceConfiguration>
