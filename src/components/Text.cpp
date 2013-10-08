@@ -67,8 +67,9 @@ void Text::setup() {
 	}
 
 	style = NULL;
+	linker = NULL;
 
-	bDrawDirty = true;
+	update();
 	bHasDrawImage = false;
 
 	fontFamily.setFontNormal(&defaultFont);
@@ -100,6 +101,24 @@ void Text::setup() {
 	LISTEN_FOR_COMPONENT(Style, Text, onStyle)
 
 	text.changed.connect<Text, &Text::onTextChange>(this);
+}
+
+void Text::update() {
+	bDrawDirty = true;
+}
+
+void Text::onFlush() {
+	if(linker != NULL) {
+		//if(textBlock.hasOverflow()) {
+			Linker* linkTo = linker->getLinkTo();
+			if(linkTo != NULL){
+				if(linkTo->components->hasComponent<Text>()){
+					linkTo->components->getComponent<Text>()->text = textBlock.getOverflow();
+					//linkTo->components->getComponent<Text>()->onFlush();
+				}
+			}
+		//}
+	}
 }
 
 void Text::copyFrom(Text* t) {
@@ -141,7 +160,7 @@ void Text::onTextChange(string _text) {
 	if(textTransform==TEXT_LOWERCASE) text = stringToLower(_text);
 	if(textTransform==TEXT_UPPERCASE) text = stringToUpper(_text);
 	textBlock.setText(text);
-	bDrawDirty = true;
+	update();
 }
 
 void Text::onFontParamChanged(Unit* u) {
@@ -202,7 +221,7 @@ void Text::onHeightChanged(float height) {
 		}
 	}
 	textBlock.setHeight(height);
-	bDrawDirty = true;
+	update();
 }
 
 void Text::onWidthChanged(float width) {
@@ -217,7 +236,7 @@ void Text::onWidthChanged(float width) {
 		}
 	}
 	textBlock.setWidth(width);
-	bDrawDirty = true;
+	update();
 }
 
 void Text::onFontSizeChanged(core::Unit* u) {
@@ -225,7 +244,7 @@ void Text::onFontSizeChanged(core::Unit* u) {
 	if(boxDefinition != NULL) {
 		boxDefinition->recalculateBoxSize();
 	}
-	bDrawDirty = true;
+	update();
 }
 
 void Text::onLeadingChanged(core::Unit* u) {
@@ -233,7 +252,7 @@ void Text::onLeadingChanged(core::Unit* u) {
 	if(boxDefinition != NULL) {
 		boxDefinition->recalculateBoxSize();
 	}
-	bDrawDirty = true;
+	update();
 }
 
 void Text::onLetterSpacingChanged(core::Unit* u) {
@@ -241,7 +260,7 @@ void Text::onLetterSpacingChanged(core::Unit* u) {
 	if(boxDefinition != NULL) {
 		boxDefinition->recalculateBoxSize();
 	}
-	bDrawDirty = true;
+	update();
 }
 
 void Text::onWordSpacingChanged(core::Unit* u) {
@@ -249,13 +268,13 @@ void Text::onWordSpacingChanged(core::Unit* u) {
 	if(boxDefinition != NULL) {
 		boxDefinition->recalculateBoxSize();
 	}
-	bDrawDirty = true;
+	update();
 }
 
 void Text::onFontNameChanged(std::string fontName) {
 	fontFamily.loadNormal(Globals::get().dataRoot+fontName);
 	textBlock.setDirty();
-	bDrawDirty = true;
+	update();
 }
 
 void Text::onAutoWidth(float& width) {
@@ -268,7 +287,8 @@ void Text::onAutoHeight(float& height) {
 
 /******************************************************************************************/
 
-void Text::onLinker(Linker* linker) {
+void Text::onLinker(Linker* l) {
+	linker = l;
 	linker->linkedTo.connect<Text, &Text::onLinked>(this);
 }
 
@@ -316,6 +336,7 @@ void Text::drawIt() {
 }
 
 void Text::onLinked(Linker* link) {
+
 }
 
 void Text::onSerializer(Serializer* ser) {

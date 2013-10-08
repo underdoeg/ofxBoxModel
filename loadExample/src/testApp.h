@@ -48,6 +48,10 @@ class CustomBox: public boxModel::boxes::Box{
 	void onMouseReleaseOutside(int button){
 		//cout << "button released outside " << button << endl;
 	}
+
+	void customDraw(){
+		//ofRect(0, 0, contentSize.x, contentSize.y);
+	}
 };
 
 class testApp : public ofBaseApp{

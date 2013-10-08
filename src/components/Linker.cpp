@@ -18,6 +18,7 @@ std::string Linker::getName(){
 }
 
 void Linker::setup() {
+	linkerTo = NULL;
 	LISTEN_FOR_COMPONENT(Layouter, Linker, onLayouter)
 	LISTEN_FOR_COMPONENT(Serializer, Linker, onSerializer)
 	LISTEN_FOR_COMPONENT(Stack, Linker, onStack)

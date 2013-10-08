@@ -72,6 +72,9 @@ public:
 	core::Value<TEXT_TRANSFORM> textTransform;
 
 private:
+	void update();
+	void onFlush();
+
 	void onBoxDefinition(BoxModel* boxDef);
 	void onCss(Css* css);
 	void onBox(BoxDefinition* box);
@@ -122,6 +125,7 @@ private:
 	Draw* draw;
 	Splitter* splitter;
 	Style* style;
+	Linker* linker;
 	cppFont::TextBlock textBlock;
 	cppFont::FontFamily fontFamily;
 

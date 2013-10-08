@@ -50,7 +50,6 @@ void testApp::draw() {
 	//debugDrawer.draw(rootBox);
 	//debugDrawer.draw(&debugger);
 	rootBox->draw();
-
 }
 
 //--------------------------------------------------------------
