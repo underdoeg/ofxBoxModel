@@ -85,7 +85,7 @@ void BoxModel::recalculateBoxSize() {
 	isDirty = true;
 	if(!isDirty)
 		return;
-		
+
 	if(box == NULL)
 		return;
 
@@ -111,7 +111,7 @@ void BoxModel::recalculateBoxSize() {
 		_width = autoWidth;
 		_width += _paddingLeft + _paddingRight + _borderLeft + _borderRight;
 	}
-	
+
 	box->size.x = _width;
 	box->outerSize.x = _marginLeft + _marginRight + box->size.x;
 	box->contentSize.x = box->size.x - _paddingLeft - _paddingRight - _borderLeft - _borderRight;
@@ -133,8 +133,9 @@ void boxModel::components::BoxModel::onFlush()
 	if(width.getType() == core::Unit::Auto) {
 		onWidthAuto(autoWidth);
 	}
-	
+
 	if(height.getType() == core::Unit::Auto) {
+		autoHeight = 0;
 		onHeightAuto(autoHeight);
 	}
 	recalculateBoxSize();
@@ -292,5 +293,5 @@ void BoxModel::pBorderBottom(std::string key, std::string value) {
 }
 
 void BoxModel::getInfo(core::Component::Info& info){
-	
+
 }

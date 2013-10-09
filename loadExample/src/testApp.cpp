@@ -14,13 +14,14 @@ void testApp::setup() {
 
 	//set the renderer
 	boxModel::components::Draw::setRenderer(new boxModel::ofx::Renderer());
+	Globals::get().dataRoot = ofToDataPath("", true) + "";
 
 	//add the customBox to the instancer system
 	Instancer::addInstancer<CustomBox>();
 
 	//load the structure
-	rootBox = Xml::load<boxModel::boxes::Box>(ofToDataPath("scene.xml"));
-	rootBox->loadCss(ofToDataPath("style.css"));
+	rootBox = Xml::load<boxModel::boxes::Box>("scene.xml");
+	rootBox->loadCss("style.css");
 
 	rootBox->width = ofGetWidth();
 	rootBox->height = ofGetHeight();
@@ -33,11 +34,10 @@ void testApp::setup() {
 
 	//assign the debugger
 	debugger.setComponentContainer(rootBox);
-	debugger.loadCss(ofToDataPath("debugger.css"));
-	debugger.hide();
+	debugger.loadCss("debugger.css");
+	//debugger.hide();
 
 	//boxModel::boxes::TextBox* tb = rootBox->findByAddress<boxModel::boxes::TextBox>("p")[0];
-
 }
 
 //--------------------------------------------------------------

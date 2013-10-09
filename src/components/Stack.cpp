@@ -167,7 +167,7 @@ void Stack::getInfo(core::Component::Info& info){
 	info["num children"] = core::toString(getNumChildren());
 	//info["children"] = core::toString(getChildren())
 	if(hasParent())
-		info["parent"] = getParent()->getId();
+		info["parent"] = core::toString(getParent()->getId());
 	else
 		info["parent"] = "none";
 }

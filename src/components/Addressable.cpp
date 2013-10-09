@@ -246,6 +246,6 @@ void Addressable::getInfo(core::Component::Info& info){
 		info["classes"] = "-";
 	else
 		info["classes"] = core::toString(classes);
-		
+
 	info["id"] = id;
 }

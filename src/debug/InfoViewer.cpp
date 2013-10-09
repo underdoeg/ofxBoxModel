@@ -20,7 +20,7 @@ void InfoViewer::setComponentContainer(core::ComponentContainer* container) {
 void InfoViewer::addInfoForComponent(core::Component* component) {
 	//check if something changed
 	if(componentNames.find(component->getName()) == componentNames.end()) {
-		boxes::H1* name = new boxes::H1(component->getName());
+		boxes::H2* name = new boxes::H2(component->getName());
 		componentNames[component->getName()] = name;
 		addChild(name);
 	}
@@ -30,7 +30,7 @@ void InfoViewer::addInfoForComponent(core::Component* component) {
 
 	for(auto inf:info) {
 		if(infoNames.find(inf.first) == infoNames.end()) {
-			boxes::H2* infoName = new boxes::H2(inf.first);
+			boxes::H3* infoName = new boxes::H3(inf.first);
 			addChild(infoName);
 			infoNames[inf.first] = infoName;
 

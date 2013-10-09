@@ -34,7 +34,8 @@ TextDrawer textDrawer;
 */
 //////////////////////////////////////////////////////////////////////////////////
 
-cppFont::Font Text::defaultFont("/usr/share/fonts/TTF/arial.ttf");
+cppFont::Font Text::defaultFont("/usr/share/fonts/TTF/andalemo.ttf");
+//cppFont::Font Text::defaultFont("/usr/share/fonts/cantarell/Cantarell-Regular.otf");
 
 bool Text::bHyphenate;
 string Text::hyphenationLanguage;
@@ -282,7 +283,8 @@ void Text::onAutoWidth(float& width) {
 }
 
 void Text::onAutoHeight(float& height) {
-	height = textBlock.getHeight();
+	if(textBlock.getHeight() > height)
+		height = textBlock.getHeight();
 }
 
 /******************************************************************************************/

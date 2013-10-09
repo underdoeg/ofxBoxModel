@@ -74,4 +74,4 @@ class testApp : public ofBaseApp{
 		boxModel::debug::DebugDrawer debugDrawer;
 		boxModel::boxes::Box* rootBox;
 		boxModel::debug::Debugger debugger;
- };
+};

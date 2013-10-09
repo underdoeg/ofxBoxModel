@@ -52,6 +52,8 @@ void Debugger::onComponentClick(int button, components::Mouse* mouse) {
 	InfoViewer& iv = infoViewers[container];
 	iv.setComponentContainer(container);
 	curInfoViewer = &iv;
+	infoViewers[container].show();
+	flush();
 }
 
 }

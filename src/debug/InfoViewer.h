@@ -19,8 +19,8 @@ private:
 	void addInfoForComponent(core::Component* component);
 	core::ComponentContainer* container;
 
-	std::map<std::string, boxes::H1*> componentNames;
-	std::map<std::string, boxes::H2*> infoNames;
+	std::map<std::string, boxes::H2*> componentNames;
+	std::map<std::string, boxes::H3*> infoNames;
 	std::map<std::string, boxes::TextBox*> infos;
 
 };

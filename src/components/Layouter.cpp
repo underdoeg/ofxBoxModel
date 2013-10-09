@@ -6,7 +6,7 @@
 using namespace boxModel::components;
 using namespace boxModel::core;
 
-std::string Layouter::getName(){
+std::string Layouter::getName() {
 	return "layouter";
 }
 
@@ -61,14 +61,14 @@ void Layouter::layout(bool layoutChildren) {
 
 	//reset linked elements
 	for(Stack * stackChild: stack->getChildren()) {
-		if(stackChild->components->hasComponent<Linker>()){
+		if(stackChild->components->hasComponent<Linker>()) {
 			stackChild->components->getComponent<Linker>()->unlink();
 		}
 	}
 
 	//merge splitted components before rearranging
 	for(Stack * stackChild: stack->getChildren()) {
-		if(stackChild->components->hasComponent<Splitter>()){
+		if(stackChild->components->hasComponent<Splitter>()) {
 			if(stackChild->components->getComponent<Splitter>()->hasSplits)
 				stackChild->components->getComponent<Splitter>()->merge();
 		}
@@ -130,10 +130,10 @@ void Layouter::layout(bool layoutChildren) {
 
 							std::vector<ComponentContainer*> splits = splitter->getSplits();
 
-							if(splits.size() == 2){
+							if(splits.size() == 2) {
 								stack->addChildFromContainer(splits[0]);
 								overflowElements.insert(itPos, splits[1]);
-							}else if(splits.size() == 1){
+							} else if(splits.size() == 1) {
 								overflowElements.insert(itPos, splits[0]);
 							}
 						}
@@ -160,7 +160,7 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 	if(!childBox->components->hasComponent<BoxModel>())
 		return;
 
-	if(childBox->components->hasComponent<Style>()){
+	if(childBox->components->hasComponent<Style>()) {
 		if(childBox->components->getComponent<Style>()->display == Style::DisplayType::NONE)
 			return;
 	}
@@ -305,13 +305,22 @@ void Layouter::onAutoHeight(float& height) {
 
 	float maxH = 0;
 	for(Stack* child: stack->getChildren()) {
-		if(child->components->hasComponent<BoxDefinition>()) {
-			BoxDefinition* childBox = child->components->getComponent<BoxDefinition>();
-			float r = childBox->position.y + childBox->size.y;
-			if( r > maxH)
-				maxH = r;
+		bool skip = false;
+		if(child->components->hasComponent<Style>()) {
+			if(child->components->getComponent<Style>()->display == Style::DisplayType::NONE)
+				skip = true;
+		}
+
+		if(!skip) {
+			if(child->components->hasComponent<BoxDefinition>()) {
+				BoxDefinition* childBox = child->components->getComponent<BoxDefinition>();
+				float r = childBox->position.y + childBox->size.y;
+				if( r > maxH)
+					maxH = r;
+			}
 		}
 	}
+
 	if(maxH>height)
 		height = maxH;
 }
@@ -319,6 +328,6 @@ void Layouter::onFlush() {
 	layout();
 }
 
-void Layouter::getInfo(core::Component::Info& info){
+void Layouter::getInfo(core::Component::Info& info) {
 
 }
