@@ -79,7 +79,7 @@ void Layouter::layout(bool layoutChildren) {
 	//this is the root box
 	if(!stack->hasParent()) {
 		if(boxDefinition != NULL) {
-			box->position.set(boxDefinition->margin.left.getValueCalculated(), boxDefinition->margin.top.getValueCalculated()); //TODO: make this work
+			box->position.set(boxDefinition->left.getValueCalculated() + boxDefinition->margin.left.getValueCalculated(), boxDefinition->top.getValueCalculated() + boxDefinition->margin.top.getValueCalculated()); //TODO: make this work
 		}
 	}
 

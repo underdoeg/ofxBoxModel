@@ -64,6 +64,8 @@
         <File Name="../../src/components/BoxDefinition.cpp"/>
         <File Name="../../src/components/Draw.h"/>
         <File Name="../../src/components/Draw.cpp"/>
+        <File Name="../../src/components/Draggable.h"/>
+        <File Name="../../src/components/Draggable.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="boxes">
         <File Name="../../src/boxes/Box.h"/>
