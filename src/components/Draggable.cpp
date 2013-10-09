@@ -22,13 +22,27 @@ void Draggable::setup()
 
 void Draggable::onBoxDefinition(BoxDefinition* bd)
 {
+	boxDefinition = bd;
 }
 
 void Draggable::onMouse(Mouse* m)
 {
+	mouse = m;
+	mouse->mousePress.connect<Draggable, &Draggable::onMousePress>(this);
 }
 
+void Draggable::onMouseDrag(float mouseX, float mouseY, int button)
+{
+
+}
+
+void Draggable::onMousePress(float mouseX, float mouseY, int button)
+{
+	cout << "HELLO" << endl;
+}
 
 }
 }// end namespace
+
+
 

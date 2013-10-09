@@ -8,6 +8,7 @@ namespace debug {
 
 Debugger::Debugger() {
 	curInfoViewer = NULL;
+	addComponent<components::Draggable>(this);
 }
 
 Debugger::~Debugger() {

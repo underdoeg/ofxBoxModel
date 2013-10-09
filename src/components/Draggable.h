@@ -24,6 +24,12 @@ public:
 private:
 	void onMouse(Mouse* m);
 	void onBoxDefinition(BoxDefinition* bd);
+
+	void onMousePress(float mouseX, float mouseY, int button);
+	void onMouseDrag(float mouseX, float mouseY, int button);
+
+	Mouse* mouse;
+	BoxDefinition* boxDefinition;
 };
 
 }}

@@ -26,7 +26,7 @@ void testApp::setup() {
 	rootBox->width = ofGetWidth();
 	rootBox->height = ofGetHeight();
 
-	rootBox->flush();
+
 
 	//infoViewer.loadCss(ofToDataPath("infoViewer.css"));
 	//rootBox->addChild(&infoViewer);
@@ -35,9 +35,11 @@ void testApp::setup() {
 	//assign the debugger
 	debugger.setComponentContainer(rootBox);
 	debugger.loadCss("debugger.css");
+	//rootBox->addChild(&debugger);
 	//debugger.hide();
 
 	//boxModel::boxes::TextBox* tb = rootBox->findByAddress<boxModel::boxes::TextBox>("p")[0];
+	rootBox->flush();
 }
 
 //--------------------------------------------------------------

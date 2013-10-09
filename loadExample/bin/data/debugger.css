@@ -3,6 +3,7 @@ debugger{
 	width: 300;
 	height: auto;
 	padding: 5;
+	padding-top: 10;
 }
 
 infoViewer{

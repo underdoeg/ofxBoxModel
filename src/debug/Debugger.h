@@ -3,6 +3,7 @@
 
 #include "boxes/Box.h" // Base class: boxModel::boxes::Box
 #include "InfoViewer.h"
+#include "components/Draggable.h"
 
 namespace boxModel
 {
@@ -10,7 +11,7 @@ namespace boxModel
 namespace debug
 {
 
-class Debugger : public boxModel::boxes::Box
+class Debugger : public boxModel::boxes::Box, public boxModel::components::Draggable
 {
 public:
 	Debugger();
