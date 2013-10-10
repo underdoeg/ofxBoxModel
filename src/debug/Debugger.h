@@ -4,6 +4,7 @@
 #include "boxes/Box.h" // Base class: boxModel::boxes::Box
 #include "InfoViewer.h"
 #include "components/Draggable.h"
+#include "boxes/Texts.h"
 
 namespace boxModel
 {
@@ -21,13 +22,13 @@ public:
 
 	void setComponent(core::Component* component);
 	void setComponentContainer(core::ComponentContainer* container);
-
 private:
 	void onComponentClick(int button, components::Mouse* mouse);
 
 	core::ComponentContainer* rootContainer;
 	std::map<core::ComponentContainer*, InfoViewer> infoViewers;
 	InfoViewer* curInfoViewer;
+	boxes::H1 title;
 };
 
 }

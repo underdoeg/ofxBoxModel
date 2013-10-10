@@ -46,6 +46,13 @@ void Layouter::layout(bool layoutChildren) {
 	if(stack == NULL )
 		return;
 
+	//this is the root box
+	if(!stack->hasParent()) {
+		if(boxDefinition != NULL) {
+			box->position.set(boxDefinition->left.getValueCalculated() + boxDefinition->margin.left.getValueCalculated(), boxDefinition->top.getValueCalculated() + boxDefinition->margin.top.getValueCalculated()); //TODO: make this work
+		}
+	}
+
 	if(stack->getNumChildren() == 0)
 		return;
 
@@ -75,13 +82,6 @@ void Layouter::layout(bool layoutChildren) {
 	}
 
 	std::string id  = components->getComponent<Addressable>()->getId();
-
-	//this is the root box
-	if(!stack->hasParent()) {
-		if(boxDefinition != NULL) {
-			box->position.set(boxDefinition->left.getValueCalculated() + boxDefinition->margin.left.getValueCalculated(), boxDefinition->top.getValueCalculated() + boxDefinition->margin.top.getValueCalculated()); //TODO: make this work
-		}
-	}
 
 	maxContentSize.set(0, 0);
 	curPosition.set(0, 0);

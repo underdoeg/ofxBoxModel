@@ -7,13 +7,11 @@ namespace components {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-bool Mouse::ButtonStates::isPressed(int button)
-{
+bool Mouse::ButtonStates::isPressed(int button) {
 	return states[button];
 }
 
-bool Mouse::ButtonStates::isAnyPressed()
-{
+bool Mouse::ButtonStates::isAnyPressed() {
 	for(auto state: states) {
 		if(state.second == true)
 			return true;
@@ -21,25 +19,21 @@ bool Mouse::ButtonStates::isAnyPressed()
 	return false;
 }
 
-void Mouse::ButtonStates::setPressed(int button)
-{
+void Mouse::ButtonStates::setPressed(int button) {
 	states[button] = true;
 	updateTime(button);
 }
 
-void Mouse::ButtonStates::setReleased(int button)
-{
+void Mouse::ButtonStates::setReleased(int button) {
 	states[button] = false;
 	updateTime(button);
 }
 
-void Mouse::ButtonStates::updateTime(int button)
-{
+void Mouse::ButtonStates::updateTime(int button) {
 	time[button] = core::getSystemTime();
 }
 
-unsigned long Mouse::ButtonStates::getTime(int button)
-{
+unsigned long Mouse::ButtonStates::getTime(int button) {
 	if(time[button] == 0)
 		updateTime(button);
 	return core::getSystemTime() - time[button];
@@ -56,11 +50,12 @@ Mouse::Mouse() {
 Mouse::~Mouse() {
 }
 
-std::string Mouse::getName(){
+std::string Mouse::getName() {
 	return "mouse";
 }
 
 void Mouse::setup() {
+	capture = NULL;
 	passEventsThrough = false;
 	bMouseOver = false;
 	stack = NULL;
@@ -101,6 +96,12 @@ void Mouse::setMousePos(float x, float y) {
 
 // handle mosue movement, return true if it was handled
 bool Mouse::handleMouseMove(float x, float y) {
+
+	if(capture != NULL) {
+		capture->handleMouseMove(x, y);
+		if(bCaptureBlock)
+			return true;
+	}
 
 	bool ret = false;
 
@@ -146,11 +147,11 @@ bool Mouse::handleMouseMove(float x, float y) {
 		}
 		mousePos.x = xInside;
 		mousePos.y = yInside;
-		
-		if(buttonStates.isAnyPressed()){
+
+		if(buttonStates.isAnyPressed()) {
 			mouseDrag(xInside, yInside, buttonStates);
 			mouseDragRef(xInside, yInside, buttonStates, this);
-		}else{
+		} else {
 			mouseMove(xInside, yInside);
 			mouseMoveRef(xInside, yInside, this);
 		}
@@ -174,6 +175,12 @@ void Mouse::handleMouseExit() {
 }
 
 bool Mouse::handleMousePressed(int button) {
+	if(capture != NULL) {
+		capture->handleMousePressed(button);
+		if(bCaptureBlock)
+			return true;
+	}
+
 	bool ret = false;
 	bool handledByChild = false;
 	if(stack != NULL) {
@@ -213,6 +220,12 @@ bool Mouse::handleMousePressed(int button) {
 }
 
 bool Mouse::handleMouseReleased(int button) {
+	if(capture != NULL) {
+		capture->handleMouseReleased(button);
+		if(bCaptureBlock)
+			return true;
+	}
+
 	bool ret = false;
 	bool handledByChild = false;
 	if(stack != NULL) {
@@ -244,9 +257,9 @@ bool Mouse::handleMouseReleased(int button) {
 			buttonStates.setReleased(button);
 			mouseRelease(mousePos.x, mousePos.y, button);
 			mouseReleaseRef(mousePos.x, mousePos.y, button, this);
-			
+
 			//check if it is a click
-			if(timeAgo < clickTime){
+			if(timeAgo < clickTime) {
 				mouseClick(button);
 				mouseClickRef(button, this);
 			}
@@ -255,7 +268,7 @@ bool Mouse::handleMouseReleased(int button) {
 	} else {
 		handleMouseReleasedOutside(button);
 	}
-	
+
 	if(passEventsThrough && !handledByChild)
 		return false;
 
@@ -269,21 +282,23 @@ void Mouse::handleMouseReleasedOutside(int button) {
 	}
 }
 
-bool Mouse::isMouseButtonPressed(int button)
-{
+bool Mouse::isMouseButtonPressed(int button) {
 	return buttonStates.isPressed(button);
 }
 
-bool Mouse::isMouseOver()
-{
+bool Mouse::isMouseOver() {
 	return bMouseOver;
 }
 
-void Mouse::getInfo(core::Component::Info& info){
+void Mouse::captureMouse(Mouse* mouse, bool blocking) {
+	capture = mouse;
+	bCaptureBlock = blocking;
+}
+
+void Mouse::getInfo(core::Component::Info& info) {
 
 }
 
 } // end namespace
 
 }
-

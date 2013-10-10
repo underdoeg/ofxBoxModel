@@ -9,6 +9,9 @@ namespace debug {
 Debugger::Debugger() {
 	curInfoViewer = NULL;
 	addComponent<components::Draggable>(this);
+	title.text = "DEBUGGER";
+	addChild(&title);
+	flush();
 }
 
 Debugger::~Debugger() {
@@ -24,6 +27,7 @@ void Debugger::setComponent(core::Component* component) {
 
 void Debugger::setComponentContainer(core::ComponentContainer* c) {
 	rootContainer = c;
+
 	if(rootContainer->hasComponent<components::Stack>()) {
 		components::Stack* stack = rootContainer->getComponent<Stack>();
 
@@ -40,6 +44,12 @@ void Debugger::setComponentContainer(core::ComponentContainer* c) {
 				mouse->mouseClickRef.connect<Debugger, &Debugger::onComponentClick>(this);
 			}
 		}
+	}
+
+	//route mouse events
+	if(rootContainer->hasComponent<components::Mouse>()){
+		components::Mouse* m = rootContainer->getComponent<components::Mouse>();
+		m->captureMouse(this);
 	}
 }
 

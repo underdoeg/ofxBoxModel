@@ -29,7 +29,7 @@ public:
 
 	Mouse();
 	~Mouse();
-	
+
 	std::string getName();
 
 	void setup();
@@ -67,10 +67,12 @@ public:
 	Nano::signal<void(int button, Mouse* m)> mouseDoubleClickRef;
 	Nano::signal<void(float mouseX, float mouseY, Mouse* m)> mouseEnterRef;
 	Nano::signal<void(Mouse* m)> mouseExitRef;
-	
+
 	void setMousePos(float x, float y);
 	void setMouseButtonPressed(int button);
 	void setMouseButtonReleased(int button);
+
+	void captureMouse(Mouse* mouse, bool blocking=false);
 
 	bool isMouseButtonPressed(int button);
 	bool isMouseOver();
@@ -99,6 +101,9 @@ private:
 	ButtonStates buttonStates;
 
 	bool passEventsThrough;
+
+	Mouse* capture;
+	bool bCaptureBlock;
 
 };
 
