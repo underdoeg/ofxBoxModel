@@ -1,5 +1,6 @@
 #include "Stack.h"
 #include "core/Utils.h"
+#include "components/BoxDefinition.h"
 
 namespace boxModel {
 
@@ -171,5 +172,29 @@ void Stack::getInfo(core::Component::Info& info){
 	else
 		info["parent"] = "none";
 }
+
+boxModel::core::ComponentContainer* Stack::containerAt(float x, float y){
+	boxModel::core::ComponentContainer*  ret = NULL;
+	if(components->hasComponent<BoxDefinition>()){
+		BoxDefinition* bd = components->getComponent<BoxDefinition>();
+
+		for(unsigned int i=0; i<getNumChildren(); i++){
+			Stack* child = getChild(i);
+			if(child->components->hasComponent<BoxDefinition>()){
+				BoxDefinition* childBox = child->components->getComponent<BoxDefinition>();
+				if(childBox->isInside(x, y)){
+					ret = child->containerAt(x - childBox->position.x, y - childBox->position.y);
+				}
+			}
+		}
+		if(ret == NULL && x < bd->size.x && y < bd->size.y){
+			ret = this->components;
+		}
+	}else{
+		ret = this->components;
+	}
+	return ret;
+}
+
 
 }} //end namespace

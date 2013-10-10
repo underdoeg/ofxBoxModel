@@ -6,6 +6,16 @@ debugger{
 	padding-top: 10;
 }
 
+debugger h1{
+	mouse: ignore;
+	/*
+	border-bottom-width: 1;
+	border-color: #000;
+	*/
+	padding-bottom: 0;
+	margin-bottom: 5;
+}
+
 infoViewer{
 	background-color: #fff;
 	width: 100%;

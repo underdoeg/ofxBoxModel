@@ -4,6 +4,7 @@
 #include "Component.h" // Base class: boxModel::core::Component
 #include "BoxDefinition.h"
 #include "Stack.h"
+#include "components/Css.h"
 
 
 namespace boxModel {
@@ -49,6 +50,7 @@ public:
 	virtual void onMouseExit() {};
 
 	Nano::signal<void(float mouseX, float mouseY)> mouseMove;
+	Nano::signal<void(float mouseX, float mouseY)> mouseMoveOutside;
 	Nano::signal<void(float mouseX, float mouseY, int button)> mousePress;
 	Nano::signal<void(float mouseX, float mouseY, int button)> mouseRelease;
 	Nano::signal<void(float mouseX, float mouseY, ButtonStates& buttons)> mouseDrag;
@@ -59,6 +61,7 @@ public:
 	Nano::signal<void()> mouseExit;
 
 	Nano::signal<void(float mouseX, float mouseY, Mouse* m)> mouseMoveRef;
+	Nano::signal<void(float mouseX, float mouseY, Mouse* m)> mouseMoveOutsideRef;
 	Nano::signal<void(float mouseX, float mouseY, int button, Mouse* m)> mousePressRef;
 	Nano::signal<void(float mouseX, float mouseY, int button, Mouse* m)> mouseReleaseRef;
 	Nano::signal<void(float mouseX, float mouseY, ButtonStates& buttons, Mouse* m)> mouseDragRef;
@@ -72,7 +75,9 @@ public:
 	void setMouseButtonPressed(int button);
 	void setMouseButtonReleased(int button);
 
-	void captureMouse(Mouse* mouse, bool blocking=false);
+	void routeMouse(Mouse* mouse, bool blocking=false);
+
+	void setIgnoreMouse(bool state);
 
 	bool isMouseButtonPressed(int button);
 	bool isMouseOver();
@@ -88,12 +93,15 @@ private:
 
 	void onStack(Stack* stack);
 	void onBox(BoxDefinition* box);
+	void onCss(Css* css);
 
 	bool handleMouseMove(float x, float y);
-	void handleMouseExit();
+	void handleMouseExit(float x, float y);
 	bool handleMousePressed(int button);
 	bool handleMouseReleased(int button);
 	void handleMouseReleasedOutside(int button);
+
+	void pMouse(std::string key, std::string value);
 
 	Stack* stack;
 	BoxDefinition* box;
@@ -102,7 +110,7 @@ private:
 
 	bool passEventsThrough;
 
-	Mouse* capture;
+	Mouse* route;
 	bool bCaptureBlock;
 
 };

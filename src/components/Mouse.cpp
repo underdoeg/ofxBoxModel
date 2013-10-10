@@ -55,15 +55,17 @@ std::string Mouse::getName() {
 }
 
 void Mouse::setup() {
-	capture = NULL;
+	route = NULL;
 	passEventsThrough = false;
 	bMouseOver = false;
 	stack = NULL;
 	box = NULL;
 	LISTEN_FOR_COMPONENT(Stack, Mouse, onStack)
 	LISTEN_FOR_COMPONENT(BoxDefinition, Mouse, onBox)
+	LISTEN_FOR_COMPONENT(Css, Mouse, onCss)
 
 	mouseMove.connect<Mouse, &Mouse::onMouseMove>(this);
+	mouseMoveOutside.connect<Mouse, &Mouse::onMouseMoveOutside>(this);
 	mousePress.connect<Mouse, &Mouse::onMousePress>(this);
 	mouseRelease.connect<Mouse, &Mouse::onMouseRelease>(this);
 	mouseClick.connect<Mouse, &Mouse::onMouseClick>(this);
@@ -82,6 +84,10 @@ void Mouse::onBox(BoxDefinition* b) {
 	box = b;
 }
 
+void Mouse::onCss(Css* css) {
+	css->addCssParserFunction<Mouse, &Mouse::pMouse>("mouse", this);
+}
+
 void Mouse::setMouseButtonPressed(int button) {
 	handleMousePressed(button);
 }
@@ -94,11 +100,15 @@ void Mouse::setMousePos(float x, float y) {
 	handleMouseMove(x, y);
 }
 
+void Mouse::setIgnoreMouse(bool state) {
+	passEventsThrough = state;
+}
+
 // handle mosue movement, return true if it was handled
 bool Mouse::handleMouseMove(float x, float y) {
 
-	if(capture != NULL) {
-		capture->handleMouseMove(x, y);
+	if(route != NULL) {
+		route->handleMouseMove(x, y);
 		if(bCaptureBlock)
 			return true;
 	}
@@ -126,7 +136,7 @@ bool Mouse::handleMouseMove(float x, float y) {
 							ret = true;
 						}
 					} else {
-						child->components->getComponent<Mouse>()->handleMouseExit();
+						child->components->getComponent<Mouse>()->handleMouseExit(xInside, yInside);
 					}
 				}
 			}
@@ -157,7 +167,7 @@ bool Mouse::handleMouseMove(float x, float y) {
 		}
 		ret = true;
 	} else {
-		handleMouseExit();
+		handleMouseExit(x, y);
 	}
 
 	if(passEventsThrough && !handledByChild)
@@ -165,18 +175,21 @@ bool Mouse::handleMouseMove(float x, float y) {
 
 	return ret;
 }
-
-void Mouse::handleMouseExit() {
+void Mouse::handleMouseExit(float x, float y) {
 	if(isMouseOver()) {
 		bMouseOver = false;
 		mouseExit();
 		mouseExitRef(this);
 	}
+	float xInside = x - box->position.x - box->contentPosition.x;
+	float yInside = y - box->position.y - box->contentPosition.y;
+	mouseMoveOutside(xInside, yInside);
+	mouseMoveOutsideRef(xInside, yInside, this);
 }
 
 bool Mouse::handleMousePressed(int button) {
-	if(capture != NULL) {
-		capture->handleMousePressed(button);
+	if(route != NULL) {
+		route->handleMousePressed(button);
 		if(bCaptureBlock)
 			return true;
 	}
@@ -220,8 +233,8 @@ bool Mouse::handleMousePressed(int button) {
 }
 
 bool Mouse::handleMouseReleased(int button) {
-	if(capture != NULL) {
-		capture->handleMouseReleased(button);
+	if(route != NULL) {
+		route->handleMouseReleased(button);
 		if(bCaptureBlock)
 			return true;
 	}
@@ -290,9 +303,15 @@ bool Mouse::isMouseOver() {
 	return bMouseOver;
 }
 
-void Mouse::captureMouse(Mouse* mouse, bool blocking) {
-	capture = mouse;
+void Mouse::routeMouse(Mouse* mouse, bool blocking) {
+	route = mouse;
 	bCaptureBlock = blocking;
+}
+
+void Mouse::pMouse(std::string key, std::string value) {
+	if(value == "ignore"){
+		setIgnoreMouse(true);
+	}
 }
 
 void Mouse::getInfo(core::Component::Info& info) {

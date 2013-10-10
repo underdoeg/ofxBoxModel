@@ -112,4 +112,14 @@ void Style::show() {
 	display = DisplayType::BLOCK;
 }
 
+void Style::toggle()
+{
+	if(display == DisplayType::NONE){
+		display = DisplayType::BLOCK;
+	}else{
+		display = DisplayType::NONE;
+	}
+}
+
 }} // end namespace
+

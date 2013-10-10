@@ -49,7 +49,7 @@ void Debugger::setComponentContainer(core::ComponentContainer* c) {
 	//route mouse events
 	if(rootContainer->hasComponent<components::Mouse>()){
 		components::Mouse* m = rootContainer->getComponent<components::Mouse>();
-		m->captureMouse(this);
+		m->routeMouse(this, true);
 	}
 }
 
@@ -66,6 +66,17 @@ void Debugger::onComponentClick(int button, components::Mouse* mouse) {
 	infoViewers[container].show();
 	flush();
 }
+
+void Debugger::onMouseMove(float mouseX, float mouseY)
+{
+
+}
+
+void Debugger::onMouseMoveOutside(float mouseX, float mouseY)
+{
+	cout << "HGELLO" << endl;
+}
+
 
 }
 } // end namespace

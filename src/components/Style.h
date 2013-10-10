@@ -103,6 +103,7 @@ public:
 
 	void hide();
 	void show();
+	void toggle();
 
 	void getInfo(core::Component::Info& info);
 

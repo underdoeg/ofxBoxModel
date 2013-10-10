@@ -23,6 +23,10 @@ public:
 	void setComponent(core::Component* component);
 	void setComponentContainer(core::ComponentContainer* container);
 private:
+	void onMouseMove(float mouseX, float mouseY);
+	void onMouseMoveOutside(float mouseX, float mouseY);
+	void onMouseClickOutside(float mouseX, float mouseY, int button);
+
 	void onComponentClick(int button, components::Mouse* mouse);
 
 	core::ComponentContainer* rootContainer;

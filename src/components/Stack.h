@@ -64,6 +64,8 @@ public:
 
 	void getInfo(core::Component::Info& info);
 
+	boxModel::core::ComponentContainer* containerAt(float x, float y);
+
 	Nano::signal<void(Stack*)> childAdded;
 	Nano::signal<void(Stack*)> childRemoved;
 	Nano::signal<void(Stack*)> parentChanged;
