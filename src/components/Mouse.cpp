@@ -118,6 +118,9 @@ bool Mouse::handleMouseMove(float x, float y) {
 	float xInside = x - box->position.x - box->contentPosition.x;
 	float yInside = y - box->position.y - box->contentPosition.y;
 
+	mousePos.x = xInside;
+	mousePos.y = yInside;
+
 	bool handledByChild = false;
 
 	if(stack != NULL) {
@@ -155,8 +158,8 @@ bool Mouse::handleMouseMove(float x, float y) {
 			mouseEnter(xInside, yInside);
 			mouseEnterRef(xInside, yInside, this);
 		}
-		mousePos.x = xInside;
-		mousePos.y = yInside;
+
+		mousePosInside = mousePos;
 
 		if(buttonStates.isAnyPressed()) {
 			mouseDrag(xInside, yInside, buttonStates);
@@ -183,6 +186,8 @@ void Mouse::handleMouseExit(float x, float y) {
 	}
 	float xInside = x - box->position.x - box->contentPosition.x;
 	float yInside = y - box->position.y - box->contentPosition.y;
+	mousePos.x = xInside;
+	mousePos.y = yInside;
 	mouseMoveOutside(xInside, yInside);
 	mouseMoveOutsideRef(xInside, yInside, this);
 }
@@ -273,8 +278,8 @@ bool Mouse::handleMouseReleased(int button) {
 
 			//check if it is a click
 			if(timeAgo < clickTime) {
-				mouseClick(button);
-				mouseClickRef(button, this);
+				mouseClick(mousePos.x, mousePos.y, button);
+				mouseClickRef(mousePos.x, mousePos.y, button, this);
 			}
 		}
 		ret = true;
@@ -290,8 +295,8 @@ bool Mouse::handleMouseReleased(int button) {
 void Mouse::handleMouseReleasedOutside(int button) {
 	if(buttonStates.isPressed(button)) {
 		buttonStates.setReleased(button);
-		mouseReleaseOutside(button);
-		mouseReleaseOutsideRef(button, this);
+		mouseReleaseOutside(mousePos.x, mousePos.y, button);
+		mouseReleaseOutsideRef(mousePos.x, mousePos.y, button, this);
 	}
 }
 

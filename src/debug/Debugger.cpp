@@ -53,7 +53,7 @@ void Debugger::setComponentContainer(core::ComponentContainer* c) {
 	}
 }
 
-void Debugger::onComponentClick(int button, components::Mouse* mouse) {
+void Debugger::onComponentClick(float mouseX, float mouseY, int button, components::Mouse* mouse) {
 	if(curInfoViewer != NULL)
 		curInfoViewer->hide();
 
@@ -74,7 +74,7 @@ void Debugger::onMouseMove(float mouseX, float mouseY)
 
 void Debugger::onMouseMoveOutside(float mouseX, float mouseY)
 {
-	cout << "HGELLO" << endl;
+	cout << mouseX << endl;
 }
 
 
