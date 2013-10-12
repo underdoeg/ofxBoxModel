@@ -25,9 +25,7 @@ public:
 private:
 	void onMouseMove(float mouseX, float mouseY);
 	void onMouseMoveOutside(float mouseX, float mouseY);
-	void onMouseClickOutside(float mouseX, float mouseY, int button);
-
-	void onComponentClick(float mouseX, float mouseY, int button, components::Mouse* mouse);
+	void onMouseReleaseOutside(float mouseX, float mouseY, int button);
 
 	core::ComponentContainer* rootContainer;
 	std::map<core::ComponentContainer*, InfoViewer> infoViewers;

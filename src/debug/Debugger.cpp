@@ -35,46 +35,52 @@ void Debugger::setComponentContainer(core::ComponentContainer* c) {
 			stack->components->getComponent<components::Draw>()->postDraw.connect<Draw, &Draw::draw>(this);
 		}
 
+
+		/*
 		components::Stack::ChildrenList children = stack->getChildrenRecursive();
 		children.push_back(stack);
 		for(Stack* child: children) {
 			if(child->components->hasComponent<components::Mouse>()) {
 				components::Mouse* mouse = child->components->getComponent<Mouse>();
 				//listen for mosue clicks
-				mouse->mouseClickRef.connect<Debugger, &Debugger::onComponentClick>(this);
+				mouse->mouseClickRef.connect<Debugger, &Debugger::onClick>(this);
 			}
 		}
+		*/
 	}
 
 	//route mouse events
-	if(rootContainer->hasComponent<components::Mouse>()){
+	if(rootContainer->hasComponent<components::Mouse>()) {
 		components::Mouse* m = rootContainer->getComponent<components::Mouse>();
 		m->routeMouse(this, true);
 	}
 }
 
-void Debugger::onComponentClick(float mouseX, float mouseY, int button, components::Mouse* mouse) {
+void Debugger::onMouseReleaseOutside(float mouseX, float mouseY, int button) {
 	if(curInfoViewer != NULL)
 		curInfoViewer->hide();
 
-	core::ComponentContainer* container = mouse->components;
-	if(infoViewers.find(container) == infoViewers.end())
-		addChild(&infoViewers[container]);
-	InfoViewer& iv = infoViewers[container];
-	iv.setComponentContainer(container);
-	curInfoViewer = &iv;
-	infoViewers[container].show();
-	flush();
+	if(rootContainer->hasComponent<Stack>()) {
+		boxModel::components::Stack* childStack = rootContainer->getComponent<Stack>();
+		core::ComponentContainer* container = childStack->containerAt(mouseX, mouseY);
+		if(container == NULL)
+			return;
+
+		if(infoViewers.find(container) == infoViewers.end())
+			addChild(&infoViewers[container]);
+		InfoViewer& iv = infoViewers[container];
+		iv.setComponentContainer(container);
+		curInfoViewer = &iv;
+		infoViewers[container].show();
+		flush();
+	}
 }
 
-void Debugger::onMouseMove(float mouseX, float mouseY)
-{
+void Debugger::onMouseMove(float mouseX, float mouseY) {
 
 }
 
-void Debugger::onMouseMoveOutside(float mouseX, float mouseY)
-{
-	cout << mouseX << endl;
+void Debugger::onMouseMoveOutside(float mouseX, float mouseY) {
 }
 
 

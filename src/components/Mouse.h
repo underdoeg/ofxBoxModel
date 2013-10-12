@@ -44,6 +44,7 @@ public:
 	virtual void onMousePress(float mouseX, float mouseY, int button) {};
 	virtual void onMouseRelease(float mouseX, float mouseY, int button) {};
 	virtual void onMouseDrag(float mouseX, float mouseY, ButtonStates& buttons) {};
+	virtual void onMouseDragOutside(float mouseX, float mouseY, ButtonStates& buttons) {};
 	virtual void onMouseReleaseOutside(float x, float y, int button) {};
 	virtual void onMouseClick(float mouseX, float mouseY, int button) {};
 	virtual void onMouseDoubleClick(float mouseX, float mouseY, int button) {}; //TODO: implement double click
@@ -55,6 +56,7 @@ public:
 	Nano::signal<void(float mouseX, float mouseY, int button)> mousePress;
 	Nano::signal<void(float mouseX, float mouseY, int button)> mouseRelease;
 	Nano::signal<void(float mouseX, float mouseY, ButtonStates& buttons)> mouseDrag;
+	Nano::signal<void(float mouseX, float mouseY, ButtonStates& buttons)> mouseDragOutside;
 	Nano::signal<void(float mouseX, float mouseY, int button)> mouseReleaseOutside;
 	Nano::signal<void(float mouseX, float mouseY, int button)> mouseClick;
 	Nano::signal<void(float mouseX, float mouseY, int button)> mouseDoubleClick;
@@ -66,6 +68,7 @@ public:
 	Nano::signal<void(float mouseX, float mouseY, int button, Mouse* m)> mousePressRef;
 	Nano::signal<void(float mouseX, float mouseY, int button, Mouse* m)> mouseReleaseRef;
 	Nano::signal<void(float mouseX, float mouseY, ButtonStates& buttons, Mouse* m)> mouseDragRef;
+	Nano::signal<void(float mouseX, float mouseY, ButtonStates& buttons, Mouse* m)> mouseDragOutsideRef;
 	Nano::signal<void(float mouseX, float mouseY, int button, Mouse* m)> mouseReleaseOutsideRef;
 	Nano::signal<void(float mouseX, float mouseY, int button, Mouse* m)> mouseClickRef;
 	Nano::signal<void(float mouseX, float mouseY, int button, Mouse* m)> mouseDoubleClickRef;

@@ -42,10 +42,14 @@ void Draggable::onMouse(Mouse* m)
 	mouse = m;
 	mouse->mousePress.connect<Draggable, &Draggable::onMousePress>(this);
 	mouse->mouseDrag.connect<Draggable, &Draggable::onMouseDrag>(this);
+	mouse->mouseDragOutside.connect<Draggable, &Draggable::onMouseDrag>(this);
 }
 
 void Draggable::onMouseDrag(float mouseX, float mouseY, boxModel::components::Mouse::ButtonStates& buttons)
 {
+	if(!bDragging)
+		return;
+
 	core::Point pNew(mouseX, mouseY);
 	core::Point pDelta =  pNew - lastPos;
 
@@ -66,7 +70,7 @@ void Draggable::onMouseDrag(float mouseX, float mouseY, boxModel::components::Mo
 
 void Draggable::onMousePress(float mouseX, float mouseY, int button)
 {
-	//bDragging = true;
+	bDragging = true;
 	lastPos.set(mouseX, mouseY);
 }
 

@@ -188,8 +188,13 @@ void Mouse::handleMouseExit(float x, float y) {
 	float yInside = y - box->position.y - box->contentPosition.y;
 	mousePos.x = xInside;
 	mousePos.y = yInside;
-	mouseMoveOutside(xInside, yInside);
-	mouseMoveOutsideRef(xInside, yInside, this);
+	if(buttonStates.isAnyPressed()) {
+		mouseDragOutside(xInside, yInside, buttonStates);
+		mouseDragOutsideRef(xInside, yInside, buttonStates, this);
+	} else {
+		mouseMoveOutside(xInside, yInside);
+		mouseMoveOutsideRef(xInside, yInside, this);
+	}
 }
 
 bool Mouse::handleMousePressed(int button) {
@@ -293,7 +298,9 @@ bool Mouse::handleMouseReleased(int button) {
 	return ret;
 }
 void Mouse::handleMouseReleasedOutside(int button) {
+	cout << "OUT" << endl;
 	if(buttonStates.isPressed(button)) {
+	cout << "OUT 2" << endl;
 		buttonStates.setReleased(button);
 		mouseReleaseOutside(mousePos.x, mousePos.y, button);
 		mouseReleaseOutsideRef(mousePos.x, mousePos.y, button, this);
@@ -314,7 +321,7 @@ void Mouse::routeMouse(Mouse* mouse, bool blocking) {
 }
 
 void Mouse::pMouse(std::string key, std::string value) {
-	if(value == "ignore"){
+	if(value == "ignore") {
 		setIgnoreMouse(true);
 	}
 }
