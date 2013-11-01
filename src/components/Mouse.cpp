@@ -298,9 +298,7 @@ bool Mouse::handleMouseReleased(int button) {
 	return ret;
 }
 void Mouse::handleMouseReleasedOutside(int button) {
-	cout << "OUT" << endl;
 	if(buttonStates.isPressed(button)) {
-	cout << "OUT 2" << endl;
 		buttonStates.setReleased(button);
 		mouseReleaseOutside(mousePos.x, mousePos.y, button);
 		mouseReleaseOutsideRef(mousePos.x, mousePos.y, button, this);

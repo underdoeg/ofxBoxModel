@@ -171,6 +171,14 @@ public:
 		y = ny;
 	}
 	
+	void setX(float nx){
+		x = nx;
+	}
+	
+	void setY(float nx){
+		y = ny;
+	}
+	
 	void set(Point p){
 		x = p.x;
 		y = p.y;

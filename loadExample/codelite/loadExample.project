@@ -36,6 +36,8 @@
         <File Name="../../src/tools/Templater.h"/>
         <File Name="../../src/tools/Xml.cpp"/>
         <File Name="../../src/tools/Templater.cpp"/>
+        <File Name="../../src/tools/BoxConstrainer.h"/>
+        <File Name="../../src/tools/BoxConstrainer.cpp"/>
       </VirtualDirectory>
       <VirtualDirectory Name="components">
         <File Name="../../src/components/Text.h"/>
