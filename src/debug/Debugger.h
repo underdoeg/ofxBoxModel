@@ -11,6 +11,30 @@ namespace boxModel {
 
 namespace debug {
 
+class DebuggerOverlay: public boxModel::boxes::Box{
+public:
+	DebuggerOverlay(){
+		setMouseIgnore(true);
+		setBoxDefinitionUpdate(false);
+	}
+
+	std::string getType() {
+		return "debuggerOverlay";
+	}
+};
+
+class DebuggerOverlayCurrent: public boxModel::boxes::Box{
+public:
+	DebuggerOverlayCurrent(){
+		setMouseIgnore(true);
+		setBoxDefinitionUpdate(false);
+	}
+
+	std::string getType() {
+		return "debuggerOverlayCurrent";
+	}
+};
+
 class DebuggerPanel: public boxModel::boxes::Box, public boxModel::components::Draggable {
 public:
 	DebuggerPanel() {
@@ -55,16 +79,16 @@ public:
 	void setComponentContainer(core::ComponentContainer* container);
 
 private:
-
-	void preDraw();
-
 	void onMouseMove(float mouseX, float mouseY);
 	void onMouseMoveOutside(float mouseX, float mouseY);
 	void onMouseClick(float mouseX, float mouseY, int button);
 
 	core::ComponentContainer* rootContainer;
+	components::Stack* rootStack;
 
 	DebuggerPanel panel;
+	DebuggerOverlay overlay;
+	DebuggerOverlayCurrent overlayCurrent;
 	boxModel::tools::BoxConstrainer* boxConstrainer;
 };
 

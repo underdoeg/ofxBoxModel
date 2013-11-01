@@ -7,7 +7,11 @@ namespace boxModel {
 namespace debug {
 
 Debugger::Debugger() {
+	addChild(&overlayCurrent);
+	addChild(&overlay);
 	addChild(&panel);
+
+	rootStack = NULL;
 	flush();
 }
 
@@ -35,30 +39,45 @@ void Debugger::setComponentContainer(core::ComponentContainer* c) {
 		m->routeMouse(this, true);
 	}
 
+	if(rootContainer->hasComponent<components::Stack>())
+		rootStack = rootContainer->getComponent<components::Stack>();
+
 	boxConstrainer = new boxModel::tools::BoxConstrainer(rootContainer->getComponent<boxModel::components::BoxDefinition>(), this);
 }
 
 void Debugger::onMouseClick(float mouseX, float mouseY, int button) {
-	if(rootContainer->hasComponent<Stack>()) {
-		boxModel::components::Stack* childStack = rootContainer->getComponent<Stack>();
-		core::ComponentContainer* container = childStack->containerAt(mouseX, mouseY);
-		if(container == NULL)
-			return;
+	if(rootStack == NULL)
+		return;
 
-		panel.showInfo(container);
+	core::ComponentContainer* container = rootStack->containerAt(mouseX, mouseY);
+	if(container == NULL)
+		return;
+
+	if(container->hasComponent<components::BoxDefinition>()){
+		components::BoxDefinition* boxDef = container->getComponent<components::BoxDefinition>();
+		overlayCurrent.position.set(boxDef->getGlobalPosition());
+		overlayCurrent.size = boxDef->size;
 	}
+
+	panel.showInfo(container);
 }
 
 void Debugger::onMouseMove(float mouseX, float mouseY) {
+	if(rootStack == NULL)
+		return;
 
+	core::ComponentContainer* container = rootStack->containerAt(mouseX, mouseY);
+	if(container == NULL)
+		return;
+
+	if(container->hasComponent<components::BoxDefinition>()){
+		components::BoxDefinition* boxDef = container->getComponent<components::BoxDefinition>();
+		overlay.position.set(boxDef->getGlobalPosition());
+		overlay.size = boxDef->size;
+	}
 }
 
 void Debugger::onMouseMoveOutside(float mouseX, float mouseY) {
-}
-
-void Debugger::preDraw() {
-	//containerOverlay.draw();
-	cout << "pre draw " << endl;
 }
 
 }

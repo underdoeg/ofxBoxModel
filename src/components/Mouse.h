@@ -81,7 +81,7 @@ public:
 
 	void routeMouse(Mouse* mouse, bool blocking=false);
 
-	void setIgnoreMouse(bool state);
+	void setMouseIgnore(bool state);
 
 	bool isMouseButtonPressed(int button);
 	bool isMouseOver();

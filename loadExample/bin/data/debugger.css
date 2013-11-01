@@ -16,6 +16,18 @@ debuggerPanel h1{
 	margin-bottom: 5;
 }
 
+debuggerOverlay{
+	border-color: rgba(255, 255, 255, 150);
+	border-width: 1px;
+	background-color: rgba(0, 0, 0, 50);
+}
+
+debuggerOverlayCurrent{
+	border-color: rgba(150, 0, 0, 150);
+	border-width: 1px;
+	background-color: rgba(155, 0, 0, 50);
+}
+
 infoViewer{
 	background-color: #fff;
 	width: 100%;

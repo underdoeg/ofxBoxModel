@@ -100,7 +100,7 @@ void Mouse::setMousePos(float x, float y) {
 	handleMouseMove(x, y);
 }
 
-void Mouse::setIgnoreMouse(bool state) {
+void Mouse::setMouseIgnore(bool state) {
 	passEventsThrough = state;
 }
 
@@ -320,7 +320,7 @@ void Mouse::routeMouse(Mouse* mouse, bool blocking) {
 
 void Mouse::pMouse(std::string key, std::string value) {
 	if(value == "ignore") {
-		setIgnoreMouse(true);
+		setMouseIgnore(true);
 	}
 }
 
