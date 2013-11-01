@@ -1,7 +1,7 @@
 ofxBoxModel
 ===========
 
-CSS3 box model layouter for openFrameworks 0072
+CSS3 box model layouter for openFrameworks 0080
 
 See the example for usage. It is still a work in progress.
 
