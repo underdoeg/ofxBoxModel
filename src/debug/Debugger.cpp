@@ -42,7 +42,7 @@ void Debugger::setComponentContainer(core::ComponentContainer* c) {
 	if(rootContainer->hasComponent<components::Stack>())
 		rootStack = rootContainer->getComponent<components::Stack>();
 
-	boxConstrainer = new boxModel::tools::BoxConstrainer(rootContainer->getComponent<boxModel::components::BoxDefinition>(), this);
+	boxConstrainer.set(rootContainer->getComponent<boxModel::components::BoxDefinition>(), this);
 }
 
 void Debugger::onMouseClick(float mouseX, float mouseY, int button) {
@@ -55,8 +55,7 @@ void Debugger::onMouseClick(float mouseX, float mouseY, int button) {
 
 	if(container->hasComponent<components::BoxDefinition>()){
 		components::BoxDefinition* boxDef = container->getComponent<components::BoxDefinition>();
-		overlayCurrent.position.set(boxDef->getGlobalPosition());
-		overlayCurrent.size = boxDef->size;
+		overlayCurrent.boxConstrainer.set(boxDef, &overlayCurrent, true);
 	}
 
 	panel.showInfo(container);
@@ -72,8 +71,7 @@ void Debugger::onMouseMove(float mouseX, float mouseY) {
 
 	if(container->hasComponent<components::BoxDefinition>()){
 		components::BoxDefinition* boxDef = container->getComponent<components::BoxDefinition>();
-		overlay.position.set(boxDef->getGlobalPosition());
-		overlay.size = boxDef->size;
+		overlay.boxConstrainer.set(boxDef, &overlay, true);
 	}
 }
 

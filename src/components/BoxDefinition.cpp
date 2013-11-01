@@ -5,7 +5,7 @@
 using namespace boxModel::core;
 using namespace boxModel::components;
 
-std::string BoxDefinition::getName(){
+std::string BoxDefinition::getName() {
 	return "box";
 }
 
@@ -13,6 +13,7 @@ void BoxDefinition::setup() {
 	stack = NULL;
 
 	contentSize.changed.connect<BoxDefinition, &BoxDefinition::onContentSizeChanged>(this);
+	position.changed.connect<BoxDefinition, &BoxDefinition::onPositionChanged>(this);
 
 	LISTEN_FOR_COMPONENT(Stack, BoxDefinition, onStack)
 }
@@ -55,6 +56,20 @@ void BoxDefinition::onContentSizeChanged(core::Point p) {
 	}
 }
 
+void BoxDefinition::onPositionChanged(core::Point p) {
+	notifyChildrenPositionChanged();
+}
+
+void BoxDefinition::notifyChildrenPositionChanged() {
+	globalPositionChanged();
+	if(stack != NULL) {
+		for(Stack* child: stack->getChildren()) {
+			if(child->components->hasComponent<BoxDefinition>())
+				child->components->getComponent<BoxDefinition>()->notifyChildrenPositionChanged();
+		}
+	}
+}
+
 void BoxDefinition::onChildAdded(Stack* child) {
 	child->components->setUnitContainerSize(contentSize.x, contentSize.y);
 }
@@ -69,22 +84,21 @@ void BoxDefinition::copyFrom(BoxDefinition* box) {
 
 ////
 
-bool BoxDefinition::isInside(core::Point p){
+bool BoxDefinition::isInside(core::Point p) {
 	return isInside(p.x, p.y);
 }
 
-bool BoxDefinition::isInside(float x, float y){
+bool BoxDefinition::isInside(float x, float y) {
 	return core::rectContains(x, y, position.x, position.y, size.x, size.y);
 }
 
-bool BoxDefinition::isInsideContent(core::Point p){
+bool BoxDefinition::isInsideContent(core::Point p) {
 	return isInsideContent(p.x, p.y);
 }
-bool BoxDefinition::isInsideContent(float x, float y){
+bool BoxDefinition::isInsideContent(float x, float y) {
 	return core::rectContains(x, y, position.x + contentPosition.x, position.y + contentPosition.y, contentSize.x, contentSize.y);
 }
 
-void BoxDefinition::getInfo(core::Component::Info& info)
-{
+void BoxDefinition::getInfo(core::Component::Info& info) {
 	info["position"] = "0,0";
 }

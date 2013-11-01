@@ -25,6 +25,8 @@ public:
 
 	virtual void layout(bool layoutChildren=true);
 
+	void setLayoutable(bool state);
+
 	Nano::signal<void(std::vector<core::ComponentContainer*>)> overflowed;
 	Nano::signal<void()> preLayouted;
 	Nano::signal<void()> layouted;
@@ -53,6 +55,7 @@ private:
 
 	std::vector<core::ComponentContainer*> overflowElements;
 
+	bool doLayouting;
 	Stack* stack;
 	BoxDefinition* box;
 	BoxModel* boxDefinition;

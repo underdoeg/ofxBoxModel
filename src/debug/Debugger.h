@@ -16,11 +16,15 @@ public:
 	DebuggerOverlay(){
 		setMouseIgnore(true);
 		setBoxDefinitionUpdate(false);
+		positioning = components::Position::Absolute;
+		layouter.setLayoutable(false);
 	}
 
 	std::string getType() {
 		return "debuggerOverlay";
 	}
+
+	tools::BoxConstrainer boxConstrainer;
 };
 
 class DebuggerOverlayCurrent: public boxModel::boxes::Box{
@@ -28,11 +32,15 @@ public:
 	DebuggerOverlayCurrent(){
 		setMouseIgnore(true);
 		setBoxDefinitionUpdate(false);
+		positioning = components::Position::Absolute;
+		layouter.setLayoutable(false);
 	}
 
 	std::string getType() {
 		return "debuggerOverlayCurrent";
 	}
+
+	tools::BoxConstrainer boxConstrainer;
 };
 
 class DebuggerPanel: public boxModel::boxes::Box, public boxModel::components::Draggable {
@@ -89,7 +97,7 @@ private:
 	DebuggerPanel panel;
 	DebuggerOverlay overlay;
 	DebuggerOverlayCurrent overlayCurrent;
-	boxModel::tools::BoxConstrainer* boxConstrainer;
+	boxModel::tools::BoxConstrainer boxConstrainer;
 };
 
 }

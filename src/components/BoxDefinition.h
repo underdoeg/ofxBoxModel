@@ -43,10 +43,14 @@ public:
 
 	void getInfo(core::Component::Info& info);
 
+	Nano::signal<void()> globalPositionChanged;
+
 private:
 	void onStack(Stack* stack);
 	void onContentSizeChanged(core::Point p);
 	void onChildAdded(Stack* child);
+	void onPositionChanged(core::Point p);
+	void notifyChildrenPositionChanged();
 	Stack* stack;
 };
 

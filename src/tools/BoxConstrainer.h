@@ -11,10 +11,13 @@ namespace tools
 class BoxConstrainer
 {
 public:
-	BoxConstrainer(boxModel::components::BoxDefinition* from, boxModel::components::BoxDefinition* to);
+	BoxConstrainer();
 	~BoxConstrainer();
 
+	void set(boxModel::components::BoxDefinition* from, boxModel::components::BoxDefinition* to, bool useAbsolutePosition = false);
+	void remove();
 private:
+	void onGlobalPositionChanged();
 	boxModel::components::BoxDefinition* from;
 	boxModel::components::BoxDefinition* to;
 };
