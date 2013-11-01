@@ -8,3 +8,5 @@ See the example for usage. It is still a work in progress.
 Currently supported position properties are: width, height, margin, padding, border, float left, absolute top & left, relative
 
 The box model does not add padding to the width.
+
+![alt text](http://uploads.undef.ch/ofxBoxModel/debugger.png "screenshot of built in debugger (WIP)")
