@@ -67,7 +67,6 @@ void BoxDefinition::copyFrom(BoxDefinition* box) {
 	contentPosition = box->contentPosition;
 }
 
-
 ////
 
 bool BoxDefinition::isInside(core::Point p){

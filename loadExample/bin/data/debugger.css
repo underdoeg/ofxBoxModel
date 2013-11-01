@@ -1,4 +1,4 @@
-debugger{
+debuggerPanel{
 	background-color: #fff;
 	width: 300;
 	height: auto;
@@ -6,12 +6,12 @@ debugger{
 	padding-top: 10;
 }
 
-debugger h1{
+debuggerPanel h1{
 	mouse: ignore;
-	/*
+
 	border-bottom-width: 1;
 	border-color: #000;
-	*/
+
 	padding-bottom: 0;
 	margin-bottom: 5;
 }

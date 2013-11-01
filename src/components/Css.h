@@ -29,9 +29,9 @@ public:
 
 	~Css() {
 	}
-	
+
 	std::string getName();
-	
+
 	void setup();
 
 	void loadCss(std::string path);
@@ -39,7 +39,7 @@ public:
 	void setCssBlock(std::string block);
 	void applyCssProperty(std::string key, std::string value);
 	void applyCssProperty(CssProperty p);
-	
+
 	template <typename Type, void(Type::*method)(std::string, std::string)>
 	void addCssParserFunction(std::string key, Type* obj){
 		addCssParserFunction(key, bind(method, obj, std::placeholders::_1, std::placeholders::_2));
@@ -50,6 +50,8 @@ public:
 
 	void copyFrom(Css* css);
 	void getInfo(core::Component::Info& info);
+
+	Nano::signal<void(Css*)> cssChanged;
 
 
 protected:
@@ -63,7 +65,7 @@ private:
 
 	void onStack(Stack* stack);
 	void onChildAdded(Stack* stack);
-	
+
 	std::map<std::string, std::vector<CssProperty> > properties;
 	std::vector<std::string> propertiesOrder;
 	std::unordered_map<std::string, std::function<void(std::string, std::string)> > parserFunctions;

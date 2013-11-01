@@ -29,11 +29,12 @@ class BoxModel : public core::Component {
 public:
 	BoxModel();
 	~BoxModel();
-	
+
 	std::string getName();
-	
+
 	void setup();
 	void recalculateBoxSize();
+	void setBoxDefinitionUpdate(bool state);
 
 	core::Unit left;
 	core::Unit top;
@@ -52,13 +53,13 @@ public:
 
 	Nano::signal<void(float&)> onWidthAuto;
 	Nano::signal<void(float&)> onHeightAuto;
-	
+
 	void onFlush();
-	
+
 	static core::Unit parseCssNumber(std::string val);
 	static std::vector<core::Unit> parseCssNumberBlock(std::string val);
 	static Floating parseCssFloating(std::string val);
-	
+
 	void copyFrom(BoxModel* boxDefinition);
 	void getInfo(core::Component::Info& info);
 
@@ -68,28 +69,28 @@ private:
 	void pBgColor(std::string key, std::string value);
 	void pWidth(std::string key, std::string value);
 	void pHeight(std::string key, std::string value);
-	
+
 	void pPosition(std::string key, std::string value);
-	
+
 	void pRight(std::string key, std::string value);
 	void pLeft(std::string key, std::string value);
 	void pTop(std::string key, std::string value);
 	void pBottom(std::string key, std::string value);
 
-	
+
 	/* MARGIN, PADDING, BORDER */
 	void pMargin(std::string key, std::string value);
 	void pMarginLeft(std::string key, std::string value);
 	void pMarginRight(std::string key, std::string value);
 	void pMarginTop(std::string key, std::string value);
 	void pMarginBottom(std::string key, std::string value);
-	
+
 	void pPadding(std::string key, std::string value);
 	void pPaddingLeft(std::string key, std::string value);
 	void pPaddingRight(std::string key, std::string value);
 	void pPaddingTop(std::string key, std::string value);
 	void pPaddingBottom(std::string key, std::string value);
-	
+
 	void pBorder(std::string key, std::string value);
 	void pBorderLeft(std::string key, std::string value);
 	void pBorderRight(std::string key, std::string value);
@@ -99,21 +100,23 @@ private:
 	void onBox(BoxDefinition* b) {
 		box = b;
 	}
-	
+
 	void onStack(Stack* stack);
-	
+
 	void onCss(Css* css);
 
 	void onUnitChanged(core::Unit* u);
-	
+
 	void onParentChanged(Stack* s);
-	
+
 	void onParentSizeChanged(core::Point p);
 
 	BoxDefinition* box;
 	Stack* stack;
 	BoxDefinition* parentBox;
-	
+
+	bool doBoxDefinitionUpdate;
+
 	bool isDirty;
 	float autoWidth;
 	float autoHeight;

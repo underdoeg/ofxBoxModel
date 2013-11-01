@@ -11,12 +11,12 @@ namespace tools
 class BoxConstrainer
 {
 public:
-	BoxConstrainer(boxModel::components::BoxDefinition* bd1, boxModel::components::BoxDefinition* bd2);
+	BoxConstrainer(boxModel::components::BoxDefinition* from, boxModel::components::BoxDefinition* to);
 	~BoxConstrainer();
 
 private:
-	boxModel::components::BoxDefinition* box1;
-	boxModel::components::BoxDefinition* box2;
+	boxModel::components::BoxDefinition* from;
+	boxModel::components::BoxDefinition* to;
 };
 
 }

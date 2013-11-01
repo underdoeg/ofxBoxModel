@@ -15,6 +15,7 @@ BoxModel::BoxModel() {
 	parentBox = NULL;
 	autoWidth = 0;
 	autoHeight = 0;
+	doBoxDefinitionUpdate = true;
 }
 BoxModel::~BoxModel() {
 }
@@ -81,7 +82,14 @@ void BoxModel::onUnitChanged(core::Unit* u) {
 	recalculateBoxSize();
 }
 
+void BoxModel::setBoxDefinitionUpdate(bool state)
+{
+	doBoxDefinitionUpdate = state;
+}
+
 void BoxModel::recalculateBoxSize() {
+	if(!doBoxDefinitionUpdate)
+		return;
 	isDirty = true;
 	if(!isDirty)
 		return;
@@ -299,3 +307,4 @@ void BoxModel::pBorderBottom(std::string key, std::string value) {
 void BoxModel::getInfo(core::Component::Info& info){
 
 }
+

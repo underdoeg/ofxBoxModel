@@ -77,6 +77,8 @@ void Css::setCss(std::string cssDefinition) {
 //printProperties();
 
 	applyCss();
+
+	cssChanged(this);
 }
 
 std::vector<CssProperty> Css::parseCssBlock(std::string propertiesString) {
@@ -177,7 +179,7 @@ void Css::onSerializer(Serializer* ser) {
 }
 
 void Css::onSerialize(core::VariantList& variants) {
-	
+
 }
 
 void Css::onDeserialize(core::VariantList& variants) {

@@ -95,8 +95,6 @@ void Draw::draw() {
 	if(renderer != NULL && boxDefinition != NULL) {
 		renderer->popMatrix();
 	}
-
-
 }
 
 void Draw::drawDecorators() {
