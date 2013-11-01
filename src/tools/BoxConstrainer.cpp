@@ -9,8 +9,8 @@ BoxConstrainer::BoxConstrainer(boxModel::components::BoxDefinition* bd1, boxMode
 {
 	box1 = bd1;
 	box2 = bd2;
-	
-	box1->size.changed
+
+	//box1->size.changed
 }
 
 BoxConstrainer::~BoxConstrainer()

@@ -199,9 +199,9 @@
   </VirtualDirectory>
   <VirtualDirectory Name="addons"/>
   <VirtualDirectory Name="data">
-    <File Name="../bin/data/style.css"/>
     <File Name="../bin/data/scene.xml"/>
     <File Name="../bin/data/debugger.css"/>
+    <File Name="../bin/data/style.css"/>
   </VirtualDirectory>
   <Settings Type="Dynamic Library">
     <GlobalSettings>

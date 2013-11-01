@@ -30,7 +30,7 @@ public:
 	Variant(core::Point p) {
 		setValue(core::floatToString(p.x)+" "+core::floatToString(p.y));
 	}
-	
+
 	Variant(std::vector<std::string> stringArray) {
 		setValue(std::accumulate( stringArray.begin(), stringArray.end(), std::string(" ") ));
 	}
@@ -50,7 +50,7 @@ public:
 	float asFloat() {
 		return core::stringToFloat(value);
 	}
-	
+
 	std::string asString() {
 		return value;
 	}
@@ -64,7 +64,7 @@ public:
 			ret.y = core::stringToFloat(parts[1]);
 		return ret;
 	}
-	
+
 	std::vector<std::string> asStringList(){
 		return stringSplit(value, ' ');
 	}
@@ -121,7 +121,7 @@ public:
 	Type operator+( const Type& in ) const {
 		return value + in;
 	}
-	
+
 	Type operator-( const Type& in ) const {
 		return value - in;
 	}
@@ -161,24 +161,24 @@ public:
 	Point operator+( const Point& pnt ) const {
 		return Point(x+pnt.x, y+pnt.y);
 	}
-	
+
 	Point operator-( const Point& pnt ) const {
 		return Point(x-pnt.x, y-pnt.y);
 	}
-	
+
 	void set(float nx, float ny){
 		x = nx;
 		y = ny;
 	}
-	
+
 	void setX(float nx){
 		x = nx;
 	}
-	
-	void setY(float nx){
+
+	void setY(float ny){
 		y = ny;
 	}
-	
+
 	void set(Point p){
 		x = p.x;
 		y = p.y;
