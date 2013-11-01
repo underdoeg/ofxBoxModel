@@ -87,18 +87,6 @@
         </VirtualDirectory>
       </VirtualDirectory>
     </VirtualDirectory>
-    <VirtualDirectory Name="saveExample">
-      <VirtualDirectory Name="bin">
-        <File Name="../../saveExample/bin/saveExample"/>
-        <File Name="../../saveExample/bin/saveExample_debug"/>
-      </VirtualDirectory>
-      <VirtualDirectory Name="src">
-        <File Name="../../saveExample/src/testApp.cpp"/>
-        <File Name="../../saveExample/src/testApp.h"/>
-        <File Name="../../saveExample/src/main.cpp"/>
-      </VirtualDirectory>
-      <File Name="../../saveExample/Makefile"/>
-    </VirtualDirectory>
   </VirtualDirectory>
   <VirtualDirectory Name="cppFont">
     <VirtualDirectory Name="ofExample">
