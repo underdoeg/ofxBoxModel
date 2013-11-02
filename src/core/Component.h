@@ -23,17 +23,17 @@ class ComponentContainer;
 class Component {
 public:
 	ComponentContainer* components;
-	
+
 	typedef std::map<std::string, std::string> Info;
-	
+
 	virtual void onDelete() {};
 	virtual void onFlush() {};
 	virtual void copyFrom(Component* component) {};
 	virtual std::string getName() = 0;
 	virtual void getInfo(Info& info){};
-	
+
 	unsigned int getId();
-	
+
 protected:
 	Component();
 	~Component();
@@ -89,11 +89,11 @@ public:
 	ComponentContainer() {
 		disabled = false;
 	}
-	
+
 	virtual ~ComponentContainer(){
 		sendDelete();
 	}
-	
+
 	void sendDelete(){
 		for(unsigned int i = 0; i < getNumComponents(); i++) {
 			getComponent(i)->onDelete();
@@ -102,9 +102,11 @@ public:
 	}
 
 	void flush() {
+		preFlushed();
 		for(unsigned int i = 0; i < getNumComponents(); i++) {
 			getComponent(i)->onFlush();
 		}
+		postFlushed();
 	};
 
 	ComponentContainer* clone() {
@@ -161,7 +163,7 @@ public:
 			return false;
 		return components.find(typeid(ComponentType)) != components.end();
 	}
-	
+
 	void removeComponent(Component* component){
 		std::unordered_map<std::type_index, Component*>::iterator pos = components.end();
 		for(std::unordered_map<std::type_index, Component*>::iterator it = components.begin(); it != components.end();it++){
@@ -213,8 +215,11 @@ public:
 	}
 
 	Value<bool> disabled;
-	
+
 	Nano::signal<void(ComponentContainer*)> deleted;
+
+	Nano::signal<void()> preFlushed;
+	Nano::signal<void()> postFlushed;
 
 private:
 	std::vector<Unit*> units;
@@ -233,7 +238,7 @@ private:
 		ListenerFunction(components->getComponent<ComponentType>());																\
 	else																															\
 		components->getComponentAddedSignal<ComponentType>().connect<ListenerClass, &ListenerClass::ListenerFunction>(this);			\
-	 
+
 //end namespace
 }
 

@@ -29,6 +29,8 @@ void Debugger::setComponent(core::Component* component) {
 void Debugger::setComponentContainer(core::ComponentContainer* c) {
 	rootContainer = c;
 
+	rootContainer->postFlushed.connect<ComponentContainer, &ComponentContainer::flush>(this);
+
 	if(rootContainer->hasComponent<components::Draw>()) {
 		rootContainer->getComponent<components::Draw>()->postDraw.connect<Draw, &Draw::draw>(this);
 	}

@@ -20,6 +20,7 @@ public:
 	~Draggable();
 
 	void setup();
+	void setDraggableFitInParent(bool state);
 
 	std::string getName();
 
@@ -32,9 +33,14 @@ private:
 	void onMousePress(float mouseX, float mouseY, int button);
 	void onMouseDrag(float mouseX, float mouseY, boxModel::components::Mouse::ButtonStates& bt);
 
+	void checkForParentFit();
+
+	void onFlush();
+
 	bool bDragging;
 	bool bLimitToParent;
 	boxModel::core::Point lastPos;
+	bool bFitInParent;
 
 	Mouse* mouse;
 	BoxDefinition* boxDefinition;
