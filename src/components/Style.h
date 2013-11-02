@@ -101,6 +101,9 @@ public:
 		return borderColor;
 	}
 
+	bool isVisible(){
+		return display != DisplayType::NONE;
+	}
 	void hide();
 	void show();
 	void toggle();

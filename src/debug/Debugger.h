@@ -48,7 +48,10 @@ public:
 	DebuggerPanel() {
 		addComponent<components::Draggable>(this);
 		title.text = "DEBUGGER";
+		help.margin.top = 10;
+		help.text = "click on element for info";
 		addChild(&title);
+		addChild(&help);
 		curInfoViewer = NULL;
 	}
 
@@ -57,6 +60,9 @@ public:
 	}
 
 	void showInfo(core::ComponentContainer* container){
+		if(help.isVisible())
+			help.hide();
+
 		if(curInfoViewer != NULL)
 			curInfoViewer->hide();
 
@@ -71,6 +77,7 @@ public:
 
 private:
 	boxes::H1 title;
+	boxes::TextBox help;
 
 	std::map<core::ComponentContainer*, InfoViewer> infoViewers;
 	InfoViewer* curInfoViewer;
