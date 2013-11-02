@@ -9,4 +9,5 @@ Currently supported position properties are: width, height, margin, padding, bor
 
 The box model does not add padding to the width.
 
-![alt text](http://uploads.undef.ch/ofxBoxModel/debugger.png "screenshot of built in debugger (WIP)")
+![alt text](http://uploads.undef.ch/ofxBoxModel/shot1.png "screenshot")
+![alt text](http://uploads.undef.ch/ofxBoxModel/shot2.png "screenshot of built in debugger (WIP)")
