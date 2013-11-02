@@ -4,6 +4,7 @@
 using namespace boxModel::tools;
 using namespace boxModel::core;
 using namespace boxModel::debug;
+using namespace boxModel::boxes;
 
 //--------------------------------------------------------------
 void testApp::setup() {
@@ -20,17 +21,17 @@ void testApp::setup() {
 	Instancer::addInstancer<CustomBox>();
 
 	//load the structure
-	rootBox = Xml::load<boxModel::boxes::Box>("scene.xml");
+	rootBox = Xml::load<Box>("scene.xml");
 	rootBox->loadCss("style.css");
+
+	Box* smallBox = rootBox->findByAddress<Box>("#smallBox")[0];
+
+	for(unsigned int i=0; i<500; i++){
+		smallBox->getParent()->addChildContainer(smallBox->clone());
+	}
 
 	rootBox->width = ofGetWidth();
 	rootBox->height = ofGetHeight();
-
-
-
-	//infoViewer.loadCss(ofToDataPath("infoViewer.css"));
-	//rootBox->addChild(&infoViewer);
-	//infoViewer.setComponentContainer(rootBox);
 
 	//assign the debugger
 	debugger.setComponentContainer(rootBox);

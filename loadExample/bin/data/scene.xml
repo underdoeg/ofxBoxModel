@@ -11,13 +11,14 @@
 		</p>
 	</box>
 	<box class="quarter">
-		<p class="inside" id="box3" linkTo="#box4">
+		<p class="inside" id="box3">
 
 		</p>
+
 	</box>
 	<box class="quarter">
-		<p class="inside" id="box4">
-
-		</p>
+		<box class="inside" id="box4">
+			<box class="small" id="smallBox"></box>
+		</box>
 	</box>
 </box>
