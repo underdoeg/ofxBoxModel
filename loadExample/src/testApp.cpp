@@ -25,8 +25,7 @@ void testApp::setup() {
 	rootBox->loadCss("style.css");
 
 	Box* smallBox = rootBox->findByAddress<Box>("#smallBox")[0];
-
-	for(unsigned int i=0; i<500; i++){
+	for(unsigned int i=0; i<50; i++){
 		smallBox->getParent()->addChildContainer(smallBox->clone());
 	}
 
@@ -36,11 +35,6 @@ void testApp::setup() {
 	//assign the debugger
 	debugger.setComponentContainer(rootBox);
 	debugger.loadCss("debugger.css");
-	//rootBox->addChild(&debugger);
-	//debugger.hide();
-
-	//boxModel::boxes::TextBox* tb = rootBox->findByAddress<boxModel::boxes::TextBox>("p")[0];
-	rootBox->flush();
 }
 
 //--------------------------------------------------------------
