@@ -7,7 +7,7 @@ using namespace boxModel::components;
 using namespace boxModel::core;
 using namespace std;
 
-std::string Css::getName(){
+std::string Css::getName() {
 	return "css";
 }
 
@@ -16,8 +16,7 @@ void Css::setup() {
 	LISTEN_FOR_COMPONENT(Stack, Css, onStack)
 }
 
-void Css::copyFrom(Css* css)
-{
+void Css::copyFrom(Css* css) {
 	properties = css->properties;
 	propertiesOrder = css->propertiesOrder;
 }
@@ -161,12 +160,12 @@ void Css::onStack(Stack* stack) {
 	stack->childAdded.connect<Css, &Css::onChildAdded>(this);
 }
 
-void Css::onChildAdded(Stack* stack){
+void Css::onChildAdded(Stack* stack) {
 	applyCss(); //TODO: this will overwrite manually set styles
 	Stack* parent = stack;
-	while(parent->hasParent()){
+	while(parent->hasParent()) {
 		parent = parent->getParent();
-		if(parent != NULL && parent->components->hasComponent<Css>()){
+		if(parent != NULL && parent->components->hasComponent<Css>()) {
 			parent->components->getComponent<Css>()->applyCss();
 		}
 	}
@@ -188,6 +187,6 @@ void Css::onDeserialize(core::VariantList& variants) {
 	}
 }
 
-void Css::getInfo(core::Component::Info& info){
+void Css::getInfo(core::Component::Info& info) {
 
 }
