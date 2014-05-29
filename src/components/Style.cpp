@@ -106,18 +106,22 @@ void Style::getInfo(core::Component::Info& info) {
 
 void Style::hide() {
 	display = DisplayType::NONE;
+	onHide();
+	onDisplayChange(display);
 }
 
 void Style::show() {
 	display = DisplayType::BLOCK;
+	onShow();
+	onDisplayChange(display);
 }
 
 void Style::toggle()
 {
-	if(display == DisplayType::NONE){
-		display = DisplayType::BLOCK;
+	if(isVisible()){
+		hide();
 	}else{
-		display = DisplayType::NONE;
+		show();
 	}
 }
 

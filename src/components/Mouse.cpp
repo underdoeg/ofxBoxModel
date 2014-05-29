@@ -59,11 +59,14 @@ void Mouse::setup() {
 	passEventsThrough = false;
 	bMouseOver = false;
 	stack = NULL;
+	style = NULL;
 	box = NULL;
 	LISTEN_FOR_COMPONENT(Stack, Mouse, onStack)
 	LISTEN_FOR_COMPONENT(BoxDefinition, Mouse, onBox)
 	LISTEN_FOR_COMPONENT(Css, Mouse, onCss)
-
+	LISTEN_FOR_COMPONENT(Style, Mouse, onStyle)
+	
+	/*
 	mouseMove.connect<Mouse, &Mouse::onMouseMove>(this);
 	mouseMoveOutside.connect<Mouse, &Mouse::onMouseMoveOutside>(this);
 	mousePress.connect<Mouse, &Mouse::onMousePress>(this);
@@ -74,10 +77,15 @@ void Mouse::setup() {
 	mouseReleaseOutside.connect<Mouse, &Mouse::onMouseReleaseOutside>(this);
 	mouseEnter.connect<Mouse, &Mouse::onMouseEnter>(this);
 	mouseExit.connect<Mouse, &Mouse::onMouseExit>(this);
+	*/
 }
 
 void Mouse::onStack(Stack* s) {
 	stack = s;
+}
+
+void Mouse::onStyle(Style* s) {
+	style = s;
 }
 
 void Mouse::onBox(BoxDefinition* b) {
@@ -106,7 +114,12 @@ void Mouse::setMouseIgnore(bool state) {
 
 // handle mosue movement, return true if it was handled
 bool Mouse::handleMouseMove(float x, float y) {
-
+	
+	if(style){
+		if(!style->isVisible())
+			return false;
+	}
+	
 	if(route != NULL) {
 		route->handleMouseMove(x, y);
 		if(bCaptureBlock)
@@ -157,6 +170,7 @@ bool Mouse::handleMouseMove(float x, float y) {
 			bMouseOver = true;
 			mouseEnter(xInside, yInside);
 			mouseEnterRef(xInside, yInside, this);
+			onMouseEnter(xInside, yInside);
 		}
 
 		mousePosInside = mousePos;
@@ -164,9 +178,11 @@ bool Mouse::handleMouseMove(float x, float y) {
 		if(buttonStates.isAnyPressed()) {
 			mouseDrag(xInside, yInside, buttonStates);
 			mouseDragRef(xInside, yInside, buttonStates, this);
+			onMouseDrag(xInside, yInside, buttonStates);
 		} else {
 			mouseMove(xInside, yInside);
 			mouseMoveRef(xInside, yInside, this);
+			onMouseMove(xInside, yInside);
 		}
 		ret = true;
 	} else {
@@ -191,13 +207,20 @@ void Mouse::handleMouseExit(float x, float y) {
 	if(buttonStates.isAnyPressed()) {
 		mouseDragOutside(xInside, yInside, buttonStates);
 		mouseDragOutsideRef(xInside, yInside, buttonStates, this);
+		onMouseDragOutside(xInside, yInside, buttonStates);
 	} else {
 		mouseMoveOutside(xInside, yInside);
 		mouseMoveOutsideRef(xInside, yInside, this);
+		onMouseMoveOutside(xInside, yInside);
 	}
 }
 
 bool Mouse::handleMousePressed(int button) {
+	if(style){
+		if(!style->isVisible())
+			return false;
+	}
+	
 	if(route != NULL) {
 		route->handleMousePressed(button);
 		if(bCaptureBlock)
@@ -232,6 +255,7 @@ bool Mouse::handleMousePressed(int button) {
 			buttonStates.setPressed(button);
 			mousePress(mousePos.x, mousePos.y, button);
 			mousePressRef(mousePos.x, mousePos.y, button, this);
+			onMousePress(mousePos.x, mousePos.y, button);
 		}
 		ret = true;
 	}
@@ -280,11 +304,13 @@ bool Mouse::handleMouseReleased(int button) {
 			buttonStates.setReleased(button);
 			mouseRelease(mousePos.x, mousePos.y, button);
 			mouseReleaseRef(mousePos.x, mousePos.y, button, this);
-
+			onMouseRelease(mousePos.x, mousePos.y, button);
+			
 			//check if it is a click
 			if(timeAgo < clickTime) {
 				mouseClick(mousePos.x, mousePos.y, button);
 				mouseClickRef(mousePos.x, mousePos.y, button, this);
+				onMouseClick(mousePos.x, mousePos.y, button);
 			}
 		}
 		ret = true;
@@ -302,6 +328,7 @@ void Mouse::handleMouseReleasedOutside(int button) {
 		buttonStates.setReleased(button);
 		mouseReleaseOutside(mousePos.x, mousePos.y, button);
 		mouseReleaseOutsideRef(mousePos.x, mousePos.y, button, this);
+		onMouseReleaseOutside(mousePos.x, mousePos.y, button);
 	}
 }
 
@@ -316,6 +343,12 @@ bool Mouse::isMouseOver() {
 void Mouse::routeMouse(Mouse* mouse, bool blocking) {
 	route = mouse;
 	bCaptureBlock = blocking;
+}
+
+void Mouse::removeRouteMouse()
+{
+	route = NULL;
+	bCaptureBlock = false;
 }
 
 void Mouse::pMouse(std::string key, std::string value) {

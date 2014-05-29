@@ -5,6 +5,7 @@
 #include "BoxDefinition.h"
 #include "Stack.h"
 #include "components/Css.h"
+#include "components/Style.h"
 
 
 namespace boxModel {
@@ -24,7 +25,6 @@ public:
 		void updateTime(int button);
 		std::map<int, bool> states;
 		std::map<int, unsigned long long> time;
-
 		friend class Mouse;
 	};
 
@@ -80,6 +80,7 @@ public:
 	void setMouseButtonReleased(int button);
 
 	void routeMouse(Mouse* mouse, bool blocking=false);
+	void removeRouteMouse();
 
 	void setMouseIgnore(bool state);
 
@@ -98,6 +99,7 @@ private:
 	void onStack(Stack* stack);
 	void onBox(BoxDefinition* box);
 	void onCss(Css* css);
+	void onStyle(Style* style);
 
 	bool handleMouseMove(float x, float y);
 	void handleMouseExit(float x, float y);
@@ -109,6 +111,7 @@ private:
 
 	Stack* stack;
 	BoxDefinition* box;
+	Style* style;
 
 	ButtonStates buttonStates;
 

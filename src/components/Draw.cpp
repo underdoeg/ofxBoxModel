@@ -20,6 +20,7 @@ public:
 boxModel::core::RendererBase* Draw::renderer = new DummyRenderer();
 
 Draw::Draw() {
+	style = NULL;
 }
 
 Draw::~Draw() {

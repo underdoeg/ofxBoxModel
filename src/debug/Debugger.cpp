@@ -35,11 +35,7 @@ void Debugger::setComponentContainer(core::ComponentContainer* c) {
 		rootContainer->getComponent<components::Draw>()->postDraw.connect<Draw, &Draw::draw>(this);
 	}
 
-	//route mouse events
-	if(rootContainer->hasComponent<components::Mouse>()) {
-		components::Mouse* m = rootContainer->getComponent<components::Mouse>();
-		m->routeMouse(this, true);
-	}
+	onShow();
 
 	if(rootContainer->hasComponent<components::Stack>())
 		rootStack = rootContainer->getComponent<components::Stack>();
@@ -55,7 +51,7 @@ void Debugger::onMouseClick(float mouseX, float mouseY, int button) {
 	if(container == NULL)
 		return;
 
-	if(container->hasComponent<components::BoxDefinition>()){
+	if(container->hasComponent<components::BoxDefinition>()) {
 		components::BoxDefinition* boxDef = container->getComponent<components::BoxDefinition>();
 		overlayCurrent.boxConstrainer.set(boxDef, &overlayCurrent, true);
 	}
@@ -71,13 +67,29 @@ void Debugger::onMouseMove(float mouseX, float mouseY) {
 	if(container == NULL)
 		return;
 
-	if(container->hasComponent<components::BoxDefinition>()){
+	if(container->hasComponent<components::BoxDefinition>()) {
 		components::BoxDefinition* boxDef = container->getComponent<components::BoxDefinition>();
 		overlay.boxConstrainer.set(boxDef, &overlay, true);
 	}
 }
 
 void Debugger::onMouseMoveOutside(float mouseX, float mouseY) {
+}
+
+void boxModel::debug::Debugger::onHide() {
+	//route mouse events
+	if(rootContainer->hasComponent<components::Mouse>()) {
+		components::Mouse* m = rootContainer->getComponent<components::Mouse>();
+		m->removeRouteMouse();
+	}
+}
+
+void boxModel::debug::Debugger::onShow() {
+	//route mouse events
+	if(rootContainer->hasComponent<components::Mouse>()) {
+		components::Mouse* m = rootContainer->getComponent<components::Mouse>();
+		m->routeMouse(this, true);
+	}
 }
 
 }

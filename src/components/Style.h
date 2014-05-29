@@ -111,6 +111,10 @@ public:
 	void getInfo(core::Component::Info& info);
 
 	core::Value<DisplayType> display;
+	
+	virtual void onDisplayChange(DisplayType display){};
+	virtual void onHide(){};
+	virtual void onShow(){};
 
 	static core::Color parseCssColor(std::string val);
 private:

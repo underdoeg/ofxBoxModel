@@ -92,12 +92,14 @@ public:
 
 	void setComponent(core::Component* component);
 	void setComponentContainer(core::ComponentContainer* container);
-
+	
 private:
 	void onMouseMove(float mouseX, float mouseY);
 	void onMouseMoveOutside(float mouseX, float mouseY);
 	void onMouseClick(float mouseX, float mouseY, int button);
-
+	void onHide();
+	void onShow();
+	
 	core::ComponentContainer* rootContainer;
 	components::Stack* rootStack;
 

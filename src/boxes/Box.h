@@ -22,7 +22,7 @@ class Box:
 	public boxModel::core::ComponentContainer, public boxModel::components::Addressable, public boxModel::components::Stack,
 	public boxModel::components::BoxDefinition, public boxModel::components::BoxModel, public boxModel::components::Style,
 	public boxModel::components::Css, public boxModel::components::Serializer, public boxModel::components::Linker,
-	public boxModel::components::Splitter, public boxModel::components::Mouse, public boxModel::components::Draw{
+	public boxModel::components::Splitter, public boxModel::components::Mouse, public boxModel::components::Draw {
 public:
 	Box() {
 		addComponent<boxModel::components::Stack>(this);
@@ -37,6 +37,22 @@ public:
 		addComponent<boxModel::components::Splitter>(this);
 		addComponent<boxModel::components::Mouse>(this);
 		addComponent<boxModel::components::Draw>(this);
+
+		deserialized.connect<Box, &Box::onDeserialize>(this);
+		/*
+		mouseMove.connect<Box, &Box::onMouseMove>(this);
+		mouseMoveOutside.connect<Box, &Box::onMouseMoveOutside>(this);
+		mousePress.connect<Box, &Box::onMousePress>(this);
+		mouseRelease.connect<Box, &Box::onMouseRelease>(this);
+		mouseClick.connect<Box, &Box::onMouseClick>(this);
+		mouseDoubleClick.connect<Box, &Box::onMouseDoubleClick>(this);
+		
+		mouseReleaseOutside.connect<Box, &Box::onMouseReleaseOutside>(this);
+		mouseEnter.connect<Box, &Box::onMouseEnter>(this);
+		mouseExit.connect<Box, &Box::onMouseExit>(this);
+		*/
+		
+		//mouseDrag.connect<Box, &Box::onMouseDragTest>(this);
 	}
 
 	virtual ~Box() {};
@@ -45,9 +61,14 @@ public:
 		return "box";
 	}
 
+	virtual void onDeserialize(boxModel::core::VariantList& variants) {};
+	virtual void onMouseDrag(float mouseX, float mouseY, ButtonStates& buttons){cout << getType() << endl;};
+	virtual void test(){};
+
 	boxModel::components::Layouter layouter;
 };
 
 
-}}
+}
+}
 #endif // BOXMODEL_H
