@@ -39,20 +39,6 @@ public:
 		addComponent<boxModel::components::Draw>(this);
 
 		deserialized.connect<Box, &Box::onDeserialize>(this);
-		/*
-		mouseMove.connect<Box, &Box::onMouseMove>(this);
-		mouseMoveOutside.connect<Box, &Box::onMouseMoveOutside>(this);
-		mousePress.connect<Box, &Box::onMousePress>(this);
-		mouseRelease.connect<Box, &Box::onMouseRelease>(this);
-		mouseClick.connect<Box, &Box::onMouseClick>(this);
-		mouseDoubleClick.connect<Box, &Box::onMouseDoubleClick>(this);
-		
-		mouseReleaseOutside.connect<Box, &Box::onMouseReleaseOutside>(this);
-		mouseEnter.connect<Box, &Box::onMouseEnter>(this);
-		mouseExit.connect<Box, &Box::onMouseExit>(this);
-		*/
-		
-		//mouseDrag.connect<Box, &Box::onMouseDragTest>(this);
 	}
 
 	virtual ~Box() {};
@@ -62,7 +48,7 @@ public:
 	}
 
 	virtual void onDeserialize(boxModel::core::VariantList& variants) {};
-	virtual void onMouseDrag(float mouseX, float mouseY, ButtonStates& buttons){cout << getType() << endl;};
+	virtual void onMouseDrag(float mouseX, float mouseY, ButtonStates& buttons){};
 	virtual void test(){};
 
 	boxModel::components::Layouter layouter;
