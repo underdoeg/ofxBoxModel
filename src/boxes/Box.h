@@ -49,7 +49,6 @@ public:
 
 	virtual void onDeserialize(boxModel::core::VariantList& variants) {};
 	virtual void onMouseDrag(float mouseX, float mouseY, ButtonStates& buttons){};
-	virtual void test(){};
 
 	boxModel::components::Layouter layouter;
 };

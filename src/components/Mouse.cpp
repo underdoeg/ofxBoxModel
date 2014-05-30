@@ -130,7 +130,8 @@ bool Mouse::handleMouseMove(float x, float y) {
 
 	float xInside = x - box->position.x - box->contentPosition.x;
 	float yInside = y - box->position.y - box->contentPosition.y;
-
+	
+	mousePosOld = mousePos;
 	mousePos.x = xInside;
 	mousePos.y = yInside;
 
@@ -202,8 +203,11 @@ void Mouse::handleMouseExit(float x, float y) {
 	}
 	float xInside = x - box->position.x - box->contentPosition.x;
 	float yInside = y - box->position.y - box->contentPosition.y;
+	
+	mousePosOld = mousePos;
 	mousePos.x = xInside;
 	mousePos.y = yInside;
+	
 	if(buttonStates.isAnyPressed()) {
 		mouseDragOutside(xInside, yInside, buttonStates);
 		mouseDragOutsideRef(xInside, yInside, buttonStates, this);
