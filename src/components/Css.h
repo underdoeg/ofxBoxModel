@@ -62,13 +62,19 @@ private:
 	void onSerializer(Serializer* ser);
 	void onSerialize(core::VariantList& variants);
 	void onDeserialize(core::VariantList& variants);
+	
+	void onClassAdded(string className);
+	void onClassRemoved(string className);
 
 	void onStack(Stack* stack);
 	void onChildAdded(Stack* stack);
+	void onAddressable(Addressable* addressable);
 
 	std::map<std::string, std::vector<CssProperty> > properties;
 	std::vector<std::string> propertiesOrder;
 	std::unordered_map<std::string, std::function<void(std::string, std::string)> > parserFunctions;
+	Addressable* addressable;
+	Stack* stack;
 };
 
 

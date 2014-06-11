@@ -12,8 +12,11 @@ std::string Css::getName() {
 }
 
 void Css::setup() {
+	addressable = NULL;
+	stack = NULL;
 	LISTEN_FOR_COMPONENT(Serializer, Css, onSerializer)
 	LISTEN_FOR_COMPONENT(Stack, Css, onStack)
+	LISTEN_FOR_COMPONENT(Addressable, Css, onAddressable)
 }
 
 void Css::copyFrom(Css* css) {
@@ -133,13 +136,13 @@ void Css::applyCssProperty(CssProperty p) {
 
 
 void Css::applyCss() {
-	if(!components->hasComponent<Addressable>()) {
+	if(!addressable) {
 		debug::warning("Css needs Addressable to apply properties");
 		return;
 	}
 	//apply CSS style to self and children found by addresses stored in the property list
 	for(string& propId: propertiesOrder) {
-		std::vector<Addressable*> addressables = components->getComponent<Addressable>()->findByAddress(propId);
+		std::vector<Addressable*> addressables = addressable->findByAddress(propId);
 		for(Addressable* addressable: addressables) {
 			if(addressable->components->hasComponent<Css>()) {
 				Css* cssChild = addressable->components->getComponent<Css>();
@@ -156,17 +159,53 @@ void Css::addCssParserFunction(std::string key, std::function<void(std::string, 
 }
 
 //**************** STACK
-void Css::onStack(Stack* stack) {
+void Css::onStack(Stack* s) {
+	stack = s;
 	stack->childAdded.connect<Css, &Css::onChildAdded>(this);
 }
 
 void Css::onChildAdded(Stack* stack) {
 	applyCss(); //TODO: this will overwrite manually set styles
+	
+	//TODO: keep cached list of css styles per child for performance reasons
 	Stack* parent = stack;
 	while(parent->hasParent()) {
 		parent = parent->getParent();
 		if(parent != NULL && parent->components->hasComponent<Css>()) {
 			parent->components->getComponent<Css>()->applyCss();
+		}
+	}
+}
+
+//**************** ADDRESSABLE
+void Css::onAddressable(Addressable* addr) {
+	addressable = addr;
+	addressable->classAdded.connect<Css, &Css::onClassAdded>(this);
+	addressable->classRemoved.connect<Css, &Css::onClassRemoved>(this);
+}
+
+void Css::onClassAdded(string className) {
+	applyCss();
+	if(stack){
+		Stack* parent = stack;
+		while(parent->hasParent()) {
+			parent = parent->getParent();
+			if(parent != NULL && parent->components->hasComponent<Css>()) {
+				parent->components->getComponent<Css>()->applyCss();
+			}
+		}
+	}
+}
+
+void Css::onClassRemoved(string className) {
+	applyCss();
+	if(stack){
+		Stack* parent = stack;
+		while(parent->hasParent()) {
+			parent = parent->getParent();
+			if(parent != NULL && parent->components->hasComponent<Css>()) {
+				parent->components->getComponent<Css>()->applyCss();
+			}
 		}
 	}
 }

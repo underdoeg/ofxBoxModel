@@ -67,18 +67,26 @@ bool Addressable::hasClass(std::string className) {
 
 void Addressable::addClass(std::string className) {
 	classes.push_back(className);
+	classAdded(className);
 }
 
 void Addressable::addClasses(std::vector<std::string> classNames) {
 	classes.insert(classes.end(), classNames.begin(), classNames.end());
+	for(std::string& className: classNames){
+		classAdded(className);
+	}
 }
 
 void Addressable::setClasses(std::vector<std::string> classNames) {
 	classes = classNames;
+	for(std::string& className: classNames){
+		classAdded(className);
+	}
 }
 
 void Addressable::removeClass(std::string className) {
 	classes.erase(std::remove(classes.begin(), classes.end(), className), classes.end());
+	classRemoved(className);
 }
 
 
