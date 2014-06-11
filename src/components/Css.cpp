@@ -138,7 +138,7 @@ void Css::applyCss() {
 		return;
 	}
 	//apply CSS style to self and children found by addresses stored in the property list
-	for(auto propId: propertiesOrder) {
+	for(string& propId: propertiesOrder) {
 		std::vector<Addressable*> addressables = components->getComponent<Addressable>()->findByAddress(propId);
 		for(Addressable* addressable: addressables) {
 			if(addressable->components->hasComponent<Css>()) {

@@ -54,8 +54,6 @@ void Draggable::onMouseDrag(float mouseX, float mouseY, boxModel::components::Mo
 		boxModel->left = boxDefinition->position.x + pDelta.x;
 		boxModel->top = boxDefinition->position.y + pDelta.y;
 
-		//checkForParentFit();
-
 		if(stack != NULL && stack->hasParent()) {
 			stack->getParent()->components->flush();
 		} else {

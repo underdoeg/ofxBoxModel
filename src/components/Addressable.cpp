@@ -127,8 +127,27 @@ std::vector<Addressable*> Addressable::findByAddress(std::string path) {
 				break;
 			default:
 				for(Addressable* addr: curRet) {
+					
+					bool hasClass = false;
+					string className;
+					std::vector<std::string> typeSplitted = stringSplit(item, '.');
+					if(typeSplitted.size() >= 2){
+						item = typeSplitted[0];
+						className = typeSplitted[1];
+						hasClass = true;
+					}
+					
 					std::vector<Addressable*> t = findByType(item, addr, (itPath != pathSplitted.begin()));
-					tmp.insert(tmp.end(), t.begin(), t.end());
+					
+					if(hasClass){
+						for(Addressable* a: t){
+							if(a->hasClass(className)){
+								tmp.push_back(a);
+							}
+						}
+					}else{
+						tmp.insert(tmp.end(), t.begin(), t.end());
+					}
 				}
 				break;
 			}
