@@ -46,6 +46,19 @@ To* castTo(From* from, bool typecheck = true){
 	return to;
 }
 
+template <typename From, typename To>
+std::vector<To*> castArrayTo(std::vector<From*> from, bool typecheck = true){
+	std::vector<To*> ret;
+	if(isBaseOf<From, To>::value){
+		for(typename std::vector<From*>::iterator it=from.begin(); it<from.end(); it++){
+			To* to = dynamic_cast<To*>(*it);
+			if(to)
+				ret.push_back(to);
+		}
+	}
+	return ret;
+}
+
 
 /****************************************************************************/
 /* STRING STUFF																*/

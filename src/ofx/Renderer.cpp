@@ -53,6 +53,7 @@ boxModel::core::RendererBase::ImagePointer Renderer::allocateImage(unsigned char
 void Renderer::drawImage(ImagePointer img)
 {
 	ofPushStyle();
+	ofSetColor(255, 255, 255);
 	((ofImage*)img)->draw(0, 0);
 	ofPopStyle();
 }

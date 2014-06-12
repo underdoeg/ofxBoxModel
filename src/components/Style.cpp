@@ -10,9 +10,18 @@ std::string Style::getName() {
 }
 
 void Style::onCss(Css* css) {
+	css->addCssParserFunction<Style, &Style::pCssDisplay>("display", this);
 	css->addCssParserFunction<Style, &Style::pCssColor>("color", this);
 	css->addCssParserFunction<Style, &Style::pCssBgColor>("background-color", this);
 	css->addCssParserFunction<Style, &Style::pCssBorderColor>("border-color", this);
+}
+
+void Style::pCssDisplay(std::string key, std::string value) {
+	if(value == "block"){
+		display = BLOCK;
+	}else if(value == "none"){
+		display = NONE;
+	}
 }
 
 void Style::pCssColor(std::string key, std::string value) {

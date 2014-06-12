@@ -65,6 +65,7 @@ void Stack::addChild(Stack* child) {
 	child->setParent(this);
 	children.push_back(child);
 	childAdded(child);
+	onChildAdded(child);
 }
 
 void Stack::addChildFromContainer(core::ComponentContainer* child) {
@@ -79,6 +80,7 @@ void Stack::removeChild(Stack* child) {
 	child->parent = NULL;
 	children.erase(std::remove(children.begin(), children.end(), child), children.end());
 	childRemoved(child);
+	onChildRemoved(child);
 }
 
 void Stack::removeChildFromContainer(core::ComponentContainer* child) {

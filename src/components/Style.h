@@ -122,6 +122,7 @@ private:
 	void pCssColor(std::string key, std::string value);
 	void pCssBgColor(std::string key, std::string value);
 	void pCssBorderColor(std::string key, std::string value);
+	void pCssDisplay(std::string key, std::string value);
 
 	core::Color color;
 	core::Color bgColor;

@@ -50,6 +50,11 @@ public:
 	Type* getChild(unsigned int index) {
 		return core::castTo<Stack, Type>(getChild(index));
 	}
+	
+	template <class Type>
+	std::vector<Type*> getChildren() {
+		return core::castArrayTo<Stack, Type>(getChildren());
+	}
 
 	ChildrenIterator childrenBegin();
 	ChildrenIterator childrenEnd();
@@ -57,7 +62,7 @@ public:
 	bool hasParent();
 	Stack* getParent();
 	void setParent(Stack* p);
-
+	
 	ChildrenList getChildren();
 	ChildrenList getChildrenRecursive();
 	Stack* getUltimateParent();
@@ -66,9 +71,13 @@ public:
 
 	boxModel::core::ComponentContainer* containerAt(float x, float y);
 
+	virtual void onChildAdded(Stack* child){};
+	virtual void onChildRemoved(Stack* child){};
+
 	Nano::signal<void(Stack*)> childAdded;
 	Nano::signal<void(Stack*)> childRemoved;
 	Nano::signal<void(Stack*)> parentChanged;
+	
 
 private:
 	void appendChildrenToList(ChildrenList& list);

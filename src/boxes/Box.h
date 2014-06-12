@@ -46,6 +46,8 @@ public:
 	virtual string getType() {
 		return "box";
 	}
+	
+	virtual void onLoadComplete(){};
 
 	virtual void onDeserialize(boxModel::core::VariantList& variants) {};
 	virtual void onMouseDrag(float mouseX, float mouseY, ButtonStates& buttons){};
