@@ -43,9 +43,11 @@ public:
 	Button();
 	
 	virtual std::string getType();
-
+	
+	Nano::signal<void(Button*)> changed;
+	
 private:
-
+	void valueChanged(bool val);
 };
 
 }

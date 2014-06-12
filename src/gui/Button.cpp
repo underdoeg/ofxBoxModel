@@ -53,7 +53,7 @@ void ButtonComponent::onClick(float mouseX, float mouseY, int button) {
 			else
 				addressable->removeClass("active");
 		}
-	}else if(buttonType == TOGGLE){
+	} else if(buttonType == TOGGLE) {
 		value.set(true);
 		value.set(false);
 	}
@@ -62,9 +62,9 @@ void ButtonComponent::onClick(float mouseX, float mouseY, int button) {
 void ButtonComponent::onDeserialize(boxModel::core::VariantList& variants) {
 	if(variants.hasKey("type")) {
 		string type = variants.get("type");
-		if(type == "bang"){
+		if(type == "bang") {
 			setButtonType(BANG);
-		}else if(type == "toggle"){
+		} else if(type == "toggle") {
 			setButtonType(TOGGLE);
 		}
 	}
@@ -74,12 +74,16 @@ void ButtonComponent::onDeserialize(boxModel::core::VariantList& variants) {
 
 Button::Button() {
 	addComponent<boxModel::gui::ButtonComponent>(this);
+	value.changed.connect<Button, &Button::valueChanged>(this);
 }
 
 std::string Button::getType() {
 	return "button";
 }
 
+void Button::valueChanged(bool val) {
+	changed(this);
+}
 
 }
 }
