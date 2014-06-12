@@ -41,7 +41,7 @@ unsigned long Mouse::ButtonStates::getTime(int button) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned long Mouse::clickTime = 400;
+unsigned long Mouse::clickTime = 500;
 unsigned long Mouse::doubleClickTime = 400;
 
 Mouse::Mouse() {
@@ -271,6 +271,11 @@ bool Mouse::handleMousePressed(int button) {
 }
 
 bool Mouse::handleMouseReleased(int button) {
+	if(style){
+		if(!style->isVisible())
+			return false;
+	}
+	
 	if(route != NULL) {
 		route->handleMouseReleased(button);
 		if(bCaptureBlock)
