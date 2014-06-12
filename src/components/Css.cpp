@@ -12,6 +12,7 @@ std::string Css::getName() {
 }
 
 void Css::setup() {
+	isCssDirty = true;
 	addressable = NULL;
 	stack = NULL;
 	LISTEN_FOR_COMPONENT(Serializer, Css, onSerializer)
@@ -78,6 +79,10 @@ void Css::setCss(std::string cssDefinition) {
 
 //printProperties();
 
+	//
+	
+	setCssDirty(true, true);
+	
 	applyCss();
 
 	cssChanged(this);
@@ -123,10 +128,14 @@ void Css::setCssBlock(std::string block) {
 }
 
 void Css::applyCssProperty(std::string key, std::string value) {
-	applyCssProperty(CssProperty(key, value));
+	CssProperty prop(key, value);
+	applyCssProperty(prop);
 }
 
-void Css::applyCssProperty(CssProperty p) {
+void Css::applyCssProperty(CssProperty& p) {
+	if(!isCssDirty)
+		return;
+	
 	if (parserFunctions.find(p.key) == parserFunctions.end() ) {
 		debug::warning("CSS unknown property: "+p.key);
 		return;
@@ -140,6 +149,10 @@ void Css::applyCss() {
 		debug::warning("Css needs Addressable to apply properties");
 		return;
 	}
+	
+	if(propertiesOrder.size() == 0)
+		return;
+	
 	//apply CSS style to self and children found by addresses stored in the property list
 	for(string& propId: propertiesOrder) {
 		std::vector<Addressable*> addressables = addressable->findByAddress(propId);
@@ -152,10 +165,27 @@ void Css::applyCss() {
 			}
 		}
 	}
+	
+	setCssDirty(false, true);
 }
 
 void Css::addCssParserFunction(std::string key, std::function<void(std::string, std::string)> func) {
 	parserFunctions[key] = func;
+}
+
+void Css::setCssDirty(bool state, bool recursive) {
+	isCssDirty = state;
+	
+	if(!recursive)
+		return;
+	
+	if(stack) {
+		for(Stack::ChildrenIterator it = stack->childrenBegin(); it<stack->childrenEnd(); it++){
+			if((*it)->components->hasComponent<Css>()){
+				(*it)->components->getComponent<Css>()->setCssDirty(state, true);
+			}
+		}
+	}
 }
 
 //**************** STACK
@@ -166,7 +196,7 @@ void Css::onStack(Stack* s) {
 
 void Css::onChildAdded(Stack* stack) {
 	applyCss(); //TODO: this will overwrite manually set styles
-	
+
 	//TODO: keep cached list of css styles per child for performance reasons
 	Stack* parent = stack;
 	while(parent->hasParent()) {
@@ -185,8 +215,8 @@ void Css::onAddressable(Addressable* addr) {
 }
 
 void Css::onClassAdded(string className) {
-	applyCss();
-	if(stack){
+	setCssDirty(true, true);
+	if(stack) {
 		Stack* parent = stack;
 		while(parent->hasParent()) {
 			parent = parent->getParent();
@@ -195,11 +225,12 @@ void Css::onClassAdded(string className) {
 			}
 		}
 	}
+	applyCss();
 }
 
 void Css::onClassRemoved(string className) {
-	applyCss();
-	if(stack){
+	setCssDirty(true, true);
+	if(stack) {
 		Stack* parent = stack;
 		while(parent->hasParent()) {
 			parent = parent->getParent();
@@ -208,6 +239,7 @@ void Css::onClassRemoved(string className) {
 			}
 		}
 	}
+	applyCss();
 }
 
 //**************** SERIALIZER

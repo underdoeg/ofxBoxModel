@@ -38,7 +38,7 @@ public:
 	void setCss(std::string css);
 	void setCssBlock(std::string block);
 	void applyCssProperty(std::string key, std::string value);
-	void applyCssProperty(CssProperty p);
+	void applyCssProperty(CssProperty& p);
 
 	template <typename Type, void(Type::*method)(std::string, std::string)>
 	void addCssParserFunction(std::string key, Type* obj){
@@ -69,12 +69,15 @@ private:
 	void onStack(Stack* stack);
 	void onChildAdded(Stack* stack);
 	void onAddressable(Addressable* addressable);
+	
+	void setCssDirty(bool state, bool recursive=false);
 
 	std::map<std::string, std::vector<CssProperty> > properties;
 	std::vector<std::string> propertiesOrder;
 	std::unordered_map<std::string, std::function<void(std::string, std::string)> > parserFunctions;
 	Addressable* addressable;
 	Stack* stack;
+	bool isCssDirty;
 };
 
 

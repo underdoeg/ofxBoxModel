@@ -15,7 +15,7 @@ void Layouter::setup() {
 	stack = NULL;
 	box = NULL;
 	boxDefinition = NULL;
-	isDirty = false;
+	isLayoutDirty = false;
 	doLayouting = true;
 
 	LISTEN_FOR_COMPONENT(Stack, Layouter, onStack)
@@ -64,7 +64,7 @@ void Layouter::layout(bool layoutChildren) {
 		}
 	}
 
-	if(!isDirty || box == NULL)
+	if(!isLayoutDirty || box == NULL)
 		return;
 
 	//reset linked elements
@@ -151,7 +151,7 @@ void Layouter::layout(bool layoutChildren) {
 	if(boxDefinition != NULL)
 		boxDefinition->recalculateBoxSize();
 
-	isDirty = false;
+	isLayoutDirty = false;
 
 	//trigger layouted event
 	layouted();
@@ -229,7 +229,7 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 }
 
 void Layouter::triggerLayout() {
-	isDirty = true;
+	isLayoutDirty = true;
 }
 
 void Layouter::onContentSizeChanged(core::Point p) {

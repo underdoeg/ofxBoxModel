@@ -17,20 +17,24 @@ public:
 	ButtonComponent();
 	~ButtonComponent();
 	
-	std::string getName();
-	
 	void setup();
-	
-	core::Value<bool> value;
+	std::string getName();
+	void setButtonType(ButtonType type);
+
+	core::Value<bool> value;	
 	
 private:
 	void onMouse(components::Mouse* mouse);
 	void onAddressable(components::Addressable* addressable);
+	void onSerializer(components::Serializer* serializer);
+	
+	void onDeserialize(boxModel::core::VariantList& variants);
 	
 	void onClick(float mouseX, float mouseY, int button);
 
 	components::Mouse* mouse;
 	components::Addressable* addressable;
+	components::Serializer* serializer;
 	ButtonType buttonType;
 };
 

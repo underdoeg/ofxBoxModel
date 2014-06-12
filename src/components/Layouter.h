@@ -59,7 +59,7 @@ private:
 	Stack* stack;
 	BoxDefinition* box;
 	BoxModel* boxDefinition;
-	bool isDirty;
+	bool isLayoutDirty;
 };
 
 }
