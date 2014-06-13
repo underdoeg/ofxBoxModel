@@ -19,6 +19,17 @@ public:
 	}
 };
 
+class Bold: public TextBox {
+public:
+	Bold(std::string t = ""):TextBox(t) {
+
+	}
+	virtual string getType() {
+		return "b";
+	}
+};
+
+
 class H1: public TextBox {
 public:
 	H1(std::string t = ""):TextBox(t) {

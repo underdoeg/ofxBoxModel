@@ -65,12 +65,16 @@ void Css::setCss(std::string cssDefinition) {
 			if(addressAndProperties.size() == 2) {
 
 				//now we have the address
-				string address = stringTrim(addressAndProperties[0]);
+				string addressAll = stringTrim(addressAndProperties[0]);
 				string propertiesString = addressAndProperties[1];
 
 				std::vector<CssProperty> props = parseCssBlock(propertiesString);
-				properties[address].insert(properties[address].end(), props.begin(), props.end());
-				propertiesOrder.push_back(address);
+				
+				std::vector<std::string> addresses = stringSplit(addressAll, ',');
+				for(string& address: addresses){
+					properties[address].insert(properties[address].end(), props.begin(), props.end());
+					propertiesOrder.push_back(address);
+				}
 			} else {
 				debug::warning("CSS ERROR near "+addressAndProperties[0]);
 			}

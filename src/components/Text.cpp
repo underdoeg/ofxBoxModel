@@ -177,6 +177,7 @@ void Text::onBoxDefinition(BoxModel* bd) {
 
 void Text::pCssFontName(std::string key, std::string value) {
 	fontName = value;
+	cout << "LOAD FONT " << value << endl;
 }
 
 void Text::pCssFontSize(std::string key, std::string value) {
@@ -209,7 +210,7 @@ void Text::pCssTextTransform(std::string key, std::string value) {
 	if(value=="uppercase") textTransform = TEXT_UPPERCASE;
 	if(value=="lowercase") textTransform = TEXT_LOWERCASE;
 	if(value=="none") textTransform = TEXT_NONE;
-
+	
 	onTextChange(text);
 }
 
@@ -292,7 +293,7 @@ void Text::onAutoHeight(float& height) {
 }
 
 void Text::onCssApplyed(Css* css) {
-	cout << "UPDATE IT" << endl;
+	
 }
 
 /******************************************************************************************/
