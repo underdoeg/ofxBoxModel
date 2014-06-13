@@ -23,6 +23,7 @@ void Instancer::setup()
 		return;
 	
 	addInstancer<boxes::Box>("box");
+	addInstancer<boxes::TextBox>("p");
 	addInstancer<boxes::TextBox>("text");
 	addInstancer<boxes::H1>("h1");
 	addInstancer<boxes::H2>("h2");

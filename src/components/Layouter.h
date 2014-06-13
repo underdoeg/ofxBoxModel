@@ -5,6 +5,7 @@
 #include "components/BoxDefinition.h"
 #include "components/Stack.h"
 #include "components/BoxModel.h"
+#include "components/Style.h"
 
 
 namespace boxModel {
@@ -46,6 +47,7 @@ private:
 	void onChildSizeChanged(core::Point p);
 	void onChildPositioningChanged(Position p);
 	void onChildUnitChanged(core::Unit* unit);
+	void onChildDisplayChanged(Style::DisplayType dt);
 	void onAutoWidth(float& width);
 	void onAutoHeight(float& height);
 

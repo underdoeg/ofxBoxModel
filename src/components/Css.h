@@ -47,11 +47,11 @@ public:
 	void addCssParserFunction(std::string key, std::function<void(std::string, std::string)> func);
 
 	/***/
-
 	void copyFrom(Css* css);
 	void getInfo(core::Component::Info& info);
 
 	Nano::signal<void(Css*)> cssChanged;
+	Nano::signal<void(Css*)> cssApplyed;
 
 
 protected:

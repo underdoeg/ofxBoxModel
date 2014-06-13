@@ -111,13 +111,13 @@ void Text::update() {
 void Text::onFlush() {
 	if(linker != NULL) {
 		//if(textBlock.hasOverflow()) {
-			Linker* linkTo = linker->getLinkTo();
-			if(linkTo != NULL){
-				if(linkTo->components->hasComponent<Text>()){
-					linkTo->components->getComponent<Text>()->text = textBlock.getOverflow();
-					//linkTo->components->getComponent<Text>()->onFlush();
-				}
+		Linker* linkTo = linker->getLinkTo();
+		if(linkTo != NULL) {
+			if(linkTo->components->hasComponent<Text>()) {
+				linkTo->components->getComponent<Text>()->text = textBlock.getOverflow();
+				//linkTo->components->getComponent<Text>()->onFlush();
 			}
+		}
 		//}
 	}
 }
@@ -142,6 +142,8 @@ void Text::onBox(BoxDefinition* b) {
 }
 
 void Text::onCss(Css* css) {
+	css->cssApplyed.connect<Text, &Text::onCssApplyed>(this);
+	
 	css->addCssParserFunction<Text, &Text::pCssFontName>("font-name", this);
 	css->addCssParserFunction<Text, &Text::pCssFontName>("font-family", this);
 	css->addCssParserFunction<Text, &Text::pCssFontName>("font", this);
@@ -273,6 +275,8 @@ void Text::onWordSpacingChanged(core::Unit* u) {
 }
 
 void Text::onFontNameChanged(std::string fontName) {
+	if(fontName == "")
+		return;
 	fontFamily.loadNormal(Globals::get().dataRoot+fontName);
 	textBlock.setDirty();
 	update();
@@ -285,6 +289,10 @@ void Text::onAutoWidth(float& width) {
 void Text::onAutoHeight(float& height) {
 	if(textBlock.getHeight() > height)
 		height = textBlock.getHeight();
+}
+
+void Text::onCssApplyed(Css* css) {
+	cout << "UPDATE IT" << endl;
 }
 
 /******************************************************************************************/

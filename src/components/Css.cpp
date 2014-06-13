@@ -80,9 +80,9 @@ void Css::setCss(std::string cssDefinition) {
 //printProperties();
 
 	//
-	
+
 	setCssDirty(true, true);
-	
+
 	applyCss();
 
 	cssChanged(this);
@@ -135,7 +135,7 @@ void Css::applyCssProperty(std::string key, std::string value) {
 void Css::applyCssProperty(CssProperty& p) {
 	if(!isCssDirty)
 		return;
-	
+
 	if (parserFunctions.find(p.key) == parserFunctions.end() ) {
 		debug::warning("CSS unknown property: "+p.key);
 		return;
@@ -149,10 +149,13 @@ void Css::applyCss() {
 		debug::warning("Css needs Addressable to apply properties");
 		return;
 	}
-	
+
 	if(propertiesOrder.size() == 0)
 		return;
-	
+
+	//if(!isCssDirty)
+	//	return;
+
 	//apply CSS style to self and children found by addresses stored in the property list
 	for(string& propId: propertiesOrder) {
 		std::vector<Addressable*> addressables = addressable->findByAddress(propId);
@@ -165,8 +168,27 @@ void Css::applyCss() {
 			}
 		}
 	}
-	
+
 	setCssDirty(false, true);
+
+	//send the css applied event to all children
+	cssApplyed(this);
+
+	//TODO: check if this is a good solution
+	if(stack) {
+		for(Css* cssChild: stack->getChildrenComponents<Css>(true)) {
+			cssChild->cssApplyed(cssChild);
+		}
+
+		/*
+		for(Stack* child:stack->getChildrenRecursive()){
+			if(child->components->hasComponent<Css>()){
+				Css* childCss
+				child->components->getComponent<Css>()
+			}
+		}
+		*/
+	}
 }
 
 void Css::addCssParserFunction(std::string key, std::function<void(std::string, std::string)> func) {
@@ -175,18 +197,40 @@ void Css::addCssParserFunction(std::string key, std::function<void(std::string, 
 
 void Css::setCssDirty(bool state, bool recursive) {
 	isCssDirty = state;
-	
+
 	if(!recursive)
 		return;
-	
+
 	if(stack) {
-		for(Stack::ChildrenIterator it = stack->childrenBegin(); it<stack->childrenEnd(); it++){
-			if((*it)->components->hasComponent<Css>()){
+		for(Stack::ChildrenIterator it = stack->childrenBegin(); it<stack->childrenEnd(); it++) {
+			if((*it)->components->hasComponent<Css>()) {
 				(*it)->components->getComponent<Css>()->setCssDirty(state, true);
 			}
 		}
 	}
 }
+
+/*
+
+bool Css::hasCssProperty(string propertyName) {
+	return properties.find(propertyName) != properties.end();
+}
+
+bool Css::searchParentsForCssProperty(CssProperty& prop) {
+	if(stack) {
+		Stack* parent = stack;
+		while(parent->hasParent()) {
+			if(parent->components->hasComponent<Css>()) {
+				Css* parentCss = parent->components->getComponent<Css>();
+				if(parentCss->hasCssProperty(prop.key)) {
+					prop.value = parentCss->properties[prop.key];
+				}
+			}
+			parent = parent->getParent();
+		}
+	}
+}
+*/
 
 //**************** STACK
 void Css::onStack(Stack* s) {

@@ -55,6 +55,30 @@ public:
 	std::vector<Type*> getChildren() {
 		return core::castArrayTo<Stack, Type>(getChildren());
 	}
+	
+	template <class Type>
+	std::vector<Type*> getChildrenRecursive() {
+		return core::castArrayTo<Stack, Type>(getChildrenRecursive());
+	}
+	
+	template <class Type>
+	std::vector<Type*> getChildrenComponents(bool recursive=false){
+		std::vector<Type*> ret;
+		std::vector<Stack*> children;
+		
+		if(recursive)
+			children = getChildrenRecursive();
+		else
+			children = getChildren();
+			
+		for(Stack* child: children){
+			if(child->components->hasComponent<Type>()){
+				ret.push_back(child->components->getComponent<Type>());
+			}
+		}
+			
+		return ret;
+	}
 
 	ChildrenIterator childrenBegin();
 	ChildrenIterator childrenEnd();

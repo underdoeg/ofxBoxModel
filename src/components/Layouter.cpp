@@ -15,7 +15,7 @@ void Layouter::setup() {
 	stack = NULL;
 	box = NULL;
 	boxDefinition = NULL;
-	isLayoutDirty = false;
+	isLayoutDirty = true;
 	doLayouting = true;
 
 	LISTEN_FOR_COMPONENT(Stack, Layouter, onStack)
@@ -42,8 +42,6 @@ void Layouter::onBoxDefinition(BoxModel* box) {
 
 void Layouter::layout(bool layoutChildren) {
 
-	preLayouted();
-
 	if(stack == NULL )
 		return;
 
@@ -67,6 +65,8 @@ void Layouter::layout(bool layoutChildren) {
 	if(!isLayoutDirty || box == NULL)
 		return;
 
+	preLayouted();
+
 	//reset linked elements
 	for(Stack * stackChild: stack->getChildren()) {
 		if(stackChild->components->hasComponent<Linker>()) {
@@ -88,8 +88,6 @@ void Layouter::layout(bool layoutChildren) {
 	curPosition.set(0, 0);
 	rowMaxHeight = 0;
 	overflowElements.clear();
-
-
 
 	//place all elements
 	for(Stack * stackChild: stack->getChildren()) {
@@ -203,6 +201,7 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 			overflowElements.push_back(childBox->components);
 		}
 	} else if(childBoxDef->positioning == Absolute) {
+		
 		//TODO: could be optimized for less calculations
 		core::Point p;
 		core::Point p1 = core::Point(
@@ -224,6 +223,25 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 		} else {
 			p = p1;
 		}
+		
+		//check if valign or align is set
+		if(childBoxDef->align.get() != AlignNone){
+			if(childBoxDef->align.get() == Middle)
+				p.x = box->contentSize.x * .5 - childBox->size.x * .5 + childBoxDef->margin.left.getValueCalculated();
+			else if(childBoxDef->align.get() == Left)
+				p.x = childBoxDef->margin.left.getValueCalculated();
+			else if(childBoxDef->align.get() == Right)
+				p.x = box->contentSize.x - childBox->size.x  + childBoxDef->margin.right.getValueCalculated();
+		}
+		if(childBoxDef->valign.get() != AlignNone){
+			if(childBoxDef->valign.get() == Middle)
+				p.y = box->contentSize.y * .5 - childBox->size.y * .5 + childBoxDef->margin.top.getValueCalculated();
+			else if(childBoxDef->valign.get() == Top)
+				p.y = childBoxDef->margin.top.getValueCalculated();
+			else if(childBoxDef->valign.get() == Bottom)
+				p.y = box->contentSize.y - childBox->size.y  + childBoxDef->margin.bottom.getValueCalculated();
+		}
+		
 		childBox->position.set(p);
 	}
 }
@@ -238,11 +256,25 @@ void Layouter::onContentSizeChanged(core::Point p) {
 
 void Layouter::onChildRemoved(Stack* child) {
 	if(child->components->hasComponent<BoxModel>()) {
-		child->components->getComponent<BoxModel>()->floating.changed.disconnect<Layouter, &Layouter::onChildFloatingChanged>(this);
+		BoxModel* boxDef = child->components->getComponent<BoxModel>();
+		boxDef->floating.changed.disconnect<Layouter, &Layouter::onChildFloatingChanged>(this);
+		boxDef->positioning.changed.disconnect<Layouter, &Layouter::onChildPositioningChanged>(this);
+		boxDef->left.changed.disconnect<Layouter, &Layouter::onChildUnitChanged>(this);
+		boxDef->top.changed.disconnect<Layouter, &Layouter::onChildUnitChanged>(this);
+		boxDef->right.changed.disconnect<Layouter, &Layouter::onChildUnitChanged>(this);
+		boxDef->bottom.changed.disconnect<Layouter, &Layouter::onChildUnitChanged>(this);
 	}
 	if(child->components->hasComponent<BoxDefinition>()) {
-		child->components->getComponent<BoxDefinition>()->outerSize.changed.disconnect<Layouter, &Layouter::onChildSizeChanged>(this);
+		BoxDefinition* childBox = child->components->getComponent<BoxDefinition>();
+		childBox->outerSize.changed.disconnect<Layouter, &Layouter::onChildSizeChanged>(this);
+		//placeBox(childBox);
+		if(boxDefinition != NULL)
+			boxDefinition->recalculateBoxSize();
 	}
+	if(child->components->hasComponent<Style>()) {
+		child->components->getComponent<Style>()->display.changed.disconnect<Layouter, &Layouter::onChildDisplayChanged>(this);
+	}
+	
 	triggerLayout();
 }
 
@@ -269,6 +301,13 @@ void Layouter::onChildAdded(Stack* child) {
 		if(boxDefinition != NULL)
 			boxDefinition->recalculateBoxSize();
 	}
+	if(child->components->hasComponent<Style>()) {
+		child->components->getComponent<Style>()->display.changed.connect<Layouter, &Layouter::onChildDisplayChanged>(this);
+	}
+	triggerLayout();
+}
+
+void Layouter::onChildDisplayChanged(Style::DisplayType dt) {
 	triggerLayout();
 }
 

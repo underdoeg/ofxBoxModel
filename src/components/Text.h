@@ -91,7 +91,9 @@ private:
 	void pCssWordSpacing(std::string key, std::string value);
 	void pCssTextAlignment(std::string key, std::string value);
 	void pCssTextTransform(std::string key, std::string value);
-
+	
+	void onCssApplyed(Css* css);
+	
 	void onLinked(Linker* link);
 
 	void onSerializer(Serializer* ser);

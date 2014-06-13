@@ -42,7 +42,20 @@ public:
 	void setValue(std::string v) {
 		value = v;
 	}
-
+	
+	bool asBool(){
+		if(value == "1"){
+			return true;
+		}else if(value == "0"){
+			return false;
+		}else if(value == "true"){
+			return true;
+		}else if(value == "false"){
+			return false;
+		}
+		return false;
+	}
+	
 	int asInt() {
 		return core::stringToInt(value);
 	}
@@ -50,7 +63,7 @@ public:
 	float asFloat() {
 		return core::stringToFloat(value);
 	}
-
+	
 	std::string asString() {
 		return value;
 	}
@@ -100,9 +113,13 @@ public:
 
 template <class Type>
 class Value {
-public:
+	public:
 	Nano::signal<void(Type)> changed;
 	//Nano::signal<void(Type, Type)> changed2;
+
+	Value(){
+		bSet = false;
+	}
 
 	operator const Type() const {
 		return value;
@@ -131,16 +148,27 @@ public:
 	}
 
 	void set(Type val) {
-		if(value == val)
+		if(isSet() && value == val)
 			return;
+		bSet = true;
 		oldValue = value;
 		value = val;
 		changed(value);
 		//changed2(value, oldValue);
 	}
+	
+	bool isSet(){
+		return bSet;
+	}
+	
+	void unset(){
+		bSet = false;
+	}
+	
 private:
 	Type value;
 	Type oldValue;
+	bool bSet;
 };
 
 class ValuePoint {

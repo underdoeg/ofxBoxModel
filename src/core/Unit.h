@@ -95,6 +95,10 @@ public:
 	bool isSet() {
 		return bSet;
 	}
+	
+	void unset(){
+		bSet = false;
+	}
 
 	float getValueCalculated() {
 		return getValueCalculated(containerSize, bContainerSizeSet);

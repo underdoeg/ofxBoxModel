@@ -25,6 +25,15 @@ enum Floating {
     FloatNone
 };
 
+enum Alignement{
+	AlignNone,
+	Middle,
+	Left,
+	Right,
+	Top,
+	Bottom
+};
+
 class BoxModel : public core::Component {
 public:
 	BoxModel();
@@ -43,6 +52,8 @@ public:
 
 	core::Value<Floating> floating;
 	core::Value<Position> positioning;
+	core::Value<Alignement> align;
+	core::Value<Alignement> valign;
 
 	core::UnitGroup margin;
 	core::UnitGroup padding;
@@ -71,6 +82,8 @@ private:
 	void pHeight(std::string key, std::string value);
 
 	void pPosition(std::string key, std::string value);
+	void pAlign(std::string key, std::string value);
+	void pVAlign(std::string key, std::string value);
 
 	void pRight(std::string key, std::string value);
 	void pLeft(std::string key, std::string value);

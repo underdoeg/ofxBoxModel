@@ -43,6 +43,10 @@ void BoxModel::setup() {
 	components->addUnitGroup(&padding);
 	components->addUnitGroup(&border);
 	components->addUnitY(&height);
+	components->addUnitX(&left);
+	components->addUnitX(&right);
+	components->addUnitY(&top);
+	components->addUnitY(&bottom);
 }
 
 void BoxModel::copyFrom(BoxModel* bd)
@@ -161,6 +165,9 @@ void BoxModel::onCss(Css* css) {
 	css->addCssParserFunction<BoxModel, &BoxModel::pHeight>("height", this);
 
 	css->addCssParserFunction<BoxModel, &BoxModel::pPosition>("position", this);
+	css->addCssParserFunction<BoxModel, &BoxModel::pAlign>("align", this);
+	css->addCssParserFunction<BoxModel, &BoxModel::pVAlign>("valign", this);
+	css->addCssParserFunction<BoxModel, &BoxModel::pVAlign>("vertical-align", this);
 
 	css->addCssParserFunction<BoxModel, &BoxModel::pTop>("top", this);
 	css->addCssParserFunction<BoxModel, &BoxModel::pLeft>("left", this);
@@ -229,6 +236,28 @@ void BoxModel::pPosition(std::string key, std::string value) {
 		positioning = Relative;
 	if(value == "fixed")
 		positioning = Fixed;
+}
+
+void BoxModel::pAlign(std::string key, std::string value){
+	if(value == "none")
+		align = AlignNone;
+	if(value == "left")
+		align = Left;
+	else if(value == "right")
+		align = Right;
+	else if(value == "middle" || value == "center")
+		align = Middle;
+}
+
+void BoxModel::pVAlign(std::string key, std::string value){
+	if(value == "none")
+		valign = AlignNone;
+	if(value == "top")
+		valign = Top;
+	else if(value == "bottom")
+		valign = Bottom;
+	else if(value == "middle" || value == "center")
+		valign = Middle;
 }
 
 void BoxModel::pFloat(std::string key, std::string value) {
