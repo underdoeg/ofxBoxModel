@@ -177,23 +177,26 @@ void Text::onBoxDefinition(BoxModel* bd) {
 
 void Text::pCssFontName(std::string key, std::string value) {
 	fontName = value;
-	cout << "LOAD FONT " << value << endl;
 }
 
 void Text::pCssFontSize(std::string key, std::string value) {
 	fontSize = core::Unit::parseCssNumber(value);
+	update();
 }
 
 void Text::pCssLeading(std::string key, std::string value) {
 	leading = core::Unit::parseCssNumber(value);
+	update();
 }
 
 void Text::pCssLetterSpacing(std::string key, std::string value) {
 	letterSpacing = core::Unit::parseCssNumber(value);
+	update();
 }
 
 void Text::pCssWordSpacing(std::string key, std::string value) {
 	wordSpacing = core::Unit::parseCssNumber(value);
+	update();
 }
 
 void Text::pCssTextAlignment(std::string key, std::string value) {
@@ -202,7 +205,8 @@ void Text::pCssTextAlignment(std::string key, std::string value) {
 	if(value=="right") textAlignment = ALIGN_RIGHT;
 	if(value=="center") textAlignment = ALIGN_CENTER;
 	if(value=="justify") textAlignment = ALIGN_JUSTIFY;
-	if(value=="justify_all" || value=="justify-all") textAlignment = ALIGN_JUSTIFY_ALL;
+	if(value=="justify_all" || value=="justify-all") textAlignment = ALIGN_JUSTIFY_ALL;	
+	update();
 }
 
 void Text::pCssTextTransform(std::string key, std::string value) {

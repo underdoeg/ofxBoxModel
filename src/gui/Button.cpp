@@ -53,7 +53,7 @@ void ButtonComponent::onClick(float mouseX, float mouseY, int button) {
 			else
 				addressable->removeClass("active");
 		}
-	} else if(buttonType == TOGGLE) {
+	} else if(buttonType == BANG) {
 		value.set(true);
 		value.set(false);
 	}

@@ -2,6 +2,7 @@
 #define BUTTON_H
 
 #include "Box.h"
+#include "Texts.h"
 
 namespace boxModel {
 
@@ -38,7 +39,7 @@ private:
 	ButtonType buttonType;
 };
 
-class Button: public boxes::Box, ButtonComponent {
+class Button: public boxes::TextBox, public ButtonComponent {
 public:
 	Button();
 	

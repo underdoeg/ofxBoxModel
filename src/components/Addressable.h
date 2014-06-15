@@ -54,7 +54,7 @@ public:
 	
 	template<class Type>
 	Type* findById(string id){
-		std::vector<Type*> res = findByAddress("#"+id);
+		std::vector<Type*> res = findByAddress<Type>("#"+id);
 		if(res.size() >= 1)
 			return res[0];
 		return NULL;
