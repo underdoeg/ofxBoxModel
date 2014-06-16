@@ -14,6 +14,7 @@
 #include "components/Splitter.h"
 #include "components/Mouse.h"
 #include "components/Draw.h"
+#include "Image.h"
 
 namespace boxModel {
 namespace boxes {
@@ -55,6 +56,14 @@ public:
 	boxModel::components::Layouter layouter;
 };
 
+
+class ImageBox: public Box, public boxModel::components::Image {
+public:
+	ImageBox();
+	~ImageBox();
+
+	string getType();
+};
 
 }
 }

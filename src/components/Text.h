@@ -79,7 +79,7 @@ private:
 	void onCss(Css* css);
 	void onBox(BoxDefinition* box);
 	void onLinker(Linker* linker);
-	void onDraw(Draw* linker);
+	void onDraw(Draw* draw);
 
 	void onSplitter(Splitter* splitter);
 	void onSplitRequested(float x, float y);
