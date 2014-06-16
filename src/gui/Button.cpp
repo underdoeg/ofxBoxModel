@@ -74,6 +74,8 @@ void ButtonComponent::onDeserialize(boxModel::core::VariantList& variants) {
 
 Button::Button() {
 	addComponent<boxModel::gui::ButtonComponent>(this);
+	addComponent<boxModel::components::Image>(this);
+	
 	value.changed.connect<Button, &Button::valueChanged>(this);
 }
 

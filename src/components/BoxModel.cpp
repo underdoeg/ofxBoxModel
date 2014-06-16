@@ -122,6 +122,9 @@ void BoxModel::recalculateBoxSize() {
 	if(width.getType() == core::Unit::Auto) {
 		_width = autoWidth;
 		_width += _paddingLeft + _paddingRight + _borderLeft + _borderRight;
+	}else if(width.getType() == core::Unit::Percent){
+		_width -= _marginLeft;
+		_width -= _marginRight;
 	}
 
 	box->size.x = _width;
@@ -132,6 +135,9 @@ void BoxModel::recalculateBoxSize() {
 	if(height.getType() == core::Unit::Auto) {
 		_height = autoHeight;
 		_height += _paddingTop + _paddingBottom + _borderTop + _borderBottom;
+	}else if(height.getType() == core::Unit::Percent){
+		_height -= _marginTop;
+		_height -= _marginBottom;
 	}
 
 	box->size.y = _height;

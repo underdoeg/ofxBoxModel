@@ -39,7 +39,7 @@ private:
 	ButtonType buttonType;
 };
 
-class Button: public boxes::TextBox, public ButtonComponent {
+class Button: public boxes::TextBox, public components::Image, public ButtonComponent {
 public:
 	Button();
 	

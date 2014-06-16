@@ -79,7 +79,6 @@ void Image::onAutoWidth(float& width) {
 void Image::contentSizeChanged(core::Point p) {
 	//update the draw size
 	drawSize = p;
-	cout << "content size changed " << p << endl;
 }
 
 void Image::unitTypeChanged(core::Unit::Type type) {
