@@ -11,3 +11,5 @@ The box model does not add padding to the width.
 
 ![alt text](http://uploads.undef.ch/ofxBoxModel/shot1.png "screenshot")
 ![alt text](http://uploads.undef.ch/ofxBoxModel/shot2.png "screenshot of built in debugger (WIP)")
+
+Requires https://github.com/undef-ch/cppFont
