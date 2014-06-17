@@ -89,6 +89,9 @@ void Layouter::layout(bool layoutChildren) {
 	rowMaxHeight = 0;
 	overflowElements.clear();
 
+	//if(boxDefinition != NULL)
+	//	boxDefinition->recalculateBoxSize();
+
 	//place all elements
 	for(Stack * stackChild: stack->getChildren()) {
 		if(stackChild->components->hasComponent<BoxDefinition>()) {
@@ -184,10 +187,32 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 			curPosition.x += childBox->outerSize.x - childBoxDef->margin.left.getValueCalculated();
 			break;
 		default:
+
 			//curPosition.x = box->contentPosition.x;
 			curPosition.x = 0;
 			curPosition.y += rowMaxHeight;
 			rowMaxHeight = 0;
+			
+			//check if valign or align is set
+			if(childBoxDef->align.get() != AlignNone) {
+				if(childBoxDef->align.get() == Middle) {
+					curPosition.x = box->contentSize.x * .5 - childBox->size.x * .5 + childBoxDef->margin.left.getValueCalculated();
+				} else if(childBoxDef->align.get() == Left)
+					curPosition.x = childBoxDef->margin.left.getValueCalculated();
+				else if(childBoxDef->align.get() == Right)
+					curPosition.x = box->contentSize.x - childBox->size.x  + childBoxDef->margin.right.getValueCalculated();
+			}
+			/*
+			if(childBoxDef->valign.get() != AlignNone) {
+				if(childBoxDef->valign.get() == Middle)
+					p.y = box->contentSize.y * .5 - childBox->size.y * .5 + childBoxDef->margin.top.getValueCalculated();
+				else if(childBoxDef->valign.get() == Top)
+					p.y = childBoxDef->margin.top.getValueCalculated();
+				else if(childBoxDef->valign.get() == Bottom)
+					p.y = box->contentSize.y - childBox->size.y  + childBoxDef->margin.bottom.getValueCalculated();
+			}
+			*/
+			
 			childBox->position.set(curPosition + core::Point(childBoxDef->margin.left.getValueCalculated(), childBoxDef->margin.top.getValueCalculated()));
 			break;
 		}
@@ -201,7 +226,7 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 			overflowElements.push_back(childBox->components);
 		}
 	} else if(childBoxDef->positioning == Absolute) {
-		
+
 		//TODO: could be optimized for less calculations
 		core::Point p;
 		core::Point p1 = core::Point(
@@ -223,25 +248,9 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 		} else {
 			p = p1;
 		}
-		
-		//check if valign or align is set
-		if(childBoxDef->align.get() != AlignNone){
-			if(childBoxDef->align.get() == Middle)
-				p.x = box->contentSize.x * .5 - childBox->size.x * .5 + childBoxDef->margin.left.getValueCalculated();
-			else if(childBoxDef->align.get() == Left)
-				p.x = childBoxDef->margin.left.getValueCalculated();
-			else if(childBoxDef->align.get() == Right)
-				p.x = box->contentSize.x - childBox->size.x  + childBoxDef->margin.right.getValueCalculated();
-		}
-		if(childBoxDef->valign.get() != AlignNone){
-			if(childBoxDef->valign.get() == Middle)
-				p.y = box->contentSize.y * .5 - childBox->size.y * .5 + childBoxDef->margin.top.getValueCalculated();
-			else if(childBoxDef->valign.get() == Top)
-				p.y = childBoxDef->margin.top.getValueCalculated();
-			else if(childBoxDef->valign.get() == Bottom)
-				p.y = box->contentSize.y - childBox->size.y  + childBoxDef->margin.bottom.getValueCalculated();
-		}
-		
+
+
+
 		childBox->position.set(p);
 	}
 }
@@ -274,7 +283,7 @@ void Layouter::onChildRemoved(Stack* child) {
 	if(child->components->hasComponent<Style>()) {
 		child->components->getComponent<Style>()->display.changed.disconnect<Layouter, &Layouter::onChildDisplayChanged>(this);
 	}
-	
+
 	triggerLayout();
 }
 
