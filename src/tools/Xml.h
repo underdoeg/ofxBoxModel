@@ -91,7 +91,9 @@ private:
 				}
 			}
 		}
-
+		
+		ret->onLoadComplete();
+		
 		return ret;
 	}
 };

@@ -213,6 +213,8 @@ public:
 			u->setContainerSize(y);
 		}
 	}
+	
+	virtual void onLoadComplete(){};
 
 	Value<bool> disabled;
 

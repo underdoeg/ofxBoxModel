@@ -42,7 +42,6 @@ std::vector<ComponentContainer*> Splitter::makeSplit() {
 	if(!hasSplits) {
 		float splitHeight = box->size.y - splitPosition.y;
 		//if(!isSplit) {
-		cout << "SPLITTY SPLIT" << endl;
 		//merge();
 		ComponentContainer* split1 = components->clone();
 		split1->getComponent<Splitter>()->markAsSplit(this);
@@ -70,7 +69,7 @@ std::vector<ComponentContainer*> Splitter::makeSplit() {
 		ret.push_back(split2);
 		hasSplits = true;
 	} else {
-		cout << "NO SPLIT!" << endl;
+		//cout << "NO SPLIT!" << endl;
 	}
 	return ret;
 }
