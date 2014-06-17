@@ -272,8 +272,9 @@ bool Mouse::handleMousePressed(int button) {
 
 bool Mouse::handleMouseReleased(int button) {
 	if(style){
-		if(!style->isVisible())
+		if(!style->isVisible()){
 			return false;
+		}
 	}
 	
 	if(route != NULL) {

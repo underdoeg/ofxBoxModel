@@ -94,7 +94,6 @@ void Splitter::merge() {
 	if(hasSplits) {
 		hasSplits = false;
 		for(ComponentContainer* comp: splits) {
-			cout << "GOING TO MERGE" << endl;
 			delete comp;
 		}
 		splits.clear();
