@@ -24,6 +24,7 @@ void Serializer::setup()
 
 void Serializer::deserialize(core::VariantList values)
 {
+	onDeserialize(values);
 	deserialized(values);
 	deserializeCompleted(values);
 }

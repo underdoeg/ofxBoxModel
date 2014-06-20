@@ -39,7 +39,7 @@ public:
 		addComponent<boxModel::components::Mouse>(this);
 		addComponent<boxModel::components::Draw>(this);
 
-		deserialized.connect<Box, &Box::onDeserialize>(this);
+		//deserialized.connect<Box, &Box::onDeserialize>(this);
 	}
 
 	virtual ~Box() {};

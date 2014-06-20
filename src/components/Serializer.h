@@ -25,6 +25,8 @@ public:
 	core::VariantList serialize();
 	void deserialize(core::VariantList values);
 	void getInfo(core::Component::Info& info);
+	
+	virtual void onDeserialize(boxModel::core::VariantList& variants){};
 
 public:
 	void setup();
