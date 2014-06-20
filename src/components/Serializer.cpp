@@ -1,47 +1,38 @@
 #include "Serializer.h"
 
-namespace boxModel
-{
+namespace boxModel {
 
-namespace components
-{
+namespace components {
 
-Serializer::Serializer()
-{
+Serializer::Serializer() {
 }
 
-Serializer::~Serializer()
-{
+Serializer::~Serializer() {
 }
 
-std::string Serializer::getName(){
+std::string Serializer::getName() {
 	return "serializer";
 }
 
-void Serializer::setup()
-{
+void Serializer::setup() {
 }
 
-void Serializer::deserialize(core::VariantList values)
-{
+void Serializer::deserialize(core::VariantList values) {
 	onDeserialize(values);
 	deserialized(values);
 	deserializeCompleted(values);
 }
 
-core::VariantList Serializer::serialize()
-{
+core::VariantList Serializer::serialize() {
 	core::VariantList values;
 	serialized(values);
 	return values;
 }
 
-void Serializer::getInfo(core::Component::Info& info){
+void Serializer::getInfo(core::Component::Info& info) {
 
 }
 
 }
 
 }
-
-
