@@ -192,7 +192,7 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 			curPosition.x = 0;
 			curPosition.y += rowMaxHeight;
 			rowMaxHeight = 0;
-			
+
 			//check if valign or align is set
 			if(childBoxDef->align.get() != AlignNone) {
 				if(childBoxDef->align.get() == Middle) {
@@ -212,7 +212,7 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 					p.y = box->contentSize.y - childBox->size.y  + childBoxDef->margin.bottom.getValueCalculated();
 			}
 			*/
-			
+
 			childBox->position.set(curPosition + core::Point(childBoxDef->margin.left.getValueCalculated(), childBoxDef->margin.top.getValueCalculated()));
 			break;
 		}
@@ -249,6 +249,23 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 			p = p1;
 		}
 
+
+		if(childBoxDef->align.get() != AlignNone) {
+			if(childBoxDef->align.get() == Middle) {
+				p.x = box->contentSize.x * .5 - childBox->size.x * .5 + childBoxDef->margin.left.getValueCalculated();
+			} else if(childBoxDef->align.get() == Left)
+				p.x = childBoxDef->margin.left.getValueCalculated();
+			else if(childBoxDef->align.get() == Right)
+				p.x = box->contentSize.x - childBox->size.x  + childBoxDef->margin.right.getValueCalculated();
+		}
+		if(childBoxDef->valign.get() != AlignNone) {
+			if(childBoxDef->valign.get() == Middle)
+				p.y = box->contentSize.y * .5 - childBox->size.y * .5 + childBoxDef->margin.top.getValueCalculated();
+			else if(childBoxDef->valign.get() == Top)
+				p.y = childBoxDef->margin.top.getValueCalculated();
+			else if(childBoxDef->valign.get() == Bottom)
+				p.y = box->contentSize.y - childBox->size.y  + childBoxDef->margin.bottom.getValueCalculated();
+		}
 
 
 		childBox->position.set(p);

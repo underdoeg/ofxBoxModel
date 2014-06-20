@@ -38,7 +38,15 @@ public:
 	void addClasses(std::vector<std::string> classNames);
 	void setClasses(std::vector<std::string> classNames);
 	void removeClass(std::string className);
-
+	
+	template<class Type>
+	Type* findFirstByAddress(std::string path){
+		std::vector<Type*> res = findByAddress<Type>(path);
+		if(res.size() > 0)
+			return res[0];
+		return NULL;
+	}
+	
 	template<class Type>
 	std::vector<Type*> findByAddress(std::string path){
 		std::vector<Type*> ret;
