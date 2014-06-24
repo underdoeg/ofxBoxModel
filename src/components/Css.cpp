@@ -2,6 +2,7 @@
 #include <fstream>
 #include <streambuf>
 #include "Globals.h"
+#include "sass_interface.h"
 
 using namespace boxModel::components;
 using namespace boxModel::core;
@@ -29,6 +30,21 @@ void Css::loadCss(std::string path) {
 	setCss(stringLoadFromFile(Globals::get().dataRoot+path));
 }
 
+void boxModel::components::Css::loadSCss(std::string path) {
+	struct sass_file_context* ctx = sass_new_file_context();
+	path = Globals::get().dataRoot + path;
+	ctx->input_path = path.c_str();
+	sass_compile_file(ctx);
+	if(ctx->error_status) {
+		if (ctx->error_message) debug::error(ctx->error_message);
+		else debug::error("Error loading scss");
+	} else {
+		cout << ctx->output_string << endl;
+		setCss(ctx->output_string);
+	}
+	sass_free_file_context(ctx);
+}
+
 void Css::setCss(std::string cssDefinition) {
 	//first remove lin breaks & split for blocks
 	cssDefinition = stringRemoveLineBreaks(cssDefinition);
@@ -50,7 +66,6 @@ void Css::setCss(std::string cssDefinition) {
 			std::vector<std::string> commentBlocks2 = stringSplit(block, key);
 			string toAdd = stringTrim(commentBlocks2[0]);
 			cssDefinition += toAdd;
-
 		}
 	}
 
@@ -69,9 +84,9 @@ void Css::setCss(std::string cssDefinition) {
 				string propertiesString = addressAndProperties[1];
 
 				std::vector<CssProperty> props = parseCssBlock(propertiesString);
-				
+
 				std::vector<std::string> addresses = stringSplit(addressAll, ',');
-				for(string& address: addresses){
+				for(string& address: addresses) {
 					properties[address].insert(properties[address].end(), props.begin(), props.end());
 					propertiesOrder.push_back(address);
 				}

@@ -33,7 +33,8 @@ public:
 	std::string getName();
 
 	void setup();
-
+	
+	void loadSCss(std::string path);
 	void loadCss(std::string path);
 	void setCss(std::string css);
 	void setCssBlock(std::string block);
