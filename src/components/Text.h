@@ -118,6 +118,7 @@ private:
 	void onWidthChanged(float width);
 	void onHeightChanged(float height);
 	void onFontNameChanged(std::string fontName);
+	void onTextAlignementChanged(TEXT_ALIGNMENT align);
 
 	void drawIt();
 

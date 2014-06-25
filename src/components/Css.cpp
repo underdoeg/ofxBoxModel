@@ -39,7 +39,6 @@ void boxModel::components::Css::loadSCss(std::string path) {
 		if (ctx->error_message) debug::error(ctx->error_message);
 		else debug::error("Error loading scss");
 	} else {
-		cout << ctx->output_string << endl;
 		setCss(ctx->output_string);
 	}
 	sass_free_file_context(ctx);

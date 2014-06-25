@@ -81,6 +81,7 @@ void Text::setup() {
 	letterSpacing.changed.connect<Text, &Text::onLetterSpacingChanged>(this);
 	wordSpacing.changed.connect<Text, &Text::onWordSpacingChanged>(this);
 	fontName.changed.connect<Text, &Text::onFontNameChanged>(this);
+	textAlignment.changed.connect<Text, &Text::onTextAlignementChanged>(this);
 
 
 	text = "undefined";
@@ -143,7 +144,7 @@ void Text::onBox(BoxDefinition* b) {
 
 void Text::onCss(Css* css) {
 	css->cssApplyed.connect<Text, &Text::onCssApplyed>(this);
-	
+
 	css->addCssParserFunction<Text, &Text::pCssFontName>("font-name", this);
 	css->addCssParserFunction<Text, &Text::pCssFontName>("font-family", this);
 	css->addCssParserFunction<Text, &Text::pCssFontName>("font", this);
@@ -181,32 +182,31 @@ void Text::pCssFontName(std::string key, std::string value) {
 
 void Text::pCssFontSize(std::string key, std::string value) {
 	fontSize = core::Unit::parseCssNumber(value);
-	update();
+	//update();
 }
 
 void Text::pCssLeading(std::string key, std::string value) {
 	leading = core::Unit::parseCssNumber(value);
-	update();
+	//update();
 }
 
 void Text::pCssLetterSpacing(std::string key, std::string value) {
 	letterSpacing = core::Unit::parseCssNumber(value);
-	update();
+	//update();
 }
 
 void Text::pCssWordSpacing(std::string key, std::string value) {
 	wordSpacing = core::Unit::parseCssNumber(value);
-	update();
+	//update();
 }
 
 void Text::pCssTextAlignment(std::string key, std::string value) {
-
 	if(value=="left") textAlignment = ALIGN_LEFT;
-	if(value=="right") textAlignment = ALIGN_RIGHT;
-	if(value=="center") textAlignment = ALIGN_CENTER;
-	if(value=="justify") textAlignment = ALIGN_JUSTIFY;
-	if(value=="justify_all" || value=="justify-all") textAlignment = ALIGN_JUSTIFY_ALL;	
-	update();
+	else if(value=="right") textAlignment = ALIGN_RIGHT;
+	else if(value=="center") textAlignment = ALIGN_CENTER;
+	else if(value=="justify") textAlignment = ALIGN_JUSTIFY;
+	else if(value=="justify_all" || value=="justify-all") textAlignment = ALIGN_JUSTIFY_ALL;
+	//update();
 }
 
 void Text::pCssTextTransform(std::string key, std::string value) {
@@ -214,7 +214,7 @@ void Text::pCssTextTransform(std::string key, std::string value) {
 	if(value=="uppercase") textTransform = TEXT_UPPERCASE;
 	if(value=="lowercase") textTransform = TEXT_LOWERCASE;
 	if(value=="none") textTransform = TEXT_NONE;
-	
+
 	onTextChange(text);
 }
 
@@ -287,6 +287,20 @@ void Text::onFontNameChanged(std::string fontName) {
 	update();
 }
 
+void Text::onTextAlignementChanged(TEXT_ALIGNMENT align) {
+	switch(align) {
+	case ALIGN_CENTER:
+	textBlock.setAlign(cppFont::TextBlock::Center);
+	break;
+	case ALIGN_LEFT:
+	textBlock.setAlign(cppFont::TextBlock::Left);
+	break;
+	default:
+	debug::warning("alignement not supported yet");
+	}
+	update();
+}
+
 void Text::onAutoWidth(float& width) {
 	width = textBlock.getWidth();
 }
@@ -297,7 +311,7 @@ void Text::onAutoHeight(float& height) {
 }
 
 void Text::onCssApplyed(Css* css) {
-	
+
 }
 
 /******************************************************************************************/
