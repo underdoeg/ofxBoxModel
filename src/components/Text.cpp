@@ -177,6 +177,7 @@ void Text::onBoxDefinition(BoxModel* bd) {
 }
 
 void Text::pCssFontName(std::string key, std::string value) {
+	value = stringReplace(value, "\"", "");
 	fontName = value;
 }
 

@@ -17,7 +17,9 @@ BoxModel::BoxModel() {
 	autoHeight = 0;
 	doBoxDefinitionUpdate = true;
 }
+
 BoxModel::~BoxModel() {
+	
 }
 
 std::string BoxModel::getName(){

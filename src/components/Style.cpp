@@ -101,7 +101,7 @@ Color Style::parseCssColor(std::string val) {
 			if(cols.size()>2)
 				b = stringToInt(cols[2]);
 			if(cols.size()>3)
-				a = stringToInt(cols[3]);
+				a = int(stringToFloat(cols[3]) * 255);
 		} else {
 			debug::warning("css could not parse color "+val);
 		}
