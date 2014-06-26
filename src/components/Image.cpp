@@ -27,6 +27,8 @@ void Image::setup() {
 void Image::drawIt() {
 	if(!isImageLoaded)
 		return;
+	if(!img.isAllocated())
+		return;
 	img.draw(0, 0, drawSize.x, drawSize.y);
 }
 

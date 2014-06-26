@@ -22,6 +22,7 @@ public:
 	Nano::signal<void(core::VariantList&)> deserialized;
 	Nano::signal<void(core::VariantList&)> deserializeCompleted;
 	
+	core::VariantList& getDeserializedValues();
 	core::VariantList serialize();
 	void deserialize(core::VariantList values);
 	void getInfo(core::Component::Info& info);
@@ -29,6 +30,7 @@ public:
 	virtual void onDeserialize(boxModel::core::VariantList& variants){};
 
 public:
+	core::VariantList serializeValues;
 	void setup();
 };
 
