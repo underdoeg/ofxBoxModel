@@ -237,7 +237,6 @@ void Text::onWidthChanged(float width) {
 	if(boxDefinition != NULL) {
 		if(boxDefinition->height == Unit::Auto) {
 			textBlock.setHeightAuto(true);
-
 		}
 		if(boxDefinition->width == Unit::Auto) {
 			textBlock.setWidthAuto(true);
@@ -303,6 +302,10 @@ void Text::onTextAlignementChanged(TEXT_ALIGNMENT align) {
 }
 
 void Text::onAutoWidth(float& width) {
+	textBlock.setWidthAuto(true);
+	//TODO: necessary?
+	//
+	textBlock.setDirty();
 	width = textBlock.getWidth();
 }
 

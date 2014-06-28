@@ -30,7 +30,7 @@ public:
 	virtual void onDeserialize(boxModel::core::VariantList& variants){};
 
 public:
-	core::VariantList serializeValues;
+	core::VariantList deserializeValues;
 	void setup();
 };
 

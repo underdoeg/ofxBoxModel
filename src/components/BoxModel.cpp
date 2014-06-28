@@ -155,6 +155,7 @@ void BoxModel::recalculateBoxSize() {
 void boxModel::components::BoxModel::onFlush()
 {
 	if(width.getType() == core::Unit::Auto) {
+		autoWidth = 0;
 		onWidthAuto(autoWidth);
 	}
 

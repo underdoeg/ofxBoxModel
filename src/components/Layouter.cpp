@@ -274,6 +274,7 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 
 void Layouter::triggerLayout() {
 	isLayoutDirty = true;
+	layoutTriggered();
 }
 
 void Layouter::onContentSizeChanged(core::Point p) {
@@ -299,6 +300,9 @@ void Layouter::onChildRemoved(Stack* child) {
 	}
 	if(child->components->hasComponent<Style>()) {
 		child->components->getComponent<Style>()->display.changed.disconnect<Layouter, &Layouter::onChildDisplayChanged>(this);
+	}
+	if(child->components->hasComponent<Layouter>()) {
+		child->components->getComponent<Layouter>()->layoutTriggered.disconnect<Layouter, &Layouter::triggerLayout>(this);
 	}
 
 	triggerLayout();
@@ -329,6 +333,9 @@ void Layouter::onChildAdded(Stack* child) {
 	}
 	if(child->components->hasComponent<Style>()) {
 		child->components->getComponent<Style>()->display.changed.connect<Layouter, &Layouter::onChildDisplayChanged>(this);
+	}
+	if(child->components->hasComponent<Layouter>()) {
+		child->components->getComponent<Layouter>()->layoutTriggered.connect<Layouter, &Layouter::triggerLayout>(this);
 	}
 	triggerLayout();
 }

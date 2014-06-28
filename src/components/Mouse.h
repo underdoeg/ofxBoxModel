@@ -83,6 +83,7 @@ public:
 	void removeRouteMouse();
 
 	void setMouseIgnore(bool state);
+	void enableMouse();
 
 	bool isMouseButtonPressed(int button);
 	bool isMouseOver();

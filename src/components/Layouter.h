@@ -57,6 +57,8 @@ private:
 
 	std::vector<core::ComponentContainer*> overflowElements;
 
+	Nano::signal<void()> layoutTriggered;
+
 	bool doLayouting;
 	Stack* stack;
 	BoxDefinition* box;

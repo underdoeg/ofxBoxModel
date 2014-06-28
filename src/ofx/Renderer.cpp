@@ -46,12 +46,15 @@ boxModel::core::RendererBase::ImagePointer Renderer::allocateImage(unsigned char
 		type = OF_IMAGE_COLOR;
 	else if(bpp == 4)
 		type = OF_IMAGE_COLOR_ALPHA;
-	img->setFromPixels(pixels, width, height, type);
+	if(width >0 && height > 0)
+		img->setFromPixels(pixels, width, height, type);
 	return (ImagePointer)img;
 }
 
 void Renderer::drawImage(ImagePointer img)
 {
+	if(!((ofImage*)img)->isAllocated())
+		return;
 	ofPushStyle();
 	ofSetColor(255, 255, 255);
 	((ofImage*)img)->draw(0, 0);

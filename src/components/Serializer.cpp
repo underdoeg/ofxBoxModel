@@ -18,14 +18,14 @@ void Serializer::setup() {
 }
 
 void Serializer::deserialize(core::VariantList values) {
-	serializeValues = values;
-	onDeserialize(serializeValues);
-	deserialized(serializeValues);
-	deserializeCompleted(serializeValues);
+	deserializeValues = values;
+	onDeserialize(deserializeValues);
+	deserialized(deserializeValues);
+	deserializeCompleted(deserializeValues);
 }
 
 core::VariantList& Serializer::getDeserializedValues() {
-	return serializeValues;
+	return deserializeValues;
 }
 
 core::VariantList Serializer::serialize() {

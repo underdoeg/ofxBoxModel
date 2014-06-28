@@ -45,6 +45,7 @@ unsigned long Mouse::clickTime = 500;
 unsigned long Mouse::doubleClickTime = 400;
 
 Mouse::Mouse() {
+	passEventsThrough = true;
 }
 
 Mouse::~Mouse() {
@@ -56,7 +57,6 @@ std::string Mouse::getName() {
 
 void Mouse::setup() {
 	route = NULL;
-	passEventsThrough = false;
 	bMouseOver = false;
 	stack = NULL;
 	style = NULL;
@@ -65,7 +65,7 @@ void Mouse::setup() {
 	LISTEN_FOR_COMPONENT(BoxDefinition, Mouse, onBox)
 	LISTEN_FOR_COMPONENT(Css, Mouse, onCss)
 	LISTEN_FOR_COMPONENT(Style, Mouse, onStyle)
-	
+
 	/*
 	mouseMove.connect<Mouse, &Mouse::onMouseMove>(this);
 	mouseMoveOutside.connect<Mouse, &Mouse::onMouseMoveOutside>(this);
@@ -112,14 +112,18 @@ void Mouse::setMouseIgnore(bool state) {
 	passEventsThrough = state;
 }
 
+void Mouse::enableMouse() {
+	setMouseIgnore(false);
+}
+
 // handle mosue movement, return true if it was handled
 bool Mouse::handleMouseMove(float x, float y) {
-	
-	if(style){
+
+	if(style) {
 		if(!style->isVisible())
 			return false;
 	}
-	
+
 	if(route != NULL) {
 		route->handleMouseMove(x, y);
 		if(bCaptureBlock)
@@ -130,7 +134,7 @@ bool Mouse::handleMouseMove(float x, float y) {
 
 	float xInside = x - box->position.x - box->contentPosition.x;
 	float yInside = y - box->position.y - box->contentPosition.y;
-	
+
 	mousePosOld = mousePos;
 	mousePos.x = xInside;
 	mousePos.y = yInside;
@@ -203,11 +207,11 @@ void Mouse::handleMouseExit(float x, float y) {
 	}
 	float xInside = x - box->position.x - box->contentPosition.x;
 	float yInside = y - box->position.y - box->contentPosition.y;
-	
+
 	mousePosOld = mousePos;
 	mousePos.x = xInside;
 	mousePos.y = yInside;
-	
+
 	if(buttonStates.isAnyPressed()) {
 		mouseDragOutside(xInside, yInside, buttonStates);
 		mouseDragOutsideRef(xInside, yInside, buttonStates, this);
@@ -220,11 +224,11 @@ void Mouse::handleMouseExit(float x, float y) {
 }
 
 bool Mouse::handleMousePressed(int button) {
-	if(style){
+	if(style) {
 		if(!style->isVisible())
 			return false;
 	}
-	
+
 	if(route != NULL) {
 		route->handleMousePressed(button);
 		if(bCaptureBlock)
@@ -271,12 +275,12 @@ bool Mouse::handleMousePressed(int button) {
 }
 
 bool Mouse::handleMouseReleased(int button) {
-	if(style){
-		if(!style->isVisible()){
+	if(style) {
+		if(!style->isVisible()) {
 			return false;
 		}
 	}
-	
+
 	if(route != NULL) {
 		route->handleMouseReleased(button);
 		if(bCaptureBlock)
@@ -315,7 +319,7 @@ bool Mouse::handleMouseReleased(int button) {
 			mouseRelease(mousePos.x, mousePos.y, button);
 			mouseReleaseRef(mousePos.x, mousePos.y, button, this);
 			onMouseRelease(mousePos.x, mousePos.y, button);
-			
+
 			//check if it is a click
 			if(timeAgo < clickTime) {
 				mouseClick(mousePos.x, mousePos.y, button);
@@ -355,8 +359,7 @@ void Mouse::routeMouse(Mouse* mouse, bool blocking) {
 	bCaptureBlock = blocking;
 }
 
-void Mouse::removeRouteMouse()
-{
+void Mouse::removeRouteMouse() {
 	route = NULL;
 	bCaptureBlock = false;
 }

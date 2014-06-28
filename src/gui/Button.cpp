@@ -25,6 +25,7 @@ void ButtonComponent::setup() {
 
 void ButtonComponent::onMouse(Mouse* m) {
 	mouse = m;
+	mouse->enableMouse();
 	mouse->mouseClick.connect<ButtonComponent, &ButtonComponent::onClick>(this);
 }
 
