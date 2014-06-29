@@ -106,6 +106,7 @@ public:
 	}
 	void hide();
 	void show();
+	void setVisible(bool state);
 	void toggle();
 
 	void getInfo(core::Component::Info& info);

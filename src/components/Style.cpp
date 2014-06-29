@@ -125,6 +125,13 @@ void Style::show() {
 	onDisplayChange(display);
 }
 
+void Style::setVisible(bool state){
+	if(state)
+		show();
+	else
+		hide();
+}
+
 void Style::toggle()
 {
 	if(isVisible()){
