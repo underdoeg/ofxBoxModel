@@ -40,6 +40,7 @@ public:
 	void setCssBlock(std::string block);
 	void applyCssProperty(std::string key, std::string value);
 	void applyCssProperty(CssProperty& p);
+	void applyCss();
 
 	template <typename Type, void(Type::*method)(std::string, std::string)>
 	void addCssParserFunction(std::string key, Type* obj){
@@ -57,7 +58,6 @@ public:
 
 protected:
 	std::vector<CssProperty> parseCssBlock(std::string propertiesString);
-	void applyCss();
 
 private:
 	void onSerializer(Serializer* ser);

@@ -62,7 +62,11 @@ boxModel::core::RendererBase* Draw::getRenderer() {
 	return renderer;
 }
 
-void Draw::draw() {
+void Draw::draw(){
+	draw(true);
+}
+
+void Draw::draw(bool drawChildren) {
 
 	if(style != NULL)
 		if(style->display == Style::DisplayType::NONE || style->display == Style::DisplayType::HIDDEN)
@@ -82,7 +86,7 @@ void Draw::draw() {
 	onDrawRef(this);
 
 	customDraw();
-	if(stack != NULL) {
+	if(drawChildren && stack != NULL) {
 		for(unsigned int i=0; i<stack->getNumChildren(); i++) {
 			Stack* child = stack->getChild(i);
 			if(child->components->hasComponent<Draw>())

@@ -21,8 +21,9 @@ public:
 
 	static void setRenderer(boxModel::core::RendererBase* renderer);
 	static boxModel::core::RendererBase* getRenderer();
-
+	
 	void draw();
+	void draw(bool drawChildren);
 	std::string getName();
 
 	Nano::signal<void()> preDraw;

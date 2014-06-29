@@ -330,8 +330,8 @@ void Text::onStyle(Style* s) {
 }
 
 void Text::onDraw(Draw* d) {
-	draw = d;
-	draw->onDraw.connect<Text, &Text::drawIt>(this);
+	drawer = d;
+	drawer->onDraw.connect<Text, &Text::drawIt>(this);
 }
 
 void Text::drawIt() {
