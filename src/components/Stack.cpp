@@ -1,6 +1,7 @@
 #include "Stack.h"
 #include "core/Utils.h"
 #include "components/BoxDefinition.h"
+#include "Style.h"
 
 namespace boxModel {
 
@@ -184,7 +185,11 @@ boxModel::core::ComponentContainer* Stack::containerAt(float x, float y){
 			Stack* child = getChild(i);
 			if(child->components->hasComponent<BoxDefinition>()){
 				BoxDefinition* childBox = child->components->getComponent<BoxDefinition>();
-				if(childBox->isInside(x, y)){
+				bool visible = true;
+				if(childBox->components->hasComponent<Style>()){
+					visible = child->components->getComponent<Style>()->isVisible();
+				}
+				if(visible && childBox->isInside(x, y)){
 					ret = child->containerAt(x - childBox->position.x, y - childBox->position.y);
 				}
 			}

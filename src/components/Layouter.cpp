@@ -167,10 +167,12 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 			return;
 	}
 
+	/*
 	if(childBox->components->hasComponent<Style>()) {
 		if(childBox->components->getComponent<Style>()->display == Style::DisplayType::NONE)
 			return;
 	}
+	*/
 
 	BoxModel* childBoxDef = childBox->components->getComponent<BoxModel>();
 
@@ -249,7 +251,6 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 			p = p1;
 		}
 
-
 		if(childBoxDef->align.get() != AlignNone) {
 			if(childBoxDef->align.get() == Middle) {
 				p.x = box->contentSize.x * .5 - childBox->size.x * .5 + childBoxDef->margin.left.getValueCalculated();
@@ -259,9 +260,9 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 				p.x = box->contentSize.x - childBox->size.x  + childBoxDef->margin.right.getValueCalculated();
 		}
 		if(childBoxDef->valign.get() != AlignNone) {
-			if(childBoxDef->valign.get() == Middle)
+			if(childBoxDef->valign.get() == Middle){
 				p.y = box->contentSize.y * .5 - childBox->size.y * .5 + childBoxDef->margin.top.getValueCalculated();
-			else if(childBoxDef->valign.get() == Top)
+			}else if(childBoxDef->valign.get() == Top)
 				p.y = childBoxDef->margin.top.getValueCalculated();
 			else if(childBoxDef->valign.get() == Bottom)
 				p.y = box->contentSize.y - childBox->size.y  + childBoxDef->margin.bottom.getValueCalculated();
