@@ -20,11 +20,20 @@ public:
 	static Type* load(std::string path) {
 		return core::castTo<core::ComponentContainer, Type>(load(path));
 	}
-
+	
+	static string getXMLString(std::string path){
+		path = core::Globals::get().dataRoot+path;
+		std::ifstream t(path);
+		std::string str((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
+		str = core::stringReplace(str, "<br/>", "\n");
+		str = core::stringReplace(str, "<br />", "\n");
+		str = core::stringReplace(str, "<br>", "\n");
+		return str;
+	}
+	
 	static core::ComponentContainer* load(std::string path) {
 		pugi::xml_document doc;
-		path = core::Globals::get().dataRoot+path;
-		pugi::xml_parse_result result = doc.load_file(path.c_str());
+		pugi::xml_parse_result result = doc.load(getXMLString(path).c_str());
 		if(result.status != pugi::status_ok) {
 			debug::error("could not load "+path);
 			return NULL;
@@ -38,8 +47,10 @@ public:
 	static std::vector<core::ComponentContainer*> loadAsVector(std::string path){
 		std::vector<core::ComponentContainer*> ret;
 		pugi::xml_document doc;
-		path = core::Globals::get().dataRoot+path;
-		pugi::xml_parse_result result = doc.load_file(path.c_str());
+		
+		//pugi::xml_parse_result result = doc.load_file(path.c_str());
+		pugi::xml_parse_result result = doc.load(getXMLString(path).c_str());
+		
 		if(result.status != pugi::status_ok) {
 			debug::error("could not load "+path);
 			return ret;
