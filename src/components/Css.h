@@ -52,8 +52,8 @@ public:
 	void copyFrom(Css* css);
 	void getInfo(core::Component::Info& info);
 
-	Nano::signal<void(Css*)> cssChanged;
-	Nano::signal<void(Css*)> cssApplyed;
+	Nano::Signal<void(Css*)> cssChanged;
+	Nano::Signal<void(Css*)> cssApplyed;
 
 
 protected:

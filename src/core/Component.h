@@ -62,7 +62,7 @@ private:
 	template<class ComponentType>
 	class ComponentSignalHelper : public ComponentSignalHelperBase {
 	public:
-		Nano::signal<void(ComponentType*)> signal;
+		Nano::Signal<void(ComponentType*)> signal;
 	};
 
 	class CloneHelperBase {
@@ -178,7 +178,7 @@ public:
 
 	//return a signal to attach to a specific component creation
 	template <class ComponentType>
-	Nano::signal<void(ComponentType*)>& getComponentAddedSignal() {
+	Nano::Signal<void(ComponentType*)>& getComponentAddedSignal() {
 		std::type_index index = typeid(ComponentType);
 		if(componentAddedSignals.find(index) == componentAddedSignals.end()) {
 			ComponentSignalHelper<ComponentType>* comp = new ComponentSignalHelper<ComponentType>();
@@ -218,10 +218,10 @@ public:
 
 	Value<bool> disabled;
 
-	Nano::signal<void(ComponentContainer*)> deleted;
+	Nano::Signal<void(ComponentContainer*)> deleted;
 
-	Nano::signal<void()> preFlushed;
-	Nano::signal<void()> postFlushed;
+	Nano::Signal<void()> preFlushed;
+	Nano::Signal<void()> postFlushed;
 
 private:
 	std::vector<Unit*> units;

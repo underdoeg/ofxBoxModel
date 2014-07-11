@@ -18,9 +18,9 @@ public:
 	
 	std::string getName();
 	
-	Nano::signal<void(core::VariantList&)> serialized;
-	Nano::signal<void(core::VariantList&)> deserialized;
-	Nano::signal<void(core::VariantList&)> deserializeCompleted;
+	Nano::Signal<void(core::VariantList&)> serialized;
+	Nano::Signal<void(core::VariantList&)> deserialized;
+	Nano::Signal<void(core::VariantList&)> deserializeCompleted;
 	
 	core::VariantList& getDeserializedValues();
 	core::VariantList serialize();

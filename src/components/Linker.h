@@ -20,8 +20,8 @@ public:
 	void linkTo(Linker* linkerTo);
 	void unlink();
 	Linker* getLinkTo();
-	Nano::signal<void(Linker* linkerTo)> linkedTo;
-	Nano::signal<void(Linker* linkerTo)> movedTo;
+	Nano::Signal<void(Linker* linkerTo)> linkedTo;
+	Nano::Signal<void(Linker* linkerTo)> movedTo;
 	
 	void copyFrom(Linker* linkerTo);
 	void getInfo(core::Component::Info& info);

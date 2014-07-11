@@ -43,7 +43,7 @@ public:
 
 	void getInfo(core::Component::Info& info);
 
-	Nano::signal<void()> globalPositionChanged;
+	Nano::Signal<void()> globalPositionChanged;
 
 private:
 	void onStack(Stack* stack);

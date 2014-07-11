@@ -2,6 +2,7 @@
 #define BASETYPES_H
 
 #include "nano_signal_slot.hpp"
+#include <unordered_map>
 #include "ofMain.h"
 #include "Utils.h"
 
@@ -114,8 +115,8 @@ public:
 template <class Type>
 class Value {
 	public:
-	Nano::signal<void(Type)> changed;
-	//Nano::signal<void(Type, Type)> changed2;
+	Nano::Signal<void(Type)> changed;
+	//Nano::Signal<void(Type, Type)> changed2;
 
 	Value(){
 		bSet = false;
@@ -178,8 +179,8 @@ public:
 		y.changed.connect<ValuePoint, &ValuePoint::onYChanged>(this);
 	}
 
-	Nano::signal<void(Point)> changed;
-	//Nano::signal<void(Point, Point)> changed2;
+	Nano::Signal<void(Point)> changed;
+	//Nano::Signal<void(Point, Point)> changed2;
 
 	operator const Point() const {
 		const Point p(x, y);

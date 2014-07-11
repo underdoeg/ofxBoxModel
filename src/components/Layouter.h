@@ -28,9 +28,9 @@ public:
 
 	void setLayoutable(bool state);
 
-	Nano::signal<void(std::vector<core::ComponentContainer*>)> overflowed;
-	Nano::signal<void()> preLayouted;
-	Nano::signal<void()> layouted;
+	Nano::Signal<void(std::vector<core::ComponentContainer*>)> overflowed;
+	Nano::Signal<void()> preLayouted;
+	Nano::Signal<void()> layouted;
 	
 	void onFlush();
 	void getInfo(core::Component::Info& info);
@@ -57,7 +57,7 @@ private:
 
 	std::vector<core::ComponentContainer*> overflowElements;
 
-	Nano::signal<void()> layoutTriggered;
+	Nano::Signal<void()> layoutTriggered;
 
 	bool doLayouting;
 	Stack* stack;

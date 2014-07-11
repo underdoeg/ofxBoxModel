@@ -62,8 +62,8 @@ public:
 	core::Unit width;
 	core::Unit height;
 
-	Nano::signal<void(float&)> onWidthAuto;
-	Nano::signal<void(float&)> onHeightAuto;
+	Nano::Signal<void(float&)> onWidthAuto;
+	Nano::Signal<void(float&)> onHeightAuto;
 
 	void onFlush();
 

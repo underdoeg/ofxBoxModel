@@ -16,10 +16,10 @@ public:
 		Type_None
 	};
 
-	Nano::signal<void(Unit*)> changed;
-	Nano::signal<void(float)> valueChanged;
-	Nano::signal<void(Type)> typeChanged;
-	Nano::signal<void(float)> containerSizeChanged;
+	Nano::Signal<void(Unit*)> changed;
+	Nano::Signal<void(float)> valueChanged;
+	Nano::Signal<void(Type)> typeChanged;
+	Nano::Signal<void(float)> containerSizeChanged;
 
 	Unit():bSet(false),value(0),type(Pixel),containerSize(0),bContainerSizeSet(false) {
 	}
@@ -237,8 +237,8 @@ public:
 		left = group.left;
 	}
 
-	Nano::signal<void(UnitGroup*)> changed;
-	Nano::signal<void(Unit*)> unitChanged;
+	Nano::Signal<void(UnitGroup*)> changed;
+	Nano::Signal<void(Unit*)> unitChanged;
 
 	core::Unit top;
 	core::Unit right;

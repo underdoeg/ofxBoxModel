@@ -98,9 +98,9 @@ public:
 	virtual void onChildAdded(Stack* child){};
 	virtual void onChildRemoved(Stack* child){};
 
-	Nano::signal<void(Stack*)> childAdded;
-	Nano::signal<void(Stack*)> childRemoved;
-	Nano::signal<void(Stack*)> parentChanged;
+	Nano::Signal<void(Stack*)> childAdded;
+	Nano::Signal<void(Stack*)> childRemoved;
+	Nano::Signal<void(Stack*)> parentChanged;
 	
 
 private:

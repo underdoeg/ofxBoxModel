@@ -77,8 +77,8 @@ public:
 	
 	core::Value<bool> unaddressable;
 	
-	Nano::signal<void(std::string)> classAdded;
-	Nano::signal<void(std::string)> classRemoved;
+	Nano::Signal<void(std::string)> classAdded;
+	Nano::Signal<void(std::string)> classRemoved;
 	
 private:
 	static std::vector<std::string > idsTaken;

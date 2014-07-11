@@ -26,14 +26,14 @@ public:
 	void draw(bool drawChildren);
 	std::string getName();
 
-	Nano::signal<void()> preDraw;
-	Nano::signal<void(Draw*)> preDrawRef;
+	Nano::Signal<void()> preDraw;
+	Nano::Signal<void(Draw*)> preDrawRef;
 
-	Nano::signal<void()> onDraw;
-	Nano::signal<void(Draw*)> onDrawRef;
+	Nano::Signal<void()> onDraw;
+	Nano::Signal<void(Draw*)> onDrawRef;
 
-	Nano::signal<void()> postDraw;
-	Nano::signal<void(Draw*)> postDrawRef;
+	Nano::Signal<void()> postDraw;
+	Nano::Signal<void(Draw*)> postDrawRef;
 
 protected:
 	virtual void customDraw();

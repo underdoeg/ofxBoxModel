@@ -166,15 +166,17 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 		if(!childBox->components->getComponent<Layouter>()->doLayouting)
 			return;
 	}
-
-	/*
-	if(childBox->components->hasComponent<Style>()) {
-		if(childBox->components->getComponent<Style>()->display == Style::DisplayType::NONE)
-			return;
-	}
-	*/
-
+	
+	
 	BoxModel* childBoxDef = childBox->components->getComponent<BoxModel>();
+	
+	//only position absolute elements, relative are hidden
+	if(childBoxDef->positioning == Relative){
+		if(childBox->components->hasComponent<Style>()) {
+			if(childBox->components->getComponent<Style>()->display == Style::DisplayType::NONE)
+				return;
+		}
+	}
 
 	if(childBoxDef->positioning == Relative) {
 		switch(childBoxDef->floating) {
@@ -204,6 +206,7 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 				else if(childBoxDef->align.get() == Right)
 					curPosition.x = box->contentSize.x - childBox->size.x  + childBoxDef->margin.right.getValueCalculated();
 			}
+			
 			/*
 			if(childBoxDef->valign.get() != AlignNone) {
 				if(childBoxDef->valign.get() == Middle)
@@ -222,7 +225,6 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 		if(rowMaxHeight < childBox->outerSize.y) { //boxDefinition->height != core::Unit::Auto &&
 			rowMaxHeight = childBox->outerSize.y;
 		}
-
 
 		if((childBox->position.y + childBox->size.y) > box->contentSize.y) {
 			overflowElements.push_back(childBox->components);

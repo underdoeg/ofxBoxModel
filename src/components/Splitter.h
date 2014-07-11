@@ -22,7 +22,7 @@ public:
 	
 	void onFlush();
 	
-	Nano::signal<void(float x, float y)> splitRequested;
+	Nano::Signal<void(float x, float y)> splitRequested;
 	bool requestSplit(float x, float y);
 	
 	void merge();
