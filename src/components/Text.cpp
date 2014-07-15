@@ -306,7 +306,9 @@ void Text::onAutoWidth(float& width) {
 	//TODO: necessary?
 	//
 	textBlock.setDirty();
-	width = textBlock.getWidth();
+	float _width = textBlock.getWidth();
+	if(_width > width)
+		width = _width;
 }
 
 void Text::onAutoHeight(float& height) {

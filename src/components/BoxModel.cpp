@@ -105,6 +105,8 @@ void BoxModel::recalculateBoxSize() {
 
 	float _width = width.getValueCalculated();
 	float _height = height.getValueCalculated();
+	
+	
 
 	float _marginLeft = margin.left.getValueCalculated();
 	float _marginRight = margin.right.getValueCalculated();
@@ -128,6 +130,18 @@ void BoxModel::recalculateBoxSize() {
 		_width -= _marginLeft;
 		_width -= _marginRight;
 	}
+	
+	if(minWidth.isSet()){
+		float _minWidth = minWidth.getValueCalculated();
+		if(_width < _minWidth)
+			_width = _minWidth;
+	}
+	
+	if(minHeight.isSet()){
+		float _minHeight = minHeight.getValueCalculated();
+		if(_height < _minHeight)
+			_height = _minHeight;
+	}
 
 	box->size.x = _width;
 	box->outerSize.x = _marginLeft + _marginRight + box->size.x;
@@ -146,7 +160,7 @@ void BoxModel::recalculateBoxSize() {
 	box->outerSize.y = _marginTop + _marginBottom + box->size.y;
 	box->contentSize.y = box->size.y - _paddingBottom - _paddingTop - _borderTop - _borderBottom;
 	box->contentPosition.y = _paddingTop + _borderTop;
-
+	
 	if(positioning == Position::Absolute){
 
 	}
@@ -172,6 +186,8 @@ void BoxModel::onCss(Css* css) {
 	css->addCssParserFunction<BoxModel, &BoxModel::pFloat>("float", this);
 	css->addCssParserFunction<BoxModel, &BoxModel::pWidth>("width", this);
 	css->addCssParserFunction<BoxModel, &BoxModel::pHeight>("height", this);
+	css->addCssParserFunction<BoxModel, &BoxModel::pMinWidth>("min-width", this);
+	css->addCssParserFunction<BoxModel, &BoxModel::pMinHeight>("min-height", this);
 
 	css->addCssParserFunction<BoxModel, &BoxModel::pPosition>("position", this);
 	css->addCssParserFunction<BoxModel, &BoxModel::pAlign>("align", this);
@@ -220,6 +236,14 @@ void BoxModel::pHeight(std::string key, std::string value) {
 
 void BoxModel::pWidth(std::string key, std::string value) {
 	width = Unit::parseCssNumber(value);
+}
+
+void BoxModel::pMinHeight(std::string key, std::string value) {
+	minHeight = Unit::parseCssNumber(value);
+}
+
+void BoxModel::pMinWidth(std::string key, std::string value) {
+	minWidth = Unit::parseCssNumber(value);
 }
 
 void BoxModel::pTop(std::string key, std::string value) {

@@ -41,7 +41,10 @@ void Layouter::onBoxDefinition(BoxModel* box) {
 }
 
 void Layouter::layout(bool layoutChildren) {
-
+	
+	if(boxDefinition == NULL)
+		return;
+	
 	if(stack == NULL )
 		return;
 
@@ -181,7 +184,7 @@ void Layouter::placeBox(BoxDefinition* childBox) {
 	if(childBoxDef->positioning == Relative) {
 		switch(childBoxDef->floating) {
 		case Floating::FloatLeft:
-			if(curPosition.x + childBox->outerSize.x > box->contentSize.x) {
+			if(boxDefinition->width != boxModel::core::Unit::Auto && curPosition.x + childBox->outerSize.x > box->contentSize.x) {
 				curPosition.x = 0;
 				curPosition.y += rowMaxHeight;
 				rowMaxHeight = 0;

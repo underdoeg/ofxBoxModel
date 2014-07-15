@@ -22,7 +22,7 @@ void testApp::setup() {
 
 	//load the structure
 	rootBox = Xml::load<Box>("scene.xml");
-	rootBox->loadCss("style.css");
+	rootBox->loadSCss("style.scss");
 
 	Box* smallBox = rootBox->findByAddress<Box>("#smallBox")[0];
 	for(unsigned int i=0; i<50; i++){

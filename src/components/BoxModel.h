@@ -61,6 +61,9 @@ public:
 
 	core::Unit width;
 	core::Unit height;
+	
+	core::Unit minWidth;
+	core::Unit minHeight;
 
 	Nano::Signal<void(float&)> onWidthAuto;
 	Nano::Signal<void(float&)> onHeightAuto;
@@ -80,6 +83,8 @@ private:
 	void pBgColor(std::string key, std::string value);
 	void pWidth(std::string key, std::string value);
 	void pHeight(std::string key, std::string value);
+	void pMinWidth(std::string key, std::string value);
+	void pMinHeight(std::string key, std::string value);
 
 	void pPosition(std::string key, std::string value);
 	void pAlign(std::string key, std::string value);
