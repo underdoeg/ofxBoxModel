@@ -72,6 +72,7 @@ void Text::setup() {
 
 	update();
 	bHasDrawImage = false;
+	bDrawDirty = true;
 
 	fontFamily.setFontNormal(&defaultFont);
 	textBlock.setFontFamily(&fontFamily);
