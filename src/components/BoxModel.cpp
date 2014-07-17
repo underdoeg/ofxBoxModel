@@ -161,9 +161,11 @@ void BoxModel::recalculateBoxSize() {
 	box->contentSize.y = box->size.y - _paddingBottom - _paddingTop - _borderTop - _borderBottom;
 	box->contentPosition.y = _paddingTop + _borderTop;
 	
+	/*
 	if(positioning == Position::Absolute){
 
 	}
+	*/
 }
 
 void boxModel::components::BoxModel::onFlush()
