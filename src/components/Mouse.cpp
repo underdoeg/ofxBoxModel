@@ -367,6 +367,8 @@ void Mouse::removeRouteMouse() {
 void Mouse::pMouse(std::string key, std::string value) {
 	if(value == "ignore") {
 		setMouseIgnore(true);
+	}else if(value == "enable"){
+		enableMouse();
 	}
 }
 
