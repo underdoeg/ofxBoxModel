@@ -43,7 +43,7 @@ void Draw::onBoxDefinition(BoxDefinition* bd) {
 }
 
 void Draw::onBoxModel(BoxModel* bm) {
-	boxModel = bm;
+	bModel = bm;
 }
 
 void Draw::onStack(Stack* s) {
@@ -116,22 +116,22 @@ void Draw::drawDecorators() {
 	bool drawBorderTop = false, drawBorderLeft = false, drawBorderRight = false, drawBorderBottom = false;
 	float borderTopWidth, borderLeftWidth, borderBottomWidth, borderRightWidth;
 
-	if(boxModel != NULL && style != NULL) {
-		if(boxModel->border.top.getType() != core::Unit::Type_None) {
+	if(bModel != NULL && style != NULL) {
+		if(bModel->border.top.getType() != core::Unit::Type_None) {
 			drawBorderTop = true;
-			borderTopWidth = boxModel->border.top.getValueCalculated();
+			borderTopWidth = bModel->border.top.getValueCalculated();
 		}
-		if(boxModel->border.left.getType() != core::Unit::Type_None) {
+		if(bModel->border.left.getType() != core::Unit::Type_None) {
 			drawBorderLeft = true;
-			borderLeftWidth = boxModel->border.left.getValueCalculated();
+			borderLeftWidth = bModel->border.left.getValueCalculated();
 		}
-		if(boxModel->border.right.getType() != core::Unit::Type_None) {
+		if(bModel->border.right.getType() != core::Unit::Type_None) {
 			drawBorderRight = true;
-			borderRightWidth = boxModel->border.right.getValueCalculated();
+			borderRightWidth = bModel->border.right.getValueCalculated();
 		}
-		if(boxModel->border.bottom.getType() != core::Unit::Type_None) {
+		if(bModel->border.bottom.getType() != core::Unit::Type_None) {
 			drawBorderBottom = true;
-			borderBottomWidth = boxModel->border.bottom.getValueCalculated();
+			borderBottomWidth = bModel->border.bottom.getValueCalculated();
 		}
 
 		if(drawBorderTop) {

@@ -56,7 +56,7 @@ void Renderer::drawImage(ImagePointer img)
 	if(!((ofImage*)img)->isAllocated())
 		return;
 	ofPushStyle();
-	ofSetColor(255, 255, 255);
+	ofSetColor(255);
 	((ofImage*)img)->draw(0, 0);
 	ofPopStyle();
 }

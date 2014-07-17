@@ -29,6 +29,7 @@ void Image::drawIt() {
 		return;
 	if(!img.isAllocated())
 		return;
+	ofSetColor(255);
 	img.draw(0, 0, drawSize.x, drawSize.y);
 }
 

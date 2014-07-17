@@ -50,7 +50,7 @@ private:
 
 	Stack* stack;
 	Style* style;
-	BoxModel* boxModel;
+	BoxModel* bModel;
 	BoxDefinition* boxDefinition;
 
 	bool bDrawDecorators;
