@@ -12,7 +12,7 @@ namespace boxModel {
 
 namespace components {
 
-class Stack: public core::Component {
+class Stack: public boxModel::core::Component {
 public:
 
 	typedef std::vector<Stack*> 	ChildrenList;
@@ -28,7 +28,7 @@ public:
 
 	void onFlush();
 
-	void onComponentAdded(Component& component);
+	void onComponentAdded(boxModel::core::Component& component);
 
 	/**** BEGIN HIERARCHY FUNCTIONS ****/
 	void addChildren(std::vector<Stack*> children);
@@ -82,19 +82,51 @@ public:
 
 	ChildrenIterator childrenBegin();
 	ChildrenIterator childrenEnd();
-
+	
+	
+	//parent handling
 	bool hasParent();
 	Stack* getParent();
 	void setParent(Stack* p);
+	bool isChildOf(Stack* item);
 	
 	ChildrenList getChildren();
 	ChildrenList getChildrenRecursive();
 	Stack* getUltimateParent();
 
 	void getInfo(core::Component::Info& info);
-
+	
+	//helpers
+	template <class Type>
+	Type* childAt(float x, float y) {
+		return core::castTo<Stack, Type>(containerAt(x, y));
+	}
 	boxModel::core::ComponentContainer* containerAt(float x, float y);
-
+	
+	template <class Type>
+	Type* nextInStack() {
+		Stack* next = nextInStack();
+		if(!next)
+			return NULL;
+		Type* ret = core::castTo<Stack, Type>(next);
+		if(ret)
+			return ret;
+		return next->nextInStack<Type>();
+	}
+	Stack* nextInStack();
+	
+	template <class Type>
+	Type* prevInStack() {
+		Stack* prev = prevInStack();
+		if(!prev)
+			return NULL;
+		Type* ret = core::castTo<Stack, Type>(prev);
+		if(ret)
+			return ret;
+		return prev->prevInStack<Type>();
+	}
+	Stack* prevInStack();
+	
 	virtual void onChildAdded(Stack* child){};
 	virtual void onChildRemoved(Stack* child){};
 
@@ -106,6 +138,7 @@ public:
 private:
 	void appendChildrenToList(ChildrenList& list);
 	void getChildrenRecursiveHelper(ChildrenList& list);
+	int getStackPosition(Stack* child);
 
 	ChildrenList children;
 	Stack* parent;

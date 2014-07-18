@@ -10,6 +10,8 @@ BoxModel::BoxModel() {
 	border = core::Unit::Type_None;
 	height = core::Unit::Auto;
 	width = core::Unit::Percent;
+	align = AlignNone;
+	valign = AlignNone;
 	width = 100;
 	stack = NULL;
 	parentBox = NULL;

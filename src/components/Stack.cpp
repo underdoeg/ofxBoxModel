@@ -17,7 +17,7 @@ void Stack::onDelete() {
 	}
 }
 
-std::string Stack::getName(){
+std::string Stack::getName() {
 	return "stack";
 }
 
@@ -104,7 +104,9 @@ unsigned int Stack::getNumChildren() {
 }
 
 Stack* Stack::getChild(unsigned int index) {
-	assert(index < children.size());
+	if(index >= children.size())
+		return NULL;
+	//assert(index < children.size());
 	return children[index];
 }
 
@@ -137,23 +139,20 @@ Stack::ChildrenList Stack::getChildren() {
 	return children;
 };
 
-Stack::ChildrenList Stack::getChildrenRecursive()
-{
+Stack::ChildrenList Stack::getChildrenRecursive() {
 	Stack::ChildrenList ret;
 	getChildrenRecursiveHelper(ret);
 	return ret;
 }
 
-void Stack::getChildrenRecursiveHelper(ChildrenList& list)
-{
+void Stack::getChildrenRecursiveHelper(ChildrenList& list) {
 	appendChildrenToList(list);
-	for(Stack* child: children){
+	for(Stack* child: children) {
 		child->getChildrenRecursiveHelper(list);
 	}
 }
 
-void Stack::appendChildrenToList(ChildrenList& list)
-{
+void Stack::appendChildrenToList(ChildrenList& list) {
 	list.insert(list.end(), children.begin(), children.end());
 }
 
@@ -167,7 +166,16 @@ Stack* Stack::getUltimateParent() {
 	return ret;
 }
 
-void Stack::getInfo(core::Component::Info& info){
+bool Stack::isChildOf(Stack* item) {
+	if(!hasParent())
+		return false;
+	if(getParent() == item)
+		return true;
+	return false;
+}
+
+
+void Stack::getInfo(core::Component::Info& info) {
 	info["num children"] = core::toString(getNumChildren());
 	//info["children"] = core::toString(getChildren())
 	if(hasParent())
@@ -176,32 +184,58 @@ void Stack::getInfo(core::Component::Info& info){
 		info["parent"] = "none";
 }
 
-boxModel::core::ComponentContainer* Stack::containerAt(float x, float y){
+boxModel::core::ComponentContainer* Stack::containerAt(float x, float y) {
 	boxModel::core::ComponentContainer*  ret = NULL;
-	if(components->hasComponent<BoxDefinition>()){
+	if(components->hasComponent<BoxDefinition>()) {
 		BoxDefinition* bd = components->getComponent<BoxDefinition>();
 
-		for(unsigned int i=0; i<getNumChildren(); i++){
+		for(unsigned int i=0; i<getNumChildren(); i++) {
 			Stack* child = getChild(i);
-			if(child->components->hasComponent<BoxDefinition>()){
+			if(child->components->hasComponent<BoxDefinition>()) {
 				BoxDefinition* childBox = child->components->getComponent<BoxDefinition>();
 				bool visible = true;
-				if(childBox->components->hasComponent<Style>()){
+				if(childBox->components->hasComponent<Style>()) {
 					visible = child->components->getComponent<Style>()->isVisible();
 				}
-				if(visible && childBox->isInside(x, y)){
+				if(visible && childBox->isInside(x, y)) {
 					ret = child->containerAt(x - childBox->position.x, y - childBox->position.y);
 				}
 			}
 		}
-		if(ret == NULL && x < bd->size.x && y < bd->size.y){
+		if(ret == NULL && x < bd->size.x && y < bd->size.y) {
 			ret = this->components;
 		}
-	}else{
+	} else {
 		ret = this->components;
 	}
 	return ret;
 }
 
+Stack* Stack::nextInStack() {
+	if(!hasParent())
+		return NULL;
+	
+	int position = getParent()->getStackPosition(this);
+	position++;
+	return getParent()->getChild(position);
+}
 
-}} //end namespace
+Stack* Stack::prevInStack() {
+	if(!hasParent())
+		return NULL;
+	int position = getParent()->getStackPosition(this);
+	position--;
+	if(position < 0)
+		return NULL;
+	return getParent()->getChild(position);
+	
+}
+
+int Stack::getStackPosition(Stack* child) {
+	if(!child->isChildOf(this))
+		return -1;
+	return std::find(children.begin(), children.end(), child) - children.begin();
+}
+
+}
+} //end namespace
