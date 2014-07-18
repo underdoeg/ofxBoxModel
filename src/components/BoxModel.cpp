@@ -104,6 +104,9 @@ void BoxModel::recalculateBoxSize() {
 
 	if(box == NULL)
 		return;
+		
+	//cout << "RECALCULATE " << endl;
+	//components->logInfo();
 
 	float _width = width.getValueCalculated();
 	float _height = height.getValueCalculated();

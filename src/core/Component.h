@@ -214,6 +214,8 @@ public:
 		}
 	}
 	
+	void logInfo();
+	
 	virtual void onLoadComplete(){};
 
 	Value<bool> disabled;

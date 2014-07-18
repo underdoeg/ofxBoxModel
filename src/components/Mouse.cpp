@@ -41,8 +41,8 @@ unsigned long Mouse::ButtonStates::getTime(int button) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned long Mouse::clickTime = 500;
-unsigned long Mouse::doubleClickTime = 400;
+unsigned long Mouse::clickTime = 700;
+unsigned long Mouse::doubleClickTime = clickTime;
 
 Mouse::Mouse() {
 	passEventsThrough = true;
@@ -268,7 +268,7 @@ bool Mouse::handleMousePressed(int button) {
 		ret = true;
 	}
 
-	if(passEventsThrough && !handledByChild)
+	if(passEventsThrough || !handledByChild)
 		return false;
 
 	return ret;
