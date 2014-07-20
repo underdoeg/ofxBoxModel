@@ -81,7 +81,7 @@ std::vector<ComponentContainer*> Splitter::getSplits() {
 bool Splitter::requestSplit(float x, float y) {
 	if(box != NULL) {
 		if(x != box->size.x) {
-			debug::warning("SPLITTING X OVERFLOW IS NOT SUPPORTED");
+			//debug::warning("SPLITTING X OVERFLOW IS NOT SUPPORTED");
 		}
 	}
 	splitPosition.set(x, y);

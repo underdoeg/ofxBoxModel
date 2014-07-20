@@ -100,5 +100,9 @@ bool BoxDefinition::isInsideContent(float x, float y) {
 }
 
 void BoxDefinition::getInfo(core::Component::Info& info) {
-	info["position"] = "0,0";
+	info["content size"] = floatToString(contentSize.x) + " x " + floatToString(contentSize.y);	
+	info["size"] = floatToString(size.x) + " x " + floatToString(size.y);
+	info["outer size"] = floatToString(outerSize.x) + " x " + floatToString(outerSize.y);
+	info["position"] = floatToString(position.x) + ", " + floatToString(position.y);
+	info["content position"] = floatToString(contentPosition.x) + ", " + floatToString(contentPosition.y);
 }

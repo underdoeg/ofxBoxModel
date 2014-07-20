@@ -269,6 +269,7 @@ void Addressable::onDeserialize(VariantList& variants) {
 }
 
 void Addressable::getInfo(core::Component::Info& info){
+	info["type"] = getType();
 	if(classes.size() == 0)
 		info["classes"] = "-";
 	else

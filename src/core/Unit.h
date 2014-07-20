@@ -1,6 +1,7 @@
 #ifndef UNIT_H
 #define UNIT_H
 
+#include <cmath>
 
 namespace boxModel {
 
@@ -57,6 +58,8 @@ public:
 	}
 
 	void set(float val) {
+		if(isnan(val))
+			val = 0;
 		if(bSet && val == value)
 			return;
 		bSet = true;

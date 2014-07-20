@@ -31,6 +31,10 @@ std::string BoxModel::getName() {
 void BoxModel::setup() {
 	isDirty = false;
 	box = NULL;
+	
+	autoWidth = 0;
+	autoHeight = 0;
+	
 	LISTEN_FOR_COMPONENT(BoxDefinition, BoxModel, onBox)
 	LISTEN_FOR_COMPONENT(Css, BoxModel, onCss)
 	LISTEN_FOR_COMPONENT(Stack, BoxModel, onStack)
@@ -214,7 +218,7 @@ void boxModel::components::BoxModel::onFlush() {
 		getHeightAuto(autoHeight);
 	}
 
-	cout << autoHeight  << " x " << autoWidth << endl;
+	//cout << autoHeight  << " x " << autoWidth << endl;
 	//if(autoHeightOld != autoHeight || autoWidthOld != autoWidth)
 	recalculateBoxSize();
 }
@@ -406,5 +410,5 @@ void BoxModel::pBorderBottom(std::string key, std::string value) {
 }
 
 void BoxModel::getInfo(core::Component::Info& info) {
-
+	
 }
