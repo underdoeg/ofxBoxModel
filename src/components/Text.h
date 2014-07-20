@@ -31,7 +31,9 @@ class Text : public boxModel::core::Component {
 public:
 	Text();
 	~Text();
-
+	
+	static bool setDefaultFont(string path);
+	
 	std::string getName();
 
 	void setup();

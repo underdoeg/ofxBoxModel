@@ -58,6 +58,12 @@ Text::Text():boxDefinition(NULL) {
 Text::~Text() {
 }
 
+bool Text::setDefaultFont(string path)
+{
+	defaultFont = cppFont::Font(Globals::get().dataRoot+path);
+	return defaultFont.isLoaded;
+}
+
 std::string Text::getName() {
 	return "text";
 }
@@ -431,3 +437,4 @@ void Text::onSplitRequested(float x, float y) {
 void Text::getInfo(core::Component::Info& info) {
 
 }
+
