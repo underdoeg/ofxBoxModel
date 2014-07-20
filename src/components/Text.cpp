@@ -310,9 +310,6 @@ void Text::onTextAlignementChanged(TEXT_ALIGNMENT align) {
 
 void Text::onAutoWidth(float& width) {
 	textBlock.setWidthAuto(true);
-	//TODO: necessary?
-	//
-	textBlock.setDirty();
 	float _width = textBlock.getWidth();
 	if(_width > width)
 		width = _width;

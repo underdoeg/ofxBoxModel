@@ -129,12 +129,14 @@ public:
 	
 	virtual void onChildAdded(Stack* child){};
 	virtual void onChildRemoved(Stack* child){};
-
+	
+	
+	
 	Nano::Signal<void(Stack*)> childAdded;
 	Nano::Signal<void(Stack*)> childRemoved;
 	Nano::Signal<void(Stack*)> parentChanged;
 	
-
+	
 private:
 	void appendChildrenToList(ChildrenList& list);
 	void getChildrenRecursiveHelper(ChildrenList& list);

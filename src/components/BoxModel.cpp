@@ -21,10 +21,10 @@ BoxModel::BoxModel() {
 }
 
 BoxModel::~BoxModel() {
-	
+
 }
 
-std::string BoxModel::getName(){
+std::string BoxModel::getName() {
 	return "box definition";
 }
 
@@ -53,8 +53,7 @@ void BoxModel::setup() {
 	components->addUnitY(&bottom);
 }
 
-void BoxModel::copyFrom(BoxModel* bd)
-{
+void BoxModel::copyFrom(BoxModel* bd) {
 	margin = bd->margin;
 	padding = bd->padding;
 	border = bd->border;
@@ -62,27 +61,31 @@ void BoxModel::copyFrom(BoxModel* bd)
 	height = bd->height;
 }
 
-void BoxModel::onStack(Stack* s)
-{
+void BoxModel::onStack(Stack* s) {
 	stack = s;
 	stack->parentChanged.connect<BoxModel, &BoxModel::onParentChanged>(this);
 }
 
-void BoxModel::onParentChanged(Stack* parent)
-{
+void BoxModel::onParentChanged(Stack* parent) {
 	if(parent == NULL)
 		return;
-	if(parentBox != NULL)
+	if(parentBox != NULL){
 		parentBox->contentSize.changed.disconnect<BoxModel, &BoxModel::onParentSizeChanged>(this);
+	}
+	parentBox = NULL;
+	parentBoxModel = NULL;
+	
 	recalculateBoxSize();
-	if(parent->components->hasComponent<BoxDefinition>()){
+	if(parent->components->hasComponent<BoxDefinition>()) {
 		parentBox = parent->components->getComponent<BoxDefinition>();
 		parentBox->contentSize.changed.connect<BoxModel, &BoxModel::onParentSizeChanged>(this);
 	}
+	if(parent->components->hasComponent<BoxModel>()) {
+		parentBoxModel = parent->components->getComponent<BoxModel>();
+	}
 }
 
-void BoxModel::onParentSizeChanged(core::Point p)
-{
+void BoxModel::onParentSizeChanged(core::Point p) {
 	//recalculateBoxSize();
 }
 
@@ -90,8 +93,7 @@ void BoxModel::onUnitChanged(core::Unit* u) {
 	recalculateBoxSize();
 }
 
-void BoxModel::setBoxDefinitionUpdate(bool state)
-{
+void BoxModel::setBoxDefinitionUpdate(bool state) {
 	doBoxDefinitionUpdate = state;
 }
 
@@ -104,14 +106,14 @@ void BoxModel::recalculateBoxSize() {
 
 	if(box == NULL)
 		return;
-		
+
 	//cout << "RECALCULATE " << endl;
 	//components->logInfo();
 
 	float _width = width.getValueCalculated();
 	float _height = height.getValueCalculated();
-	
-	
+
+
 
 	float _marginLeft = margin.left.getValueCalculated();
 	float _marginRight = margin.right.getValueCalculated();
@@ -131,32 +133,37 @@ void BoxModel::recalculateBoxSize() {
 	if(width.getType() == core::Unit::Auto) {
 		_width = autoWidth;
 		_width += _paddingLeft + _paddingRight + _borderLeft + _borderRight;
-	}else if(width.getType() == core::Unit::Percent){
+	} else if(width.getType() == core::Unit::Percent) {
 		_width -= _marginLeft;
 		_width -= _marginRight;
 	}
-	
-	if(minWidth.isSet()){
+
+	if(minWidth.isSet()) {
 		float _minWidth = minWidth.getValueCalculated();
 		if(_width < _minWidth)
 			_width = _minWidth;
 	}
-	
-	if(minHeight.isSet()){
+
+	if(minHeight.isSet()) {
 		float _minHeight = minHeight.getValueCalculated();
 		if(_height < _minHeight)
 			_height = _minHeight;
 	}
 
+	//store them first, before triggering potential listeners
+	float outerX = _marginLeft + _marginRight + box->size.x;
+	
+	//if(parentBoxModel && parentBoxModel.)
+	
 	box->size.x = _width;
-	box->outerSize.x = _marginLeft + _marginRight + box->size.x;
+	box->outerSize.x = outerX;
 	box->contentSize.x = box->size.x - _paddingLeft - _paddingRight - _borderLeft - _borderRight;
 	box->contentPosition.x = _paddingLeft + _borderLeft;
 
 	if(height.getType() == core::Unit::Auto) {
 		_height = autoHeight;
 		_height += _paddingTop + _paddingBottom + _borderTop + _borderBottom;
-	}else if(height.getType() == core::Unit::Percent){
+	} else if(height.getType() == core::Unit::Percent) {
 		_height -= _marginTop;
 		_height -= _marginBottom;
 	}
@@ -166,6 +173,8 @@ void BoxModel::recalculateBoxSize() {
 	box->contentSize.y = box->size.y - _paddingBottom - _paddingTop - _borderTop - _borderBottom;
 	box->contentPosition.y = _paddingTop + _borderTop;
 	
+	//check if the parent has too small of an auto width stored
+	
 	/*
 	if(positioning == Position::Absolute){
 
@@ -173,17 +182,40 @@ void BoxModel::recalculateBoxSize() {
 	*/
 }
 
-void boxModel::components::BoxModel::onFlush()
-{
+void boxModel::components::BoxModel::getWidthAuto(float& widthAuto) {
+	onWidthAuto(widthAuto);
+	if(stack) {
+		for(BoxModel* childBox: stack->getChildrenComponents<BoxModel>()) {
+			childBox->getWidthAuto(widthAuto);
+		}
+	}
+}
+
+void boxModel::components::BoxModel::getHeightAuto(float& heightAuto) {
+	onHeightAuto(heightAuto);
+	if(stack) {
+		for(BoxModel* childBox: stack->getChildrenComponents<BoxModel>()) {
+			childBox->getHeightAuto(heightAuto);
+		}
+	}
+}
+
+void boxModel::components::BoxModel::onFlush() {
+	//float autoWidthOld = autoWidth;
+	//float autoHeightOld = autoHeight;
+
 	if(width.getType() == core::Unit::Auto) {
 		autoWidth = 0;
-		onWidthAuto(autoWidth);
+		getWidthAuto(autoWidth);
 	}
 
 	if(height.getType() == core::Unit::Auto) {
 		autoHeight = 0;
-		onHeightAuto(autoHeight);
+		getHeightAuto(autoHeight);
 	}
+
+	cout << autoHeight  << " x " << autoWidth << endl;
+	//if(autoHeightOld != autoHeight || autoWidthOld != autoWidth)
 	recalculateBoxSize();
 }
 
@@ -278,7 +310,7 @@ void BoxModel::pPosition(std::string key, std::string value) {
 		positioning = Fixed;
 }
 
-void BoxModel::pAlign(std::string key, std::string value){
+void BoxModel::pAlign(std::string key, std::string value) {
 	if(value == "none")
 		align = AlignNone;
 	if(value == "left")
@@ -289,7 +321,7 @@ void BoxModel::pAlign(std::string key, std::string value){
 		align = Middle;
 }
 
-void BoxModel::pVAlign(std::string key, std::string value){
+void BoxModel::pVAlign(std::string key, std::string value) {
 	if(value == "none")
 		valign = AlignNone;
 	if(value == "top")
@@ -373,7 +405,6 @@ void BoxModel::pBorderBottom(std::string key, std::string value) {
 	border.bottom = Unit::parseCssNumber(value);
 }
 
-void BoxModel::getInfo(core::Component::Info& info){
+void BoxModel::getInfo(core::Component::Info& info) {
 
 }
-

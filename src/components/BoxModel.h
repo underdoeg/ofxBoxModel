@@ -78,6 +78,9 @@ public:
 	void getInfo(core::Component::Info& info);
 
 private:
+	void getHeightAuto(float& heightAuto);
+	void getWidthAuto(float& widthAuto);
+
 	void pFloat(std::string key, std::string value);
 	void pColor(std::string key, std::string value);
 	void pBgColor(std::string key, std::string value);
@@ -132,6 +135,7 @@ private:
 	BoxDefinition* box;
 	Stack* stack;
 	BoxDefinition* parentBox;
+	BoxModel* parentBoxModel;
 
 	bool doBoxDefinitionUpdate;
 
