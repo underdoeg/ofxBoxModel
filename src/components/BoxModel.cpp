@@ -187,40 +187,50 @@ void BoxModel::recalculateBoxSize() {
 }
 
 void boxModel::components::BoxModel::getWidthAuto(float& widthAuto) {
+	if(width.getType() != core::Unit::Auto)
+		return;
+	
 	onWidthAuto(widthAuto);
+	/*
 	if(stack) {
 		for(BoxModel* childBox: stack->getChildrenComponents<BoxModel>()) {
 			childBox->getWidthAuto(widthAuto);
 		}
 	}
+	*/
 }
 
 void boxModel::components::BoxModel::getHeightAuto(float& heightAuto) {
+	if(height.getType() != core::Unit::Auto)
+		return;
 	onHeightAuto(heightAuto);
+	/*
 	if(stack) {
 		for(BoxModel* childBox: stack->getChildrenComponents<BoxModel>()) {
 			childBox->getHeightAuto(heightAuto);
 		}
 	}
+	*/
 }
 
 void boxModel::components::BoxModel::onFlush() {
 	//float autoWidthOld = autoWidth;
 	//float autoHeightOld = autoHeight;
+	
+	//if(width.getType() == core::Unit::Auto) {
+	autoWidth = 0;
+	getWidthAuto(autoWidth);
+	//}
 
-	if(width.getType() == core::Unit::Auto) {
-		autoWidth = 0;
-		getWidthAuto(autoWidth);
-	}
-
-	if(height.getType() == core::Unit::Auto) {
-		autoHeight = 0;
-		getHeightAuto(autoHeight);
-	}
+	//if(height.getType() == core::Unit::Auto) {
+	autoHeight = 0;
+	getHeightAuto(autoHeight);
+	//}
 
 	//cout << autoHeight  << " x " << autoWidth << endl;
 	//if(autoHeightOld != autoHeight || autoWidthOld != autoWidth)
-	recalculateBoxSize();
+	if(width.getType() == core::Unit::Auto || height.getType() == core::Unit::Auto)
+		recalculateBoxSize();
 }
 
 /************************ PARSER FUNCTIONS *******************************/
