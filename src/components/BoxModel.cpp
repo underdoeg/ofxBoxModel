@@ -214,21 +214,13 @@ void boxModel::components::BoxModel::getHeightAuto(float& heightAuto) {
 }
 
 void boxModel::components::BoxModel::onFlush() {
-	//float autoWidthOld = autoWidth;
-	//float autoHeightOld = autoHeight;
-	
-	//if(width.getType() == core::Unit::Auto) {
+
 	autoWidth = 0;
 	getWidthAuto(autoWidth);
-	//}
-
-	//if(height.getType() == core::Unit::Auto) {
+	
 	autoHeight = 0;
 	getHeightAuto(autoHeight);
-	//}
 
-	//cout << autoHeight  << " x " << autoWidth << endl;
-	//if(autoHeightOld != autoHeight || autoWidthOld != autoWidth)
 	if(width.getType() == core::Unit::Auto || height.getType() == core::Unit::Auto)
 		recalculateBoxSize();
 }

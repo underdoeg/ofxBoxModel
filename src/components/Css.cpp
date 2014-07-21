@@ -210,6 +210,7 @@ void Css::applyCss() {
 }
 
 void Css::addCssParserFunction(std::string key, std::function<void(std::string, std::string)> func) {
+	key = boxModel::core::stringToLower(key);
 	parserFunctions[key] = func;
 }
 
