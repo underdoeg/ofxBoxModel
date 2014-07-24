@@ -432,6 +432,7 @@ void Text::onSplitRequested(float x, float y) {
 }
 
 void Text::getInfo(core::Component::Info& info) {
-
+	info["font"] = fontName;
+	info["fontSize"] = fontSize;
 }
 

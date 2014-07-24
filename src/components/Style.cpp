@@ -110,7 +110,8 @@ Color Style::parseCssColor(std::string val) {
 }
 
 void Style::getInfo(core::Component::Info& info) {
-
+	info["background-color"] = "rgba(" + core::toString(bgColor.r) + ", " + core::toString(bgColor.g) + ", " + core::toString(bgColor.b) + ", " + core::toString(bgColor.a) + ")";
+	info["color"] = "rgba(" + core::toString(color.r) + ", " + core::toString(color.g) + ", " + core::toString(color.b) + ", " + core::toString(color.a) + ")";
 }
 
 void Style::hide() {
