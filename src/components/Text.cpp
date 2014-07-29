@@ -185,27 +185,26 @@ void Text::onBoxDefinition(BoxModel* bd) {
 void Text::pCssFontName(std::string key, std::string value) {
 	value = stringReplace(value, "\"", "");
 	fontName = value;
-	update();
 }
 
 void Text::pCssFontSize(std::string key, std::string value) {
 	fontSize = core::Unit::parseCssNumber(value);
-	update();
+	//update();
 }
 
 void Text::pCssLeading(std::string key, std::string value) {
 	leading = core::Unit::parseCssNumber(value);
-	update();
+	//update();
 }
 
 void Text::pCssLetterSpacing(std::string key, std::string value) {
 	letterSpacing = core::Unit::parseCssNumber(value);
-	update();
+	//update();
 }
 
 void Text::pCssWordSpacing(std::string key, std::string value) {
 	wordSpacing = core::Unit::parseCssNumber(value);
-	update();
+	//update();
 }
 
 void Text::pCssTextAlignment(std::string key, std::string value) {
@@ -214,7 +213,7 @@ void Text::pCssTextAlignment(std::string key, std::string value) {
 	else if(value=="center") textAlignment = ALIGN_CENTER;
 	else if(value=="justify") textAlignment = ALIGN_JUSTIFY;
 	else if(value=="justify_all" || value=="justify-all") textAlignment = ALIGN_JUSTIFY_ALL;
-	update();
+	//update();
 }
 
 void Text::pCssTextTransform(std::string key, std::string value) {
@@ -227,33 +226,29 @@ void Text::pCssTextTransform(std::string key, std::string value) {
 }
 
 void Text::onHeightChanged(float height) {
-	
 	if(boxDefinition != NULL) {
 		if(boxDefinition->width == Unit::Auto) {
 			textBlock.setWidthAuto(true);
 		}
 		if(boxDefinition->height == Unit::Auto) {
 			textBlock.setHeightAuto(true);
-			return;
+			//return;
 		}
 	}
-	
 	textBlock.setHeight(height);
 	update();
 }
 
 void Text::onWidthChanged(float width) {
-	
 	if(boxDefinition != NULL) {
 		if(boxDefinition->height == Unit::Auto) {
 			textBlock.setHeightAuto(true);
 		}
 		if(boxDefinition->width == Unit::Auto) {
 			textBlock.setWidthAuto(true);
-			return;
+			//return;
 		}
 	}
-	
 	textBlock.setWidth(width);
 	update();
 }
@@ -294,7 +289,6 @@ void Text::onFontNameChanged(std::string fontName) {
 	if(fontName == "")
 		return;
 	fontFamily.loadNormal(Globals::get().dataRoot+fontName);
-	textBlock.setFontFamily(&fontFamily);
 	textBlock.setDirty();
 	update();
 }
@@ -318,14 +312,12 @@ void Text::onAutoWidth(float& width) {
 	float _width = textBlock.getWidth();
 	if(_width > width)
 		width = _width;
-	//update();
 }
 
 void Text::onAutoHeight(float& height) {
-	float _height = textBlock.getHeight();
-	if(_height > height)
-		height = _height;
-	//update();
+	//textBlock.setHeightAuto(true);
+	if(textBlock.getHeight() > height)
+		height = textBlock.getHeight();
 }
 
 void Text::onCssApplyed(Css* css) {
@@ -350,12 +342,10 @@ void Text::onDraw(Draw* d) {
 
 void Text::drawIt() {
 	//check if something has changed
-	if(bDrawDirty || (box && textBlock.getWidth() != box->contentSize.x)) {
+	if(bDrawDirty || textBlock.isDirty() || (box && textBlock.getWidth() != box->contentSize.x)) {
 		if(bHasDrawImage) {
 			boxModel::core::RendererResources::removeImage(drawImageId);
 		}
-		
-		//make sure the right width and height are set
 		
 		if(box){
 			if(textBlock.getWidth() != box->contentSize.x)
@@ -367,8 +357,6 @@ void Text::drawIt() {
 		boxModel::core::Color color(255, 255, 255);
 		if(style)
 			color = style->getColor();
-
-		//cout << "BOX WIDTH " << box->contentSize.x << " - " << img.width << endl;
 
 		//create a colored image with an alpha channel
 		unsigned char* pixels = new unsigned char[img.width*img.height*4];
@@ -387,15 +375,6 @@ void Text::drawIt() {
 		drawImageId = boxModel::core::RendererResources::addImage(pixels, img.width, img.height, 4);
 		bHasDrawImage = true;
 		bDrawDirty = false;
-		
-		//reset auto width or height, if necessary
-		if(boxDefinition){
-			/*
-			if(boxDefinition->width == boxModel::core::Unit::Auto)
-				boxDefinition->setA
-			textBlock.setHeight(box->contentSize.y);
-			*/
-		}
 	}
 
 	Draw::getRenderer()->drawImage(drawImageId);
@@ -461,6 +440,4 @@ void Text::onSplitRequested(float x, float y) {
 void Text::getInfo(core::Component::Info& info) {
 	info["font"] = fontName;
 	info["fontSize"] = fontSize;
-	info["imageId"] = core::toString(drawImageId);
-	info["size"] = core::floatToString(textBlock.getWidth()) + " x " + core::floatToString(textBlock.getHeight());
 }
