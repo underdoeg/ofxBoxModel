@@ -226,7 +226,6 @@ void Text::pCssTextTransform(std::string key, std::string value) {
 }
 
 void Text::onHeightChanged(float height) {
-	/*
 	if(boxDefinition != NULL) {
 		if(boxDefinition->width == Unit::Auto) {
 			textBlock.setWidthAuto(true);
@@ -236,13 +235,11 @@ void Text::onHeightChanged(float height) {
 			//return;
 		}
 	}
-	*/
 	textBlock.setHeight(height);
 	update();
 }
 
 void Text::onWidthChanged(float width) {
-	/*
 	if(boxDefinition != NULL) {
 		if(boxDefinition->height == Unit::Auto) {
 			textBlock.setHeightAuto(true);
@@ -252,7 +249,6 @@ void Text::onWidthChanged(float width) {
 			//return;
 		}
 	}
-	*/
 	textBlock.setWidth(width);
 	update();
 }
@@ -350,6 +346,14 @@ void Text::drawIt() {
 		if(bHasDrawImage) {
 			boxModel::core::RendererResources::removeImage(drawImageId);
 		}
+		
+		//make sure the right widht and height are set
+		if(box){
+			if(textBlock.getWidth() != box->contentSize.x)
+				textBlock.setWidth(box->contentSize.x);
+			//textBlock.setHeight(box->contentSize.y);
+		}
+		
 		cppFont::TextBlockImage img = textBlock.getAsImage();
 
 		boxModel::core::Color color(255, 255, 255);
@@ -375,6 +379,15 @@ void Text::drawIt() {
 		drawImageId = boxModel::core::RendererResources::addImage(pixels, img.width, img.height, 4);
 		bHasDrawImage = true;
 		bDrawDirty = false;
+		
+		//reset auto width or height, if necessary
+		if(boxDefinition){
+			/*
+			if(boxDefinition->width == boxModel::core::Unit::Auto)
+				boxDefinition->setA
+			textBlock.setHeight(box->contentSize.y);
+			*/
+		}
 	}
 
 	Draw::getRenderer()->drawImage(drawImageId);
@@ -441,4 +454,5 @@ void Text::getInfo(core::Component::Info& info) {
 	info["font"] = fontName;
 	info["fontSize"] = fontSize;
 	info["imageId"] = drawImageId;
+	info["size"] = core::floatToString(textBlock.getWidth()) + " x " + core::floatToString(textBlock.getHeight());
 }
