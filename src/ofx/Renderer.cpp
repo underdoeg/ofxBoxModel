@@ -48,6 +48,7 @@ boxModel::core::RendererBase::ImagePointer Renderer::allocateImage(unsigned char
 		type = OF_IMAGE_COLOR_ALPHA;
 	if(width >0 && height > 0)
 		img->setFromPixels(pixels, width, height, type);
+	
 	return (ImagePointer)img;
 }
 

@@ -29,6 +29,7 @@ RendererResources::Image& RendererResources::getImage(unsigned int id)
 
 void RendererResources::removeImage(unsigned int id)
 {
+	//delete images[id].pixels;
 	images.erase(id);
 }
 
@@ -47,6 +48,7 @@ void RendererBase::drawImage(unsigned int id)
 	if(!hasImage(id)){
 		RendererResources::Image& img = RendererResources::getImage(id);
 		images[id] = allocateImage(img.pixels, img.width, img.height, img.bpp);
+		//((ofImage*)images[id])->saveImage("export/img-"+ofToString(id)+".png");
 	}
 	drawImage(images[id]);
 }

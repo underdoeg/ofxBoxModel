@@ -58,8 +58,7 @@ Text::Text():boxDefinition(NULL) {
 Text::~Text() {
 }
 
-bool Text::setDefaultFont(string path)
-{
+bool Text::setDefaultFont(string path) {
 	defaultFont = cppFont::Font(Globals::get().dataRoot+path);
 	return defaultFont.isLoaded;
 }
@@ -227,29 +226,33 @@ void Text::pCssTextTransform(std::string key, std::string value) {
 }
 
 void Text::onHeightChanged(float height) {
+	/*
 	if(boxDefinition != NULL) {
 		if(boxDefinition->width == Unit::Auto) {
 			textBlock.setWidthAuto(true);
 		}
 		if(boxDefinition->height == Unit::Auto) {
 			textBlock.setHeightAuto(true);
-			return;
+			//return;
 		}
 	}
+	*/
 	textBlock.setHeight(height);
 	update();
 }
 
 void Text::onWidthChanged(float width) {
+	/*
 	if(boxDefinition != NULL) {
 		if(boxDefinition->height == Unit::Auto) {
 			textBlock.setHeightAuto(true);
 		}
 		if(boxDefinition->width == Unit::Auto) {
 			textBlock.setWidthAuto(true);
-			return;
+			//return;
 		}
 	}
+	*/
 	textBlock.setWidth(width);
 	update();
 }
@@ -297,13 +300,13 @@ void Text::onFontNameChanged(std::string fontName) {
 void Text::onTextAlignementChanged(TEXT_ALIGNMENT align) {
 	switch(align) {
 	case ALIGN_CENTER:
-	textBlock.setAlign(cppFont::TextBlock::Center);
-	break;
+		textBlock.setAlign(cppFont::TextBlock::Center);
+		break;
 	case ALIGN_LEFT:
-	textBlock.setAlign(cppFont::TextBlock::Left);
-	break;
+		textBlock.setAlign(cppFont::TextBlock::Left);
+		break;
 	default:
-	debug::warning("alignement not supported yet");
+		debug::warning("alignement not supported yet");
 	}
 	update();
 }
@@ -316,8 +319,9 @@ void Text::onAutoWidth(float& width) {
 }
 
 void Text::onAutoHeight(float& height) {
-	if(textBlock.getHeight() > height)
-		height = textBlock.getHeight();
+	float _height = textBlock.getHeight();
+	if(_height > height)
+		height = _height;
 }
 
 void Text::onCssApplyed(Css* css) {
@@ -351,6 +355,8 @@ void Text::drawIt() {
 		boxModel::core::Color color(255, 255, 255);
 		if(style)
 			color = style->getColor();
+
+		//cout << "BOX WIDTH " << box->contentSize.x << " - " << img.width << endl;
 
 		//create a colored image with an alpha channel
 		unsigned char* pixels = new unsigned char[img.width*img.height*4];
@@ -434,5 +440,5 @@ void Text::onSplitRequested(float x, float y) {
 void Text::getInfo(core::Component::Info& info) {
 	info["font"] = fontName;
 	info["fontSize"] = fontSize;
+	info["imageId"] = drawImageId;
 }
-
