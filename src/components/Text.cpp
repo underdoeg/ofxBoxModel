@@ -227,29 +227,33 @@ void Text::pCssTextTransform(std::string key, std::string value) {
 }
 
 void Text::onHeightChanged(float height) {
+	
 	if(boxDefinition != NULL) {
 		if(boxDefinition->width == Unit::Auto) {
 			textBlock.setWidthAuto(true);
 		}
 		if(boxDefinition->height == Unit::Auto) {
 			textBlock.setHeightAuto(true);
-			//return;
+			return;
 		}
 	}
+	
 	textBlock.setHeight(height);
 	update();
 }
 
 void Text::onWidthChanged(float width) {
+	
 	if(boxDefinition != NULL) {
 		if(boxDefinition->height == Unit::Auto) {
 			textBlock.setHeightAuto(true);
 		}
 		if(boxDefinition->width == Unit::Auto) {
 			textBlock.setWidthAuto(true);
-			//return;
+			return;
 		}
 	}
+	
 	textBlock.setWidth(width);
 	update();
 }
@@ -290,6 +294,7 @@ void Text::onFontNameChanged(std::string fontName) {
 	if(fontName == "")
 		return;
 	fontFamily.loadNormal(Globals::get().dataRoot+fontName);
+	textBlock.setFontFamily(&fontFamily);
 	textBlock.setDirty();
 	update();
 }
@@ -313,12 +318,14 @@ void Text::onAutoWidth(float& width) {
 	float _width = textBlock.getWidth();
 	if(_width > width)
 		width = _width;
+	//update();
 }
 
 void Text::onAutoHeight(float& height) {
 	float _height = textBlock.getHeight();
 	if(_height > height)
 		height = _height;
+	//update();
 }
 
 void Text::onCssApplyed(Css* css) {
@@ -343,16 +350,16 @@ void Text::onDraw(Draw* d) {
 
 void Text::drawIt() {
 	//check if something has changed
-	if(bDrawDirty) {
+	if(bDrawDirty || (box && textBlock.getWidth() != box->contentSize.x)) {
 		if(bHasDrawImage) {
 			boxModel::core::RendererResources::removeImage(drawImageId);
 		}
 		
-		//make sure the right widht and height are set
+		//make sure the right width and height are set
+		
 		if(box){
 			if(textBlock.getWidth() != box->contentSize.x)
 				textBlock.setWidth(box->contentSize.x);
-			//textBlock.setHeight(box->contentSize.y);
 		}
 		
 		cppFont::TextBlockImage img = textBlock.getAsImage();
@@ -454,6 +461,6 @@ void Text::onSplitRequested(float x, float y) {
 void Text::getInfo(core::Component::Info& info) {
 	info["font"] = fontName;
 	info["fontSize"] = fontSize;
-	info["imageId"] = drawImageId;
+	info["imageId"] = core::toString(drawImageId);
 	info["size"] = core::floatToString(textBlock.getWidth()) + " x " + core::floatToString(textBlock.getHeight());
 }
