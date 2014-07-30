@@ -79,25 +79,30 @@ void Text::setup() {
 	bHasDrawImage = false;
 	bDrawDirty = true;
 
-	//fontFamily.setFontNormal(&defaultFont);
+	fontFamily.setFontNormal(&defaultFont);
 	textBlock.setFontFamily(&fontFamily);
-
+	
+	fontName = "";
+	
 	fontSize.changed.connect<Text, &Text::onFontSizeChanged>(this);
 	leading.changed.connect<Text, &Text::onLeadingChanged>(this);
 	letterSpacing.changed.connect<Text, &Text::onLetterSpacingChanged>(this);
 	wordSpacing.changed.connect<Text, &Text::onWordSpacingChanged>(this);
 	fontName.changed.connect<Text, &Text::onFontNameChanged>(this);
 	textAlignment.changed.connect<Text, &Text::onTextAlignementChanged>(this);
+	text.changed.connect<Text, &Text::onTextChange>(this);
 
 
 	text = "undefined";
-	fontName = defaultFont.filePath;
+	//fontName = defaultFont.filePath;
 	fontSize = 10;
 	//leading = 6;
 	letterSpacing = 0;
 	wordSpacing = 0;
 	textAlignment = ALIGN_LEFT;
 	textTransform = TEXT_NONE;
+	
+	textBlock.setDirty();
 
 	LISTEN_FOR_COMPONENT(BoxModel, Text, onBoxDefinition)
 	LISTEN_FOR_COMPONENT(Css, Text, onCss)
@@ -107,8 +112,6 @@ void Text::setup() {
 	LISTEN_FOR_COMPONENT(Splitter, Text, onSplitter)
 	LISTEN_FOR_COMPONENT(Draw, Text, onDraw)
 	LISTEN_FOR_COMPONENT(Style, Text, onStyle)
-
-	text.changed.connect<Text, &Text::onTextChange>(this);
 }
 
 void Text::update() {
