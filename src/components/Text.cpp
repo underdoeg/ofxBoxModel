@@ -113,6 +113,7 @@ void Text::setup() {
 
 void Text::update() {
 	bDrawDirty = true;
+	textBlock.setDirty();
 }
 
 void Text::onFlush() {
@@ -127,6 +128,7 @@ void Text::onFlush() {
 		}
 		//}
 	}
+	//textBlock.setDirty();
 }
 
 void Text::copyFrom(Text* t) {
@@ -439,5 +441,13 @@ void Text::onSplitRequested(float x, float y) {
 
 void Text::getInfo(core::Component::Info& info) {
 	info["font"] = fontName;
-	info["fontSize"] = fontSize;
+	info["fontSize"] = core::toString(fontSize);
+	info["text block size"] = core::floatToString(textBlock.getWidth()) + " x " + core::floatToString(textBlock.getHeight());
+	string t = text.get();
+	unsigned int max = 25;
+	if(t.size() > max){
+		t = t.substr(0, max);
+		t += "...";
+	}
+	info["text"] = t;
 }
