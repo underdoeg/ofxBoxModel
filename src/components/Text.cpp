@@ -79,7 +79,7 @@ void Text::setup() {
 	bHasDrawImage = false;
 	bDrawDirty = true;
 
-	fontFamily.setFontNormal(&defaultFont);
+	//fontFamily.setFontNormal(&defaultFont);
 	textBlock.setFontFamily(&fontFamily);
 
 	fontSize.changed.connect<Text, &Text::onFontSizeChanged>(this);
@@ -91,7 +91,7 @@ void Text::setup() {
 
 
 	text = "undefined";
-	//fontName = defaultFont.filePath;
+	fontName = defaultFont.filePath;
 	fontSize = 10;
 	//leading = 6;
 	letterSpacing = 0;
@@ -344,7 +344,7 @@ void Text::onDraw(Draw* d) {
 
 void Text::drawIt() {
 	//check if something has changed
-	if(bDrawDirty || textBlock.isDirty() || (box && textBlock.getWidth() != box->contentSize.x)) {
+	if(textBlock.isDirty() || (box && textBlock.getWidth() != box->contentSize.x)) {
 		if(bHasDrawImage) {
 			boxModel::core::RendererResources::removeImage(drawImageId);
 		}
