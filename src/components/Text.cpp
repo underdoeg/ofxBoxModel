@@ -194,22 +194,22 @@ void Text::pCssFontName(std::string key, std::string value) {
 
 void Text::pCssFontSize(std::string key, std::string value) {
 	fontSize = core::Unit::parseCssNumber(value);
-	//update();
+	update();
 }
 
 void Text::pCssLeading(std::string key, std::string value) {
 	leading = core::Unit::parseCssNumber(value);
-	//update();
+	update();
 }
 
 void Text::pCssLetterSpacing(std::string key, std::string value) {
 	letterSpacing = core::Unit::parseCssNumber(value);
-	//update();
+	update();
 }
 
 void Text::pCssWordSpacing(std::string key, std::string value) {
 	wordSpacing = core::Unit::parseCssNumber(value);
-	//update();
+	update();
 }
 
 void Text::pCssTextAlignment(std::string key, std::string value) {
@@ -218,7 +218,7 @@ void Text::pCssTextAlignment(std::string key, std::string value) {
 	else if(value=="center") textAlignment = ALIGN_CENTER;
 	else if(value=="justify") textAlignment = ALIGN_JUSTIFY;
 	else if(value=="justify_all" || value=="justify-all") textAlignment = ALIGN_JUSTIFY_ALL;
-	//update();
+	update();
 }
 
 void Text::pCssTextTransform(std::string key, std::string value) {
@@ -348,6 +348,7 @@ void Text::onDraw(Draw* d) {
 void Text::drawIt() {
 	//check if something has changed
 	if(textBlock.isDirty() || (box && textBlock.getWidth() != box->contentSize.x)) {
+		textBlock.setText(text.get());
 		if(bHasDrawImage) {
 			boxModel::core::RendererResources::removeImage(drawImageId);
 		}
