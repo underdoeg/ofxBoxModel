@@ -81,9 +81,9 @@ void Text::setup() {
 
 	fontFamily.setFontNormal(&defaultFont);
 	textBlock.setFontFamily(&fontFamily);
-	
+
 	fontName = "";
-	
+
 	fontSize.changed.connect<Text, &Text::onFontSizeChanged>(this);
 	leading.changed.connect<Text, &Text::onLeadingChanged>(this);
 	letterSpacing.changed.connect<Text, &Text::onLetterSpacingChanged>(this);
@@ -91,7 +91,6 @@ void Text::setup() {
 	fontName.changed.connect<Text, &Text::onFontNameChanged>(this);
 	textAlignment.changed.connect<Text, &Text::onTextAlignementChanged>(this);
 	text.changed.connect<Text, &Text::onTextChange>(this);
-
 
 	text = "undefined";
 	//fontName = defaultFont.filePath;
@@ -101,7 +100,7 @@ void Text::setup() {
 	wordSpacing = 0;
 	textAlignment = ALIGN_LEFT;
 	textTransform = TEXT_NONE;
-	
+
 	textBlock.setDirty();
 
 	LISTEN_FOR_COMPONENT(BoxModel, Text, onBoxDefinition)
@@ -115,8 +114,11 @@ void Text::setup() {
 }
 
 void Text::update() {
+	textBlock.setFontSize(fontSize.getValueCalculated());
+	if(fontName.get() != "")
+		fontFamily.loadNormal(Globals::get().dataRoot+fontName.get());
 	bDrawDirty = true;
-	textBlock.setDirty();
+	//textBlock.setDirty();
 }
 
 void Text::onFlush() {
@@ -174,7 +176,7 @@ void Text::onTextChange(string _text) {
 	if(textTransform==TEXT_NONE) text = _text;
 	if(textTransform==TEXT_LOWERCASE) text = stringToLower(_text);
 	if(textTransform==TEXT_UPPERCASE) text = stringToUpper(_text);
-	textBlock.setText(text);
+	textBlock.setText(text.get());
 	update();
 }
 
@@ -190,6 +192,7 @@ void Text::onBoxDefinition(BoxModel* bd) {
 void Text::pCssFontName(std::string key, std::string value) {
 	value = stringReplace(value, "\"", "");
 	fontName = value;
+	update();
 }
 
 void Text::pCssFontSize(std::string key, std::string value) {
@@ -290,10 +293,11 @@ void Text::onWordSpacingChanged(core::Unit* u) {
 	update();
 }
 
-void Text::onFontNameChanged(std::string fontName) {
-	if(fontName == "")
+void Text::onFontNameChanged(std::string fn) {
+	if(fn == "")
 		return;
-	fontFamily.loadNormal(Globals::get().dataRoot+fontName);
+	
+	fontFamily.loadNormal(Globals::get().dataRoot+fontName.get());
 	textBlock.setDirty();
 	update();
 }
@@ -347,43 +351,60 @@ void Text::onDraw(Draw* d) {
 
 void Text::drawIt() {
 	//check if something has changed
-	if(textBlock.isDirty() || (box && textBlock.getWidth() != box->contentSize.x)) {
-		textBlock.setText(text.get());
+	float fs = fontSize.getValueCalculated();
+	if(bDrawDirty || textBlock.isDirty() || (box && textBlock.getWidth() != box->contentSize.x) || textBlock.getFontSize() != fs) {
+		
+		//textBlock.setText(text.get());
+
 		if(bHasDrawImage) {
 			boxModel::core::RendererResources::removeImage(drawImageId);
 		}
-		
-		if(box){
+
+		if(box) {
 			if(textBlock.getWidth() != box->contentSize.x)
 				textBlock.setWidth(box->contentSize.x);
 		}
 		
+		if(textBlock.getFontSize() != fs){
+			textBlock.setFontSize(fs);
+		}
+
 		cppFont::TextBlockImage img = textBlock.getAsImage();
 
 		boxModel::core::Color color(255, 255, 255);
 		if(style)
 			color = style->getColor();
 
-		//create a colored image with an alpha channel
-		unsigned char* pixels = new unsigned char[img.width*img.height*4];
-		unsigned int iAlpha = 0;
-		for(unsigned int i=0; i< img.width*img.height*4; i+=4) {
-			pixels[i] = color.r;
-			pixels[i+1] = color.g;
-			pixels[i+2] = color.b;
-			pixels[i+3] = img.pixels[iAlpha];
-			iAlpha++;
+
+		if(img.width>0 && img.height>0) {
+
+			//create a colored image with an alpha channel
+			unsigned char* pixels = new unsigned char[img.width*img.height*4];
+			unsigned int iAlpha = 0;
+			for(unsigned int i=0; i< img.width*img.height*4; i+=4) {
+				pixels[i] = color.r;
+				pixels[i+1] = color.g;
+				pixels[i+2] = color.b;
+				pixels[i+3] = img.pixels[iAlpha];
+				iAlpha++;
+			}
+
+			//cleanup
+			delete[] img.pixels;
+
+			//ofSaveImage(pixels, "test.png");
+
+
+			drawImageId = boxModel::core::RendererResources::addImage(pixels, img.width, img.height, 4);
+
+			bHasDrawImage = true;
+			bDrawDirty = false;
 		}
-
-		//cleanup
-		delete[] img.pixels;
-
-		drawImageId = boxModel::core::RendererResources::addImage(pixels, img.width, img.height, 4);
-		bHasDrawImage = true;
-		bDrawDirty = false;
 	}
 
-	Draw::getRenderer()->drawImage(drawImageId);
+	//ofDrawBitmapString(text.get(), 0, 0);
+	if(bHasDrawImage)
+		Draw::getRenderer()->drawImage(drawImageId);
 }
 
 void Text::onLinked(Linker* link) {
@@ -445,11 +466,15 @@ void Text::onSplitRequested(float x, float y) {
 
 void Text::getInfo(core::Component::Info& info) {
 	info["font"] = fontName;
-	info["fontSize"] = core::toString(fontSize);
+	info["fontSize"] = core::toString(fontSize.getValueCalculated());
+	info["textblock image id"] = core::toString(drawImageId);
 	info["text block size"] = core::floatToString(textBlock.getWidth()) + " x " + core::floatToString(textBlock.getHeight());
+	info["text block font size"] = core::floatToString(textBlock.getFontSize());
+	info["text block font"] = fontFamily.getNormal()->filePath;
+	
 	string t = text.get();
-	unsigned int max = 25;
-	if(t.size() > max){
+	unsigned int max = 128;
+	if(t.size() > max) {
 		t = t.substr(0, max);
 		t += "...";
 	}

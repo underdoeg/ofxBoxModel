@@ -13,6 +13,8 @@ unsigned int RendererResources::addImage(unsigned char* pixels, unsigned int wid
 	img.width = width;
 	img.bpp = bpp;
 	img.id = curImageId;
+	img.pixels = new unsigned char[width * height * bpp];
+	memcpy(img.pixels, pixels, width*height*bpp);
 	img.pixels = pixels;
 	curImageId++;
 
@@ -24,7 +26,7 @@ RendererResources::Image& RendererResources::getImage(unsigned int id) {
 }
 
 void RendererResources::removeImage(unsigned int id) {
-	//delete images[id].pixels;
+	//delete[] images[id].pixels;
 	images.erase(id);
 }
 

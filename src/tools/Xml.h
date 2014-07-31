@@ -56,7 +56,7 @@ public:
 			return ret;
 		}
 		
-		for (pugi::xml_node_iterator it = doc.begin(); it != doc.end(); ++it) {
+		for (pugi::xml_node_iterator it = doc.begin(); it != doc.end(); it++) {
 			core::ComponentContainer* child = parseXmlNode(*it);
 			ret.push_back(child);
 		}
@@ -94,7 +94,8 @@ private:
 		//loop children
 		if(ret->hasComponent<components::Stack>()) {
 			components::Stack* stack = ret->getComponent<components::Stack>();
-			for (pugi::xml_node_iterator it = node.begin(); it != node.end(); ++it) {
+			
+			for (pugi::xml_node_iterator it = node.children().begin(); it != node.children().end(); ++it){
 				if((*it).type() != pugi::node_pcdata) {
 					core::ComponentContainer* t = parseXmlNode(*it);
 					if(t != NULL && t->hasComponent<components::Stack>())

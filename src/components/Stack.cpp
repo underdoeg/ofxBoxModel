@@ -176,8 +176,19 @@ bool Stack::isChildOf(Stack* item) {
 
 
 void Stack::getInfo(core::Component::Info& info) {
+	info["container id"] = core::toString(getId());
 	info["num children"] = core::toString(getNumChildren());
 	//info["children"] = core::toString(getChildren())
+	if(getNumChildren() > 0){
+		info["num children"] += " (";
+		for(Stack* child: children){
+			if(child->components->hasComponent<Addressable>()){
+				info["num children"] += child->components->getComponent<Addressable>()->getType()+", ";
+			}
+		}
+		info["num children"] += ")";
+	}
+	
 	if(hasParent())
 		info["parent"] = core::toString(getParent()->getId());
 	else
