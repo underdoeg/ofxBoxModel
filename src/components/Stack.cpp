@@ -179,16 +179,16 @@ void Stack::getInfo(core::Component::Info& info) {
 	info["container id"] = core::toString(getId());
 	info["num children"] = core::toString(getNumChildren());
 	//info["children"] = core::toString(getChildren())
-	if(getNumChildren() > 0){
+	if(getNumChildren() > 0) {
 		info["num children"] += " (";
-		for(Stack* child: children){
-			if(child->components->hasComponent<Addressable>()){
+		for(Stack* child: children) {
+			if(child->components->hasComponent<Addressable>()) {
 				info["num children"] += child->components->getComponent<Addressable>()->getType()+", ";
 			}
 		}
 		info["num children"] += ")";
 	}
-	
+
 	if(hasParent())
 		info["parent"] = core::toString(getParent()->getId());
 	else
@@ -225,7 +225,7 @@ boxModel::core::ComponentContainer* Stack::containerAt(float x, float y) {
 Stack* Stack::nextInStack() {
 	if(!hasParent())
 		return NULL;
-	
+
 	int position = getParent()->getStackPosition(this);
 	position++;
 	return getParent()->getChild(position);
@@ -239,13 +239,26 @@ Stack* Stack::prevInStack() {
 	if(position < 0)
 		return NULL;
 	return getParent()->getChild(position);
-	
+
 }
 
 int Stack::getStackPosition(Stack* child) {
 	if(!child->isChildOf(this))
 		return -1;
 	return std::find(children.begin(), children.end(), child) - children.begin();
+}
+
+void Stack::moveToTopInStack() {
+	if(!hasParent())
+		return;
+	parent->moveChildToTop(this);
+}
+
+void Stack::moveChildToTop(Stack* child) {
+	//ChildrenIterator item = std::find(children.begin(), children.end(), child);
+	//std::move(item, item+1, children.end());
+	children.erase(std::remove(children.begin(), children.end(), child), children.end());
+	children.push_back(child);
 }
 
 }

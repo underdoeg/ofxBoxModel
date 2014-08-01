@@ -127,6 +127,8 @@ public:
 	}
 	Stack* prevInStack();
 	
+	void moveToTopInStack();
+	
 	virtual void onChildAdded(Stack* child){};
 	virtual void onChildRemoved(Stack* child){};
 	
@@ -138,6 +140,7 @@ public:
 	
 	
 private:
+	void moveChildToTop(Stack* child);
 	void appendChildrenToList(ChildrenList& list);
 	void getChildrenRecursiveHelper(ChildrenList& list);
 	int getStackPosition(Stack* child);
