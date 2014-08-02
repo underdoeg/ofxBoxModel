@@ -440,7 +440,7 @@ void Text::onSplitter(Splitter* spl) {
 }
 
 void Text::onSplitRequested(float x, float y) {
-
+	
 	if(boxDefinition != NULL) {
 
 		if(textBlock.getNumLines() > 1) {

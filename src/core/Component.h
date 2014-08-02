@@ -110,6 +110,7 @@ public:
 	};
 
 	ComponentContainer* clone() {
+		cout << "CLONE ALARM!" << endl;
 		ComponentContainer* ret = new ComponentContainer();
 		cloneInto(ret);
 		return ret;

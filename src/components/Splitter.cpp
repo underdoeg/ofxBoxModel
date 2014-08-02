@@ -11,6 +11,7 @@ std::string Splitter::getName(){
 void Splitter::setup() {
 	hasSplits = false;
 	isSplit = false;
+	isSplitable = false;
 	boxDefinition = NULL;
 	LISTEN_FOR_COMPONENT(BoxModel, Splitter, onBoxDefinition)
 	LISTEN_FOR_COMPONENT(BoxDefinition, Splitter, onBox)
@@ -79,6 +80,10 @@ std::vector<ComponentContainer*> Splitter::getSplits() {
 }
 
 bool Splitter::requestSplit(float x, float y) {
+	
+	if(!isSplitable)
+		return false;
+	
 	if(box != NULL) {
 		if(x != box->size.x) {
 			//debug::warning("SPLITTING X OVERFLOW IS NOT SUPPORTED");

@@ -49,6 +49,7 @@ private:
 	BoxDefinition* box;
 	Stack* stack;
 	Splitter* splitter;
+	bool isSplitable;
 };
 
 }
