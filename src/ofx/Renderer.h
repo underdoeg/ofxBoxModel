@@ -21,6 +21,7 @@ class Renderer: public boxModel::core::RendererBase {
 	void translate(boxModel::core::Point pos);
 	virtual ImagePointer allocateImage(unsigned char* pixels, int width, int height, int bpp);
 	virtual void drawImage(ImagePointer img);
+	void removeImage(ImagePointer img);
 
 };
 

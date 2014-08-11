@@ -14,7 +14,9 @@ public:
 	virtual void drawRect(boxModel::core::Point position, boxModel::core::Point size, boxModel::core::Color color) {}
 	virtual void popMatrix() {}
 	virtual void pushMatrix() {}
-	virtual void translate(boxModel::core::Point pos) {}
+	virtual void translate(boxModel::core::Point pos) {} 
+	virtual void removeImage(ImagePointer img){};
+
 };
 
 boxModel::core::RendererBase* Draw::renderer = new DummyRenderer();
@@ -62,7 +64,7 @@ boxModel::core::RendererBase* Draw::getRenderer() {
 	return renderer;
 }
 
-void Draw::draw(){
+void Draw::draw() {
 	draw(true);
 }
 

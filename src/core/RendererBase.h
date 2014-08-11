@@ -7,6 +7,8 @@ namespace boxModel {
 
 namespace core {
 
+class RendererBase;
+	
 class RendererResources{
 public:
 	class Image{
@@ -34,10 +36,12 @@ public:
 	static unsigned int addImage(unsigned char* pixels, unsigned int width, unsigned int height, unsigned int bpp);
 	static Image& getImage(unsigned int id);
 	static void removeImage(unsigned int id);
+	static void addRenderer(RendererBase* renderer);
 
 private:
 	static unsigned int curImageId;
 	static std::map<unsigned int, Image> images;
+	static std::vector<RendererBase*> renderers;
 };
 
 class RendererBase {
@@ -56,6 +60,9 @@ public:
 
 	virtual ImagePointer allocateImage(unsigned char* pixels, int width, int height, int bpp) = 0;
 	virtual void drawImage(ImagePointer img) = 0;
+	virtual void removeImage(ImagePointer img) = 0;
+	
+	void removeImage(unsigned int id);
 
 	void drawImage(unsigned int imageId);
 

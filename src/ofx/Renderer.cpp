@@ -62,5 +62,12 @@ void Renderer::drawImage(ImagePointer img)
 	ofPopStyle();
 }
 
+void Renderer::removeImage(ImagePointer img){
+	ofImage* oImg = (ofImage*)img;
+	oImg->clear();
+	delete oImg;
+}
+
+
 }} // end namespace
 

@@ -6,6 +6,7 @@ namespace core {
 
 unsigned int RendererResources::curImageId = 0;
 std::map<unsigned int, RendererResources::Image> RendererResources::images;
+std::vector<RendererBase*> RendererResources::renderers;
 
 unsigned int RendererResources::addImage(unsigned char* pixels, unsigned int width, unsigned int height, unsigned int bpp) {
 	Image& img = images[curImageId];
@@ -26,13 +27,22 @@ RendererResources::Image& RendererResources::getImage(unsigned int id) {
 }
 
 void RendererResources::removeImage(unsigned int id) {
+	//cout << "REMOVE IMAGE" << endl;
 	//delete[] images[id].pixels;
 	images.erase(id);
+	for(RendererBase* renderer: renderers){
+		renderer->removeImage(id);
+	}
+}
+
+void RendererResources::addRenderer(RendererBase* renderer) {
+	renderers.push_back(renderer);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 RendererBase::RendererBase() {
+	RendererResources::addRenderer(this);
 }
 
 RendererBase::~RendererBase() {
@@ -45,6 +55,13 @@ void RendererBase::drawImage(unsigned int id) {
 		//((ofImage*)images[id])->saveImage("export/img-"+ofToString(id)+".png");
 	}
 	drawImage(images[id]);
+}
+
+void RendererBase::removeImage(unsigned int id) {
+	if(hasImage(id)){
+		removeImage(images[id]);
+		images.erase(id);
+	}
 }
 
 bool boxModel::core::RendererBase::hasImage(unsigned int id) {
