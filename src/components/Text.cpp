@@ -396,6 +396,7 @@ void Text::drawIt() {
 
 
 			drawImageId = boxModel::core::RendererResources::addImage(pixels, img.width, img.height, 4);
+			delete[] pixels;
 
 			bHasDrawImage = true;
 			bDrawDirty = false;

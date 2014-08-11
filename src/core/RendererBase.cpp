@@ -16,7 +16,7 @@ unsigned int RendererResources::addImage(unsigned char* pixels, unsigned int wid
 	img.id = curImageId;
 	img.pixels = new unsigned char[width * height * bpp];
 	memcpy(img.pixels, pixels, width*height*bpp);
-	img.pixels = pixels;
+	
 	curImageId++;
 
 	return img.id;
