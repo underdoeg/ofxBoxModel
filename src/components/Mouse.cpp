@@ -39,9 +39,14 @@ unsigned long Mouse::ButtonStates::getTime(int button) {
 	return core::getSystemTime() - time[button];
 }
 
+void Mouse::ButtonStates::releaseAll(){
+	for(auto state: states)
+		setReleased(state.first);
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-unsigned long Mouse::clickTime = 700;
+unsigned long Mouse::clickTime = 600;
 unsigned long Mouse::doubleClickTime = clickTime;
 
 Mouse::Mouse() {
@@ -86,6 +91,7 @@ void Mouse::onStack(Stack* s) {
 
 void Mouse::onStyle(Style* s) {
 	style = s;
+	style->display.changed.connect<Mouse, &Mouse::onDisplayChanged>(this);
 }
 
 void Mouse::onBox(BoxDefinition* b) {
@@ -321,11 +327,11 @@ bool Mouse::handleMouseReleased(int button) {
 			onMouseRelease(mousePos.x, mousePos.y, button);
 
 			//check if it is a click
-			if(timeAgo < clickTime) {
+			//if(timeAgo < clickTime) {
 				mouseClick(mousePos.x, mousePos.y, button);
 				mouseClickRef(mousePos.x, mousePos.y, button, this);
 				onMouseClick(mousePos.x, mousePos.y, button);
-			}
+			//}
 		}
 		ret = true;
 	} else {
@@ -376,6 +382,12 @@ void Mouse::getInfo(core::Component::Info& info) {
 
 }
 
+void Mouse::onDisplayChanged(Style::DisplayType display){
+	buttonStates.releaseAll();
+}
+
 } // end namespace
 
 }
+
+

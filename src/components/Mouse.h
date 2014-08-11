@@ -19,6 +19,7 @@ public:
 		bool isPressed(int button);
 		bool isAnyPressed();
 		unsigned long getTime(int button);
+		void releaseAll();
 	private:
 		void setPressed(int button);
 		void setReleased(int button);
@@ -101,6 +102,8 @@ private:
 	void onBox(BoxDefinition* box);
 	void onCss(Css* css);
 	void onStyle(Style* style);
+	
+	void onDisplayChanged(Style::DisplayType display);
 
 	bool handleMouseMove(float x, float y);
 	void handleMouseExit(float x, float y);
