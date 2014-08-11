@@ -297,10 +297,10 @@ bool Mouse::handleMouseReleased(int button) {
 	bool handledByChild = false;
 	if(stack != NULL) {
 
-		//loop children in reverse because children with a higher index should handle the mouse first
+		//loop children in reverse order because children with a higher index should handle the mouse first
 		for(int i= stack->getNumChildren() - 1; i>=0; i--) {
 			Stack * child = stack->getChild(i);
-
+			
 			if(child->components->hasComponent<BoxDefinition>()) {
 				//check if child even has a mouse component
 				if(child->components->hasComponent<Mouse>()) {
@@ -327,11 +327,11 @@ bool Mouse::handleMouseReleased(int button) {
 			onMouseRelease(mousePos.x, mousePos.y, button);
 
 			//check if it is a click
-			//if(timeAgo < clickTime) {
+			if(timeAgo < clickTime) {
 				mouseClick(mousePos.x, mousePos.y, button);
 				mouseClickRef(mousePos.x, mousePos.y, button, this);
 				onMouseClick(mousePos.x, mousePos.y, button);
-			//}
+			}
 		}
 		ret = true;
 	} else {
@@ -383,7 +383,8 @@ void Mouse::getInfo(core::Component::Info& info) {
 }
 
 void Mouse::onDisplayChanged(Style::DisplayType display){
-	buttonStates.releaseAll();
+	buttonStates = ButtonStates();
+	bMouseOver = false;
 }
 
 } // end namespace
